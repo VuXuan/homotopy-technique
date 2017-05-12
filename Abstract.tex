@@ -243,6 +243,8 @@ $}}
 \begin{document}
 \maketitle
 \begin{abstract}
+hhh
+
 We study the computation of canonical bases of sets of univariate relations $(p_1,\ldots,p_m) \in \mathbb{K}[x]^{m}$ such that $p_1 f_1 + \cdots + p_m f_m = 0$; here, the input elements $f_1,\ldots,f_m$ are from a quotient $\mathbb{K}[x]^n/\mathcal{M}$, where $\mathcal{M}$ is a $\mathbb{K}[x]$-module of rank $n$ given by a basis  $\mathbf{M}\in\mathbb{K}[x]^{n\times n}$ in Hermite form. We exploit the triangular shape of $\mathbf{M}$ to generalize a divide-and-conquer approach which originates from fast minimal approximant basis algorithms. Besides recent techniques for this approach, we rely on high-order lifting to perform fast modular products of polynomial matrices of the form $\mathbf{P}\mathbf{F} \bmod \mathbf{M}$.
 
 Our algorithm uses $O\tilde{~}(m^{\omega-1}D + n^{\omega} D/m)$ operations in $\mathbb{K}$, where $D = \deg(\det(\mathbf{M}))$ is the $\field$-vector space dimension of $\mathbb{K}[x]^n/\mathcal{M}$, $O\tilde{~}(\cdot)$ indicates that logarithmic factors are omitted, and $\omega$ is the exponent of matrix multiplication. This had previously only been achieved for a diagonal matrix $\mathbf{M}$. Furthermore, our algorithm can be used to compute the shifted Popov form of a nonsingular matrix within the same cost bound, up to logarithmic factors, as the previously fastest known algorithm, which is randomized.
