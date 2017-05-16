@@ -1,0 +1,251 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsxtra,amssymb,latexsym, amscd,amsthm,eufrak}
+% \usepackage[pdftex]{color,graphicx}
+\usepackage{pgf,tikz}
+\usepackage[T5,T1]{fontenc}
+\usepackage[T5]{fontenc}
+\usepackage{cleveref}
+\usetikzlibrary{arrows}
+\usepackage{graphicx}
+\usepackage[]{algorithm2e}
+
+\usepackage[left=3cm,right=2.3cm,top=2.5cm,bottom=2.5cm]{geometry}
+
+\usepackage[all]{xy}
+
+\usepackage[utf8]{inputenc}
+\usepackage{authblk}
+
+\UseComputerModernTips
+
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\beq}{\begin{eqnarray}}
+\newcommand{\eeq}{\end{eqnarray}}
+\newcommand{\beqn}{\begin{eqnarray*}}
+\newcommand{\eeqn}{\end{eqnarray*}}
+\newcommand{\parag}{\bigskip\noindent}
+
+\newtheorem{pbm}{Problem}
+\newtheorem{Theorem}{Theorem}%[section]
+\newtheorem{Proposition}{Proposition}%[section]
+\newtheorem{Lemma}{Lemma}%[section]
+\newtheorem{Corollary}{Corollary}%[section]
+\newtheorem{Definition}{Definition}%[section]
+\newtheorem{Remark}{Remark}%[section]
+\newtheorem{Conjecture}{Conjecture}%[section]
+\newtheorem{Problem}{Problem}%[section]
+\newtheorem{Example}{Example}%[section]
+\newtheorem{Question}{Question}%[section]
+\newtheorem{Subsec}[Theorem]{}
+\newtheorem{Note}[Theorem]{}
+%\renewcommand{\theTheorem}{\arabic{section}.\arabic{Theorem}}
+\newtheorem{Claim}{Claim}[Theorem]
+\newtheorem{Sublemma}[Claim]{Sublemma}
+\newtheorem{SubSubsec}[Claim]{}
+\renewcommand{\theClaim}{\arabic{chapter}.\arabic{section}.\arabic{Theorem}.\arabic
+{Claim}}
+
+\renewcommand{\leq}{\leqslant} 
+\renewcommand{\geq}{\geqslant} 
+\renewcommand{\le}{\leqslant} 
+\renewcommand{\ge}{\geqslant} 
+\newcommand{\R}{{\Bbb R}}
+\newcommand{\Z}{{\Bbb Z}}
+\newcommand{\F}{{\Bbb F}}
+\newcommand{\Fd}{\F_2}
+\newcommand{\cala}{{\cal A}}
+\newcommand{\V}{{\Bbb V}}
+\newcommand{\glk}{GL_k}
+\newcommand{\glki}{GL_{k+i}}
+\newcommand{\glone}{GL_1}
+\newcommand{\glf}{GL_4}
+\newcommand{\glfive}{GL_5}
+\newcommand{\pk}{P_k}
+\newcommand{\otiglk}{\rlap{$\,\,\otimes$}\lower 7pt\hbox{$_{\glk}$}}
+\newcommand{\otiglone}{\rlap{$\,\,\otimes$}\lower 7pt\hbox{$_{\glone}$}}
+\newcommand{\otiglf}{\rlap{$\,\,\otimes$}\lower 7pt\hbox{$_{\glf}$}}
+\newcommand{\otiglfive}{\rlap{$\,\,\otimes$}\lower 7pt\hbox{$_{\glfive}
+$}}
+\newcommand{\otiglki}{\rlap{$\,\,\otimes$}\lower 7pt\hbox{$_{\glki}$}}
+\newcommand{\otigl}{\rlap{$\,\,\otimes$}\lower 7pt\hbox{$\,_{GL}$}}
+\newcommand{\otigln}[1]{\rlap{$\,\,\otimes$}\lower 7pt\hbox{$\,_{GL_
+{#1}}$}}
+\newcommand{\otiTk}{\rlap{$\otimes$}\lower 7pt\hbox{$_{T_k}$}}
+\newcommand{\oticala}{\,\rlap{$\otimes$}\lower 7pt\hbox{$_{\cala}$}\,}
+\newcommand{\ov}{\overline}
+%-------------------------
+
+
+%vsize=21.1 truecm
+\parskip 1pt
+
+\font\inh=cmr10 \font\cto=cmr10
+\font\tit=cmbx12 \font\tmd=cmbx10 \font\ab=cmti9 \font\cn=cmr9
+\def\ker{\text{Ker}}
+\def\bar{\overline}
+\def\a.s{\text{\;a.s.\;}}
+\def\supp{\text{supp\,}}
+\pagestyle{plain}
+%\font\fhead= vncentb at 10pt %font for page heading
+%\font\fpart=vncoop at 30pt %font for part mark
+\newlength{\tdtrai}
+\newlength{\tdphai}
+\newlength{\kctdtrai}
+\newlength{\kctdphai}
+\newcommand\automakeheading [2]{%
+\def\trai{Chapter \thechapter. #1}
+\def\phai{\thesection. #2}
+\markboth{\trai}{\phai}}
+
+\newcommand\manualmakeheading [2]{%
+\def\trai{#1}
+\def\phai{#2}
+\markboth{\trai}{\phai}}
+%End For heading
+
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+
+%-----------------------------------------------
+\def\eex{{\accent"5E e}\kern-.470em\raise.3ex\hbox{\char'176}}
+\def\uw{u\kern-.44em\raise.82ex\hbox{ \vrule width .12em height .0ex depth .075ex \kern-0.16em \char'56}\kern-.05em}
+\def\EEX{{\accent"5E E}\kern-.60em\raise.9ex\hbox{\char'176}\kern.1em}
+\def\UW{U\kern-.42em\raise1.36ex\hbox{
+\vrule width .13em height .0ex depth .075ex \kern-0.16em
+\char'56}\kern-.07em}
+\def\aah{{\accent"5E a}\kern-.62em\raise.2ex\hbox{\char'22}\kern.12em}
+
+
+%% --------------------------------------
+%% -------------- MISC ------------------
+%% --------------------------------------
+\newcommand{\storeArg}{} % aux, not to be used in document!!
+\newcounter{notationCounter}
+
+%% --------------------------------------
+%% ----------- COST BOUNDS --------------
+%% --------------------------------------
+\newcommand{\bigO}[1]{\mathcal{O}(#1)} % big O for complexity
+\newcommand{\softO}[1]{\mathcal{O}\tilde{~}(#1)} % soft O for complexity
+\newcommand{\polmultime}[1]{\mathsf{M}(#1)}
+\newcommand{\polmatmultime}[1]{\mathsf{MM}(#1)}
+\newcommand{\expmatmul}{\omega} % exponent for the cost of matrix multiplication
+
+%% --------------------------------------
+%% ------------- INTEGERS ---------------
+%% --------------------------------------
+\renewcommand{\ge}{\geqslant} % greater or equal
+\renewcommand{\le}{\leqslant} % lesser or equal
+\newcommand{\ZZ}{\mathbb{Z}} % relative integers
+\newcommand{\NN}{\mathbb{N}} % integers
+\newcommand{\ZZp}{\mathbb{Z}_{> 0}} % positive integers
+\newcommand{\NNp}{\mathbb{N}_{> 0}} % positive integers
+\newcommand{\tuple}[1]{\mathbf{#1}} % tuples (mainly used for integers I think)
+
+%% --------------------------------------
+%% -------------- SPACES ----------------
+%% --------------------------------------
+\newcommand{\var}{X} % default variable for univariate polynomials
+\newcommand{\field}{\mathbb{K}} % base field
+\newcommand{\polRing}{\field[\var]} % polynomial ring
+\newcommand{\module}{\mathcal{M}} % some module
+\newcommand{\rdim}{m} % default row dimension
+\newcommand{\cdim}{n} % default column dimension
+\newcommand{\matSpace}[1][\rdim]{\renewcommand\storeArg{#1}\matSpaceAux} % scalar matrix space, 2 opt args
+\newcommand{\polMatSpace}[1][\rdim]{\renewcommand\storeArg{#1}\polMatSpaceAux} % polynomial matrix space, 2 opt args
+\newcommand{\matSpaceAux}[1][\storeArg]{\field^{\storeArg \times #1}} % not to be used in document
+\newcommand{\polMatSpaceAux}[1][\storeArg]{\polRing^{\storeArg \times #1}} % not to be used in document
+
+%% --------------------------------------
+%% ----------- SETS,ELEMENTS ------------
+%% --------------------------------------
+\newcommand{\row}[1]{\mathbf{\MakeLowercase{#1}}} % for a row of a matrix
+\newcommand{\rowgrk}[1]{\boldsymbol{#1}} % for a row of a matrix, greek letters
+\newcommand{\col}[1]{\mathbf{\MakeLowercase{#1}}} % for a column of a matrix
+\newcommand{\colgrk}[1]{\boldsymbol{#1}} % for a column of a matrix, greek letters
+\newcommand{\mat}[1]{\mathbf{\MakeUppercase{#1}}} % for a matrix
+\newcommand{\matCoeff}[1]{\MakeLowercase{#1}} % for a coefficient in a matrix
+\newcommand{\vecc}[1]{\mathbf{#1}} % for a vector
+\newcommand{\sumVec}[1]{|#1|} % sum of entries in a tuple
+\newcommand{\card}[1]{\mathrm{Card}(#1)}
+
+%% --------------------------------------
+%% ------------- MATRICES ---------------
+%% --------------------------------------
+\newcommand{\trsp}[1]{#1^\mathsf{T}} %transpose
+\newcommand{\matrow}[2]{{#1}_{#2,*}} % \mathrm{row}(#1,#2)}
+\newcommand{\matcol}[2]{{#1}_{*,#2}} % {\mathrm{col}(#1,#2)}
+\newcommand{\diag}[1]{\,\mathrm{diag}(#1)} % diagonal matrix with diagonal entries #1
+\newcommand{\idMat}[1][\rdim]{\mat{I}_{#1}} % identity matrix of size mxm
+\newcommand{\any}{\ast} % to put a star (indicating some element in a matrix)
+\newcommand{\anyMat}{\boldsymbol{\ast}}% to put a bold star (indicating some matrix in a block matrix)
+
+%% --------------------------------------
+%% -------- POLYNOMIAL MATRICES ---------
+%% --------------------------------------
+\newcommand{\rdeg}[2][]{\mathrm{rdeg}_{{#1}}(#2)} % shifted row degree
+\newcommand{\cdeg}[2][]{\mathrm{cdeg}_{{#1}}(#2)} % shifted column degree
+\newcommand{\leadingMat}[2][\unishift]{\mathrm{lm}_{#1}(#2)} % leading matrix of polynomial matrix, default shifts = 0 (uniform)
+\newcommand{\shiftMat}[1]{\mat{\var}^{#1\,}} % shift matrix, diagonal of powers of X with exponents given by #1
+\newcommand{\shiftSpace}[1][\rdim]{\ZZ^{#1}} % space for shifts: tuple of rdim integers
+\newcommand{\unishift}{\mathbf{0}} % notation for uniform shifts ~ [0,..,0]
+\newcommand{\amp}[1][\shifts]{\mathrm{amp}(#1)} % amplitude of shift
+\newcommand{\shift}[2][s]{#1_{#2}} % shifts letter, default: s
+\newcommand{\shifts}[1][s]{\mathbf{#1}} % shifts vector
+\newcommand{\sshifts}[1][\shifts]{|#1|} % sum of entries in shifts vector
+
+%% --------------------------------------
+%% ----------- REDUCED FORMS ------------
+%% --------------------------------------
+\newcommand{\popov}{\mat{P}} % (shifted) Popov form
+\newcommand{\hermite}{\mat{H}} % Hermite form
+\newcommand{\smith}{\mat{S}} % Smith form
+\newcommand{\reduced}{\mat{R}} % (shifted) reduced form
+
+
+%%%SECTION introduction, notation, problem
+\newcommand{\order}{\sigma} % interpolation order
+\newcommand{\mulmat}[1]{\mat{M}_{#1}}
+\newcommand{\minDeg}{\delta}
+\newcommand{\minDegs}{\boldsymbol{\delta}}
+
+%%% KERNEL BASIS
+\newcommand{\sys}{\mat{F}} % input matrix for kernel basis (sys = system, because computing kernel is close to solving linear system)
+\newcommand{\sysSpace}[1][1]{\polMatSpace[\rdim][#1]} % space for input matrix
+\newcommand{\sol}{\row{p}} % one element (solution)
+\newcommand{\solSpace}{\polMatSpace[1][\rdim]} % space for all solutions
+\newcommand{\mkb}{\mat{P}} % kernel basis
+\newcommand{\mkbSpace}{\polMatSpace[\rdim]} % space for kernel bases
+\newcommand{\piv}{\pi} % (non-)pivot index
+\newcommand{\modulus}[1][m]{\mathfrak{#1}}
+\newcommand{\Modulus}{\mathfrak{M}}
+\newcommand{\subVec}[3]{#1_{[#2:#3]}} % notation for subvector i:j
+\newcommand{\subMat}[5]{#1_{[#2:#3,#4:#5]}} % notation for submatrix i:j,k:l
+
+
+%% ------------------------------------------------
+%% --- Debugging. Should be eventually removed. ---
+%% ------------------------------------------------
+
+\newcommand{\todo}[1]{\textcolor{red}{#1}} % TODO remove
+\newcommand{\improve}[1]{\textcolor{blue}{#1}} % TODO remove
+\title{Computing Canonical Bases of Modules of Univariate Relations}
+\author[1]{Vincent Neiger\thanks{vinn@dtu.dk}}
+\author[2]{Vu Thi Xuan\thanks{thi.vu@ens-lyon.fr}}
+\affil[1]{Technical University of Denmark, Kgs. Lyngby, Denmark
+}
+\affil[2]{ENS de Lyon, LIP (CNRS, Inria, ENSL, UCBL), Lyon, France}
+
+\renewcommand\Authands{ and }
+\date{{}}
+\begin{document}
+\maketitle
+\begin{abstract}
+
+We study the computation of canonical bases of sets of univariate relations $(p_1,\ldots,p_m) \in \mathbb{K}[x]^{m}$ such that $p_1 f_1 + \cdots + p_m f_m = 0$; here, the input elements $f_1,\ldots,f_m$ are from a quotient $\mathbb{K}[x]^n/\mathcal{M}$, where $\mathcal{M}$ is a $\mathbb{K}[x]$-module of rank $n$ given by a basis  $\mathbf{M}\in\mathbb{K}[x]^{n\times n}$ in Hermite form. We exploit the triangular shape of $\mathbf{M}$ to generalize a divide-and-conquer approach which originates from fast minimal approximant basis algorithms. Besides recent techniques for this approach, we rely on high-order lifting to perform fast modular products of polynomial matrices of the form $\mathbf{P}\mathbf{F} \bmod \mathbf{M}$.
+
+Our algorithm uses $O\tilde{~}(m^{\omega-1}D + n^{\omega} D/m)$ operations in $\mathbb{K}$, where $D = \deg(\det(\mathbf{M}))$ is the $\field$-vector space dimension of $\mathbb{K}[x]^n/\mathcal{M}$, $O\tilde{~}(\cdot)$ indicates that logarithmic factors are omitted, and $\omega$ is the exponent of matrix multiplication. This had previously only been achieved for a diagonal matrix $\mathbf{M}$. Furthermore, our algorithm can be used to compute the shifted Popov form of a nonsingular matrix within the same cost bound, up to logarithmic factors, as the previously fastest known algorithm, which is randomized.
+\end{abstract}
+\end{document}
