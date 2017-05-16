@@ -1,0 +1,1046 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsxtra,amssymb,latexsym, amscd,amsthm,eufrak, amsfonts}
+% \usepackage[pdftex]{color,graphicx}
+\usepackage{pgf,tikz}
+\usepackage[T5,T1]{fontenc}
+\usepackage[T5]{fontenc}
+\usepackage{cleveref}
+\usetikzlibrary{arrows}
+\usepackage{graphicx}
+\usepackage[]{algorithm2e}
+%\usepackage{eucal}
+\usepackage[left=3cm,right=2.3cm,top=2.5cm,bottom=2.5cm]{geometry}
+
+\usepackage[all]{xy}
+\UseComputerModernTips
+
+ \usepackage[nottoc]{tocbibind}
+
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\beq}{\begin{eqnarray}}
+\newcommand{\eeq}{\end{eqnarray}}
+\newcommand{\beqn}{\begin{eqnarray*}}
+\newcommand{\eeqn}{\end{eqnarray*}}
+\newcommand{\parag}{\bigskip\noindent}
+
+\newtheorem{pbm}{Problem}
+\newtheorem{Property}{Property}
+\numberwithin{Property}{section}
+\newtheorem{Theorem}{Theorem}%[section]
+\numberwithin{Theorem}{section}
+\newtheorem{Proposition}{Proposition}%[section]
+\numberwithin{Proposition}{section}
+\newtheorem{Lemma}{Lemma}%[section]
+\numberwithin{Lemma}{section}
+\newtheorem{Corollary}{Corollary}%[section]
+\numberwithin{Corollary}{section}
+\newtheorem{Definition}{Definition}%[section]
+\numberwithin{Definition}{section}
+\newtheorem{Remark}{Remark}%[section]
+\numberwithin{Remark}{section}
+\newtheorem{Conjecture}{Conjecture}%[section]
+\numberwithin{Conjecture}{section}
+\newtheorem{Problem}{Problem}%[section]
+\numberwithin{Problem}{section}
+\newtheorem{Example}{Example}%[section]
+\numberwithin{Example}{section}
+\newtheorem{Claim}{Claim}
+\numberwithin{Claim}{section}
+\newtheorem{Question}{Question}%[section]
+\newtheorem{Subsec}[Theorem]{}
+\newtheorem{Note}[Theorem]{}
+\renewcommand{\theTheorem}{\arabic{section}.\arabic{Theorem}}
+%\newtheorem{Claim}{Claim}[Theorem]
+%\newtheorem{Sublemma}[Claim]{Sublemma}
+%\newtheorem{SubSubsec}[Claim]{}
+%\renewcommand{\theClaim}{\arabic{chapter}.\arabic{section}.\arabic{Theorem}.\arabic
+%{Claim}}
+
+\newcommand{\algoname}[1]{{\normalfont\textsc{#1}}}
+
+\newcommand{\problemname}[1]{{\normalfont\textsc{#1}}}
+
+\newcommand{\algoword}[1]{\emph{\textsf{#1}}}
+
+\newcommand{\assign}{\leftarrow}
+
+\newcommand{\inlcomment}[1]{\texttt{\small/* #1 */}}
+
+\newcommand{\eolcomment}[1]{\hfill\texttt{\small// #1}}
+
+\renewcommand{\leq}{\leqslant} 
+\renewcommand{\geq}{\geqslant} 
+\renewcommand{\le}{\leqslant} 
+\renewcommand{\ge}{\geqslant} 
+\newcommand{\R}{{\Bbb R}}
+\newcommand{\Z}{{\Bbb Z}}
+\newcommand{\F}{{\Bbb F}}
+\newcommand{\Fd}{\F_2}
+\newcommand{\cala}{{\cal A}}
+\newcommand{\V}{{\Bbb V}}
+\newcommand{\glk}{GL_k}
+\newcommand{\glki}{GL_{k+i}}
+\newcommand{\glone}{GL_1}
+\newcommand{\glf}{GL_4}
+\newcommand{\glfive}{GL_5}
+\newcommand{\pk}{P_k}
+\newcommand{\otiglk}{\rlap{$\,\,\otimes$}\lower 7pt\hbox{$_{\glk}$}}
+\newcommand{\otiglone}{\rlap{$\,\,\otimes$}\lower 7pt\hbox{$_{\glone}$}}
+\newcommand{\otiglf}{\rlap{$\,\,\otimes$}\lower 7pt\hbox{$_{\glf}$}}
+\newcommand{\otiglfive}{\rlap{$\,\,\otimes$}\lower 7pt\hbox{$_{\glfive}
+$}}
+\newcommand{\otiglki}{\rlap{$\,\,\otimes$}\lower 7pt\hbox{$_{\glki}$}}
+\newcommand{\otigl}{\rlap{$\,\,\otimes$}\lower 7pt\hbox{$\,_{GL}$}}
+\newcommand{\otigln}[1]{\rlap{$\,\,\otimes$}\lower 7pt\hbox{$\,_{GL_
+{#1}}$}}
+\newcommand{\otiTk}{\rlap{$\otimes$}\lower 7pt\hbox{$_{T_k}$}}
+\newcommand{\oticala}{\,\rlap{$\otimes$}\lower 7pt\hbox{$_{\cala}$}\,}
+\newcommand{\ov}{\overline}
+%-------------------------
+
+
+%vsize=21.1 truecm
+\parskip 1pt
+
+\font\inh=cmr10 \font\cto=cmr10
+\font\tit=cmbx12 \font\tmd=cmbx10 \font\ab=cmti9 \font\cn=cmr9
+\def\ker{\text{Ker}}
+\def\bar{\overline}
+\def\a.s{\text{\;a.s.\;}}
+\def\supp{\text{supp\,}}
+\pagestyle{plain}
+%\font\fhead= vncentb at 10pt %font for page heading
+%\font\fpart=vncoop at 30pt %font for part mark
+\newlength{\tdtrai}
+\newlength{\tdphai}
+\newlength{\kctdtrai}
+\newlength{\kctdphai}
+\newcommand\automakeheading [2]{%
+\def\trai{Chapter \thechapter. #1}
+\def\phai{\thesection. #2}
+\markboth{\trai}{\phai}}
+
+\newcommand\manualmakeheading [2]{%
+\def\trai{#1}
+\def\phai{#2}
+\markboth{\trai}{\phai}}
+%End For heading
+
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+
+%-----------------------------------------------
+\def\eex{{\accent"5E e}\kern-.470em\raise.3ex\hbox{\char'176}}
+\def\uw{u\kern-.44em\raise.82ex\hbox{ \vrule width .12em height .0ex depth .075ex \kern-0.16em \char'56}\kern-.05em}
+\def\EEX{{\accent"5E E}\kern-.60em\raise.9ex\hbox{\char'176}\kern.1em}
+\def\UW{U\kern-.42em\raise1.36ex\hbox{
+\vrule width .13em height .0ex depth .075ex \kern-0.16em
+\char'56}\kern-.07em}
+\def\aah{{\accent"5E a}\kern-.62em\raise.2ex\hbox{\char'22}\kern.12em}
+
+
+%% --------------------------------------
+%% -------------- MISC ------------------
+%% --------------------------------------
+\newcommand{\storeArg}{} % aux, not to be used in document!!
+\newcounter{notationCounter}
+
+%% --------------------------------------
+%% ----------- COST BOUNDS --------------
+%% --------------------------------------
+\newcommand{\bigO}[1]{\mathcal{O}(#1)} % big O for complexity
+\newcommand{\softO}[1]{\mathcal{O}\tilde{~}(#1)} % soft O for complexity
+\newcommand{\polmultime}[1]{\mathsf{M}(#1)}
+\newcommand{\polmatmultime}[1]{\mathsf{MM}(#1)}
+\newcommand{\expmatmul}{\omega} % exponent for the cost of matrix multiplication
+%% sub item
+\renewcommand{\labelenumii}{\theenumii}
+\renewcommand{\theenumii}{\theenumi.\arabic{enumii}.}
+%% --------------------------------------
+%% ------------- INTEGERS ---------------
+%% --------------------------------------
+\renewcommand{\ge}{\geqslant} % greater or equal
+\renewcommand{\le}{\leqslant} % lesser or equal
+\newcommand{\ZZ}{\mathbb{Z}} % relative integers
+\newcommand{\NN}{\mathbb{N}} % integers
+\newcommand{\ZZp}{\mathbb{Z}_{> 0}} % positive integers
+\newcommand{\NNp}{\mathbb{N}_{> 0}} % positive integers
+\newcommand{\tuple}[1]{\mathbf{#1}} % tuples (mainly used for integers I think)
+
+%% --------------------------------------
+%% -------------- SPACES ----------------
+%% --------------------------------------
+\newcommand{\var}{X} % default variable for univariate polynomials
+\newcommand{\field}{\mathbb{K}} % base field
+\newcommand{\polRing}{\field[\var]} % polynomial ring
+\newcommand{\module}{\mathcal{M}} % some module
+\newcommand{\rdim}{m} % default row dimension
+\newcommand{\cdim}{n} % default column dimension
+\newcommand{\matSpace}[1][\rdim]{\renewcommand\storeArg{#1}\matSpaceAux} % scalar matrix space, 2 opt args
+\newcommand{\polMatSpace}[1][\rdim]{\renewcommand\storeArg{#1}\polMatSpaceAux} % polynomial matrix space, 2 opt args
+\newcommand{\matSpaceAux}[1][\storeArg]{\field^{\storeArg \times #1}} % not to be used in document
+\newcommand{\polMatSpaceAux}[1][\storeArg]{\polRing^{\storeArg \times #1}} % not to be used in document
+
+%% --------------------------------------
+%% ----------- SETS,ELEMENTS ------------
+%% --------------------------------------
+\newcommand{\row}[1]{\mathbf{\MakeLowercase{#1}}} % for a row of a matrix
+\newcommand{\rowgrk}[1]{\boldsymbol{#1}} % for a row of a matrix, greek letters
+\newcommand{\col}[1]{\mathbf{\MakeLowercase{#1}}} % for a column of a matrix
+\newcommand{\colgrk}[1]{\boldsymbol{#1}} % for a column of a matrix, greek letters
+\newcommand{\mat}[1]{\mathbf{\MakeUppercase{#1}}} % for a matrix
+\newcommand{\matCoeff}[1]{\MakeLowercase{#1}} % for a coefficient in a matrix
+\newcommand{\vecc}[1]{\mathbf{#1}} % for a vector
+\newcommand{\sumVec}[1]{|#1|} % sum of entries in a tuple
+\newcommand{\card}[1]{\mathrm{Card}(#1)}
+
+%% --------------------------------------
+%% ------------- MATRICES ---------------
+%% --------------------------------------
+\newcommand{\trsp}[1]{#1^\mathsf{T}} %transpose
+\newcommand{\matrow}[2]{{#1}_{#2,*}} % \mathrm{row}(#1,#2)}
+\newcommand{\matcol}[2]{{#1}_{*,#2}} % {\mathrm{col}(#1,#2)}
+\newcommand{\diag}[1]{\,\mathrm{diag}(#1)} % diagonal matrix with diagonal entries #1
+\newcommand{\idMat}[1][\rdim]{\mat{I}_{#1}} % identity matrix of size mxm
+\newcommand{\any}{\ast} % to put a star (indicating some element in a matrix)
+\newcommand{\anyMat}{\boldsymbol{\ast}}% to put a bold star (indicating some matrix in a block matrix)
+
+%% --------------------------------------
+%% -------- POLYNOMIAL MATRICES ---------
+%% --------------------------------------
+\newcommand{\rdeg}[2][]{\mathrm{rdeg}_{{#1}}(#2)} % shifted row degree
+\newcommand{\cdeg}[2][]{\mathrm{cdeg}_{{#1}}(#2)} % shifted column degree
+\newcommand{\leadingMat}[2][\unishift]{\mathrm{lm}_{#1}(#2)} % leading matrix of polynomial matrix, default shifts = 0 (uniform)
+\newcommand{\shiftMat}[1]{\mat{\var}^{#1\,}} % shift matrix, diagonal of powers of X with exponents given by #1
+\newcommand{\shiftSpace}[1][\rdim]{\ZZ^{#1}} % space for shifts: tuple of rdim integers
+\newcommand{\unishift}{\mathbf{0}} % notation for uniform shifts ~ [0,..,0]
+\newcommand{\amp}[1][\shifts]{\mathrm{amp}(#1)} % amplitude of shift
+\newcommand{\shift}[2][s]{#1_{#2}} % shifts letter, default: s
+\newcommand{\shifts}[1][s]{\mathbf{#1}} % shifts vector
+\newcommand{\sshifts}[1][\shifts]{|#1|} % sum of entries in shifts vector
+
+%% --------------------------------------
+%% ----------- REDUCED FORMS ------------
+%% --------------------------------------
+\newcommand{\popov}{\mat{P}} % (shifted) Popov form
+\newcommand{\hermite}{\mat{H}} % Hermite form
+\newcommand{\smith}{\mat{S}} % Smith form
+\newcommand{\reduced}{\mat{R}} % (shifted) reduced form
+
+
+%%%SECTION introduction, notation, problem
+\newcommand{\order}{\sigma} % interpolation order
+\newcommand{\mulmat}[1]{\mat{M}_{#1}}
+\newcommand{\minDeg}{\delta}
+\newcommand{\minDegs}{\boldsymbol{\delta}}
+
+%%% KERNEL BASIS
+\newcommand{\sys}{\mat{F}} % input matrix for kernel basis (sys = system, because computing kernel is close to solving linear system)
+\newcommand{\sysSpace}[1][1]{\polMatSpace[\rdim][#1]} % space for input matrix
+\newcommand{\sol}{\row{p}} % one element (solution)
+\newcommand{\solSpace}{\polMatSpace[1][\rdim]} % space for all solutions
+\newcommand{\mkb}{\mat{P}} % kernel basis
+\newcommand{\mkbSpace}{\polMatSpace[\rdim]} % space for kernel bases
+\newcommand{\piv}{\pi} % (non-)pivot index
+\newcommand{\modulus}[1][m]{\mathfrak{#1}}
+\newcommand{\Modulus}{\mathfrak{M}}
+\newcommand{\subVec}[3]{#1_{[#2:#3]}} % notation for subvector i:j
+\newcommand{\subMat}[5]{#1_{[#2:#3,#4:#5]}} % notation for submatrix i:j,k:l
+
+
+%% ------------------------------------------------
+%% --- Debugging. Should be eventually removed. ---
+%% ------------------------------------------------
+
+\newcommand{\todo}[1]{\textcolor{red}{#1}} % TODO remove
+\newcommand{\improve}[1]{\textcolor{blue}{#1}} % TODO remove
+\title{M2 Internship Report: \\
+Homotopy techniques for determinantal systems}
+\author{\textsc{Vu} Thi Xuan\\
+Symbolic Computation Group \\
+David R. Cheriton School of Computer Science\\ University of Waterloo, Canada} 
+\date{
+Supervised by:\\
+\vspace*{0.3cm}
+Éric \textsc{Schost}\\
+David R. Cheriton School of Computer Science\\ University of Waterloo, Canada\\
+\vspace*{0.3cm}
+and \\
+\vspace*{0.3cm}
+Mohab \textsc{Safey El Din}\\ 
+Sorbonne Universités, UPMC Univ. Paris 6\\
+CNRS, INRIA Paris Center, LIP6, PolSys Team, France\\
+\vspace*{1cm}
+February 1 -- June 16, 2017
+}
+\begin{document}
+\maketitle
+\begin{abstract}
+Solving determinantal polynomial systems (that is, systems whose equations are obtained as minors of polynomial matrices) is a recurring question in domains such as optimization or real algebraic geometry. Results known as of now are not entirely satisfying; for instance, there is no known algorithm that would solve such systems with a complexity depending on the expected number of solutions. 
+
+Homotopy continuation techniques rely on following a deformation between the system one has to solve and another system (called start system), with a similar combinatorial structure, but whose solutions are easy to describe. In the context of determinantal systems, we define the start system by designing a \emph{start matrix} in such a way that points, at which the rank of the matrix decreases, are easy to identify. 
+\end{abstract}
+
+\section{Introduction}
+\subsection{Problem} In what follows, $\field$ is a field, $\mat{X} = (X_1, \ldots, X_n)$ is the set of $n$ variables and $\field[\mat{X}]$ is the multivariate polynomial ring with coefficients in $\field$. Let $F \in \field[\mat{X}]^{p \times q}$ be a polynomial matrix, without loss of generity, we assume that $p \leq q$. For several reasons (\todo{reasons:...}), one is interested in computing the set of points at which the evaluation of the matrix has rank $p-1$, called \emph{maximal rank} problem. We restrict on the case $n = q-p+1$. This is the 0-dimensional case, where the problem has finitely many solutions under the genericity assumptions (see \improve{\cref{sec:not}}). Hereafter, given a polynomial matrix $F \in \field[\mat{X}]^{p \times q}$ and a point $\mathbf{x} \in \bar{\field}^n$, the notation $F({\mathbf{x}})$ means the evaluation of the matrix $F$ at the point $\mathbf{x}$. 
+
+\begin{figure}[h]
+  \centering
+\fbox{ \begin{minipage}{9cm}
+\begin{pbm}[Maximal rank problem]
+  \label{pbm:modsys}
+
+\begin{tabular}{p{1.5cm}p{9cm}}
+  \emph{Input:} &
+   a matrix $F \in \field[\mat{X}]^{p \times q}$ with $p \leq q$\\
+  \emph{Output:} &
+  the set $S := \{\mathbf{x} \in \bar{\field}^n : \mathrm{rank}(F({\mathbf{x}})) = p - 1 \}$.
+\end{tabular}
+\end{pbm}
+\end{minipage}
+}
+\end{figure}
+\subsection{Contributions, related work, and outline}
+To study this problem, we consider all $p \times p-$ minors of $F$. Indeed, all of these minors vanishes at the points we are interested in. We use the notation below for the input matrix
+\[ F = 
+\left( \begin{matrix}
+f_{1,1} & \cdots & f_{1,q}\\
+\vdots & \ddots & \vdots \\
+f_{p,1} & \cdots & f_{p,q}
+\end{matrix} \right),
+\]
+where $f_{i,j} \in \field[\mat{X}]$ for $1 \leq i \leq p$, $1 \leq j \leq q$.
+\section{Notation and preliminaries}
+\label{sec:not}
+Give a polynomial matrix $F \in \field[\mat{X}]^{p \times q}$, we write $F_{l:k \mathbf{;} e:f}$ for the submatrix of $F$ contains the rows $l, \ldots, k$ and the columns $e, \ldots, f$. We also write $F_{l:k \mathbf{;} *}$ for the submatrix of $F$ contains the rows $l, \ldots, k$ and all $q$ columns. The similar meaning is applied for the matrix $F_{* \mathbf{;} e:f}$. 
+
+We denote $M_{pq}$ for the vector space of matrices with $p$ rows and $q$ columns over the field $\field$. Given a multivariate polynomial $g \in \field[\mat{X}]$, if we do not give a specific mention, we will consider the degree of $g$ is the total degree.  %\displaystyle 
+
+The elementary symmetric polynomial of degree $r$ in $m$ variables $t_1, \ldots, t_m$ written $E_{r}(t_1, \ldots, t_m)$ is defined as the coefficient of $x^r$ in $(1+t_1x)(1+t_2x)\cdots(1+t_mx)$. That is
+\[E_{r}(t_1, \ldots, t_m) = \sum_{(i_1,\ldots,i_{m}) \subset \{1, \ldots, r\}^{m}}\prod_{j =1}^{m}D_{i_j}.\]
+
+The complete homogeneous symmetric polynomial of degree $r$ in $m$ variables $t_1, \ldots, t_m$ written $S_{r}(t_1, \ldots, t_m)$ is defined as the coefficient of $x^{r}$ in $$\frac{1}{(1-t_1x)(1-t_2x)\cdots(1-t_mx)} = (1+t_1x + t_1^2x^2 + \cdots)\cdots(1+t_mx + t_m^2x^2 + \cdots).$$
+That is 
+\[
+S_r(t_1, \ldots, t_m) = \sum_{i_1 + \cdots + i_m = r} t_1^{i_1}\ldots t_m^{i_m}. 
+\]
+There are some formulas which are obtained directly from the definition of the complete homogeneous symmetric polynomial, such as 
+\begin{itemize}
+\item[•] $S_{r}(t_1, \ldots, t_m) =  \sum\limits_{k=1}^r\sum\limits_{(i_1, \ldots, i_k) \in \{1, \ldots, m\}^k}S_{r-k}(t_1, \ldots, t_k)$,
+\item[•] $S_{r}(t_1, \ldots, t_{m}) = \sum\limits_{i=0}^{r}t_1^{r-i}S_i(t_2, \ldots, t_m)$,
+%$S_{q-m}(t_1, \ldots, t_{m+1}) = t_1^{q-m}+t_1^{q-m-1}S_1(t_2, \ldots, t_{m+1}) + t_1^{q-m-2}S_2(t_2, \ldots, t_{m+1}) + \cdots + S_{q-m}(t_2, \ldots, t_{m+1})$, that is, 
+\item[•] $S_r(t_1, \ldots, t_{m-1}, t_m) - S_r(t_1, \ldots, t_{m-1}, t_{m+1}) = (t_m - t_{m+1})S_{r-1}(t_1, \ldots, t_{m-1}, t_m, t_{m+1})$. 
+\end{itemize}
+\subsection{Ideals and varieties}
+\begin{Definition} Let $I \subset \field[\mat{X}]$ be an ideal. The $\mathrm{radical}$ of $I$, denoted $\sqrt{I}$ is the set 
+\[
+\{f \ : \ f^m \in I \ \mathrm{for \ some} \ m \in \mathbb{N}, \ m \geq 1\}.
+\]
+\end{Definition}
+An ideal $I \in \field[\mat{X}]$ is \emph{prime} if whenever $f,g \in \field[\mat{X}]$ and $fg \in I$, then either $f \in I$ or $g \in I$. 
+\begin{Theorem}$[\todo{cite}]$ Let $I \in \field[\mat{X}]$ be an ideal. Then, there exist unique $\mathcal{P}_1, \ldots,, \mathcal{P}_r$ prime ideal in $\field[\mat{X}]$ such that 
+\[
+\sqrt{I} = \mathcal{P}_1 \cap \mathcal{P}_2 \cdots \cap \mathcal{P}_r,
+\]
+and $P_1, \ldots, P_r$ are called $\mathrm{prime \ components \ of} \ \sqrt{I}$. 
+\end{Theorem}
+ %Given an ideal $I \in \field[\mat{X}]$, for any $f,g \in \field[\mat{X}]$ and $fg \in \sqrt{I}$, there exists $m \geq 1$: $(fg)^m \in I$ We notice that $\sqrt{I}$ is a prime ideal for any ideal $I \in \field[\mat{X}]$. 
+\begin{Definition} $\mathrm{[Dimension \ of \ an \ ideal]}$ Let $\mathcal{P} \subset \field[\mat{X}]$ be a prime ideal. We say that d is $\mathrm{Krull \ dimension }$ of $\mathcal{P}$ if and only if there exists prime ideals $\mathcal{P}_0, \mathcal{P}_1, \ldots, \mathcal{P}_d$ in $\field[\mat{X}]$ such that 
+\[
+\mathcal{P}_0 \subsetneq \mathcal{P}_1 \subsetneq \cdots \subsetneq \mathcal{P}_d.
+\] 
+The $\mathrm{Krull \ dimension}$ of an ideal $I \subset \field[\mat{X}]$ is the maximum Krull dimension of the prime components of $\sqrt{I}$. 
+\end{Definition}
+The geometrical objects corresponding to ideals of $\field[\mat{X}]$ are \emph{affine \ varieties} (or \emph{algebraic sets}) of $\bar{\field}^n$. An affine variety in $\bar{\field}^n$ is the set of all solutions of a system of equations. Hereafter, we will use variety for the short of affine variety. One of the important properties of varieties of $\bar{\field}^n$ is they define a topology on $\bar{\field}^n$, namely \emph{Zariski topology}, with the closed sets of the topology are the varieties. The \emph{Zariski closure} of a set $S$ in $\bar{\field}^n$ is the smallest (for the inclusion ordering) Zariski closed set that contains $S$. A set $V$ is \emph{Zariski dense} in a set $W$ if the Zariski closure of V contains in the Zariski closure of W. 
+
+Zariski topology will be useful for defining an algebraic notion of genericity for structured system. 
+\begin{Definition} A property of a family of systems $\mathfrak{F} \subset \bar{\field}[\mat{X}]$ which is $\bar{\field}$-vector space of finite dimension is said to be $\mathrm{generic}$ if this property is satisfied on a nonempty open subset of $\mathfrak{F}$.
+\end{Definition}
+\begin{Definition}$\mathrm{[Dimension \ of \ a \ variety]}$ Let $V$ be a variety. The dimension of V is the largest d such that the image of V by $(X_1, \ldots, X_n) \to (X_{i_1}, \ldots, X_{i_d})$ is Zariski dense for some $(i_1, \ldots, i_d) \subset \{1, \ldots, n\}$.
+\end{Definition}
+It is equivalent to define the dimension of a variety $V$ is the Krull dimension of $\field[\mat{X}]/I(V)$. A $0$-dimensional variety is an finite set. A variety $V \subset \bar{\field}^n$ is \emph{irreducible} if whenever $V$ is written in the form $V = V_1 \cup V_2$, where $V_1, V_2$ are varieties, then either $V = V_1$ or $V = V_2$. The next result is given in \cite[Theorem~4 -- section~6 -- chapter~4]{Cox07}.
+\begin{Theorem} Let $V \subset \bar{\field}^{n}$ is a variety. Then V has a minimal decomposition 
+\[
+V = V_1 \cup \cdots \cup V_m,
+\] where each $V_i$ is an irreducible variety and $V_i \not\subset V_j$ for $i \ne j$. Furthermore, this minimal decomposition is unique up to the order in which $V_1, \ldots, V_m$ are written; and $V_1, \ldots, V_m$ are called $\mathrm{irreducible \ components}$ of V.
+\end{Theorem}
+\begin{Definition} A variety is said to be $\mathrm{equidimensional}$ if and only if there exists $d \in \mathbb{N}$ such that all its irreducible components have dimension d. 
+\end{Definition}
+\begin{Definition}$\mathrm{[Degree \ of \ a \ variety]}$ Let V be an equidimensional variety of dimension d. The $\mathrm{degree}$ of $V$ is the unique integer $D$ such that $V \cap V(H_1) \cap \cdots \cap V(H_d)$ consists of D points for generic hyperplane $H_1, \ldots, H_p$. 
+
+For any variety V, the degree of V is the sum of degree of all irreducible components of V. 
+\end{Definition}
+\begin{Remark} The degree of a $0$-dimensional variety equals its cardinality.
+\end{Remark}
+Given a set of polynomials $\mathbf{f} = (F_1, \ldots, F_k) \subset \field[\mat{X}]^k$, the Jacobian matrix of $\mathbf{f}$ is an $k \times n$ matrix defined as follows 
+\[
+\mathrm{Jac}(\mathbf{f}) = \left[ \begin{matrix}
+\frac{\partial F_1}{X_1} & \frac{\partial F_1}{X_2} & \cdots & \frac{\partial F_1}{X_n}\\
+\vdots & \vdots & \ddots & \vdots\\
+\frac{\partial F_k}{X_1} & \frac{\partial F_k}{X_2} & \cdots & \frac{\partial F_k}{X_n}
+\end{matrix} \right].
+\]
+Jacobian criterion is an useful tool to check wheather the variety of an ideal is equidimensional. 
+\begin{Theorem}[Jacobian Criterion] $[\todo{cite}]$  \
+Let $\mathbf{f} = (F_1, ..., F_k) \subset \field[\mat{X}]^k$ and $V(\mathbf{f}) \subset \bar{\field}^n $. Assume that 
+\[
+\{\mathbf{x} \in V(\mathbf{f}) \ | \ \mathrm{rank}(\mathrm{Jac}(\mathbf{f})({\mathbf{x}})) < k\} = \emptyset .
+\] Then, V is equidimensional and has dimension $n - k$.
+\end{Theorem}
+\section{Genericity assumption}
+In this section, we work on the case when the starting matrix is $G = [g_{i,j}]_{1 \leq i \leq p, 1 \leq j \leq q}$, where $g_{i,j}$ is a product of $D_i$ linear forms with each linear form has generic coefficients. We also define $I_G := \langle p \times p - \mathrm{minors \ of} \ G \rangle$. We say that the matrix $G$ satisfies assumption $\mathcal{A}$ if 
+\begin{enumerate}
+\item rank($G(\mathbf{x}^*)$) $= p-1$ for all $\mathbf{x}^* \in V(I_G)$.
+\item $I_G$ has exactly $S_{n}(D_1, \ldots, D_p)$ distinct solutions.  
+\item $I_G$ is a radical ideal (this genericity condition is equivalent to the property that $\mathrm{Jac}(I_G)(\mathbf{x}^*)$ has full rank for any $\mathbf{x}^* \in V(I_G)$). 
+\end{enumerate}
+Let us denote $\mathcal{G} = \{\gamma_{i,j}^{(t,l_i)} \ | \ 1 \leq j \leq q, 0 \leq t \leq n \ \mathrm{and} \ \mathrm{for} \ i : 1 \leq i \leq p, 1 \leq l_i \leq D_i\}$ for the set of new indeterminantes for these generic coefficients and $N = q(n+1)(\sum_{i=1}^pD_i)$ be the cardinality of the set $\mathcal{G}$. 
+
+For $1 \leq i \leq p, 1 \leq j \leq q$ and denote by $\mathfrak{g}_{i,j} = \prod_{l=1}^{D_i}(\gamma_{i,j}^{(n,l_i)}X_n + \cdots + \gamma_{i,j}^{(1,l_i)}X_1 + \gamma_{i,j}^{(0,l_i)}) \in \field[\mathcal{G}, \bf{X}]$. We will prove that assumption $\mathcal{A}$ is generic in the following sense. 
+\begin{Proposition} For any $i \in \{1,2,3\}$, there exists a nonempty Zariski open set $\mathcal{O}_i$ such that $I_G$ satisfies $\mathcal{A}(i)$ for $g_{i,j} \in \mathcal{O}_i$. 
+\end{Proposition}
+
+The rest of this section contains the proof of this proposition. We first notice that we are working on $n = q-p+1$, where $n$ is the number of variables. Let us define the matrix $G_1$ and $G_2$ as follows
+\[G_1 = \left( \begin{matrix}
+\mathfrak{g}_{1,1} & \mathfrak{g}_{1,2} & \cdots  & \mathfrak{g}_{1, q}\\
+\mathfrak{g}_{2,1} & \mathfrak{g}_{2,2} & \cdots  & \mathfrak{g}_{2, q}\\
+\vdots & \vdots & \ddots & \vdots \\
+\mathfrak{g}_{p,1} & \mathfrak{g}_{p,2} & \cdots  & \mathfrak{g}_{p, q}
+\end{matrix} \right) \ \mathrm{and} \ 
+ G_2 = \left( \begin{matrix}
+\mathfrak{g}_{1,1} & 0 & \cdots & 0 & \mathfrak{g}_{1,p+1} & \cdots & \mathfrak{g}_{1, q}\\
+0 & \mathfrak{g}_{2,2} & \cdots & 0 & \mathfrak{g}_{2,p+1} & \cdots & \mathfrak{g}_{2, q}\\
+\vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
+0 & 0 & \cdots & \mathfrak{g}_{p,p} & \mathfrak{g}_{p,p+1} & \cdots & \mathfrak{g}_{p, q}
+\end{matrix} \right). \] 
+
+The idea to prove $\mathcal{A}(1)$ and $\mathcal{A}(2)$ is by using induction on the number of variables, $n$, for the matrix of form $G_1$; and, after that we show that the property $\mathcal{A}(1)$ and/or $\mathcal{A}(2)$ is true for the matrix $G_2$. Finally, by using this property of form $G_2$, we prove  $\mathcal{A}(1)$ and/or $\mathcal{A}(2)$ holds for any matrix of form $G_1$. 
+\subsection{Genericity of $\mathcal{A}(1)$}
+In this section, we use the fact that for any $\mathbf{x}^* \in V(I_G)$, the rank of the matrix $G(\mathbf{x}^*)$ is exactly $p-1$ if $\mathbf{x}^*$ does not belong to the variety of the ideal generated by $(p-1)\times (p-1)$ minors of $G$. Indeed, if $\mathbf{x}^* \in V(I_{G}^{(p-1)})$ where $I_{G}^{(p-1)} = \langle (p-1) \times (p-1) -\mathrm{minors \ of} \ G \rangle$, then $\mathrm{rank}(G(\mathbf{x}^*)) \leq p-2$.
+
+
+$\bf{Step \ 1:}$ First, we will prove that there exist a nonempty Zariski open set  $\mathcal{O}_1$ such that $I_{G_1}$ satisfies $\mathcal{A}(i)$ for $g_{i,j} \in\mathcal{O}_1$, when $G_1$ is a square matrix as follows
+\[
+G_1 = \left( \begin{matrix}
+\mathfrak{g}_{1,1}  & \cdots  & \mathfrak{g}_{1, p}\\
+\vdots & \ddots & \vdots \\
+\mathfrak{g}_{p,1} & \cdots  & \mathfrak{g}_{p, p}
+\end{matrix} \right).
+\] We notice that in this case, the number of variables is $n=1$ and the number of coefficients is $N = 2q.(\sum_{i=1}^pD_i)$. Let us define $I_{G_1}^{(p-1)} := \langle (p-1) \times (p-1) - \mathrm{minors \ of \ } G_1 \rangle \subset  \field[\mathcal{G}, \mat{X}]$ and $\Omega_1 = V(I_{G_1}^{(p-1)}) \subset \bar{\field}^{N} \times \mathbb{P}^{1}(\bar{\field})$. Then, $\Omega_1$ is a Zariski closed in $\bar{\field}^{N} \times \mathbb{P}^{1}(\bar{\field})$. Let $\pi_{\mathcal{G}} : \bar{\field}^{N} \times \mathbb{P}^{1}(\bar{\field}) \to \bar{\field}^{N}$ be the projection on the $\mathcal{G}$ coordinates and $\Delta_1 = \pi_{\mathcal{G}}(\Omega_1)$. This implies $\Delta_1$ is a Zariski closed in $\bar{\field}^{N}$. So, we define the Zariski open set $\mathcal{O}_1$ in $\bar{\field}^{N}$ as $\mathcal{O}_1 := \bar{\field}^{N} \setminus \Delta_1$. We claim that $\mathcal{O}_1$ is a nonempty set. Indeed, let $G_2 = \mathrm{diag}(\mathfrak{g}_{1,1}, \ldots, \mathfrak{g}_{1,1})$ be a diagonal matrix and $I_{G_2}^{(p-1)} := \langle (p-1) \times (p-1) - \mathrm{minors \ of \ } G_2 \rangle \subset  \field[\mathcal{G}, \mat{X}]$. Therefore, for any $f_{G_2} \in I_{G_2}^{(p-1)}$, $f_{G_2}$ has the form $\mathfrak{g}_{i_1, i_1} \ldots \mathfrak{g}_{i_{p-1}, i_{p-1}}$ where $(i_1, \ldots, i_{p-1}) \in \{1, \ldots, p\}^{p-1}$. Moreover, for any $1 \leq i \leq p$, we have $\mathfrak{g}_{i,i} = (\gamma_{i,i}^{(1,1)}X_1 + \gamma_{i,i}^{(0,1)}) \times \cdots \times (\gamma_{i,i}^{(1,D_i)}X_1 + \gamma_{i,i}^{(0,D_i)})$. So, for any $(\mathfrak{g}^*, \mathbf{x}^*) \in V(I_{G_2}^{(p-1)})$, it is the solution of $\gamma_{i,i}^{(1,t)}X_1 + \gamma_{i,i}^{(0,t)}X_0 = 0$ for $0 \leq t \leq D_i$. This equation always has solution in $\bar{\field}^{2} \times \mathbb{P}^{1}(\bar{\field})$. This implies, if we define $\bar{\Omega}_1 := V(I_{G_2}^{(p-1)}) \in \bar{\field}^{N_2} \times \mathbb{P}^{1}(\bar{\field})$,  $\bar{\Omega}_1$ will be a Zariski closed in $\bar{\field}^{N_2} \times \mathbb{P}^{1}(\bar{\field})$, where $N_2 = 2.(\sum_{i = 1}^pD_i)$ is the number of generic coefficients for $G_2$. Finally, let us define $\bar{\Delta}_1$ as $\pi_{\bar{\mathcal{G}}}(\bar{\Omega}_1)$, where $\pi_{\bar{\mathcal{G}}} : \bar{\field}^{N_2} \times \mathbb{P}^{1}(\bar{\field}) \to \bar{\field}^{N_2}$; and $\bar{\mathcal{O}}_1 = \bar{\Delta}_1\times 0^{N_1}$ which is nonempty set, where $N_1 = N - N_2$; and it can be saw that 
+$\bar{\mathcal{O}}_1 \subset \mathcal{O}_1$. As a consequence,  $\mathcal{O}_1$ is nonempty. We finished the first step of induction. 
+
+$\bf{Step \ 2:}$ Let us now assume that $\mathcal{A}(1)$ holds for any $G_1 \in \field[{\mathcal{G}, \mat{X}}]^{p' \times q'}$ for any $n' \leq n$, where $n' = q'-p'+1$; we will prove $\mathcal{A}(1)$ is also true for $G_2 \in \field[\mathcal{G}, \mat{X}]^{p \times q}$ with $n = q-p+1$. Noting that $I_{G_2}^{(p-1)}$ contains $g_{i_1, i_1}\ldots g_{i_{p-1}, i_{p-1}}$ for any $(i_1, \ldots, i_{p-1}) \in \{1, \ldots, p\}^{p-1}$ and $i_j \ne i_t$. For any $(\mathfrak{g}^*, \mathbf{x}^*) \in (\bar{\field}^{N_2} \times \mathbb{P}^{n}(\bar{\field})) \cap V(I_{G_2}^{(p-1)})$, there are at least two $1\leq j,t \leq p, j \ne t$ such that $\mathfrak{g}_{j,j}(\mathfrak{g}^*, \mathbf{x}^*) = \mathfrak{g}_{t,t}(\mathfrak{g}^*, \mathbf{x}^*) = 0$. If there are $k$ numbers $i_1, \ldots, i_k$, where $2 \leq k \leq \min(n,p)$, such that $g_{i_1, i_1}(\mathfrak{g}^*, \mathbf{x}^*) = \cdots = g_{i_k, i_k}(\mathfrak{g}^*, \mathbf{x}^*) = 0$, we define $\mathcal{J}_k = (i_1, \ldots, i_k)$ and $G_{\mathcal{J}_k, p+1:q} \in \field[\mathcal{G}, \mat{X}]^{(n-k)\times (q-p)}$ is the submatrix of $G_2$ that contains the rows $\mathcal{J}_k$ and columns $p+1, \ldots, q$. By using the similar argument as in Remark \ref{r2}, we have $\mathrm{rank}(G_{\mathcal{J}_k, p+1:q}(\mathfrak{g}^*, \mathbf{x}^*)) = k-1$ for which the property $\mathcal{A}(1)$ holds as from induction hypothesis. Moreover, $$V(I_{G_2}^{(p-1)}) = \bigcup\limits_{\mathcal{J}_k \subset\{1, \ldots, p\}^k, \ 2 \leq k \leq \min(n,p)} V(I_{\mathcal{J}_k}),$$ where $I_{\mathcal{J}_k}$ is the ideal generated by $\mathfrak{g}_{i,i}$ for $i \in \mathcal{J}_k$ and all $(k-2)\times(k-2) -$ minors of $G_{\mathcal{J}_k, p+1:q}$. Therefore, we can define a nonempty Zariski open, $\bar{\mathcal{O}}_1$, for $G_2$ as follows. For any $\mathcal{J}_k \subset \{1, \ldots, p\}^k$, we rewrite $(X_1, \ldots, X_k) \in \field[\mathcal{G}, X_{k+1}, \ldots, X_n]^{k}$ and subtitute into $G_{\mathcal{J}_k, p+1:q}$ to obtain $G_{\mathcal{J}_k, p+1:q} \in \field[\mathcal{G}, X_{k+1}, \ldots, X_n]^{k \times {(q-p)}}$. By using the induction hypothesis, for any $\mathcal{J}_k$, there exists a Zariski closed set $\Delta_{\mathcal{J}_k} \subsetneq \bar{\field}^{N_{\mathcal{J}_k}}$, where $N_{\mathcal{J}_k} = n(q-p+1)(\sum_{i \in \mathcal{J}_k}D_i)$ is the number of coefficients of the matrix $[\mathrm{diag}(g_{i_1, i_1}, \ldots, g_{i_k, i_k})|G_{\mathcal{J}_k, p+1:q}]$. %$\Omega_{\mathcal{J}_k} \subset \bar{\field}^{N_{\mathcal{J}_k}} \times \mathbb{P}^{n-k+1}(\bar{\field})$ be the variety of the ideal $\langle (k-1) \times (k-1) - \mathrm{minors \ of \ } G_{\mathcal{J}_k, p+1:q} \rangle$, where $N_{\mathcal{J}_k} = n(q-p+1)(\sum_{i \in \mathcal{J}_k}D_i)$ is the number of coefficients of the matrix $[\mathrm{diag}(g_{i_1, i_1}, \ldots, g_{i_k, i_k})|G_{\mathcal{J}_k, p+1:q}]$. We define $\Delta_{\mathcal{J}_k}$ as $\pi_{\mathcal{G}_{\mathcal{J}_k}}(\Delta_{\mathcal{J}_k})$, where $$\mathcal{G}_{\mathcal{J}_k} :  \bar{\field}^{N_{\mathcal{J}_k}} \times \mathbb{P}^{n-k+1}(\bar{\field}) \to \bar{\field}^{N_{\mathcal{J}_k}}.$$ 
+We finally, define \[\bar{\mathcal{O}}_1 = \bar{\field}^{N_2} \setminus \Delta, \ \mathrm{where}\  N_2 = n(q-p+1)(\sum_{i=1}^pD_i) \ \mathrm{and} \ \Delta = \bigcup_{\mathcal{J}_k \subset\{1, \ldots, p\}^k, \ 2 \leq k \leq \min(n,p)}\Delta_{\mathcal{J}_k}.\]
+This is a nonempty Zariski open set in $\bar{\field}^{N_2}$ such that $I_{G_2}$ satisfies $\mathcal{A}(1)$ when $g_{i,j} \in \bar{\mathcal{O}}_1$. This means we finished the second step of the proof. 
+
+$\bf{Step \ 3:}$ Finally, let assume that $\mathcal{A}(1)$ holds for any $G_2 \in \field[\mathcal{G}, \mat{X}]^{p \times q}$, we will prove $\mathcal{A}(1)$ is also true for any $G_1 \in \field[\mathcal{G}, \mat{X}]^{p \times q}$ as follows. Let us define $I_{G_1}^{(p-1)} = \langle (p-1) \times (p-1) - \mathrm{minors \ of} \ G_1 \rangle$ and $\Omega_1 = V(I_{G_1}^{(p-1)}) \subset \bar{\field}^{N} \times \mathbb{P}^n(\bar{\field})$ is a Zariski closed. Similarly as in the first step, we define $\Delta_1 = \pi_{\mathcal{G}}(\Omega_1)$ is a Zariski closed in $\bar{\field}^{N}$, where $\pi_{\mathcal{G}} : \bar{\field}^{N} \times \mathbb{P}^n(\bar{\field}) \to \bar{\field}^{N}$ is a projection. So, we define the Zariski open set $\mathcal{O}_1$ in $\bar{\field}^{N}$ as $\mathcal{O}_1 := \bar{\field}^{N} \setminus \Delta_1$. By using the matrix $G_1$ of the form as in the second step and similar argument as the first step, we can deduce that $\mathcal{O}_1$ is nonempty. 
+
+We finished the proof for the property $\mathcal{A}(1)$. 
+\subsection{Genericity of $\mathcal{A}(2)$}
+$\bf{Step \ 1:}$ We show here that there exists a nonempty Zariski open set $\mathcal{O}_2$ such that $I_{G_1}$ has $S_1(D_1, \ldots, D_p)$ (that is $\sum_{i=1}^pD_i$) distinct solutions for $\mathfrak{g}_{i,j} \in \mathcal{O}_2$, when $G_1$ is a square matrix as follows
+\[
+G_1 = \left( \begin{matrix}
+\mathfrak{g}_{1,1}  & \cdots  & \mathfrak{g}_{1, p}\\
+\vdots & \ddots & \vdots \\
+\mathfrak{g}_{p,1} & \cdots  & \mathfrak{g}_{p, p}
+\end{matrix} \right).
+\] We notice that in this case, each $\mathfrak{g}_{i,j}$ has the form $\mathfrak{g}_{i,j} = (\gamma_{i,j}^{(1,1)}X_1 + \gamma_{i,j}^{(0,1)}) \times \cdots \times (\gamma_{i,j}^{(1,D_i)}X_1 + \gamma_{i,j}^{(0,D_i)})$. Let us denote $m \in \field[\mathcal{G}, X_1]$ for the deteminant of $G_1$, then $m$ is homogeneous in $\mathcal{G}$ of degree $p$ and $\deg_X(m) = \sum_{i=1}^pD_i$. Indeed, the coefficient of $X_1^{d}$, where $d = \sum_{i=1}^pD_i$, in $m$ is $\det(A)$, where 
+\[
+A = \left( \begin{matrix}
+\prod_{l=1}^{D_1}\gamma_{1,1}^{(1,l)}  & \cdots  & \prod_{l=1}^{D_1}\gamma_{1,p}^{(1,l)}\\
+\vdots & \ddots & \vdots \\
+\prod_{l=1}^{D_p}\gamma_{1,1}^{(1,l)}  & \cdots  & \prod_{l=1}^{D_p}\gamma_{1,p}^{(1,l)}\\
+\end{matrix} \right) \in \field[\mathcal{G}]^{p \times p}.
+\] which has nonzero determinant. Moreover, in order to obtain the condition that $m$ has $\sum_{i=1}^pD_i$ distinct solutions we use $\mathrm{Res}_{X_1}(m, m') \ne 0$, where $\mathrm{Res}_{X_1}(m, m')$ is the resultant between $m$ and the derivative of $m$ with respect to $X_1$. So, we can define $\mathcal{O}_2$ as follows. 
+
+Let $\Omega_2 = V(\mathrm{Res}_{X_1}(m, m')) \subset \bar{\field}^{N} \times \mathbb{P}^1(\bar{\field})$ is a Zariski closed, where here $N = 2p(\sum_{i=1}^pD_i)$ is the number of coefficients for $G_1$. Then, we define $\Delta_2 = \pi_{\mathcal{G}}(\Omega_2) \subset \bar{\field}^{N}$ is a Zariski closed and take $\mathcal{O}_2$ as $\bar{\field}^{N} \setminus \Delta_2$ is a Zariski open. Therefore, for any $\mathfrak{g}_{i,j} \in \mathcal{O}_2$, we have $m$ has $\sum_{i=1}^pD_i$ solutions. The remaining problem we need to check is $\mathcal{O}_2$ is nonempty. In order to finish this part, we use the matrix $G_2$ as a diagonal matrix $\mathrm{diag}(\mathfrak{g}_{1,1}, \ldots, \mathfrak{g}_{p,p})$ where $\mathfrak{g}_{i,i} = \prod_{l=1}^{D_i}(\gamma_{i,i}^{(1,l)}X_1 + \gamma_{i,i}^{(0,l)})$. Furthermore, the determinat of $G_2$ has the form $\prod_{i=1}^p\mathfrak{g}_{i,i}$, i.e., $\prod_{i=1}^p\prod_{l=1}^{D_i}(\gamma_{i,i}^{(1,l)}X_1 + \gamma_{i,i}^{(0,l)})$. Then, $\det(G_2)$ always has $\sum_{i=1}^pD_i$  distinct solutions. Therefore, $\bar{\field}^{N_2} \times 0^{N_1} \subset \mathcal{O}_2$ which implies that $\mathcal{O}_2$ is nonempty. 
+
+$\bf{Step \ 2:}$ Let us now assume that $\mathcal{A}(2)$ holds for any $G_1 \in \field[{\mathcal{G}, \mat{X}}]^{p' \times q'}$ for any $n' \leq n$, where $n' = q'-p'+1$; we will prove $\mathcal{A}(2)$ is also true for $G_2 \in \field[\mathcal{G}, \mat{X}]^{p \times q}$ with $n = q-p+1$. We follow the similar argument as in the second step of the proof for $\mathcal{A}(1)$. Here, instead of consider the $I_{G_2}^{(p-1)}$, we consider the indeal $I_{G_2}$ which is generated by $p \times p$ minors of $G_2$. We have $I_{G_2}$ contains $\mathfrak{g}_{1,1}\ldots \mathfrak{g}_{p,p}$. Then, for any solution, $(\mathfrak{g}^*,\mathbf{x}^*) \in \bar{\field}^{N_2} \times \mathbb{P}^n(\bar{\field})$ of $I_{G_2}$, there is at least one $i \in \{1, \ldots, p\}$ such that $\mathfrak{g}_{i,i}(\mathfrak{g}^*,\mathbf{x}^*) = 0$. If there are $k$ numbers $i_1, \ldots, i_k$, where $1 \leq k \leq \min(n,p)$, such that $g_{i_1, i_1}(\mathfrak{g}^*, \mathbf{x}^*) = \cdots = g_{i_k, i_k}(\mathfrak{g}^*, \mathbf{x}^*) = 0$, we define $\mathcal{J}_k = (i_1, \ldots, i_k)$ and $G_{\mathcal{J}_k, p+1:q} \in \field[\mathcal{G}, \mat{X}]^{(n-k)\times (q-p)}$ is the submatrix of $G_2$ that contains the rows $\mathcal{J}_k$ and columns $p+1, \ldots, q$. From Remark \ref{r2}, we have $\mathrm{rank}(G_{\mathcal{J}_k, p+1:q}(\mathfrak{g}^*, \mathbf{x}^*)) \leq k-1$ for which the property $\mathcal{A}(2)$ holds as from induction hypothesis. Moreover, $$V(I_{G_2}) = \bigcup\limits_{\mathcal{J}_k \subset\{1, \ldots, p\}^k, \ 1 \leq k \leq \min(n,p)} V(I_{\mathcal{J}_k}),$$ where $I_{\mathcal{J}_k}$ is the ideal generated by $\mathfrak{g}_{i,i}$ for $i \in \mathcal{J}_k$ and all $(k-1)\times(k-1)$ minors of $G_{\mathcal{J}_k, p+1:q}$. Therefore, we can define a nonempty Zariski open, $\bar{\mathcal{O}}_2$, for $G_2$ as follows. For any $\mathcal{J}_k \subset \{1, \ldots, p\}^k$, we rewrite $(X_1, \ldots, X_k) \in \field[\mathcal{G}, X_{k+1}, \ldots, X_n]^{k}$ and subtitute into $G_{\mathcal{J}_k, p+1:q}$ to obtain $G_{\mathcal{J}_k, p+1:q} \in \field[\mathcal{G}, X_{k+1}, \ldots, X_n]^{k \times {(q-p)}}$. By using the induction hypothesis, for any $\mathcal{J}_k$, there exists a Zariski closed set $\Delta_{\mathcal{J}_k} \subsetneq \bar{\field}^{N_{\mathcal{J}_k}}$ such that $I_{G_{\mathcal{J}_k, p+1:q}}^{(p)}$ has $S_{n-k}(D_{i_1}, \ldots, D_{i_k})$ distinct solutions, where $N_{\mathcal{J}_k} = n(q-p+1)(\sum_{i \in \mathcal{J}_k}D_i)$ is the number of coefficients of the matrix $[\mathrm{diag}(g_{i_1, i_1}, \ldots, g_{i_k, i_k})|G_{\mathcal{J}_k, p+1:q}]$. We finally, define \[\bar{\mathcal{O}}_2 = \bar{\field}^{N_2} \setminus \Delta, \ \mathrm{where}\  N_2 = n(q-p+1)(\sum_{i=1}^pD_i) \ \mathrm{and} \ \Delta = \bigcup_{\mathcal{J}_k \subset\{1, \ldots, p\}^k, \ 1 \leq k \leq \min(n,p)}\Delta_{\mathcal{J}_k}.\]
+This is a nonempty Zariski open set in $\bar{\field}^{N_2}$ such that $I_{G_2}$ satisfies $\mathcal{A}(2)$ when $g_{i,j} \in \bar{\mathcal{O}}_2$. Indeed, by this construction, the number of solutions of $I_{G_2}$ equals
+\[\sum_{k=1}^n \sum_{\mathcal{J}_k \subset\{1, \ldots, p\}^k, \ 1 \leq k \leq \min(n,p)}D_{i_1} \ldots D_{i_k} . \# \{\mathrm{solutions \ of \ } I_{G_{\mathcal{J}_k, p+1:q}}\}\] which is 
+\[
+\sum_{k=1}^n \sum_{\mathcal{J}_k \subset\{1, \ldots, p\}^k, \ 1 \leq k \leq \min(n,p)}D_{i_1} \ldots D_{i_k}S_{n-k}(D_{i_1}, \ldots, D_{i_k}) = S_n(D_1, \ldots, D_p). 
+\]
+
+$\bf{Step \ 3:}$ Finally, let assume that $\mathcal{A}(2)$ holds for any $G_2 \in \field[\mathcal{G}, \mat{X}]^{p \times q}$, we will prove $\mathcal{A}(2)$ is also true for any $G_1 \in \field[\mathcal{G}, \mat{X}]^{p \times q}$ as follows.
+
+\todo{to finish}
+\subsection{Genericity of $\mathcal{A}(3)$} Let us consider the matrix $G_1 \in \field[\mathcal{G}, \mat{X}]^{p \times q}$, and $I_{G_1} := \langle p \times p - \ \mathrm{minors \ of } \ G_1 \rangle$. Let $m_1, \ldots, m_d$ be the generators for $I_{G_1}$, where $d = {{q}\choose{p}}$ is the number of $p \times p$ minors of $G_1$. We would like to have the property that $\mathrm{Jac}(I_{G_1})(\mathbf{x}^*)$ has full rank for any $\mathbf{x}^* \in V(I_{G_1})$ . We recall here that $$\mathrm{Jac}(I_{G_1}) = \left[\frac{\partial m_j}{\partial X_i}\right]_{1 \leq j \leq d, 1 \leq i \leq n} \in \field[\mathcal{G}, \mat{X}]^{d \times n}. $$
+We first notice that for since $n \leq d$, so for any $\mathbf{x}^* \in \bar{\field}^n$, the matrix $\mathrm{Jac}(I_{G_1})(\mathbf{x}^*)$ has rank at most $n$. Therefore, $\mathrm{Jac}(I_{G_1})(\mathbf{x}^*)$ should has rank $n$ if we want the property that $\mathrm{Jac}(I_{G_1})$ has full rank at any point $\mathbf{x}^*$. For this argument, we consider the ideal which is generated by $n \times n \ \mathrm{minors \ of} \ \mathrm{Jac}(I_{G_1})$, that is $\mathcal{I}_{m} = \langle n \times n  \ \mathrm{minors \ of} \ \mathrm{Jac}(I_{G_1}) \rangle$.
+
+Let us define $\Omega_3 = V(\mathcal{I}_m) \subset \bar{\field}^N \times \mathbb{P}^n(\bar{\field})$ is a Zariski closed. Let $\pi_{\mathcal{G}}$ be the projection on $\mathcal{G}$ coordinates, then we define $\Delta_3 = \pi_{\mathcal{G}}(\Omega_3)$ is a Zariski closed in $\bar{\field}^N $. Finally, let us denote  $\mathcal{O}_3$ for $\bar{\field}^N \setminus \Delta_3$ which is a Zariski open in $\bar{\field}^N $. By using this contruction, when $\mathfrak{g}_{i,j} \in \mathcal{O}_3$, we can see that  $\mathrm{Jac}(I_{G_1})(\mathbf{x}^*)$ has full rank $n$ for any $\mathbf{x}^* \in V(I_{G_1})$). The \todo{remaining problem } is proving $\mathcal{O}_3$ is indeed a nonempty set. 
+\section{Starting matrix}
+\subsection{Homogeneous degrees}
+Let us consider the first case when the matrix $F = [f_{i,j}] \in \field[\mat{X}]^{p\times q}$ with $\deg(f_{i,j}) = D$ for all $1 \leq i \leq p, 1 \leq j \leq q$. We will construct a polynomial matrix $G \in \field[\mat{X}]^{p \times q}$ such that the ideal generated by $p \times p-$ minors of $G$ has ${q \choose {p-1}}D^n$ solutions. (\todo{why and when we work on this case})
+
+For any integer $k$, let us define $L_k := \var_1 + k\var_2 + \cdots + k^{n-1}\var_n + k^n$. Then, we define the matrix $G$ as 
+\[G = 
+\left( \begin{matrix}
+h_1 & 2h_2 & \cdots & qh_q\\
+h_1 & 2^2h_2 &\cdots & q^2h_q\\
+\vdots & \vdots  & \ddots & \vdots \\
+h_1 & 2^ph_2& \cdots & q^ph_q
+\end{matrix} \right),
+\] where $h_j = \prod_{l=(j-1)D+1}^{jD} L_{l}$ for $1 \leq j \leq q$. %That is 
+%\[G = 
+%\left( \begin{matrix}
+%L_1L_2...L_D & 2L_{D+1}L_{D+2}...L_{2D} & \cdots & qL_{(q-1)D + 1}L_{(q-1)D + 2}...L_{qD}\\
+%L_1L_2...L_D & 2^2L_{D+1}L_{D+2}...L_{2D} & \cdots & q^2L_{(q-1)D + 1}L_{(q-1)D + 2}...L_{qD}\\
+%\vdots & \vdots & \ddots & \vdots \\
+%L_1L_2...L_D & 2^pL_{D+1}L_{D+2}...L_{2D} & \cdots & q^pL_{(q-1)D + 1}L_{(q-1)D + 2}...L_{qD}
+%\end{matrix} \right).
+%\] 
+\begin{Lemma} Let G be the matrix as we define above and $I_G$ be the ideal generated by $p \times p-$ minors of $G$. Then, $I_G$ has ${q \choose {p-1}}D^n$ solutions and there is an algorithm, namely Algorithm \ref{StartMatHom}, to compute these solutions in  $\bigO{n{q \choose {p-1}}D^n}$ operations in $\field$.
+ \end{Lemma}
+
+\begin{proof}
+Any $p \times p-$ minor of $G$ has the form 
+\[
+\lambda h_{i_1} \ldots h_{i_p}, \ \mathrm{where} \ \lambda \in \field, \ (i_1,\ldots, i_p) \in \{1, \ldots, q\}^p.
+\]
+We consider the system of $q \choose p$ equations $h_{i_1} \ldots h_{i_p} = 0$ for $(i_1, \ldots, i_p) \in \{1, \ldots, q\}^p$. It sufficies to choose $q-p+1 = n$ polynomials in $(h_1, \ldots, h_q)$ such that all $h_{i_1}\ldots h_{i_p} = 0$ for $(i_1,\ldots, i_p) \in \{1, \ldots, q\}^p$. This means the system of equations $h_{i_1} \ldots h_{i_p} = 0$ for $(i_1,\ldots, i_p) \in \{1, \ldots , q\}^p$ has ${q \choose {q + p-1}}D^n$, which is ${q \choose {p-1}}D^n$, solutions. 
+
+For the complexity, since each polynomial $L_{l}$ is linear, so the time to solve the system in the step $2.i$ is $\bigO{n}$. There are ${q \choose {p-1}}D^n$ systems which is need to solve. Therefore, the complexity of the algorithm $\ref{StartMatHom}$ is $\bigO{n{q \choose {p-1}}D^n}$.
+\end{proof}
+We notice that in this report, we are working on $n = q-p+1$.\\
+\begin{algorithm}[H]
+\fbox{ \begin{minipage}{14.5cm}
+{\bf Input}: a matrix $G \in \field[\mat{X}]^{p \times q}$ which is defined as above.\\
+{\bf Output}: ${q \choose {p-1}}D^n$ solutions of $I_G$. 
+
+\begin{enumerate}
+\item $S \gets \emptyset$
+\item for any $(i_1,..., i_n) \in \{1, ..., q\}^p$: 
+\begin{itemize}
+\item[{}] for any $(l_1, \ldots, l_n) \in \{(i_1-1)D + 1, \ldots, i_1D\} \times \cdots \times \{(i_n-1)D, \ldots, i_nD\} $: 
+\begin{itemize}
+\item[\emph{i}.] $\mathbf{x} \gets$ solve the linear system $L_{l_1} = \cdots = L_{l_n} = 0$
+\item[\emph{ii}.] $S = S \cup \{\mathbf{x}\}$
+\end{itemize}
+\end{itemize}
+\item return $S$
+\end{enumerate} 
+\end{minipage}
+}
+\caption{StartingMatrixHomogeneous}
+\label{StartMatHom}
+\end{algorithm}
+\subsection{Column degrees}
+\label{subsec:cd}
+In this section, we consider the case when $F = [f_{i,j}] \in \field[\mat{X}]^{p\times q}$ with $\deg({f_{i,j}}) = D_j$ for all $1 \leq i \leq p$. We will construct a polynomial matrix $G \in \field[\mat{X}]^{p \times q}$ such that the ideal generated by $p \times p-$ minors of $G$ has $E_{q-p+1}(D_1, \ldots, D_q)$ solutions.
+(\todo{why and when we work on this case})
+
+For any $1 \leq i \leq p, 1 \leq j \leq q$, let us define $\lambda_{i,j}^{(k)}  = (i+j)^k \in \field$ and $L_{i,j} = \sum_{k = 1}^{n}\lambda_{i,j}^{(k)}X_k + \lambda_{i,j}^{(0)}$. Then, we define the matrix $G$ as
+\[G = 
+\left( \begin{matrix}
+g_1 & 2g_2 & \cdots & qg_{q}\\
+g_1 & 2^2g_2 & \cdots & q^2g_q\\
+\vdots & \vdots & \ddots & \vdots \\
+g_1 & 2^pg_2 & \cdots & q^pg_q
+\end{matrix} \right),
+\]
+where $g_{i}$ is the product of $D_i$ linear forms, i.e., $g_i = \prod_{j = 1}^{D_i}L_{i,j}$. Let $I_G := \langle p \times p - \mathrm{minors \ of \ } G \rangle$. The variety of $I_G$ is the set $V(I_G) = \{\mathbf{x} \in \bar{\field}^n \ : \ \mathrm{rank}_{\mathbf{x}}(G) \leq p-1\}$. %The next lemma gives us the number solutions of the ideal $I_G$.%, that is, $\deg(V(I_G))$. %number solution for $I_G$ is exactly $E$. 
+\begin{Lemma} \label{G} Let G be the matrix as we define above and $I_G$ be the ideal generated by $p \times p-$ minors of $G$. Then, $I_G$ has exactly $E_{q-p+1}(D_1, \ldots, D_q)$ solutions and there is an algorithm, namely Algorithm \ref{StartMatCol}, to compute these solutions in $\bigO{nE_{q-p+1}(D_1, \ldots, D_q)}$ operations in $\field$.
+\end{Lemma}
+\begin{proof}
+For any $f_G \in I_G$, $f_G$ has the form 
+\[
+f_G = \lambda g_{i_1}\ldots g_{i_p}, \ \mathrm{where} \ (i_1, \ldots, i_p) \in \{1, \ldots,q\}^{p} \ \mathrm{and} \ \lambda \in \field.
+\] Then, for any solution $\mathbf{x}$ of $I_G$, $\mathbf{x}$ is the solution of $q-p+1$ polynomials which are taken from $\{g_i\}_{1 \leq i \leq q}$. This implies 
+\begin{eqnarray*}
+\#\{\mathrm{solutions \ of \ } I_G \} &=& \sum_{(i_1, \ldots, i_{q-p+1}) \subset \{1, \ldots,q\}^{q-p+1}} \#
+\{\mathrm{solutions \ of \ }  g_{i_1} = \cdots = g_{i_{q-p+1}} = 0  \} \\
+&=& \sum_{(i_1, \ldots, i_{q-p+1}) \subset \{1, \ldots,q\}^{q-p+1}}\prod_{j =1}^{q-p+1}D_{i_j} = E_{q-p+1}(D_1, \ldots, D_q). 
+\end{eqnarray*}
+
+For the complexity, since each polynomial $L_{i,j}$ is linear, so the time to solve the system in the step $2.i$ is $\bigO{n}$. There are $E_{q-p+1}(D_1, \ldots, D_p)$ systems which is need to solve. Therefore, the complexity of the algorithm $\ref{StartMatCol}$ is $\bigO{nE_{q-p+1}(D_1, \ldots, D_p)}$.
+%Let us denote $U_{(i_1, \ldots, i_{q-p+1})} = V(\langle g_1, \ldots, g_{q-p+1} \rangle)$. Then, \[V(I_G) = \bigcup_{(i_1, \ldots, i_{q-p+1}) \subset \{1, \ldots,q\}^{q-p+1}}U_{(i_1, \ldots, i_{q-p+1})}.\]
+%Moreover, 
+%\begin{eqnarray*}
+%\#\{\mathrm{solutions \ of \ } U_{(i_1, \ldots, i_{q-p+1})} \} &=& \#\{\mathrm{solutions \ of } \ g_{i_1} = \cdots = g_{i_{q-p+1}} = 0 \}\\
+%&=& \prod_{j =1}^{q-p+1}D_{i_j}. 
+%\end{eqnarray*}
+%Therefore,
+%\begin{eqnarray*}
+%\deg(V(I_G)) &=& \sum_{(i_1, \ldots, i_{q-p+1}) \subset \{1, \ldots,q\}^{q-p+1}}\deg(U_{(i_1, \ldots, i_{q-p+1})})\\
+%&=& \sum_{(i_1, \ldots, i_{q-p+1}) \subset \{1, \ldots,q\}^{q-p+1}}\prod_{j =1}^{q-p+1}D_{i_j} = E. 
+%\end{eqnarray*}
+\end{proof}
+
+\begin{algorithm}[H]
+\fbox{ \begin{minipage}{13.5cm}
+{\bf Input}: a matrix $G \in \field[\mat{X}]^{p \times q}$ which is defined as above.\\
+{\bf Output}: $E_{q-p+1}(D_1, \ldots, D_q)$ solutions of $I_G$. 
+
+\begin{enumerate}
+\item $S \gets \emptyset$
+\item for any $(i_1, \ldots, i_{n}) \in \{1, \ldots, q \}^{n}$: 
+\begin{itemize}
+\item[{}] for any $(j_1, \ldots, j_n) \in \{1, \ldots, D_{i_1}\} \times \cdots \times \{1, \ldots, D_{i_n}\} $: 
+\begin{itemize}
+\item[\emph{i}.] $\mathbf{x} \gets$ solve the linear system $L_{i_1,j_1} = \cdots = L_{i_n,j_n} = 0$
+\item[\emph{ii}.] $S = S \cup \{\mathbf{x}\}$
+\end{itemize}
+\end{itemize}
+\item return $S$
+\end{enumerate} 
+\end{minipage}
+}
+\caption{StartingMatrixColumn}
+\label{StartMatCol}
+\end{algorithm}
+\subsection{Row degrees}
+In this section, we consider the case when $F = [f_{i,j}] \in \field[\mat{X}]^{p\times q}$ with $\deg({f_{i,j}}) = D_i$ for all $1 \leq i \leq p$. We will construct a polynomial matrix $G \in \field[\mat{X}]^{p \times q}$ such that the ideal generated by $p \times p-$ minors of $G$ has $S_{q-p+1}(D_1, \ldots, D_p)$ solutions.
+(\todo{why and when we work on this case})
+\begin{Lemma} \label{P4}
+Given a polynomial matrix $M = [m_{i,j}] \in \field[\mat{X}]^{p \times q}$ with $p \leq q$, $\deg({m_{i,j}}) = D_i$ for any $j \in \{1, \ldots, q\}$ and generic coefficients. Then, $I_M$ has exactly $ S_{q - p + 1}(D_1, \ldots, D_p)$ solutions. 
+\end{Lemma}
+\begin{proof}
+The proof is given in \improve{\cref{sec:proof}}. 
+\end{proof}
+Now, we use this result to construct a specific starting matrix $G$ such that $I_G$ has exactly $ S_{q - p + 1}(D_1, \ldots, D_p)$ solutions; and after that, we design an algorithm to find these $S_{q-p+1}(D_1, \ldots, D_p)$ solutions. Let us define the matrix $G$ as
+% be a matrix of the form  $G = [A|B]$, where $A = \mathrm{dig}(g_1, \ldots, g_p)$ with $g_i \in \field[\mat{X}]$, i.e., 
+\[ G = \left( \begin{matrix}
+g_1 & 0 & \cdots & 0 & g_{1,p+1} & \cdots & g_{1, q}\\
+0 & g_2 & \cdots & 0 & g_{2,p+1} & \cdots & g_{2, q}\\
+\vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
+0 & 0 & \cdots & g_p & g_{p,p+1} & \cdots & g_{p, q}
+\end{matrix} \right), \] where all $\{g_i\}_{1 \leq i \leq p}$ and $\{g_{k,j}\}_{1 \leq k \leq p, p+1\leq j \leq q}$ has generic coefficients.
+\begin{Lemma}\label{P3} Let G be the matrix as we define above and $I_G$ be the ideal generated by $p \times p-$ minors of $G$. Then, $I_G$ has exactly $S_{q-p+1}(D_1, \ldots, D_p)$ solutions. Moreover, there is an algorithm, namely Algorithm \ref{StartMatRow}, to compute these solutions in $\improve{Complexity...}$
+\end{Lemma}
+
+\begin{algorithm}[H]
+\fbox{ \begin{minipage}{13.5cm}
+{\bf Input}: a matrix $G \in \field[\mat{X}]^{p \times q}$ which is defined as above.\\
+{\bf Output}: $S_{q-p+1}(D_1, \ldots, D_p)$ solutions of $I_G$. 
+%\begin{enumerate}
+%\item If $n \leq p$ (i.e. $q \leq 2p-1$): 
+\begin{enumerate}
+\item $m = \min \{n,p\}$
+\item $S := \emptyset$
+\item For $k = 1$ to $m$: 
+\begin{enumerate}
+\item For any  $(i_1, \ldots, i_k) \subset \{1, \ldots, p\}^k$:
+\begin{itemize}
+\item From $g_{i_1} = \cdots = g_{i_k} = 0$, rewrite $\{X_i\}_{i = 1}^k$ in the linear form of $\{X_{i}\}_{i=k+1}^n$
+\item Substitute $\{X_i\}_{i = 1}^k$ into $G_{i_1:i_k\mathbf{;}p+1:q}$
+\item $p \gets k; q \gets q-p; n \gets n - k$
+\begin{itemize}
+\item If $p \leq q$:\\ \quad $\mathbf{x} \gets$ \improve{RowHomDet}($G_{i_1:i_k\mathbf{;}p+1:q}, G_{i_1:i_k;i_1:i_k \cup i_{q-p+1}:i_{q-p+k}}$)
+\item Else :\\ \quad $\mathbf{x} \gets$ \improve{ColHomDet}($G_{i_1:i_k\mathbf{;}p+1:q},\bar{G}$), where 
+\[\bar{G} \in \field[X_{k+1}, \ldots, X_n]^{p \times q} \ \mathrm{is \ defined \ as \ in \ \improve{\cref{subsec:cd}}} \ \] 
+\end{itemize}
+\item $S \gets S \cup \{\mathbf{x}\}$
+\end{itemize}
+\end{enumerate}
+\item Return $S$
+\end{enumerate}
+%\end{enumerate} 
+\end{minipage}
+}
+\caption{StartingMatrixRow}
+\label{StartMatRow}
+\end{algorithm}
+\begin{proof}
+We notice, first, that $n = q-p+1$ and $\prod_{i=1}^p g_i \in I_G$. Then, for any solution, $\mathbf{x}$ of $I_G$, there is at least one $i \in \{1, \ldots, p\}$ such that $g_i(\mathbf{x}) = 0$. 
+\begin{Remark} \label{r2}
+If $g_{i_1}(\mathbf{x}) = \cdots = g_{i_k}(\mathbf{x}) = 0$, then $\mathrm{rank}_{\mathbf{x}}(G_{i_1:i_k\mathbf{;}p+1:q}) \leq k-1$.
+ %for $(i_1, \ldots, i_k) \in \{1, \ldots, p\}^k$
+\end{Remark}
+If there are $k \leq p$ polynomials such that $g_{i_1}(\mathbf{x}) = \cdots = g_{i_k}(\mathbf{x}) = 0$, then $\mathrm{rank}_{\mathbf{x}}(G_{i_1:i_k\mathbf{;}p+1:q}) \leq k-1$. By the construction of $g_{i_1}, \ldots, g_{i_k}$ we can re-write $X_1, \ldots, X_k$ in the linear form of $X_{k+1}, \ldots, X_{n}$. After that, by subtituting $X_1, \ldots, X_k$ into $G_{i_1:i_k\mathbf{;}p+1:q}$ we obtain $G_{i_1:i_k\mathbf{;}p+1:q} \in \field[X_{k+1}, \ldots, X_n]^{k \times (q-p)}$. Moreover,
+\[
+\# \{\mathrm{solutions \ of \ } I_G \} =\sum_{k=1}^n \sum_{(i_1, \ldots, i_k) \in \{1, \ldots, p\}^k}D_{i_1} \ldots D_{i_k} . \# \{\mathrm{solutions \ of \ } I_{G_{i_1:i_k\mathbf{;}p+1:q}}\}.
+\]
+
+Since $G_{i_1:i_k\mathbf{;}p+1:q} \in \field[X_{k+1}, \ldots, X_{n}]^{k \times (q-p)}$ and all the entries of $G_{i_1:i_k\mathbf{;}p+1:q} $ has generic coefficients; then from proposition $\ref{P3}$, we have 
+\[
+ \# \{\mathrm{solutions \ of \ } I_{G_{i_1:i_k\mathbf{;}p+1:q}}\} = S_{n-k}(D_{i_1}, \ldots, D_{i_k}).
+\]
+Consequently, 
+\[
+\# \{\mathrm{solutions \ of \ } I_G \} =\sum_{k=1}^n \sum_{(i_1, \ldots, i_k) \in \{1, \ldots, p\}^k}D_{i_1} \ldots D_{i_k} . S_{n-k}(D_{i_1}, \ldots, D_{i_k}) = S_n(D_{1}, \ldots, D_{p}).
+\]
+\end{proof}
+
+\begin{proof}[Proof of Remark $\ref{r2}$] Without of loss of generality, we prove this result for $(i_1, \ldots, i_k) = (1, \ldots, k)$. This means we have $g_1(\mathbf{x}) = \cdots = g_{k}(\mathbf{x}) = 0$ and $g_{j}(\mathbf{x}) \ne 0$ for any $j \in \{k+1, \ldots, p\}$. Let $G_{1:p;*} \in \field[\mat{X}]^{p \times p}$ be the submatrix of $G$ consisting $p$ rows and the columns $k+1, \ldots, p, j_1, \ldots, j_k$ of $G$, where $(j_1, \ldots, j_k) \in \{p+1, \ldots, q\}^{k}$. Let $f_{1:p;*}$ is the determinant of $G_{1:p;*}$. Then, for any solution of $I_G$, $\mathbf{x}$, $g_{1:p;*}(\mathbf{x}) = 0$. Moreover, $g_{1:p;*} = \det(G_{1:p;*}) = g_{k+1} \ldots g_p \det(G_{1:k;j_1:j_k})$. Therefore, $\det(G_{1:k;j_1:j_k})(\mathbf{x}) = 0$. This holds for any $(j_1, \ldots, j_k) \in \{p+1, \ldots, q\}^{k}$. This implies that $\mathrm{rank}_{\mathbf{x}}(G_{1:k\mathbf{;}p+1:q}) \leq k-1$. 
+\end{proof}
+
+\section{A bound for the number isolated solutions of $I_F$}
+Let $\mathfrak{T}$ be the number of solutions of $I_G$. That is $\mathfrak{T} = {q \choose {p-1}}D^n$ in homogeneous case, $\mathfrak{T} = E_{q-p+1}(D_1, \ldots, D_q)$ in the column degrees case, and $\mathfrak{T} = S_{q-p+1}(D_1, \ldots, D_p)$ in the row degrees case. Let us define $H := (1-t)G + tF$. We also write $I_F := \langle p \times p - \mathrm{minors \ of \ } F\rangle$. In this section, we are going to prove that the number of isolated solutions of $I_F$ is at most $\mathfrak{T}$. We, first, recall here the result in \cite[Proposition~1]{Hen83}. 
+\begin{Proposition}\label{hen} Let $V$ be an irreducible affine variety of dimension $m$ and $\phi: V \to \field^m$ a dominanting morphism. The field exrension $\mathsf{k}(\field^m) \subset \mathsf{k}(V)$ induced by $\phi$ is finite. Then $\#\phi^{-1}(y) \leq [ \mathsf{k}(V) : \mathsf{k}(\field^m)]$ for any $y \in \field^m$ with fininte fibre $\phi^{-1}(y)$.
+\end{Proposition}
+
+Let $I_H$ be the ideal generated by $p \times p-$ minors of $H$, i.e., $I_H := \langle p \times p - \mathrm{minors \ of \ } H \rangle$. From \cite[Section~6]{Eagon188}, we have any irreducible component of $I_H$ has dimension at least one (\todo{make more precise}). Then, there is a decomposition for the variety of $I_H$ as 
+\[
+V(I_H) = V_1 \cup V_2 \cup \cdots \cup V_d, \] where each $V_i$
+is an irreducible variety. Let us rewrite $V_1 = V_{1,1} \cup V_{1,2}$, where $\improve{V_{1,1} \ is ...} $. Then, all solutions of $I_G$ are in $V_{1,1}$ and all isolated solutions of $I_F$ are in $V_{1,1}$. 
+
+Let $\pi_1$ be the projection from $V_{1,1}$ on the first coordinate, i.e., $\pi_1: V_{1,1} \to \bar{\field}$. It is obvious that $\bar{\pi_1(V_{1,1})} = \bar{\field}$, that is $\pi_1$ is a dominating morphism; then, by using the Proposition $\ref{hen}$, we have $\#\pi_1^{-1}(1) \leq [ \mathsf{k}(V_{1,1}) : \mathsf{k}(\bar{\field})]$. Moreover, $\#\pi_1^{-1}(1)$ equals the number of isolated solutions of $I_F$; and $V_{1,1}$ has generically $[ \mathsf{k}(V_{1,1}) : \mathsf{k}(\bar{\field})]$ solutions. Thus, to obtain the number of isolated solutions of $I_F$ is at most $\mathfrak{T}$, it sufficies to show that $V_{1,1}$ has generically $\mathfrak{T}$ solutions. By definition, the generically number of solutions of $V_{1,1}$ equals the number of solutions of $I(V_{1,1})$ in $\field(t)[\mat{X}]$. So, we are going to prove that $I(V_{1,1})$ has $\mathfrak{T}$ solutions in $\field(t)[\mat{X}]$. We notice that $I_G$ has exactly $\mathfrak{T}$ solutions; and when $t = 0$ we have $I_G = I_H$. Therefore, to obtain $I(V_{1,1})$ has $\mathfrak{T}$ solutions in $\field(t)[\mat{X}]$, it sufficies to prove that 
+\begin{itemize}
+\item[•] there is no solution of $I_H$ at infinite when $t = 0$, and 
+\item[•] all solutions of $I_H$ are nonsingular at $t = 0$. 
+\end{itemize}
+
+We notice first that $I(V_{1,1}) \subset \field(t)[\mat{X}]$; and $V(I(V_{1,1})) \subset \bar{\field(t)}^n$ has dimension zero but $V(I(V_{1,1})) \subset \bar{\field}^{n+1}$ has dimension one. 
+
+\begin{Proposition}\label{det}
+For any $M \in \field[\mat{X}]^{n \times n}$ and $N \in \field[\mat{X}]^{n \times n}$, let us define $Q := (1-t)M + tN$, then 
+\[
+\det(Q) = (t-t)^n \det(M) + t.h(t,\mat{X}),
+\] for any $h(t,\mat{X}) \in \field[t,\mat{X}]$.
+\end{Proposition}
+\begin{proof}
+Let us write $M = [g_{i,j}]_{1 \leq i,j \leq n}, N = [f_{i,j}]_{1 \leq i,j \leq n}$ and $Q = [h_{i,j}]_{1 \leq i,j \leq n}$. Then for any entry $h_{i,j} = (1-t)g_{i,j} + tf_{i,j}$. By using the definition of a matrix we have 
+\begin{eqnarray*}
+\det(Q) &=& \sum_{\sigma \in S_n}\mathrm{sgn}(\sigma)\prod_{i = 1}^nh_{i,\sigma_i}\\
+&=& \sum_{\sigma \in S_n}\mathrm{sgn}(\sigma)\prod_{i = 1}^n\left[(1-t)g_{i,\sigma_i} + tf_{i,\sigma_i}\right]\\
+&=& \sum_{\sigma \in S_n}\mathrm{sgn}(\sigma)\left[(1-t)^n\prod_{i = 1}^ng_{i,\sigma_i} + \bar{h}(t,\mat{X})\right],
+\end{eqnarray*}
+where $\bar{h}(t,\mat{X}) = \prod_{i = 1}^n\left[(1-t)g_{i,\sigma_i} + tf_{i,\sigma_i}\right] - (1-t)^n\prod_{i = 1}^ng_{i,\sigma_i}$. Moreover, $\bar{h}(t,\mat{X})$ is a polynomial in $\field[t, \mat{X}]$ with all the terms are multiple of $t$. Therefore, 
+\begin{eqnarray*}
+\det(Q) &=&  \sum_{\sigma \in S_n}\mathrm{sgn}(\sigma)\left[(1-t)^n\prod_{i = 1}^ng_{i,\sigma_i}\right] + \sum_{\sigma \in S_n}\mathrm{sgn}(\sigma)\bar{h}(t,\mat{X}) \\
+&=& (1-t)^n\det(M) + t.h(t,\mat{X})
+\end{eqnarray*}
+\end{proof}
+
+Let $\mathbf{x}(t) = (t, f_1(t), \ldots, f_n(t)) \in V(I(V_{1,1}))$ with $f_i(t) \in \bar{\field}\ll t \gg$. The next proposition says that there is no solution of $I_H$ at infinite when $t = 0$. 
+\begin{Proposition}
+For any $i \in \{1, \ldots, n\}$, $f_i(t)$ has non-negative valuation. 
+\end{Proposition}
+\begin{proof}
+%Here, we are going to prove that for any $i \in \{1, \ldots, n\}$, $f_i(t)$ has non-negative valuation, i.e., $\nu(f_i(t)) \ge 0$ for any $1 \leq i \leq n$. 
+Without loss of generity, we can write $f_i(t) = \frac{s_i(t)}{t^d}$ with $\nu(s_i(t)) \ge 0$ for all $1 \leq i \leq n$. We will prove $d \leq 0$. Indeed, assume a contradiction that $d > 0$. First, by the construction of the matrix $H$ from $F$ and $G$ we can see that $\mathbf{x}(0) \in V(I_G)$. In addition, since $V(I(V_{1,1})) = V_{1,1}$, then for any $\mathbf{x}(t) \in V(I(V_{1,1}))$ we have $f_H(\mathbf{x}(t)) = 0$ for any $f_H \in I_H$. 
+
+From Proposition $\ref{det}$, for any $f_H \in I_H$, 
+\begin{equation}\label{e1}
+f_H = (1-t)^p f_G + t.h(t, \mat{X}),
+\end{equation}
+ where $f_G \in I_G$ and $h(t, \mat{X}) \in \field[t, \mat{X}]$. Let $D$ be the total degree of $f_G$ and $f_G^{\mathrm{Hom}} \in \field[x_0, \mat{X}]$ be the homogenize polynomial of $f_G$, that is, $f_G^{\mathrm{Hom}}(x_0, \mat{X}) = x_0^Df_G(\mat{X}/x_0)$. Then, 
+ \begin{equation}\label{e2}
+ f_G(\mathbf{x}(t)) = t^{-Dd}f_G^{\mathrm{Hom}}(t^d, s_1(t),\ldots, s_n(t)) 
+ \end{equation}
+From \cref{e1} and \cref{e2}, we have 
+\[
+(1-t)^pf_G^{\mathrm{Hom}}(t^d, s_1(t), \ldots, s_n(t))  + t.h(t, f_1(t), \ldots, f_n(t))t^{Dd} = 0.
+\]
+
+On one hand, since the total degree of $h_{\mat{X}}(t, \mat{X})$ is at most $D$, then $\nu(h(t, f_1(t), \ldots, f_n(t))t^{Dd}) \ge 0$. This means $\nu(t.h(t, f_1(t), \ldots, f_n(t))t^{Dd}) > 0$. 
+
+On the other hand, we claim that $\nu(f_G^{\mathrm{Hom}}(t^d, s_1(t), \ldots, s_n(t))) = 0$. Indeed, it is easy to see that $\nu(f_G^{\mathrm{Hom}}(t^d, s_1(t), \ldots, s_n(t))) \ge 0$. Furthermore, $f_G^{\mathrm{Hom}}(0, s_1(0), \ldots, s_n(0)) \ne 0$. Assume a contradiction that $f_G^{\mathrm{Hom}}(0, s_1(0), \ldots, s_n(0)) = 0$.
+\begin{enumerate}
+\item  $\mathbf{Column \ degrees \ case}$:  
+ Since any $f_G \in I_G$, $f_G$ has the form $f_G = \lambda. g_{i_1} \ldots g_{i_p}$ where $(i_1, \ldots, i_p)\subset \{1, \ldots, q\}^p$ and $\lambda \in \field$, then 
+\[
+f_G^{\mathrm{Hom}}(x_0, \mat{X}) = \lambda.g_{i_1}^{\mathrm{Hom}}(x_0,\mat{X}) \ldots g_{i_p}^{\mathrm{Hom}}(x_0, \mat{X}).
+\] This implies 
+\[
+f_G^{\mathrm{Hom}}(0, s_1(0), \ldots, s_n(0)) = \lambda.g_{i_1}^{\mathrm{Hom}}(0, s_1(0), \ldots, s_n(0)) \ldots g_{i_p}^{\mathrm{Hom}}(0, s_1(0),\ldots, s_n(0)),
+\] i.e., 
+\[
+g_{i_1}^{\mathrm{Hom}}(0, s_1(0), \ldots, s_n(0)) \ldots g_{i_p}^{\mathrm{Hom}}(0, s_1(0), \ldots, s_n(0)) = 0.
+\]
+Moreover, $(0, s_1(0), \ldots, s_n(0))$ is a solution of $n$ polynomial equations $f_G^{\mathrm{Hom}}(t, \mat{X}) = 0$; and $g_{i_j}$ is defined as a product of linear forms as above. Therefore, 
+\[
+\left( \begin{matrix}
+\beta_{1,1} & \cdots & \beta_{1,n}\\
+\vdots &  \ddots & \vdots \\
+\beta_{n,1} & \cdots & \beta_{n,n}\\
+\end{matrix} \right)\left(\begin{matrix}
+s_1(0)\\
+\vdots \\
+s_n(0)
+\end{matrix}\right) = 0,
+\]
+where $(\beta_{i,1}, \ldots, \beta_{i,n}) \in \{(\lambda_{i,1}^{(1)}, \lambda_{i,1}^{(2)}, \ldots, \lambda_{i,1}^{(n)}), \ldots, (\lambda_{i,D_1}^{(1)}, \lambda_{i,D_1}^{(2)}, \ldots, \lambda_{i,D_1}^{(n)})\}$. By the construction of $G$ as above, we have the matrix $B \in \field^{n \times n}$ is full rank, where $B = [\beta_{i,j}]_{1 \leq i \leq n, 1 \leq j \leq n}$. From which and $B[s_1(0), \ldots, s_n(0)]^T = 0$ we deduce that $(s_1(0), \ldots, s_n(0)) = (0, ..., 0)$. This contradicts with the fact that $(s_1(0), \ldots, s_n(0)) \ne (0, \ldots, 0)$. 
+
+Hence, we obtain $f_G^{\mathrm{Hom}}(0, s_1(0),\ldots, s_n(0)) \ne 0$. Therefore, $\nu(f_G^{\mathrm{Hom}}(t^d, s_1(t), \ldots, s_n(t))) = 0$, this implies $\nu((1-t)^pf_G^{\mathrm{Hom}}(t^d, s_1(t), \ldots, s_n(t))) = 0$. Thus, \[(1-t)^pf_G^{\mathrm{Hom}}(t^d, s_1(t), \ldots, s_n(t))  + t.h(t, f_1(t), \ldots, f_n(t))t^{Dd} \neq 0\] which is a contradiction. 
+\item $\mathbf{Homogeneous \ degrees \ case}$: We can follow the similar argument as in the column degree case by using $(h_{i_1}, \ldots, h_{i_p})$ instead of $(g_{i_1}, \ldots, g_{i_p})$ for $(i_1, \ldots, i_p) \subset \{1, \ldots, q\}^p$.
+\item  $\mathbf{Row \ degrees \ case}$: \todo{todo: finish the proof}
+\end{enumerate}
+\end{proof}
+\begin{Proposition}
+There are no singular solution of $I_H$ at $t = 0$.
+\end{Proposition}
+\begin{proof}
+\todo{todo: write the proof}
+\end{proof}
+By using all the results in this section, we obtain the following theorem which is one of our main results.
+\begin{Theorem}
+Let $F \in \field[\mat{X}]^{p \times q}$ with $p \leq q$ and $I_F$ be the ideal generated by the $p \times p-$ minors of $F$. Then, the number of isolated solutions of $I_F$ is at most $\mathfrak{T}$. 
+\end{Theorem}
+\section{Curve}
+The aim of this section is lifting a solution of $I_G$, namely $\mathbf{x}^*$, to a solution of $I_H$, namely $\mathbf{x}$. In order to do this process, we need the system of $n$ equations in $I_H$ such that by using this system, we can lift $\mathbf{x}^{*}$ to $\mathbf{x}$.
+
+Let $\mathbf{x}^*$ be a solution of $I_G$ and $\bar{G} \in \field[\mat{X}]^{(p-1) \times (p-1)}$ be a submatrix of $G$ such that $\det(\bar{G})(\mathbf{x}^*) \ne 0$. Let $\bar{F}$ and $\bar{H}$ be the $(p-1) \times (p-1)$ submatrices of $F$ and $H$, respectively with the column indices as the $\bar{G}$ column indices. Then, $\bar{H} = (1-t)\bar{G} + t\bar{F}$. By using the Proposition $\ref{det}$, we have 
+\[
+\det(\bar{H}) = (t-t)^{p-1} \det(\bar{G}) + t.h(t,\mat{X}),
+\] where $h(t,\mat{X}) \in \field[t,\mat{X}]$. This implies 
+\[
+\det(\bar{H})(\mathbf{x}^*) = (t-t)^{p-1} \det(\bar{G})(\mathbf{x}^*) + t.h(t,\mat{X})(\mathbf{x}^*). 
+\] From which and $\det(\bar{G})(\mathbf{x}^*) \ne 0$, we can deduce $\det(\bar{H})(\mathbf{x}^*)$ has zero-valuation. This means $\det(\bar{H})(\mathbf{x}^*) \ne 0$. We denote $m$ for $\det(\bar{H})$, thanks to $m$ we can construct the system of $n$ equations (see \improve{\cref{subsec:local}}). 
+
+The structure of this section as follows. In \improve{\cref{subsec:local}}, we will present how to obtain this system if we know $m$; after that, in \improve{\cref{subsec:cd2}}, \improve{\cref{subsec:hom2}} and \improve{\cref{subsec:row2}}, we will show how to find the matrix $\bar{G}$ such that $\bar{G}(\mathbf{x}^*) \ne 0$ for fix $\mathbf{x}^* \in V(I_G)$ in the case when we work on column degrees, homogeneous degrees and row degrees respectively. As a consequence, we can build the matrix $\bar{H}$. 
+\subsection{Local description}
+\label{subsec:local}
+The main goal of this section is giving a local description of the variety of $I_H$. We will show that it sufficies to use $n$ equations to describe the local variety $V(I_H)$. We follow the similar way as in \cite[Section ~ 2.2]{Bank2001}. 
+
+Let $H = [h_{i,j}]$ be a $p \times q$ polynomial matrix of $n+1$ variables with $p \leq q$. Let $l$ and $k$ be any natural numbers with $l \leq q$ and $k \leq \min\{p,l\}$. Let $I_k = (i_1, \ldots, i_k) \subset \{1, \ldots, l\}^k$ be an ordered sequence and $M(I_k)$ be the determinant of $H_{1:k;I_k}$. The Exchange Lemma below will be an important tool in this section. 
+\begin{Lemma}$\cite{Bank2001}$ Let $H$, $l$ and $k$ be given as above. Let $I_k = (i_1, \ldots, i_k)$ amd $I_{k-1} = (j_1, \ldots, j_{k-1})$ be two index sets such that $I_k \cap I_{k-1} \ne \emptyset$. Then, 
+\[
+M({I_{k-1}})M(I_k) = \sum_{j \in I_k \backslash I_{k-1}} \epsilon_j \ M(I_k \backslash \{j\}) \ M(I_{k-1} \cup \{j\}), 
+\] for suitable number $\epsilon_j \in \{1, -1\}$. \label{exchange}
+\end{Lemma}
+The following proposition is a similar version of \cite[Proposition ~ 5]{Bank2001}. In \cite{Bank2001}, the authors use the matrix $H$ as the Jacobian matrix of $p$ polynomials $(f_1, \ldots, f_p) \in \field[\mat{X}]^p$ while here, we rewrite this proposition for the general polynomial matrix $H \in \field[t,\mat{X}]^{p \times q}$ where $p \leq q$. Noting that in \cite{Bank2001}, there is a condition that $p \leq n$. 
+
+Let $m \in \field[t,\mat{X}]$ be the $(p-1) \times (p-1)$-minor of $H$ given by the first $(p-1)$ rows and $(p-1)$ columns, i.e., $m = \det(H_{1:p-1;1:p-1})$. Let us define $V(m) := \{\mathbf{x} \in \bar{\field[t]}^n : m(\mathbf{x}) = 0\}$ and $V(I_H)_m : = V(I_H) \backslash V(m)$, where $V(I_H) = \{\mathbf{x} \in \bar{\field}^{n} : f_H(\mathbf{x}) = 0 \ \mathrm{for \ all} \ f_H \in I_H\}$. Hereafter, for any $1 \leq i_1 \leq \cdots \leq i_p \leq n$, let us denote $M(i_1, \ldots, i_p) \in \field[t,\mat{X}]$ for the determinant of the submatrix of $H$ which contains $p$ rows and the columns $i_1, \ldots, i_p$. 
+\begin{Proposition} Let $m, V(I_H), V(I_H)_m$ and $V(m)$ be defined as above. Then, 
+\[
+V(I_H)_m = \{\mathbf{x} \in \bar{\field[t]}^n \ | \ M(1, \ldots, p-1, s) = 0, m(\mathbf{x}) \ne 0 \ \mathrm{for} \ s \in \{p, \ldots, q\} \}.
+\] In other words, the variety $V(I_H)$ is locally described by $q - p + 1$ polynomials $(outside \ of \ V(m))$, i.e., $n$ polynomials 
+\[
+M(1, \ldots, p-1, p), M(1, \ldots, p-1, p+	1), \ldots, M(1, \ldots, p-1, q).
+\]
+\label{ppp}
+\end{Proposition}
+\begin{proof}
+$(\subseteq)$ It is obvious that for any $\mathbf{x} \in \bar{\field[t]}^n$ such that $\mathbf{x} \in V(I_H)_m$ we have 
+\[\mathbf{x} \in \{\mathbf{x} \in \bar{\field[t]}^n \ | \ M(1, \ldots, p-1, s) = 0, m(\mathbf{x}) \ne 0 \ \mathrm{for} \ s \in \{p, \ldots, q\} \}.\]
+
+$(\supseteq)$ Let $\mathbf{x}$ be any point in $\bar{\field[t]}^n$ such that $m(\mathbf{x}) \ne 0$ and $M(1, \ldots, p-1, s)(\mathbf{x}) = 0$ for any $s \in \{p, \ldots, q\}$. We have to prove that $M(i_1, \ldots, i_p)(\mathbf{x}) = 0$ for any $(i_1, \ldots, i_p) \subset \{1, \ldots, q\}^p$. By using Lemma $\ref{exchange}$ for $M(1, \ldots, p-1) = m$, we have 
+\[
+m.M(i_1, \ldots, i_p) = \sum_{\{j \in \{i_1, \ldots, i_p\} \backslash \{1, \ldots, p-1 \} } \epsilon_j \ M(\{i_1, \ldots, i_p\} \backslash \{j\}) \ M(1, \ldots, p-1,j),
+\] for suitable $\epsilon_j \in \{1,-1\}$. Therefore, 
+\[
+m(\mathbf{x}).M(i_1, \ldots, i_p)(\mathbf{x}) = \sum_{j \in \{i_1, \ldots, i_p\} \backslash \{1, \ldots, p-1 \} } \epsilon_j \ M(\{i_1, \ldots, i_p\} \backslash \{j\})(\mathbf{x}) \ M(1, \ldots, p-1,j)(\mathbf{x}). 
+\] Moreover, $M(1, \ldots, p-1, s)(\mathbf{x}) = 0$ for any $s \in \{p, \ldots, q\}$ and $m(\mathbf{x}) \ne 0$, so $M(i_1, \ldots, i_p)(\mathbf{x}) = 0$ for any $(i_1, \ldots, i_p) \subset \{1, \ldots, q\}^p$. 
+\end{proof}
+\begin{Remark}The result in Proposition $\ref{ppp}$ remains true if we replace $m$ by any $(p-1) \times (p-1)$-minor of $H$. 
+\end{Remark}
+\subsection{Column degrees}
+\label{subsec:cd2}
+In this section, we will find a $(p-1)\times (p-1)$ submatrix of $H$, namely $\bar{H}$, such that $m(\mathbf{x}^*) \ne 0$, where $m = \det(\bar{H})$ and $\mathbf{x}^*$ is a solution of $I_G$ when we work on the case $\deg(f_{i,j}) = D_j$ for all $1 \leq i \leq p$. Let us recall the starting matrix $G$ in this case is 
+\[G = 
+\left( \begin{matrix}
+g_1 & 2g_2 & \cdots & qg_{q}\\
+g_1 & 2^2g_2 & \cdots & q^2g_q\\
+\vdots & \vdots & \ddots & \vdots \\
+g_1 & 2^pg_2 & \cdots & q^pg_q
+\end{matrix} \right),
+\]
+where $g_{i}$ is the product of $D_i$ linear forms, i.e., $g_i = \prod_{j = 1}^{D_i}L_{i,j}$. Moreover, any $p \times p$-minor of $G$ has the form $\lambda g_{i_1}\ldots g_{i_p}$, where $(i_1, \ldots, i_p) \in \{1, \ldots,q\}^{p}$ and $\lambda \in \field$.
+
+Without loss of generity, we take $\mathbf{x}^*$ is a solution of the system of $q-p+1$ equations, i.e., $n$ equations $g_1 = \cdots = g_{q-p+1} = 0$. Let $\bar{G} \in \field[\mat{X}]^{(p-1) \times (p-1)}$ be a submatrix of $G_{*;q-p+2:q}$, where $G_{*;q-p+2:q} \in \field[\mat{X}]^{p \times (p-1)}$ contains the columns $q-p+2, \ldots, q$ of $G$. So, $\det(\bar{G}) = \lambda g_{q-p+2}\ldots g_{q}$ for $\lambda \in \field$. By the construction of $\{g_i\}_{i=1}^{q}$, we have $g_i(\mathbf{x}^*) \ne 0$ for all $q-p+2 \leq i \leq q$. As a consequence, $\det(\bar{G})(\mathbf{x}^*) \ne 0$. 
+ 
+\subsection{Homogeneous degrees}
+\label{subsec:hom2}
+In this section, we will find a $(p-1)\times (p-1)$ submatrix of $H$, namely $\bar{H}$, such that $m(\mathbf{x}^*) \ne 0$, where $m = \det(\bar{H})$ and $\mathbf{x}^*$ is a solution of $I_G$ when we work on the case $\deg(f_{i,j}) = D$ for all $1 \leq i \leq p, 1\leq j \leq q$. Let us recall the starting matrix $G$ in this case is 
+\[G = 
+\left( \begin{matrix}
+h_1 & 2h_2 & \cdots & qh_q\\
+h_1 & 2^2h_2 & \cdots & q^2h_q\\
+\vdots &\vdots & \ddots & \vdots \\
+h_1 & 2^ph_2 & \cdots & q^ph_q
+\end{matrix} \right),
+\] where $h_j = \prod_{l=(j-1)D+1}^{jD} L_{l}$ for $1 \leq j \leq q$. Moreover, any $p \times p$-minor of $G$ has the form $\lambda h_{i_1} \ldots h_{i_p}$, where $\lambda \in \field$ and $(i_1, \ldots, i_p) \in \{1, \ldots, q\}^p$. 
+
+We can construct $\bar{G}$ similarly as in column degrees case (\improve{\cref{subsec:cd2}}) by using $\{h_j\}_{j=1}^q$ instead of $\{g_j\}_{j=1}^q$. 
+\subsection{Row degrees}
+\label{subsec:row2}
+%\todo{todo: finish this section}
+In this section, we will find a $(p-1)\times (p-1)$ submatrix of $H$, namely $\bar{H}$, such that $m(\mathbf{x}^*) \ne 0$, where $m = \det(\bar{H})$ and $\mathbf{x}^*$ is a solution of $I_G$ when we work on the case $\deg(f_{i,j}) = D_i$ for all $1 \leq i \leq p, 1\leq j \leq q$. Let us recall the starting matrix $G$ in this case is 
+\[ G = \left( \begin{matrix}
+g_1 & 0 & \cdots & 0 & g_{1,p+1} & \cdots & g_{1, q}\\
+0 & g_2 & \cdots & 0 & g_{2,p+1} & \cdots & g_{2, q}\\
+\vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
+0 & 0 & \cdots & g_p & g_{p,p+1} & \cdots & g_{p, q}
+\end{matrix} \right), \] where all $\{g_i\}_{1 \leq i \leq p}$ and $\{g_{k,j}\}_{1 \leq k \leq p, p+1\leq j \leq q}$ has generic coefficients. We have seen that for any solution $\mathbf{x}^{*}$ of $I_G$, there is at least one $i \in \{1, \ldots , p\}$ such that $g_i(\mathbf{x}^*) = 0$. 
+
+If there is only one $i \in \{1, \ldots, p\}$, without loss of generility we assume that $i=p$, such that $g_{p}(\mathbf{x}^*) = 0$ and $g_{j}(\mathbf{x}^*) \ne 0$ for $j \in \{1, \ldots, p-1\}$; then we define $\bar{G} = \mathrm{diag}(g_1, \ldots, g_{p-1})$. So, $\det(\bar{G})(\mathbf{x}^*) = \prod_{j=1}^{p-1}g_j(\mathbf{x}^*) \ne 0$.
+
+If there are $k$ polynomials $g_{i_1}, \ldots, g_{i_k}$ for $(i_1, \ldots, i_k) \subset \{1, \ldots, p\}^k$ such that $g_{i_1}(\mathbf{x}^*) = \cdots = g_{i_k}(\mathbf{x}^*) = 0$ and $g_{i_j}(\mathbf{x}^*) \ne 0$ for $i_j \in \{1, \ldots, p\} \setminus \{i_1, \ldots, i_k\}$, we define $\bar{G} \in \field[\mat{X}]^{(p-1) \times (p-1)}$ as follows. Without loss of generity, let us work on $(i_1, \ldots, i_k) = (p-k+1, \ldots, p)$. For other tuples $(i_1, \ldots, i_k)$, we can use the similar argument. The idea is using these $g_{i_j}$ such that $g_{i_j}(\mathbf{x}^*) \ne 0$ to build the matrix $\bar{G}$. To sum up, we have $g_{p-k+1}(\mathbf{x}^*) = \cdots = g_{p}(\mathbf{x}^*) = 0$ and $g_j(\mathbf{x}^*) \ne 0$ for $1 \leq j \leq p-k$. Let us denote $A \in \field[\mat{X}]^{k \times (q-p)}$ for $G_{p-k+1:p\mathbf{;}p+1:q}$. We claim that there exists a submatrix ${G}^* \in \field[\mat{X}]^{(k-1) \times (k-1)}$ of $A$ such that $\det({G}^*)(\mathbf{x}^*) \ne 0$. Indeed, we assume a contradiction that for all ${G}^* \in \field[\mat{X}]^{(k-1) \times (k-1)}$ which are submatrices of $A$ we have $\det(\bar{G})(\mathbf{x}^*) = 0$. Therefore, for all $f_{A} \in I_A$ where $I_A = \langle k \times k - \mathrm{minors \ of \ A}\rangle$, we have $f_A(\mathbf{x}^*) = 0$. This contradicts with the fact that $I_G$ has exactly $S_n(D_1, \ldots, D_p)$ distinct solutions under the generic assumption. We have finished the existence of the matrix ${G}^*$, we are going to find where is ${G}^*$ in $A$. Since there exists ${G}^* \in \field[\mat{X}]^{(k-1) \times (k-1)}$  of $A$ such that $\det{{G}^*}(\mathbf{x}^*) \ne 0$ and $\mathrm{rank}(A(\mathbf{x}^{*})) \leq k-1$ (from Remark $\ref{r2}$), then $\mathrm{rank}(A(\mathbf{x}^{*})) = k-1$. In other words, ${G}^*(\mathbf{x}^*) \in \field^{(k-1)\times (k-1)}$ is a submatrix of $A(\mathbf{x}^*) \in \field^{k \times (q-p)}$ such that ${G}^*(\mathbf{x}^*)$ is full rank. Therefore, we can first, evaluate the matrix $A$ at the point $\mathbf{x}^*$ to obtain the matrix $A(\mathbf{x}^*) \in \field^{k \times (q-p)}$; and afterthat, thanks to Gaussian eliminations we can find a submatrix ${G}^*(\mathbf{x}^*)$ of $A(\mathbf{x}^*)$ such that $\mathrm{rank}({G}^*(\mathbf{x}^*)) = k-1$.  We obtain the matrix ${G}^* \in \field[\mat{X}]^{(k-1) \times (k-1)}$ with the indices are the same as those of ${G}^*(\mathbf{x}^*)$. Finally, let us define $\bar{G}$ as 
+$$\bar{G} = 
+\left[\begin{array}{c |c}%\hline
+\mathrm{diag}(g_1, \ldots, g_{p-k}) & G_{1:p-k; \mathcal{J}} \\  \hline
+\mat{O}_{k-1,p-k} & G^*\\
+%\hline
+\end{array}
+\right] \in \field[\mat{X}]^{(p-1) \times (p-1)} \ ,$$ where $\mathcal{J}$ is the column indices set of $G^*$. Then, $\det(\bar{G}) = \prod_{j = 1}^{p-k}g_j\det(G^*)$, for which we obtain $\det(\bar{G})(\mathbf{x}^*) \ne 0$. 
+\subsection{Lifting}
+\newpage
+\bibliographystyle{plain}
+\bibliography{biblio}
+\appendix
+\section{Proof of Lemma $\ref{P4}$}
+\label{sec:proof}
+Given a matrix $M = [m_{i,j}] \in \field[\mat{X}]^{p \times q}$ with $p \leq q$; and for any $1 \leq j \leq i$, $m_{i,j}$ has degree $D_i$ and generic coefficients. In this section, we prove that $I_M$ has exactly $S_{q-p+1}(D_1, \ldots, D_p)$ solutions. In this section, we denote $\mat{Y}$ for the set of variables $\{y_{i,j}\}_{1 \leq i \leq p, 1 \leq j \leq q}$.
+
+We, first, recall some facts about Schubert determinantal ideals and Schubert polynomials. We recommend \cite[Chapter~ 15]{Miller04} for the reader who wants to know more properties of Schubert determinantal ideals and Schubert polynomials. Here, $M_{pq}$ will denote the vector space of matrices with $p$ rows and $q$ columns over the field $\field$; and the symmetric group of permutations of $\{1, \ldots, n\}$ is denoted by $\mathcal{S}_n$. 
+\subsection{Schubert determinantal ideals}
+\label{subsec:Schudet}
+\begin{Definition} A matrix $w \in M_{pq}$ is called a $\mathrm{partial \ permutation}$ if $w$ is a $p \times q$ matrix having at most one entry equal to 1 in each row and column. The $\mathrm{matrix \ Shubert \ variety}$ $\bar{X}_{w}$ in $M_{pq}$ is the subvariety 
+\[
+\bar{X}_w = \{ Z \in M_{pq} \ | \ \mathrm{rank}(Z_{k \times l}) \leq \mathrm{rank}(w_{k \times l}) \ \mathrm{for \ all} \  k \ \mathrm{and} \ l, \}
+\] where $Z_{k \times l}$ is the upper left $k \times l$ rectangular submatrix of $Z$. 
+\end{Definition}
+In particular, when the determinantal variety is the set of all $p \times q$ matrices over $\field$ of rank at most $p-1$, this variety is the matrix Schubert variety $\bar{X}_w$ for the partial permutation $w$ with $w_{1,1} = w_{2,2} = \cdots = w_{p-1,p-1} = 1$, and all other entries equal to zero. Our determinantal ideal, the ideal is generated by the set of all $p \times p-$ minors of $p \times q$ polymonial matrix, vanishes on this variety. 
+%Given a permutation $\sigma \in \mathcal{S}_n$, we will denote $\mathcal{M}_{w} \in M_{nn}$ for the matrix corresponding to $\sigma$, that is, $\mathcal{M}_{i,j} = 0$ if $\sigma(i) = j$ for any $1 \leq i, j \leq n$. 
+\begin{Definition} Let $w$ be a partial permutation. The $\mathrm{Schubert \ determinantal \ ideal} \ I_w \in \field[\mat{Y}]$ is generated by all minors in $Y_{k \times l}$ of size $1 + \mathrm{rank}(w_{k \times l})$ for all $k$ and $l$, where $Y = [y_{i,j}]$ is the $p \times q$ matrix of variables. 
+\end{Definition}
+A partial permutation $\tilde{w}$ \emph{extends} $w$ if the matrix $\tilde{w}$ has northwest corner $w$. The next result is given in \cite{Miller04}. 
+\begin{Proposition}\label{Mil} Every partial permutation matrix $w$ can be extended canonically to a square permutation matrix $\title{w}$ whose $I_{\tilde{w}}$ has the same minimal generating minors as $I_w$. 
+\end{Proposition}
+The proof of this proposition can be found as in \cite[Proposition~ 15.8]{Miller04}, so we will not give here the proof again. However, since the construction of $\tilde{w}$ from $w$ is important for our proof of Lemma $\ref{P4}$ in the \improve{\cref{subsec:red}}, we give the canonically way as in \cite{Miller04} to obtain $\tilde{w}$ from $w$ as follows. Suppose that $w$ is not a permutation and so there is a row or column of $w$ that has no 1 entries. First, we define $w'$ from $w$ by adding a new column and placing a 1 entry in its highest possible row. We, next, define $\tilde{w}$ by continuing this process until every row and column has one 1 entry. By this construction, $I_{\tilde{w}}$ and $I_w$ have the same minimal generating minors. 
+\subsection{Schubert polynomials}
+For any $1 \leq i \leq n-1$, we will denote $s_i$ for the \emph{adjacent transposition} switching $i$ and $i+1$, i.e.,
+\[
+s_i(j)=
+\begin{cases}
+i + 1  & \text{if } j = i,\\
+i  & \text{if } j = i+1,\\
+0 & \text{otherwise }.
+\end{cases}
+\] 
+
+Since $\mathcal{S}_n$ is generated by $s_i$, so we define the \emph{length} of an element $w \in \mathcal{S}_n$ with respect to the generators $s_1, \ldots, s_{n-1}$ is the smallest integer $p$ such that $w = s_{i_1}s_{i_2}\ldots s_{i_p}$ and is denoted by $l(w)$. 
+
+\begin{Definition} Let $\mathbf{t} = t_1, t_2, \ldots $ be an infinite set of independent variables. The $i^{\mathrm{th}}$ $\mathrm{divided \ difference}$ operator $\partial_i$ of polymial $f \in \field[\mathbf{t}]$ is defined as 
+\[
+\partial_if(t_1, t_2, \ldots) = \frac{f(t_1, t_2, \ldots) - f(t_1, \ldots, t_{i-1}, t_{i+1}, t_i, t_{i+2}, \ldots)}{t_i - t_{i+1}}.
+\]
+The $\mathrm{Schubert \ polynomial}$  for a permutation $w$ is defined recursively by 
+\begin{itemize}
+\item[•] $\mathfrak{S}_{w_0}(\mathbf{t}) = t_{1}^{n-1}t_2^{n-2} \ldots t_{n-1}$ for $w_0 = n\ldots 321$ is the long word in $\mathcal{S}_n$ which reverses the order of $1, \ldots, n$, i.e., $\sigma(i) = n-i+1$. 
+\item[•] $\mathfrak{S}_w(\mathbf{t}) = \partial_i\mathfrak{S}_{ws_i}(\mathbf{t})$ whenever $w \in  \mathcal{S}_n$ and $l(ws_i) = l(w) + 1$. 
+\end{itemize}
+For partial permutation $w$, define the Schubert polynomial for $w$ as the Schubert polynomial for the extenstion $\tilde{w}$ of $w$. 
+\end{Definition}
+The next theorem is the result in \cite[corollary ~ 15.44]{Miller04}. 
+\begin{Theorem} \label{TM} If $w$ is a $p \times q$ partial permutation and $\field[\mat{Y}]$ is $\mathbb{Z}^p$-granded with $\deg(y_{i,j}) = t_i$, then the multidegree of the matrix Schubert variety $\bar{Y}_w$ equals the Schubert polynomial for $w$: $\mathcal{C}(\bar{Y}_w;\mathbf{t}) = \mathfrak{S}_w(\mathbf{t})$. 
+\end{Theorem}
+
+\subsection{A proof of Lemma $\ref{P4}$}
+
+Let $I$ be the ideal of maximal minors in the generic $M = [m_{i,j}] \in \field[\mat{X}]^{p \times q}$, where $p \leq q$. Let $X$ be the zero set of $I$ in $M_{pq}$; and let $w$ be the partial permutation of $I$ as we mentioned in the  \improve{\cref{subsec:Schudet}}, that is, 
+$$w = 
+\left[\begin{array}{c |c}%\hline
+\mat{I}_{p-1} & \mat{O}_{p-1, q-p+1} \\  \hline
+\mat{O}_{1,p-1} & \mat{O}_{1, q-p+1}\\
+%\hline
+\end{array}
+\right] \in M_{pq} \ ,$$
+where $\mat{I}_{k}$ and $\mat{O}_{k,l}$ are the identity matrix of size $k \times k$ and the zero matrix of size $k \times l$, respectively. We notice that $X$ is the Schubert variety corresponding to the partial matrix $w$. 
+
+Let us define $\tilde{w}$ be the extended permutation matrix of $w$ which is defined as 
+\[ \tilde{w} = 
+\left[\begin{array}{c |c|c}%\hline
+\mat{I}_{p-1} & \mat{O}_{p-1, q-p+1}& \mat{O}_{p-1,1} \\  \hline
+\mat{O}_{1,p-1} & \mat{O}_{1, q-p+1} & 1\\
+\hline
+\mat{O}_{q-p+1,p-1} & \mat{I}_{q-p+1} & \mat{O}_{q-p+1,1} \\ %\hline
+\end{array} \right] \in M_{q+1, q+1}. 
+\]
+\begin{Example} Given generic $M \in \field[\mat{X}]^{3\times 4}$, then $$w = \left[ \begin{matrix}
+1 & 0 & 0 & 0  \\
+0 & 1 & 0 & 0  \\
+0 & 0 & 0 & 0  
+\end{matrix}\right] \ \mathrm{and} \  \tilde{w} = \left[ \begin{matrix}
+1 & 0 & 0 & 0  & 0 \\
+0 & 1 & 0 & 0  & 0\\
+0 & 0 & 0 & 0  & 1 \\
+%0 & 0 & 0 & 0  & 1 \\
+0 & 0 & 1 & 0  & 0 \\
+0 & 0 & 0 & 1  & 0 
+\end{matrix}\right]. $$
+\end{Example}
+
+By using the Proposition $\ref{Mil}$, one gets the following property. 
+\begin{Corollary}\label{corr} Let $I$, $w$ and $\tilde{w}$ be the ideal, partial matrix and permutation matrix which are defined as above. Then $I$ has the same minimal generators as $I_{\tilde{w}}$.
+\end{Corollary}
+ For any permutation $\sigma \in \mathcal{S}_n$, we denote $M_{\sigma}$ for the permutation matrix corresponding to $\sigma$, that is $(M_{\sigma})_{i,j} = 1$ if $\sigma(i) = j$. For any permutaion matrix $w$, we denote $\sigma_{w} \in \mathcal{S}_n$ for the permtation correspoding to $w$, that is, $\sigma_{w}(i) = j$ if $w_{i,j} = 1$. 
+ 
+Let $v = (q+1 \ldots 321)$ be the permutating cycle $q+1, \ldots, 1$. One should not confused with the notation of long word $w_0 = q+1 \ldots 321$. We have the permutation matrix, $M_v$, corresponding to $v$ is the $(q+1)\times (q+1)$ matrix with $(M_v)_{1,q+1} = 1$, $(M_v)_{i,i-1} = 1$ for all $2 \leq i \leq q+1$ and other entries equal zero, that is, 
+ \[
+M_v = \left[\begin{matrix}
+0 & 0 & \cdots & 0 & 1\\ 
+1 & 0 & \cdots & 0 & 0\\
+0 & 1 & \cdots & 0 & 0\\
+\vdots & \vdots & \ddots & \vdots & \vdots \\
+0 & 0 & \cdots & 1 & 0\\
+\end{matrix}\right]. 
+ \]
+One can obtain the permutation matrix $\tilde{w}$ from $M_v$ after $p-1$ steps with the $i^{\mathrm{th}}$ step for $1\leq i \leq p-1$ is  interchanging the row $i$ and $i+1$. This means 
+\[
+\tilde{w} = M_{s_{p-1}}M_{s_{p-2}}\ldots M_{s_{1}}M_v, 
+\]
+for which we deduce that 
+\[
+\sigma_{\tilde{w}} = vs_1\ldots s_{p-2}s_{p-1}, \ \mathrm{i.e.,} \ v = \sigma_{\tilde{w}}s_{p-1}^{-1}s_{p-1}^{-1}\ldots s_1^{-1}.\]
+Moreover, since $s_i$ is adjacent transposition switching $i$ and $i+1$, then $s_i^{-1} = s_i$. Therefore, 
+\[
+v = \sigma_{\tilde{w}}s_{p-1}s_{p-2}\ldots s_1.
+\]
+In addition, we have $l(\sigma_{\tilde{w}}s_{p-1} \ldots s_{i+1}s_i) = l(\sigma_{\tilde{w}}s_{p-1} \ldots s_{i+1}) + 1$ for any $i \in \{1, \ldots, p-1\}$ (see \improve{Remark $\ref{rk7}$} below); and $\mathfrak{S}_w(\mathbf{t}) = \partial_i\mathfrak{S}_{ws_i}(\mathbf{t})$ whenever $w \in  \mathcal{S}_n$ and $l(ws_i) = l(w) + 1$, then 
+
+\begin{equation} \label{esec72}
+\mathfrak{S}_{\sigma_{\tilde{w}}}(\mathbf{t}) = \partial_{p-1}\partial_{p-2}\ldots\partial_2\partial_1\mathfrak{S}_v(\mathbf{t}).
+\end{equation}
+We will use the Schubert polynomial for the permutation $v$ to compute the Schubert polynomial for the permutation $\sigma_{\tilde{w}}$; and as a consequence of Corollary $\ref{corr}$, we obtain the Schubert polynomial for $w$. The proposition below gives us the Schubert polynomial for the permutation cycle $v$. 
+\begin{Proposition}Let $v = (q+1 \ldots 321)$ be the permutation cycling $q+1, \ldots, 1$. Then $\mathfrak{S}_v(\mathbf{t}) = t_1^q$. 
+\end{Proposition}
+\begin{proof}
+\todo{todo: write the proof}
+\end{proof}
+\begin{Proposition} \label{pp} For any integers m and q such that $m \leq q$,
+\[ \partial_{m}\partial_{m-1}\ldots\partial_2\partial_1\mathfrak{S}_v(\mathbf{t}) = t_1^{q-m} + t_1^{q-m-1}S_1(t_2, \ldots, t_{m+1}) + t_1^{q-m-2}S_2(t_2, \ldots, t_{m+1}) + \cdots + S_{q-m}(t_2, \ldots, t_{m+1}). 
+\]
+\end{Proposition}
+\begin{proof}
+We prove this property by induction on $m$. When $m$ equals $1$, then 
+\begin{eqnarray*}
+\partial_1\mathfrak{S}_v(\mathbf{t}) &=& \partial_1t_1^{q} = \frac{t_1^q-t_2^q}{t_1 - t_2} \\
+&=& t_1^{q-1} + t_1^{q-2}t_2 + t_1^{q-3}t_2^2 + \cdots + t_2^{q-1}\\
+&=& t_1^{q-1} + t_1^{q-2}S_1({t_2}) + \cdots + S_{q-1}(t_2).
+\end{eqnarray*}
+We, now, assume that this property holds for any $m \leq k$, we will prove this property holds also for $m = k+1$. Let us denote $f({\bf{t}}) = \partial_{k}\partial_{k-1}\ldots\partial_2\partial_1\mathfrak{S}_v(\mathbf{t})$, that is 
+\[
+f({\bf{t}}) = t_1^{q-k} + t_1^{q-k-1}S_1(t_2, \ldots, t_{k+1}) + t_1^{q-k-2}S_2(t_2, \ldots, t_{k+1}) + \cdots + S_{q-k}(t_2, \ldots, t_{k+1}). 
+\] We have 
+\begin{eqnarray*}
+\partial_{k+1}f(\mathbf{t})&=& \frac{f(\mathbf{t}) - f(t_1,\ldots, t_k, t_{k+2},t_{k+1}, t_{k+3, \ldots})}{t_k - t_{k+1}}\\
+&=& t_1^{q-k-1}.\frac{S_1(t_2, \ldots ,t_k, t_{k+1}) - S_1(t_2, \ldots ,t_k, t_{k+2})}{t_{k+1}-t_{k+2}} \\
+&{}& + t_1^{q-k-2}.\frac{S_2(t_2, \ldots ,t_k, t_{k+1}) - S_2(t_2, \ldots ,t_k, t_{k+2})}{t_{k+1}-t_{k+2}} \\ 
+&{}& + \cdots + \frac{S_{q-k}(t_2, \ldots, t_k, t_{k+2}) - S_{q-k}(t_2, \ldots, t_k, t_{k+2})}{t_{k+1}-t_{k+2}}\\
+&=& t_1^{q-k-1}.S_0(t_1, \ldots , t_{k+1}, t_{k+2}) + t_1^{q-k-2}.S_1(t_1, \ldots , t_{k+1}, t_{k+2}) + \cdots + S_{q-k-1}(t_1, \ldots , t_{k+1}, t_{k+2})\\
+&=&t_1^{q-k-1} + t_1^{q-k-2}.S_1(t_1, \ldots , t_{k+1}, t_{k+2}) + \cdots + S_{q-k-1}(t_1, \ldots , t_{k+1}, t_{k+2}).
+\end{eqnarray*}
+We used one property of the complete homogeneous symmetric polynomial, that is 
+\[
+S_i(t_1, \ldots, t_{n-1}, t_n) - S_i(t_1, \ldots, t_{n-1}, t_{n+1}) = (t_n - t_{n+1})S_{i-1}(t_1, \ldots, t_{n-1}, t_n, t_{n+1}).\]
+\end{proof}
+By using Proposition $\ref{pp}$ when $m = p-1$ and the fact that \[ t_1^{q-m} + t_1^{q-m-1}S_1(t_2, \ldots, t_{m+1}) + t_1^{q-m-2}S_2(t_2, \ldots, t_{m+1}) + \cdots + S_{q-m}(t_2, \ldots, t_{m+1}) = S_{q-m}(t_1, \ldots, t_{m+1})\] we deduce 
+
+\begin{equation} \label{esec71}
+\partial_{p-1}\partial_{p-2}\ldots\partial_2\partial_1\mathfrak{S}_v(\mathbf{t}) = S_{q-p+1}(t_1, \ldots, t_{p})
+\end{equation}
+From $\cref{esec71}$ and $\cref{esec72}$, we obtain 
+\[
+\mathfrak{S}_{\sigma_{\tilde{w}}}(\mathbf{t}) = S_{q-p+1}(t_1, \ldots, t_p). 
+\] As a consequence, $\mathfrak{S}_{w}(\mathbf{t}) = S_{q-p+1}(t_1, \ldots, t_p)$. Finally, by using the Theorem $\ref{TM}$, we obtain $\mathcal{C}(X;\mathbf{t}) = S_{q-p+1}(t_1, \ldots, t_p)$. 
+
+\hspace{12cm} $\mathbf{Q.E.D}$
+
+\begin{Remark} \label{rk7} For any $i \in \{1, \ldots, p-1\}$,
+\begin{equation} \label{eee}
+l(\sigma_{\tilde{w}}s_{p-1} \ldots s_{i+1}s_i) = l(\sigma_{\tilde{w}}s_{p-1} \ldots s_{i+1}) + 1
+\end{equation}
+\end{Remark}
+\begin{proof}
+Since $\sigma_{\tilde{w}} = (1)\ldots (p-1)(q+1 \ q \ldots p+1 \ p)$ and $(1)\ldots (k-1)(n \ n-1 \ldots k+1 \ k)s_{k} = (1)\ldots (k-2)(n \ n-1 \ldots k+1 \ k \ k-1)$, so to obtain $\cref{eee}$, it sufficies to prove that $l((n \ n-1 \ldots k+1 \ k)(k-1,k)) = l((n \ n-1 \ldots k+1 \ k)) + 1$. This is trivial to see since $(n \ n-1 \ldots k+1 \ k)(k-1,k) = (n \ n-1 \ldots k+1 \ k \ k-1)$ and any cycle $(a_1a_2\ldots a_{m-1}a_m)$ can be written as a product of at least $m-1$ two cycles as
+\[
+(a_1a_2\ldots a_{m-1}a_m) = (a_1a_2)(a_2a_3)\ldots(a_{m-1}a_m).
+\]
+\end{proof}
+\label{subsec:red}
+\end{document}
