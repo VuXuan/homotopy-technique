@@ -470,7 +470,8 @@ This is a nonempty Zariski open set in $\bar{\field}^{N_2}$ such that $I_{G_2}$ 
 $\bf{Step \ 3:}$ Finally, let assume that $\mathcal{A}(2)$ holds for any $G_2 \in \field[\mathcal{G}, \mat{X}]^{p \times q}$, we will prove $\mathcal{A}(2)$ is also true for any $G_1 \in \field[\mathcal{G}, \mat{X}]^{p \times q}$ as follows.
 
 \todo{to finish}
-\subsection{Genericity of $\mathcal{A}(3)$} $\bf{Step \ 1:}$ We show here that there exists a nonempty Zariski open set $\mathcal{O}_3$ such that $I_{G_1}$ is radical ideal for $\mathfrak{g}_{i,j} \in \mathcal{O}_3$, where $G_1$ is as square matrix as follows 
+\subsection{Genericity of $\mathcal{A}(3)$} 
+$\bf{Step \ 1:}$ We show here that there exists a nonempty Zariski open set $\mathcal{O}_3$ such that $I_{G_1}$ is radical ideal for $\mathfrak{g}_{i,j} \in \mathcal{O}_3$, where $G_1$ is as square matrix as follows 
 \[
 G_1 = \left( \begin{matrix}
 \mathfrak{g}_{1,1}  & \cdots  & \mathfrak{g}_{1, p}\\
@@ -479,11 +480,16 @@ G_1 = \left( \begin{matrix}
 \end{matrix} \right).
 \] Let us denote $m \in \field[\mathcal{G}, X_1]$ for the deteminant of $G_1$, then $I_{G_1} = \langle m \rangle$. Notice that in this case, the number of variable is $n = 1$. We would like to have the property that \[\frac{\partial m}{\partial X_1}(\mathbf{x}^*) \ne 0 \ \mathrm{for \ any} \ \mathbf{x}^* \in V(m). \] 
 
-Let us define $\mathcal{O}_3$ as follows. Let $\Omega_3 = V(\partial m / \partial X_1) \subset \bar{\field}^N \times \mathbb{P}^1(\bar{\field})$ is a Zariski closed, where here $N = 2p(\sum_{i=1}^pD_i)$ is the number of coefficients for $G_1$. Then, we define $\Delta_3 = \pi_{\mathcal{G}}(\Omega_3) \subset \bar{\field}^{N}$ is a Zariski closed and take $\mathcal{O}_3$ as $\bar{\field}^{N} \setminus \Delta_3$ is a Zariski open. Therefore, for any $\mathfrak{g}_{i,j} \in \mathcal{O}_3$, we have $(\partial m / \partial X_1) (\mathbf{x}^*) \ne 0$. The remaining problem is we need to check that $\mathcal{O}_3$ is nonempty. For this, we use the diagonal marix $G_2$ as $\mathrm{diag}(\mathfrak{g}_{1,1}, \ldots, \mathfrak{g}_{p,p})$. So, the determinant of $G_2$ is $\prod_{i=1}^p\mathfrak{g}_{i,i}$, where $\mathfrak{g}_{i,i} = \prod_{l=1}^{D_i}(\gamma_{i,i}^{(1,l)}X_1 + \gamma_{i,i}^{(0,l)})$. Let us denote $m'$ for $\det(G_2)$, then 
+Let us define $\mathcal{O}_3$ as follows. Let $\Omega_3 = V(\partial m / \partial X_1) \subset \bar{\field}^N \times \mathbb{P}^1(\bar{\field})$ is a Zariski closed, where here $N = 2p(\sum_{i=1}^pD_i)$ is the number of coefficients for $G_1$. Then, we define $\Delta_3 = \pi_{\mathcal{G}}(\Omega_3) \subset \bar{\field}^{N}$ is a Zariski closed and take $\mathcal{O}_3$ as $\bar{\field}^{N} \setminus \Delta_3$ is a Zariski open. Therefore, for any $\mathfrak{g}_{i,j} \in \mathcal{O}_3$, we have $(\partial m / \partial X_1) (\mathbf{x}^*) \ne 0$. The remaining problem is we need to check that $\mathcal{O}_3$ is nonempty. For this, we use the diagonal marix $G_2$ as $\mathrm{diag}(\mathfrak{g}_{1,1}, \ldots, \mathfrak{g}_{p,p})$. So, the determinant of $G_2$ is $\prod_{i=1}^p\mathfrak{g}_{i,i}$, where $\mathfrak{g}_{i,i} = \prod_{l=1}^{D_i}(\gamma_{i,i}^{(1,l)}X_1 + \gamma_{i,i}^{(0,l)})$. Let us denote $u$ for $\det(G_2)$, then 
 \[
-\frac{\partial m'}{\partial X_1} = \sum_{i = 1}^p\frac{\partial \mathfrak{g}_{i,i}}{\partial X_1}\prod_{j \ne i} \mathfrak{g}_{j,j}.
+\frac{\partial u}{\partial X_1} = \sum_{i = 1}^p\frac{\partial \mathfrak{g}_{i,i}}{\partial X_1}\prod_{j \ne i} \mathfrak{g}_{j,j}.
 \]
-Moreover, \todo{to finish}
+For convernient, let us denote $f(X)$ for ${\partial u}/{\partial X_1}$ and rewrite $\det(G_2) = \prod_{i=1}^d(a_iX + b_i)$ for $a_i$ and $b_i$ are indeterminantes and $d = \sum_{i=1}^pD_i$. Therefore, 
+\[
+f(X) = \sum_{i = 1}^d a_i \prod_{j=1, j \ne i}^d(a_jX + b_j).
+\]
+Moreover, for any $\mathbf{x}^* \in V(\det(G_2))$ and $\mathbf{x}^* $ is the solution of $a_i X+ b_i = 0$, we have $a_j \mathbf{x}^* + b_j \ne 0$ for all $i \ne k$. Therefore, \[f(\mathbf{x}^*) = a_i\prod_{j=1, j \ne i}^d(a_j\mathbf{x}^* + b_j) \ne 0. \]
+This means for any $\mathbf{x}^* \in V(\det(G_2))$, we always have $f(\mathbf{x}^*) \ne 0$. Thus, $\bar{\field}^{N_2} \times 0^{N_1} \subset \mathcal{O}_3$ which implies that $\mathcal{O}_3$ is nonempty. 
 
 $\bf{Step \ 2:}$
 
