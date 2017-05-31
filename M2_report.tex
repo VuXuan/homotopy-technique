@@ -1,6 +1,6 @@
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
-\usepackage{amsmath,amsxtra,amssymb,latexsym, amscd,amsthm,eufrak, amsfonts}
+\usepackage{amsmath,amsxtra,amssymb,latexsym, amscd,amsthm,eufrak, amsfonts, mathrsfs}
 % \usepackage[pdftex]{color,graphicx}
 \usepackage{pgf,tikz}
 \usepackage[T5,T1]{fontenc}
@@ -44,14 +44,18 @@
 \numberwithin{Conjecture}{section}
 \newtheorem{Problem}{Problem}%[section]
 \numberwithin{Problem}{section}
-\newtheorem{Example}{Example}%[section]
-\numberwithin{Example}{section}
+%\newtheorem{Example}{Example}%[section]
+%\numberwithin{Example}{section}
 \newtheorem{Claim}{Claim}
 \numberwithin{Claim}{section}
 \newtheorem{Question}{Question}%[section]
 \newtheorem{Subsec}[Theorem]{}
 \newtheorem{Note}[Theorem]{}
 \renewcommand{\theTheorem}{\arabic{section}.\arabic{Theorem}}
+
+\theoremstyle{definition}
+\newtheorem{Example}{Example}%[section]
+\numberwithin{Example}{section}
 
 
 \newcommand{\algoname}[1]{{\normalfont\textsc{#1}}}
@@ -279,7 +283,7 @@ Homotopy continuation techniques rely on following a deformation between the sys
 \end{abstract}
 
 \section{Introduction}
-\subsection{Problem} In what follows, $\field$ is a field, $\mat{X} = (X_1, \ldots, X_n)$ is the set of $n$ variables and $\field[\mat{X}]$ is the multivariate polynomial ring with coefficients in $\field$. Let $F \in \field[\mat{X}]^{p \times q}$ be a polynomial matrix, without loss of generity, we assume that $p \leq q$. For several reasons (\todo{reasons:...}), one is interested in computing the set of points at which the evaluation of the matrix has rank $p-1$, called \emph{maximal rank} problem. We restrict on the case $n = q-p+1$. This is the 0-dimensional case, where the problem has finitely many solutions under the genericity assumptions (see \improve{\cref{sec:not}}). Hereafter, given a polynomial matrix $F \in \field[\mat{X}]^{p \times q}$ and a point $\mathbf{x} \in \bar{\field}^n$, the notation $F({\mathbf{x}})$ means the evaluation of the matrix $F$ at the point $\mathbf{x}$. 
+\subsection{Problem} In what follows, $\field$ is a field, $\mat{X} = (X_1, \ldots, X_n)$ is the set of $n$ variables and $\field[\mat{X}]$ is the multivariate polynomial ring with coefficients in $\field$. Let $F \in \field[\mat{X}]^{p \times q}$ be a polynomial matrix, without loss of generity, we assume that $p \leq q$. For several reasons (\todo{reasons:...}), one is interested in computing the set of points at which the evaluation of the matrix has rank $p-1$, called \emph{maximal rank} problem. We restrict on the case $n = q-p+1$. This is the zero-dimensional case, where the problem has finitely many solutions under the genericity assumptions (see \improve{\cref{sec:not}}). Hereafter, given a polynomial matrix $F \in \field[\mat{X}]^{p \times q}$ and a point $\mathbf{x} \in \bar{\field}^n$, the notation $F({\mathbf{x}})$ means the evaluation of the matrix $F$ at the point $\mathbf{x}$. 
 
 \begin{figure}[h]
   \centering
@@ -298,7 +302,7 @@ Homotopy continuation techniques rely on following a deformation between the sys
 }
 \end{figure}
 \subsection{Contributions, related work, and outline}
-To study this problem, we consider all $p \times p-$ minors of $F$. Indeed, all of these minors vanishes at the points we are interested in. We use the notation below for the input matrix
+To study this problem, we consider all $p \times p$ minors of $F$. Indeed, all of these minors vanishes at the points we are interested in. We use the notation below for the input matrix
 \[ F = 
 \left( \begin{matrix}
 f_{1,1} & \cdots & f_{1,q}\\
@@ -307,7 +311,7 @@ f_{p,1} & \cdots & f_{p,q}
 \end{matrix} \right),
 \]
 where $f_{i,j} \in \field[\mat{X}]$ for $1 \leq i \leq p$, $1 \leq j \leq q$.
-\section{Notation and preliminaries}
+\section{Notations and preliminaries}
 \label{sec:not}
 Give a polynomial matrix $F \in \field[\mat{X}]^{p \times q}$, we write $F_{l:k \mathbf{;} e:f}$ for the submatrix of $F$ contains the rows $l, \ldots, k$ and the columns $e, \ldots, f$. We also write $F_{l:k \mathbf{;} *}$ for the submatrix of $F$ contains the rows $l, \ldots, k$ and all $q$ columns. The similar meaning is applied for the matrix $F_{* \mathbf{;} e:f}$. 
 
@@ -328,26 +332,33 @@ There are some formulas which are obtained directly from the definition of the c
 %$S_{q-m}(t_1, \ldots, t_{m+1}) = t_1^{q-m}+t_1^{q-m-1}S_1(t_2, \ldots, t_{m+1}) + t_1^{q-m-2}S_2(t_2, \ldots, t_{m+1}) + \cdots + S_{q-m}(t_2, \ldots, t_{m+1})$, that is, 
 \item[•] $S_r(t_1, \ldots, t_{m-1}, t_m) - S_r(t_1, \ldots, t_{m-1}, t_{m+1}) = (t_m - t_{m+1})S_{r-1}(t_1, \ldots, t_{m-1}, t_m, t_{m+1})$. 
 \end{itemize}
-\subsection{Ideals and varieties}
+\subsubsection{Ideals and varieties}
 \begin{Definition} Let $I \subset \field[\mat{X}]$ be an ideal. The $\mathrm{radical}$ of $I$, denoted $\sqrt{I}$ is the set 
 \[
 \{f \ : \ f^m \in I \ \mathrm{for \ some} \ m \in \mathbb{N}, \ m \geq 1\}.
 \]
 \end{Definition}
-An ideal $I \in \field[\mat{X}]$ is \emph{prime} if whenever $f,g \in \field[\mat{X}]$ and $fg \in I$, then either $f \in I$ or $g \in I$. 
+An ideal $I \subset \field[\mat{X}]$ is \emph{prime} if whenever $f,g \in \field[\mat{X}]$ and $fg \in I$, then either $f \in I$ or $g \in I$. 
 \begin{Theorem}$[\todo{cite}]$ Let $I \in \field[\mat{X}]$ be an ideal. Then, there exist unique $\mathcal{P}_1, \ldots,, \mathcal{P}_r$ prime ideal in $\field[\mat{X}]$ such that 
 \[
 \sqrt{I} = \mathcal{P}_1 \cap \mathcal{P}_2 \cdots \cap \mathcal{P}_r,
 \]
 and $P_1, \ldots, P_r$ are called $\mathrm{prime \ components \ of} \ \sqrt{I}$. 
-\end{Theorem}
- %Given an ideal $I \in \field[\mat{X}]$, for any $f,g \in \field[\mat{X}]$ and $fg \in \sqrt{I}$, there exists $m \geq 1$: $(fg)^m \in I$ We notice that $\sqrt{I}$ is a prime ideal for any ideal $I \in \field[\mat{X}]$. 
+\end{Theorem} 
+\begin{Example}\label{Ex1} Let $\mathbb{Q}[X,Y]$ be the the polynomial ring of two variables with rational coefficients. Let $I = \langle X^2 - Y\rangle \subset \mathbb{Q}[X,Y]$ be the ideal generated by $X^2 - Y$; and $J = \langle X^2, Y^3\rangle$ be the ideal generated by $X^2$ and $Y^3$. Then 
+\begin{itemize}
+\item $I$ is prime and $J$ is not prime;
+\item the radical ideal $\sqrt{I} = \langle X^2 - Y\rangle = I$ and the radical ideal of $J$ is $\sqrt{J} = \langle X,Y \rangle$. 
+\end{itemize}
+\end{Example}
 \begin{Definition} $\mathrm{[Dimension \ of \ an \ ideal]}$ Let $\mathcal{P} \subset \field[\mat{X}]$ be a prime ideal. We say that d is $\mathrm{Krull \ dimension }$ of $\mathcal{P}$ if and only if there exists prime ideals $\mathcal{P}_0, \mathcal{P}_1, \ldots, \mathcal{P}_d$ in $\field[\mat{X}]$ such that 
 \[
-\mathcal{P}_0 \subsetneq \mathcal{P}_1 \subsetneq \cdots \subsetneq \mathcal{P}_d.
+\mathcal{P}_0 \subsetneq \mathcal{P}_1 \subsetneq \cdots \subsetneq \mathcal{P}_d = \mathcal{P}.
 \] 
 The $\mathrm{Krull \ dimension}$ of an ideal $I \subset \field[\mat{X}]$ is the maximum Krull dimension of the prime components of $\sqrt{I}$. 
-\end{Definition}
+\end{Definition} 
+\begin{Example} Let $I$ be the ideal defined as in the Example \ref{Ex1}. Then, the dimension of $I$ equals one. 
+\end{Example}
 The geometrical objects corresponding to ideals of $\field[\mat{X}]$ are \emph{affine \ varieties} (or \emph{algebraic sets}) of $\bar{\field}^n$. An affine variety in $\bar{\field}^n$ is the set of all solutions of a system of equations. Hereafter, we will use variety for the short of affine variety. One of the important properties of varieties of $\bar{\field}^n$ is they define a topology on $\bar{\field}^n$, namely \emph{Zariski topology}, with the closed sets of the topology are the varieties. The \emph{Zariski closure} of a set $S$ in $\bar{\field}^n$ is the smallest (for the inclusion ordering) Zariski closed set that contains $S$. A set $V$ is \emph{Zariski dense} in a set $W$ if the Zariski closure of V contains in the Zariski closure of W. 
 
 Zariski topology will be useful for defining an algebraic notion of genericity for structured system. 
@@ -356,7 +367,7 @@ Zariski topology will be useful for defining an algebraic notion of genericity f
 \begin{Definition}$\mathrm{[Dimension \ of \ a \ variety]}$ Let $V$ be a variety. The dimension of V is the largest d such that the image of V by $(X_1, \ldots, X_n) \to (X_{i_1}, \ldots, X_{i_d})$ is Zariski dense for some $(i_1, \ldots, i_d) \subset \{1, \ldots, n\}$.
 \end{Definition}
 It is equivalent to define the dimension of a variety $V$ as the Krull dimension of $\field[\mat{X}]/I(V)$, where \[I(V) := \{f \in \field[\mat{X}] \ | \ f(\alpha) = 0 \ \forall \ \alpha \in V\}\]
- which is called the ideal of $V$. A $0 -$ dimensional variety is a finite set. A variety $V \subset \bar{\field}^n$ is \emph{irreducible} if whenever $V$ is written in the form $V = V_1 \cup V_2$, where $V_1, V_2$ are varieties, then either $V = V_1$ or $V = V_2$. The next result is given in \cite[Theorem~4 -- section~6 -- chapter~4]{Cox07}.
+ which is called the ideal of $V$. A zero-dimensional variety is a finite set. A variety $V \subset \bar{\field}^n$ is \emph{irreducible} if whenever $V$ is written in the form $V = V_1 \cup V_2$, where $V_1, V_2$ are varieties, then either $V = V_1$ or $V = V_2$. The next result is given in \cite[Theorem~4 -- section~6 -- chapter~4]{Cox07}.
 \begin{Theorem} Let $V \subset \bar{\field}^{n}$ is a variety. Then V has a minimal decomposition 
 \[
 V = V_1 \cup \cdots \cup V_m,
@@ -364,12 +375,15 @@ V = V_1 \cup \cdots \cup V_m,
 \end{Theorem}
 \begin{Definition} A variety is said to be $\mathrm{equidimensional}$ if and only if there exists $d \in \mathbb{N}$ such that all its irreducible components have dimension d. 
 \end{Definition}
-\begin{Definition}$\mathrm{[Degree \ of \ a \ variety]}$ Let V be an equidimensional variety of dimension d. The $\mathrm{degree}$ of $V$ is the unique integer $D$ such that $V \cap V(H_1) \cap \cdots \cap V(H_d)$ consists of D points for generic hyperplane $H_1, \ldots, H_p$. 
+\begin{Example}Let $f = X^2-Y \in \mathbb{Q}[X,Y]$ and $g = X-Y$; then the variety $V(f) = \{(t^2,t) \ | \ t \in \mathbb{Q}\}$ has dimension one while the variety $V(f,g) = \{(0,0), (1,-1)\}$ has zero-dimensional. Moreover, $V(f)$ is irreducible (since $\langle f \rangle$ is prime) while $V(f,g)$ is not an irreducible variety (since $\langle f,g \rangle$ is not a prime ideal). 
+\end{Example}
+A \emph{hyperplane} $H$ is the vanishing set of a linear polynomial in $\field[\mat{X}]$, that is $H = V(\sum a_iX_i + b)$. 
+\begin{Definition}$\mathrm{[Degree \ of \ a \ variety]}$ Let V be an equidimensional variety of dimension d. The $\mathrm{degree}$ of $V$ is the unique integer $D$ such that $V \cap H_1 \cap \cdots \cap H_d$ consists of D points for generic hyperplanes $H_1, \ldots, H_p$. 
 
 For any variety V, the degree of V is the sum of degree of all irreducible components of V. 
 \end{Definition}
-\begin{Remark} The degree of a $0$-dimensional variety equals its cardinality.
-\end{Remark}
+\begin{Example} Let $V$ be the variety which is defined by $X^2 - YZ = XZ-X = 0$ in $\mathbb{Q}^3$, then $V = V_1 \cup V_2 \cup V_3$, where $V_1 = V(X,Y)$, $V_2 = V(X,Z)$ and $V_3 = V(Z-1,X^2 - Y)$. In other words, $V_1$ is the $Z$-axis, $V_2$ is the $Y$-axis and $V_3$ is a parabola.  Since $\langle X,Y\rangle$, $\langle X,Z\rangle$ and $\langle Z-1,X^2 - Y \rangle$ are prime ideals in $\mathbb{Q}[X,Y,Z]$ then $V_1, V_2, V_3$ are irreducible. Therefore, $V_1, V_2, V_3$ are irreducible components of $V$. Moreover, all of these components has dimension one, so $V$ is equidimensional of dimension one. 
+\end{Example}
 Given a set of polynomials $\mathbf{f} = (F_1, \ldots, F_k) \subset \field[\mat{X}]^k$, the Jacobian matrix of $\mathbf{f}$ is an $k \times n$ matrix defined as follows 
 \[
 \mathrm{Jac}(\mathbf{f}) = \left[ \begin{matrix}
@@ -386,11 +400,17 @@ Let $\mathbf{f} = (F_1, ..., F_k) \subset \field[\mat{X}]^k$ and $V(\mathbf{f}) 
 \] Then, V is equidimensional and has dimension $n - k$.
 \end{Theorem}
 
-\subsection{Solutions of polynomial systems}
+\subsubsection{Solutions of polynomial systems}
 Given a polynomial system of $N$ equations in $n$ unknowns, $A(\mat{X}) = \mat{0}$, we are interested in $\mathbf{x}^*$, an \emph{isolated} solution of $A(\mat{X}) = \mat{0}$:
 \[
 \mathrm{for \ small \ enough} \ \epsilon > 0 : \{\mathbf{y} \in \bar{\field}^n : ||\mathbf{y} - \mathbf{x}^*|| < \epsilon\} \cap A^{-1}(\mat{0}) = \{\mathbf{x}^*\}, 
 \] where $A^{-1}(\mat{0}) := \{\mathbf{y} \in \bar{\field}^n | A(\mathbf{y}) = \mat{0}\}$. We call $\mathbf{x}^*$ a \emph{singular} solution of $A(\mat{X}) = \mat{0}$ if and only if $\mathrm{rank}(\mathrm{Jac}(A)(\mathbf{x}^*)) < n$.  Let us denote $mul(\mathbf{x}^*)$ for the multiplicity of the solution $\mathbf{x}^*$ of $A(\mat{X}) = \mat{0}$.   A solution $\mathbf{x}^*$ is called a \emph{simple} root of $A(\mat{X}) = \mat{0}$ if  $\mathrm{rank}(\mathrm{Jac}(A)(\mathbf{x}^*)) = n$.
+\subsubsection{Zero-dimentional parametrization} Let $V \subset \bar{\field}^n$ be a zero-dimensional variety which is defined over $\field$. A \emph{zero-dimensional parametrization} $\mathscr{R} = ((q,v_1, \ldots, v_n), \lambda)$ of $V$ consists in polynomials $(q,v_1, \ldots, v_n)$ such that $q \in \field[T]$ is monic and squarefree, all $v_i \in \field[T]$ and $\deg(v_i) < \deg(q)$, and $\lambda$ is a $\field$-linear form in $n$ variables, such that 
+\begin{itemize}
+\item $\lambda(v_1, \ldots, v_n) = Tq'$ mod $q$
+\item we have $V = \{(\frac{v_1(\tau)}{q'(\tau)}, \ldots, \frac{v_n(\tau)}{q'(\tau)}) \ | \ q(\tau) = 0\}$;
+\end{itemize}
+the constraint on $\lambda$ says that the root of $q$ are the values taken by $\lambda$ on $V$. 
 \section{Genericity assumption}
 In this section, we work on the case when the starting matrix is $G = [g_{i,j}]_{1 \leq i \leq p, 1 \leq j \leq q}$, where $g_{i,j}$ is a product of $D_i$ linear forms with each linear form has generic coefficients. We also define $I_G := \langle p \times p - \mathrm{minors \ of} \ G \rangle$. We say that the matrix $G$ satisfies assumption $\mathcal{A}$ if 
 \begin{enumerate}
@@ -401,7 +421,7 @@ In this section, we work on the case when the starting matrix is $G = [g_{i,j}]_
 Let us denote $\mathcal{G} = \{\gamma_{i,j}^{(t,l_i)} \ | \ 1 \leq j \leq q, 0 \leq t \leq n \ \mathrm{and} \ \mathrm{for} \ i : 1 \leq i \leq p, 1 \leq l_i \leq D_i\}$ for the set of new indeterminantes for these generic coefficients, and $N = q(n+1)(\sum_{i=1}^pD_i)$ be the cardinality of the set $\mathcal{G}$. 
 
 For $1 \leq i \leq p, 1 \leq j \leq q$ and denote by $\mathfrak{g}_{i,j} = \prod_{l=1}^{D_i}(\gamma_{i,j}^{(n,l_i)}X_n + \cdots + \gamma_{i,j}^{(1,l_i)}X_1 + \gamma_{i,j}^{(0,l_i)}) \in \field[\mathcal{G}, \bf{X}]$. We will prove that assumption $\mathcal{A}$ is generic in the following sense. 
-\begin{Proposition} For any $k \in \{1,2,3\}$, there exists a nonempty Zariski open set $\mathcal{O}_k$ such that $I_G$ satisfies $\mathcal{A}(k)$ for $g_{i,j} \in \mathcal{O}_k$. 
+\begin{Proposition} For any $k \in \{1,2,3\}$, there exists a nonempty Zariski open set $\mathcal{O}_k$ such that $I_G$ satisfies $\mathcal{A}(k)$ for $\mathfrak{g}_{i,j} \in \mathcal{O}_k$. 
 \end{Proposition}
 
 The rest of this section contains the proof of this proposition. We first notice that we are working on $n = q-p+1$, where $n$ is the number of variables. Let us define the matrices $G_1$ and $G_2$ as follow
