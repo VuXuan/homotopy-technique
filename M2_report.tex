@@ -1313,6 +1313,96 @@ $\lim_0(\varphi_i)={\rm coeff}(\varphi_i,T^0)$ for all $i$.
    $\Phi_1,\dots,\Phi_{c'}$ are bounded.
 \end{Lemma}
 \begin{proof}
+  For $i=1,\dots,c'$, write $\Phi_i=1/T^{e_i}
+  (\Psi_{i,1},\dots,\Psi_{n})$, for a vector
+  $(\Psi_{i,1},\dots,\Psi_{i,n})$ of Puiseux series of valuation
+  zero, that is, such that all $\Psi_{i,j}$ are bounded and
+  $(\psi_{i,1},\dots,\psi_{i,n})=\lim_0(\Psi_{i,1},\dots,\Psi_{i,n})$
+  is nonzero. Hence,
+  $e_i=-\nu(\Phi_i)$, and we have to prove that $e_i \le 0$.  By way
+  of contradiction, we assume that $e_i > 0$.
 
+  The Puiseux series $\Phi_i$ cancels $h_1,\dots,h_M$. For
+  $k=1,\dots,M$, let $h_k^H \in \bar{\field}[T][X_0,\mat{X}]$ be the homogenization
+  of $h_k$ with respect to $\mat{X}$. From the equality
+  $h_k^H(T^{e_i},\Psi_{i,1},\dots,\Psi_{i,n})=
+  T^{e_i}h_k(\Phi_i)$, we deduce that
+  $h_k^H(T^{e_i},\Psi_{i,1},\dots,\Psi_{i,n})=0$ for all $k$. We
+  can write $h_k = h_{0,k} + T \tilde h_k$, for some polynomial
+  $\tilde h_k$ in $\bar{\field}[T,\mat{X}]$, and ${\sf G}_2(0)$ implies that
+  $\deg_\mat{X}(\tilde h_k) \le \deg_\mat{X}(h_{0,k})$. As a result, the
+  homogenizations (with respect to $\mat{X}$) of $h_{k},h_{0,k}$ and $\tilde
+  h_k$ satisfy a relation of the form $h^H_k = h_{0,k}^H +
+  X_0^{\delta_k} T \tilde h^H_k$, for some $\delta_k \ge 0$. This
+  implies the equality
+  $$h_{0,k}^H(T^{e_i},\Psi_{i,1},\dots,\Psi_{i,n}) + T^{\delta_k
+    e_i+1}\tilde h_k^H(T^{e_i},\Psi_{i,1},\dots,\Psi_{i,n})=0.$$
+  The second term has positive valuation, so that
+  $h_{0,k}^H(T^{e_i},\Psi_{i,1},\dots,\Psi_{i,n})$ has positive
+  valuation as well. Taking the coefficient of $T^0$, this means 
+  that $h_{0,k}^H(0,\psi_{i,1},\dots,\psi_{i,n})=0$ (since $e_i > 0$), which implies 
+  that $(\psi_{i,1},\dots,\psi_{i,n})=(0,\dots,0)$, in view of ${\sf G}_3(0)$.
+  This however contradicts the definition of $(\psi_{i,1},\dots,\psi_{i,n})$.
 \end{proof}
+
+For $i=1,\dots,c'$, we define $\varphi_i =
+(\varphi_{i,1},\dots,\varphi_{i,n})$ as $\varphi_i=\lim_0(\Phi_i)\in
+\bar{\field}{}^n$. In particular, all $\varphi_i$, $i=1,\dots,c'$, are roots
+of $\h_0$.
+
+\begin{Lemma}\label{lemma:Jprimerad}
+  The ideal $\frak{J}'$ is radical; equivalently, $c'=c$.
+\end{Lemma}
+
+\begin{proof}
+ We know that $\frak{J}'$ has dimension zero, so it is enough to prove
+ that for $i=1,\dots,c'$, the localization of $\bar{\field}\langle\langle T
+ \rangle\rangle[\mat{X}]/\frak{J}'$ at the maximal ideal
+ $\mathfrak{m}_{\Phi_i}$ is a field, or equivalently that the
+ localization of $\bar{\field}\langle\langle T \rangle\rangle[\mat{X}]/\frak{J}$
+ at $\mathfrak{m}_{\Phi_i}$ is a field.  By the Jacobian
+ criterion~\cite[Theorem~16.19.b]{Eisenbud95}, this is the case if and
+ only if the Jacobian matrix of $\h$ with respect to $\mat{X}$ has full
+ rank $n$ at $\Phi_i$. We know that $\varphi_i=\lim_0(\Phi_i)$ is a
+ root of $\h_0$, and the Jacobian criterion conversely implies that
+ since the ideal $\langle \h_0 \rangle$ is radical (by assumption
+ ${\sf G}_1(0)$) and zero-dimensional (by assumption ${\sf G}_3(0)$),
+ the Jacobian matrix of $\h_0(\mat{X})=\h(0,\mat{X})$ has full rank $n$. Since
+ this matrix is the limit at zero of the Jacobian matrix of $\h$ with
+ respect to $\mat{X}$, taken at $\Phi_i$, the latter must have full rank
+ $n$, and our claim that $\frak{J}'$ is radical is proved.
+\end{proof}
+
+To finish the proof of Proposition~\ref{degree_fiber}, we have to
+establish that $V(\h_0)$ consists of exactly $c$ solutions.  Let thus
+$d$ be the number of points in $V(\h_0)$.  Since $\langle \h_0
+\rangle$ is radical (this is ${\sf G}_1(0)$), Lemma~\ref{lemma:19}
+implies that $d \le c$, so we only have to prove that $c \le d$. To
+prove this, we prove that for $i,i'$ in $\{1,\dots,c\}$, with $i \ne
+i'$, we have $\varphi_i \ne \varphi_{i'}$.
+
+Suppose to the contrary that $\varphi_i = \varphi_{i'}$. We know that
+the Jacobian matrix of $\h_0$ has full rank $N$ at $\varphi_i$; up to
+reindexing, we assume that rows $1,\dots,n$ correspond to a maximal
+nonzero minor. Let $\h'=(h_1,\dots,h_n)$.
+
+Let $m=\nu(\Phi_i-\Phi_{i'})$; since  $\varphi_i = \varphi_{i'}$, we have
+$m > 0$. We can thus write $\Phi_i=f + T^m
+\delta_i$ and $\Phi_{i'}=f + T^m \delta_{i'}$, for some vectors of
+bounded Puiseux series $f, \delta_i, \delta_{i'}$ such that all terms
+in $f$ have valuation less than~$m$; in addition, $\lim_0(\delta_i)
+\ne \lim_0(\delta_{i'})$. Write the Taylor expansion of $\h'$ at $f$ as
+$$\h'(\Phi_i) = \h'(f) + \mathrm{jac}(\h',\mat{X}) T^m \delta_i + T^{2m} r_i =0$$
+and
+$$\h'(\Phi_{i'}) = \h'(f) + \mathrm{jac}_f(\h',\mat{X}) T^m \delta_{i'} + T^{2m}
+r_{i'} =0,$$ for some vectors of bounded Puiseux series $r_i,r_{i'}$.
+By subtraction and division by $T^m$, we obtain $\mathrm{jac}(\h',\mat{X})
+(\delta_i-\delta_{i'}) = T^m r$, for some vector of bounded Puiseux
+series $r$.  Since $\mathrm{jac}(\h',\mat{X})$ is invertible, this further gives
+$\delta_i-\delta_{i'} = T^m r'$, where again $r'$ is a vector of
+bounded Puiseux series.  However, by construction the left-hand side
+has valuation zero, while the right-hand side has positive valuation
+(since $m > 0$). Hence, we derived a contradiction to our assumption
+that $\varphi_i = \varphi_{i'}$. The proof of Proposition~\ref{degree_fiber} is
+complete.
 \end{document}
