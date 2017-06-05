@@ -383,7 +383,7 @@ I = Q_1 \cap \cdots \cap Q_s,
 where each $Q_i$ is primary.
 \end{Definition}
 The decomposition is \emph{irredundant} or \emph{minimal} if $\sqrt{Q_i}$ are all distinct $Q_i \not \supset \cap_{j \ne i}Q_j$ for all $1 \leq i \leq s$. After pruning redundant,  we obtain $P_i = \sqrt{Q}_i$ for $1 \leq i \leq r$. The radical ideals $P_i$ are then called the \emph{associated primes} of $I$. 
-\begin{Theorem}$[\todo{cite}]$ Let $I \in \field[\mat{X}]$ be an ideal. Then, there exist unique $\mathcal{P}_1, \ldots,, \mathcal{P}_r$ prime ideal in $\field[\mat{X}]$ such that 
+\begin{Theorem}$[\todo{cite}]$ Let $I \subset \field[\mat{X}]$ be an ideal. Then, there exist unique $\mathcal{P}_1, \ldots,, \mathcal{P}_r$ prime ideal in $\field[\mat{X}]$ such that 
 \[
 \sqrt{I} = \mathcal{P}_1 \cap \mathcal{P}_2 \cdots \cap \mathcal{P}_r,
 \]
@@ -442,12 +442,12 @@ For any variety V, the degree of V is the sum of degree of all irreducible compo
 \end{Definition}
 \begin{Example} Let $V$ be the variety which is defined by $X^2 - YZ = XZ-X = 0$ in $\mathbb{C}^3$, then $V = V_1 \cup V_2 \cup V_3$, where $V_1 = V(X,Y)$, $V_2 = V(X,Z)$ and $V_3 = V(Z-1,X^2 - Y)$. In other words, $V_1$ is the $Z$-axis, $V_2$ is the $Y$-axis and $V_3$ is a parabola.  Since $\langle X,Y\rangle$, $\langle X,Z\rangle$ and $\langle Z-1,X^2 - Y \rangle$ are prime ideals in $\mathbb{C}[X,Y,Z]$ then $V_1, V_2, V_3$ are irreducible. Therefore, $V_1, V_2, V_3$ are irreducible components of $V$. Moreover, all of these components has dimension one, so $V$ is equidimensional of dimension one. 
 \end{Example}
-Given a set of polynomials $\mathbf{f} = (F_1, \ldots, F_k) \subset \field[\mat{X}]^k$, the Jacobian matrix of $\mathbf{f}$ is an $k \times n$ matrix defined as follows 
+Given a set of polynomials $\mathbf{f} = (f_1, \ldots, f_M) \subset \field[\mat{X}]^M$, the \emph{Jacobian matrix} of $\mathbf{f}$ is an $M \times n$ matrix defined as follows 
 \[
 \mathrm{Jac}(\mathbf{f}) = \left[ \begin{matrix}
-\frac{\partial F_1}{X_1} & \frac{\partial F_1}{X_2} & \cdots & \frac{\partial F_1}{X_n}\\
-\vdots & \vdots & \ddots & \vdots\\
-\frac{\partial F_k}{X_1} & \frac{\partial F_k}{X_2} & \cdots & \frac{\partial F_k}{X_n}
+\frac{\partial f_1}{X_1}  & \cdots & \frac{\partial f_1}{X_n}\\
+\vdots & \ddots & \vdots\\
+\frac{\partial f_M}{X_1}  & \cdots & \frac{\partial f_M}{X_n}
 \end{matrix} \right].
 \]
 %Jacobian criterion is an useful tool to check wheather the variety of an ideal is equidimensional. 
@@ -470,14 +470,14 @@ Given a set of polynomials $\mathbf{f} = (F_1, \ldots, F_k) \subset \field[\mat{
 the constraint on $\lambda$ says that the root of $q$ are the values taken by $\lambda$ on $V$. 
 
 \section{Start matrix and a bound on the degree of the input}
-We study two cases for the input matrix, that are either column degrees and row degrees. We recall here that the notation $\mathcal{T}$ is either $E_{q-p+1}(D_1, \ldots, D_q)$ in the case of column degrees or $S_{q-p+1}(D_1, \ldots, D_p)$ in the row degrees case. Notice that in this report, we are working on the case when $n = q-p+1$. Before going to details of the start matrix, we need some genericity assumptions for the case of row degrees. Hereafter, give a polymomial matrix $G$, we use the notation ${\bf g} = (g_1, \ldots, g_M)$ for the determinanatal system of $G$. 
+We study two cases for the input matrix, those are column degrees and row degrees. We recall here that the notation $\mathcal{T}$ is either $E_{q-p+1}(D_1, \ldots, D_q)$ in the case of column degrees or $S_{q-p+1}(D_1, \ldots, D_p)$ in the row degrees case. Notice that in this report, we are working on the case when $n = q-p+1$. Before going to details of the start matrix, we need some genericity assumptions for the case of row degrees. Hereafter, give a polymomial matrix $G$, we use the notation ${\bf g} = (g_1, \ldots, g_M)$ for the determinanatal system of $G$. 
 \subsection{Genericity assumptions}
 \label{subsec:genericity}
 Let $G = [g_{i,j}]_{1 \leq i \leq p, 1 \leq j \leq q}$ be a matrix with $g_{i,j}$ is a product of $D_i$ linear forms with each linear form has generic coefficients. We say that the matrix $G$ satisfies assumption $\mathcal{A}$ if 
 \begin{enumerate}
 \item rank($G(\mathbf{x}^*)$) $= p-1$ for all $\mathbf{x}^* \in V({\bf g})$.
 \item ${\bf g}$ has exactly $S_{n}(D_1, \ldots, D_p)$ distinct solutions.  
-\item ${\bf g}$ is a radical ideal (this genericity condition is equivalent to the property that $\mathrm{Jac}({\bf g})(\mathbf{x}^*)$ has full rank for any $\mathbf{x}^* \in V({\bf g})$. 
+\item ${\bf g}$ is a radical ideal (this genericity condition is equivalent to the property that $\mathrm{Jac}({\bf g})(\mathbf{x}^*)$ has full rank for any $\mathbf{x}^* \in V({\bf g}))$. 
 \end{enumerate}
 
 Let us denote $\mathcal{G} = \{\gamma_{i,j}^{(t,l_i)} \ | \ 1 \leq j \leq q, 0 \leq t \leq n \ \mathrm{and} \ \mathrm{for} \ i : 1 \leq i \leq p, 1 \leq l_i \leq D_i\}$ for the set of new indeterminantes for these generic coefficients. For $1 \leq i \leq p, 1 \leq j \leq q$ and denote by $\mathfrak{g}_{i,j} = \prod_{l=1}^{D_i}(\gamma_{i,j}^{(n,l_i)}X_n + \cdots + \gamma_{i,j}^{(1,l_i)}X_1 + \gamma_{i,j}^{(0,l_i)}) \in \field[\mathcal{G}, \bf{X}]$. We will prove that assumption $\mathcal{A}$ is generic in the following sense. 
@@ -555,7 +555,7 @@ For the complexity, since each polynomial $L_{i,j}$ is linear, so the time to so
 }
 \label{StartMatCol}
 \end{algorithm}
-Furthermore, by the construction of $G$ as above, we can see that there are no solution of ${\bf g}$ at infinity. 
+%Furthermore, by the construction of $G$ as above, we can see that there are no solution of ${\bf g}$ at infinity. 
 \subsubsection{Row degrees}
 We here consider the case when $F = [f_{i,j}] \in \field[\mat{X}]^{p\times q}$ with $\deg({f_{i,j}}) = D_i$ for all $1 \leq i \leq p$. We will construct a polynomial matrix $G \in \field[\mat{X}]^{p \times q}$ such that the determinantal system of $G$ has $S_{n}(D_1, \ldots, D_p)$ solutions. 
 
@@ -621,7 +621,7 @@ Let ${\bf g} = (g_1, \ldots, g_M)$ in $\field[\mat{X}]^M$ be the determinantal s
 Let $H := (1-T).G + T.F \in \field[T, \mat{X}]$ and ${\bf h} = (h_1, \ldots, h_M)$ in $\field[T, \mat{X}]^M$ is the determinantal system of $H$. From \cite[Section~6]{Eagon188}, we have any irreducible component of ${\bf h}$ has dimension at least one. Then, there is a decomposition for the variety of ${\bf h}$ as 
 \[
 V({\bf h}) = V_1 \cup V_2 \cup \cdots \cup V_d, \] where each $V_i$
-is an irreducible variety. Let us rewrite $V_1 = V_{1,1} \cup V_{1,2}$, where $V_{1,1}$ contains all components whose projection in $t$-axis is dense in $\bar{\field}$. Then, all solutions of ${\bf g}$ and all of isolated solutions of ${\bf f}$ are in $V_{1,1}$. 
+is an irreducible variety. Let us rewrite $V_1 = V_{1,1} \cup V_{1,2}$, where $V_{1,1}$ contains all components whose projection in $T$-axis is dense in $\bar{\field}$. Then, all solutions of ${\bf g}$ and all of isolated solutions of ${\bf f}$ are in $V_{1,1}$. 
 
 Let $\pi_1$ be the projection from $V_{1,1}$ on the first coordinate, i.e., $\pi_1: V_{1,1} \to \bar{\field}$. It is obvious that $\bar{\pi_1(V_{1,1})} = \bar{\field}$, that is $\pi_1$ is a dominating morphism; then, by using the Proposition $\ref{hen}$, we have $\#\pi_1^{-1}(1) \leq [ \mathsf{k}(V_{1,1}) : \mathsf{k}(\bar{\field})]$. Moreover, $\#\pi_1^{-1}(1)$ equals the number of isolated solutions of ${\bf f}$; and $V_{1,1}$ has generically $[ \mathsf{k}(V_{1,1}) : \mathsf{k}(\bar{\field})]$ solutions. Thus, to obtain the number of isolated solutions of ${\bf f}$ is at most $\mathcal{T}$, it sufficies to show that $V_{1,1}$ has generically $\mathcal{T}$ solutions. By definition, the generically number of solutions of $V_{1,1}$ equals the number of solutions of $I(V_{1,1})$ in $\field(T)[\mat{X}]$. So, we are going to prove that $I(V_{1,1})$ has $\mathcal{T}$ solutions in $\field(T)[\mat{X}]$. We notice that $I_G$ has exactly $\mathcal{T}$ solutions; and when $T = 0$ we have ${\bf g} \equiv  {\bf h}_0 = (h_{i}(1, \mat{X}))_{1 \leq i \leq M}$. Therefore, to obtain $I(V_{1,1})$ has $\mathcal{T}$ solutions in $\field(T)[\mat{X}]$, it sufficies to prove that 
 \begin{itemize}
@@ -730,7 +730,7 @@ Let $\mathbf{x}^*$ be a solution of $I_G$ and $\bar{G} \in \field[\mat{X}]^{(p-1
 The structure of this section as follows. In \improve{\cref{subsec:local}}, we will present how to obtain this system if we know $m$; after that, in \improve{\cref{subsec:cd2}} and \improve{\cref{subsec:row2}}, we will show how to find the matrix $\bar{G}$ such that $\bar{G}(\mathbf{x}^*) \ne 0$ for fix $\mathbf{x}^* \in V(I_G)$ in the case when we work on column degrees and row degrees respectively. As a consequence, we can build the matrix $\bar{H}$. 
 \subsection{Local description}
 \label{subsec:local}
-The main goal of this section is giving a local description of the variety of $I_H$. We will show that it sufficies to use $n$ equations to describe the local variety $V(I_H)$. We follow the similar way as in \cite[Section ~ 2.2]{Bank2001}. 
+The main goal of this section is giving a local description of the variety of $\h$. We will show that it sufficies to use $n$ equations to describe the local variety $V(\h)$. We follow the similar way as in \cite[Section ~ 2.2]{Bank2001}. 
 
 Let $H = [h_{i,j}]$ be a $p \times q$ polynomial matrix of $n+1$ variables with $p \leq q$. Let $l$ and $k$ be any natural numbers with $l \leq q$ and $k \leq \min\{p,l\}$. Let $I_k = (i_1, \ldots, i_k) \subset \{1, \ldots, l\}^k$ be an ordered sequence and $M(I_k)$ be the determinant of $H_{1:k;I_k}$. The Exchange Lemma below will be an important tool in this section. 
 \begin{Lemma}$\cite{Bank2001}$ Let $H$, $l$ and $k$ be given as above. Let $I_k = (i_1, \ldots, i_k)$ amd $I_{k-1} = (j_1, \ldots, j_{k-1})$ be two index sets such that $I_k \cap I_{k-1} \ne \emptyset$. Then, 
@@ -740,17 +740,17 @@ M({I_{k-1}})M(I_k) = \sum_{j \in I_k \backslash I_{k-1}} \epsilon_j \ M(I_k \bac
 \end{Lemma}
 The following proposition is a similar version of \cite[Proposition ~ 5]{Bank2001}. In \cite{Bank2001}, the authors use the matrix $H$ as the Jacobian matrix of $p$ polynomials $(f_1, \ldots, f_p) \in \field[\mat{X}]^p$ while here, we rewrite this proposition for the general polynomial matrix $H \in \field[t,\mat{X}]^{p \times q}$ where $p \leq q$. Noting that in \cite{Bank2001}, there is a condition that $p \leq n$. 
 
-Let $m \in \field[t,\mat{X}]$ be the $(p-1) \times (p-1)$ minor of $H$ given by the first $(p-1)$ rows and $(p-1)$ columns, i.e., $m = \det(H_{1:p-1;1:p-1})$. Let us define $V(m) := \{\mathbf{x} \in \bar{\field[t]}^n : m(\mathbf{x}) = 0\}$ and $V(I_H)_m : = V(I_H) \backslash V(m)$, where $V(I_H) = \{\mathbf{x} \in \bar{\field}^{n} : f_H(\mathbf{x}) = 0 \ \mathrm{for \ all} \ f_H \in I_H\}$. Hereafter, for any $1 \leq i_1 \leq \cdots \leq i_p \leq n$, let us denote $M(i_1, \ldots, i_p) \in \field[t,\mat{X}]$ for the determinant of the submatrix of $H$ which contains $p$ rows and the columns $i_1, \ldots, i_p$. 
+Let $m \in \field[t,\mat{X}]$ be the $(p-1) \times (p-1)$ minor of $H$ given by the first $(p-1)$ rows and $(p-1)$ columns, i.e., $m = \det(H_{1:p-1;1:p-1})$. Let us define $V(m) := \{\mathbf{x} \in \bar{\field[t]}^n : m(\mathbf{x}) = 0\}$ and $V(\h)_m : = V(I_H) \backslash V(m)$, where $V(\h) = \{\mathbf{x} \in \bar{\field}^{n} : f_H(\mathbf{x}) = 0 \ \mathrm{for \ all} \ f_H \in \langle \h \rangle \}$. Hereafter, for any $1 \leq i_1 \leq \cdots \leq i_p \leq n$, let us denote $M(i_1, \ldots, i_p) \in \field[t,\mat{X}]$ for the determinant of the submatrix of $H$ which contains $p$ rows and the columns $i_1, \ldots, i_p$. 
 \begin{Proposition} \label{ppp} Let $m, V(I_H), V(I_H)_m$ and $V(m)$ be defined as above. Then, 
 \[
-V(I_H)_m = \{\mathbf{x} \in \bar{\field[t]}^n \ | \ M(1, \ldots, p-1, s) = 0, m(\mathbf{x}) \ne 0 \ \mathrm{for} \ s \in \{p, \ldots, q\} \}.
-\] In other words, the variety $V(I_H)$ is locally described by $q - p + 1$ polynomials $(outside \ of \ V(m))$, i.e., $n$ polynomials 
+V(\h)_m = \{\mathbf{x} \in \bar{\field[t]}^n \ | \ M(1, \ldots, p-1, s) = 0, m(\mathbf{x}) \ne 0 \ \mathrm{for} \ s \in \{p, \ldots, q\} \}.
+\] In other words, the variety $V(\h)$ is locally described by $q - p + 1$ polynomials $(outside \ of \ V(m))$, i.e., $n$ polynomials 
 \[
 M(1, \ldots, p-1, p), M(1, \ldots, p-1, p+	1), \ldots, M(1, \ldots, p-1, q).
 \]
 \end{Proposition}
 \begin{proof}
-$(\subseteq)$ It is obvious that for any $\mathbf{x} \in \bar{\field[t]}^n$ such that $\mathbf{x} \in V(I_H)_m$ we have 
+$(\subseteq)$ It is obvious that for any $\mathbf{x} \in \bar{\field[t]}^n$ such that $\mathbf{x} \in V(\h)_m$ we have 
 \[\mathbf{x} \in \{\mathbf{x} \in \bar{\field[t]}^n \ | \ M(1, \ldots, p-1, s) = 0, m(\mathbf{x}) \ne 0 \ \mathrm{for} \ s \in \{p, \ldots, q\} \}.\]
 
 $(\supseteq)$ Let $\mathbf{x}$ be any point in $\bar{\field[t]}^n$ such that $m(\mathbf{x}) \ne 0$ and $M(1, \ldots, p-1, s)(\mathbf{x}) = 0$ for any $s \in \{p, \ldots, q\}$. We have to prove that $M(i_1, \ldots, i_p)(\mathbf{x}) = 0$ for any $(i_1, \ldots, i_p) \subset \{1, \ldots, q\}^p$. By using Lemma $\ref{exchange}$ for $M(1, \ldots, p-1) = m$, we have 
@@ -761,11 +761,11 @@ m.M(i_1, \ldots, i_p) = \sum_{\{j \in \{i_1, \ldots, i_p\} \backslash \{1, \ldot
 m(\mathbf{x}).M(i_1, \ldots, i_p)(\mathbf{x}) = \sum_{j \in \{i_1, \ldots, i_p\} \backslash \{1, \ldots, p-1 \} } \epsilon_j \ M(\{i_1, \ldots, i_p\} \backslash \{j\})(\mathbf{x}) \ M(1, \ldots, p-1,j)(\mathbf{x}). 
 \] Moreover, $M(1, \ldots, p-1, s)(\mathbf{x}) = 0$ for any $s \in \{p, \ldots, q\}$ and $m(\mathbf{x}) \ne 0$, so $M(i_1, \ldots, i_p)(\mathbf{x}) = 0$ for any $(i_1, \ldots, i_p) \subset \{1, \ldots, q\}^p$. 
 \end{proof}
-\begin{Remark}The result in Proposition $\ref{ppp}$ remains true if we replace $m$ by any $(p-1) \times (p-1)$-minor of $H$. 
+\begin{Remark}The result in Proposition $\ref{ppp}$ remains true if we replace $m$ by any $(p-1) \times (p-1)$ minor of $H$. 
 \end{Remark}
 \subsection{Column degrees}
 \label{subsec:cd2}
-In this section, we will find a $(p-1)\times (p-1)$ submatrix of $H$, namely $\bar{H}$, such that $m(\mathbf{x}^*) \ne 0$, where $m = \det(\bar{H})$ and $\mathbf{x}^*$ is a solution of $I_G$ when we work on the case $\deg(f_{i,j}) = D_j$ for all $1 \leq i \leq p$. Let us recall the starting matrix $G$ in this case is 
+In this section, we will find a $(p-1)\times (p-1)$ submatrix of $H$, namely $\bar{H}$, such that $m(\mathbf{x}^*) \ne 0$, where $m = \det(\bar{H})$ and $\mathbf{x}^*$ is a solution of $\g$ when we work on the case $\deg(f_{i,j}) = D_j$ for all $1 \leq i \leq p$. Let us recall the starting matrix $G$ in this case is 
 \[G = 
 \left( \begin{matrix}
 g_1 & 2g_2 & \cdots & qg_{q}\\
@@ -781,13 +781,13 @@ Without loss of generity, we take $\mathbf{x}^*$ is a solution of the system of 
 Now, we need to check that the Jacobian matrix corresponding to this system has full rank such that we can use the Newton interation. By the construction of $g_{i}$ as a product of $D_i$ linear form, $\mathbf{x}^*$ is the solution of a linear system of $n$ equations. It is obvious to verify that the Jacobian matrix of this system at $\mathbf{x}^*$ has full rank.
 \subsection{Row degrees}
 \label{subsec:row2}
-In this section, we will find a $(p-1)\times (p-1)$ submatrix of $H$, namely $\bar{H}$, such that $m(\mathbf{x}^*) \ne 0$, where $m = \det(\bar{H})$ and $\mathbf{x}^*$ is a solution of $I_G$ when we work on the case $\deg(f_{i,j}) = D_i$ for all $1 \leq i \leq p, 1\leq j \leq q$. Let us recall the starting matrix $G$ in this case is 
+In this section, we will find a $(p-1)\times (p-1)$ submatrix of $H$, namely $\bar{H}$, such that $m(\mathbf{x}^*) \ne 0$, where $m = \det(\bar{H})$ and $\mathbf{x}^*$ is a solution of $\g$ when we work on the case $\deg(f_{i,j}) = D_i$ for all $1 \leq i \leq p, 1\leq j \leq q$. Let us recall the starting matrix $G$ in this case is 
 \[ G = \left( \begin{matrix}
 g_1 & 0 & \cdots & 0 & g_{1,p+1} & \cdots & g_{1, q}\\
 0 & g_2 & \cdots & 0 & g_{2,p+1} & \cdots & g_{2, q}\\
 \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
 0 & 0 & \cdots & g_p & g_{p,p+1} & \cdots & g_{p, q}
-\end{matrix} \right), \] where all $\{g_i\}_{1 \leq i \leq p}$ and $\{g_{k,j}\}_{1 \leq k \leq p, p+1\leq j \leq q}$ has generic coefficients. We have seen that for any solution $\mathbf{x}^{*}$ of $I_G$, there is at least one $i \in \{1, \ldots , p\}$ such that $g_i(\mathbf{x}^*) = 0$. 
+\end{matrix} \right), \] where all $\{g_i\}_{1 \leq i \leq p}$ and $\{g_{k,j}\}_{1 \leq k \leq p, p+1\leq j \leq q}$ has generic coefficients. We have seen that for any solution $\mathbf{x}^{*}$ of $\g$, there is at least one $i \in \{1, \ldots , p\}$ such that $g_i(\mathbf{x}^*) = 0$. 
 
 If there is only one $i \in \{1, \ldots, p\}$, without loss of generility we assume that $i=p$, such that $g_{p}(\mathbf{x}^*) = 0$ and $g_{j}(\mathbf{x}^*) \ne 0$ for $j \in \{1, \ldots, p-1\}$; then we define $\bar{G} = \mathrm{diag}(g_1, \ldots, g_{p-1})$. So, $\det(\bar{G})(\mathbf{x}^*) = \prod_{j=1}^{p-1}g_j(\mathbf{x}^*) \ne 0$.
 
@@ -853,7 +853,7 @@ Suppose that $\mathsf{H}_1$ and $\mathsf{H}_2$ hold. Then, there exists an integ
 The proof is given in \improve{\cref{sec:proofdegree}}. 
 \end{proof}
 
-Consider an irredundant primary decomposition of $J$ in $\bar{\field}[T, \mat{X}]$, of the form $J=Q_1 \cap \cdots \cap Q_r$, and let $P_1,\dots,P_r$ be the associated primes, that is, the respective radicals of $Q_1,\dots,Q_r$. We assume that $P_1,\dots,P_s$ are the minimal primes, for some $s \le r$, so that $V(P_1) \dots,V(P_s)$ are the irreducible components of $V(J)\subset \bar{\field}{}^{n+1}$. By ${\sf H}_1$, these irreducible components all have dimension at least one. Refining further, we assume that $t \le s$ is such that $V(P_1),\dots,V(P_t)$ are the irreducible components of $V(J)$ of dimension one whose image by $\pi_T: (\tau,x_1,\dots,x_N) \mapsto \tau$ is dense in $\field$. Let us write $J=J' \cap J''$, with $J'=Q_1 \cap \cdots \cap Q_t$ and $J''=Q_{t+1} \cap \cdots \cap Q_r$. We also introduce  $\frak{J}$, the extension of $J$ in $\bar{\field}(T)[\mat{X}]$, and similarly $\frak{J}'$ and ${\frak J}''$. In the proof of Proposition \ref{degree_fiber} which is given in \improve{\cref{sec:proofdegree}}, we can see $c=\dim_{\bar{\field}(T)}(\bar{\field}(T)[\mat{X}]/{\frak J}')$.
+Consider an irredundant primary decomposition of $J$ in $\bar{\field}[T, \mat{X}]$, of the form $J=Q_1 \cap \cdots \cap Q_r$, and let $P_1,\dots,P_r$ be the associated primes, that is, the respective radicals of $Q_1,\dots,Q_r$. We assume that $P_1,\dots,P_s$ are the minimal primes, for some $s \le r$, so that $V(P_1), \dots,V(P_s)$ are the irreducible components of $V(J)\subset \bar{\field}{}^{n+1}$. By ${\sf H}_1$, these irreducible components all have dimension at least one. Refining further, we assume that $t \le s$ is such that $V(P_1),\dots,V(P_t)$ are the irreducible components of $V(J)$ of dimension one whose image by $\pi_T: (\tau,x_1,\dots,x_n) \mapsto \tau$ is dense in $\field$. Let us write $J=J' \cap J''$, with $J'=Q_1 \cap \cdots \cap Q_t$ and $J''=Q_{t+1} \cap \cdots \cap Q_r$. We also introduce  $\frak{J}$, the extension of $J$ in $\bar{\field}(T)[\mat{X}]$, and similarly $\frak{J}'$ and ${\frak J}''$. In the proof of Proposition \ref{degree_fiber} which is given in \improve{\cref{sec:proofdegree}}, we can see $c=\dim_{\bar{\field}(T)}(\bar{\field}(T)[\mat{X}]/{\frak J}')$.
 
 %\todo{Todo: Check ${\sf G}(0)$ holds}.
 \subsection{Computing the isolted solutions for determinantal systems}
@@ -891,6 +891,7 @@ Using the notation of the previous subsection and let $\Phi_1,\dots,\Phi_{c}$ be
 \bibliography{biblio}
 \appendix
 \section{Proof of Propositon \ref{generic}}
+\label{sec:proofgeneric}
 Let $N = q(n+1)(\sum_{i=1}^pD_i)$ be the cardinality of the set $\mathcal{G}$. We notice that we are working on $n = q-p+1$, where $n$ is the number of variables. Let us define the matrices $G_1$ and $G_2$ as follow
 \[G_1 = \left( \begin{matrix}
 \mathfrak{g}_{1,1} & \mathfrak{g}_{1,2} & \cdots  & \mathfrak{g}_{1, q}\\
@@ -905,7 +906,7 @@ Let $N = q(n+1)(\sum_{i=1}^pD_i)$ be the cardinality of the set $\mathcal{G}$. W
 0 & 0 & \cdots & \mathfrak{g}_{p,p} & \mathfrak{g}_{p,p+1} & \cdots & \mathfrak{g}_{p, q}
 \end{matrix} \right). \] 
 
-The idea to prove $\mathcal{A}(k)$, for any $k \in \{1,2,3\}$, is by using induction on the number of variables, $n$, for the matrix of form $G_1$; and, after that we show that the property $\mathcal{A}(k)$ is true for the matrix $G_2$. Finally, by using this property of form $G_2$, we prove  $\mathcal{A}(k)$ holds for any matrix of form $G_1$.
+The idea to prove $\mathcal{A}(k)$, for any $k \in \{1,2,3\}$, is by using induction on the number of variables, $n$, for the matrix of form $G_1$; and, after that we show that the property $\mathcal{A}(k)$ is true for the matrix $G_2$. Finally, by using this property of form $G_2$, we prove  $\mathcal{A}(k)$ holds for any matrix of form $G_1$. In this section, given a polynomial matrix $G$ and an integer $k < p$, we denote $I_G$ for the ideal generated by all $p \times p$ minors of $G$ and $I_G^{(k)}$ for the ideal generated by all $k \times k$ minors of $G$. 
 \subsection{Genericity of $\mathcal{A}(1)$}
 In this section, we use the fact that for any $\mathbf{x}^* \in V(I_G)$, the rank of the matrix $G(\mathbf{x}^*)$ is exactly $p-1$ if $\mathbf{x}^*$ does not belong to the variety of the ideal generated by $(p-1)\times (p-1)$ minors of $G$. Indeed, if $\mathbf{x}^* \in V(I_{G}^{(p-1)})$ where $I_{G}^{(p-1)} = \langle (p-1) \times (p-1) -\mathrm{minors \ of} \ G \rangle$, then $\mathrm{rank}(G(\mathbf{x}^*)) \leq p-2$.
 
@@ -990,7 +991,7 @@ Let us consider the matrix $G_1 \in \field[\mathcal{G}, \mat{X}]^{p \times q}$, 
 We first notice that for since $n \leq d$, so for any $\mathbf{x}^* \in \bar{\field}^n$, the matrix $\mathrm{Jac}(I_{G_1})(\mathbf{x}^*)$ has rank at most $n$. Therefore, $\mathrm{Jac}(I_{G_1})(\mathbf{x}^*)$ should has rank $n$ if we want the property that $\mathrm{Jac}(I_{G_1})$ has full rank at any point $\mathbf{x}^*$. For this argument, we consider the ideal which is generated by $n \times n \ \mathrm{minors \ of} \ \mathrm{Jac}(I_{G_1})$, that is $\mathcal{I}_{m} = \langle n \times n  \ \mathrm{minors \ of} \ \mathrm{Jac}(I_{G_1}) \rangle$.
 
 Let us define $\Omega_3 = V(\mathcal{I}_m) \subset \bar{\field}^N \times \mathbb{P}^n(\bar{\field})$ is a Zariski closed. Let $\pi_{\mathcal{G}}$ be the projection on $\mathcal{G}$ coordinates, then we define $\Delta_3 = \pi_{\mathcal{G}}(\Omega_3)$ is a Zariski closed in $\bar{\field}^N $. Finally, let us denote  $\mathcal{O}_3$ for $\bar{\field}^N \setminus \Delta_3$ which is a Zariski open in $\bar{\field}^N $. By using this contruction, when $\mathfrak{g}_{i,j} \in \mathcal{O}_3$, we can see that  $\mathrm{Jac}(I_{G_1})(\mathbf{x}^*)$ has full rank $n$ for any $\mathbf{x}^* \in V(I_{G_1})$). The remaining problem is proving $\mathcal{O}_3$ is indeed a nonempty set. In order to finish this step, we use the matrix $G_2 \in \field[\mathcal{G}, \mat{X}]^{p \times q}$ which is defined as above and using the similar argument as in the first step, we can deduce that $\mathcal{O}_3$ is nonempty.
-\label{sec:proofgeneric}
+
 \section{Proof of Proposition \ref{testisolated}}
 \label{sec:prooftestisolated}
 Reference~\cite{BaHaPeSo09} gives an algorithm to compute the dimension of $V(\mathbf{f})$ at $\mathbf{x}$, but its complexity is unclear to us, as it relies on linear algebra with matrices of potentially large size.
