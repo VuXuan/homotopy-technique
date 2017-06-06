@@ -333,16 +333,26 @@ f_{p,1} & \cdots & f_{p,q}
  We will present it by means of \emph{straight-line program}, that is, a sequence of elementary operations $+, -, \times$ that computes all of polynomials $f_{i,j}$ from the input variables $\mat{X}$. The \emph{length $\mathcal{E}$} of the input is the number of operations which we need to perform.
 
 In order to solve Problem \ref{problem}, we study two cases of the input matrix. The first case which is called \emph{column degrees} is when the entries in the column $j$ have degrees at most $D_j$, that is, $\deg(f_{i,j}) \leq D_j$ for all $1 \leq i \leq p$; and the second case that is called \emph{row degrees} when the entries in the row $i$ have degrees at most $D_i$,  that is, $\deg(f_{i,j}) \leq D_i$ for all $1 \leq j \leq q$. The elementary symmetric polynomials and the complete homogeneous symmetric polynomials (see \improve{\cref{sec:not}} for more details) play significant role in our algorithm. Let $E_{q-p+1}(D_1, \ldots, D_q)$ and $S_{q-p+1}(D_1, \ldots, D_p)$ be the elementary symmetric polynomial of degree $q-p+1$ in $q$ variables $D_1, \ldots, D_q$ and the complete homogeneous symmetric polynomial of degree $q-p+1$ in $p$ variables $D_1, \ldots, D_p$, respectively. 
-We first prove that the sum of the multiplicities of the isolated points of the corresponding determinantal ideal is at most $\mathcal{T}$, where $\mathcal{T}$ is either $E_{q-p+1}(D_1, \ldots, D_q)$ in the column degrees case or $S_{q-p+1}(D_1, \ldots, D_p)$ in the row degrees case.
+We prove that the sum of the multiplicities of the isolated points of the corresponding determinantal ideal is at most $\mathcal{T}$, where $\mathcal{T}$ is either $E_{q-p+1}(D_1, \ldots, D_q)$ in the column degrees case or $S_{q-p+1}(D_1, \ldots, D_p)$ in the row degrees case. For each case of studying, we will construct an algorithm such that its complexity is in the polynomial of $\mathcal{T}, \mathcal{E}$ and the number of $p \times p$ minors of $F$. 
 
-The main idea behind is to use the \emph{homotopy} 
+In each case, the output of the algorithm is a zero-dimensional parametrization for the isolated solutions of the determinantal system of the input matrix $F$. Given a field $\field$, a set in $\bar{\field}^n$ is \emph{zero-dimensional variety} if its cardinality is finite. Let $V \subset \bar{\field}^n$ be a zero-dimensional variety which is defined over $\field$. A \emph{zero-dimensional parametrization} $\mathscr{R} = ((q,v_1, \ldots, v_n), \lambda)$ of $V$ consists in polynomials $(q,v_1, \ldots, v_n)$ such that $q \in \field[T]$ is monic and squarefree, all $v_i \in \field[T]$ and $\deg(v_i) < \deg(q)$, and $\lambda$ is a $\field$-linear form in $n$ variables, such that 
+\begin{itemize}
+\item $\lambda(v_1, \ldots, v_n) = Tq'$ mod $q$
+\item we have $V = \{(\frac{v_1(\tau)}{q'(\tau)}, \ldots, \frac{v_n(\tau)}{q'(\tau)}) \ | \ q(\tau) = 0\}$;
+\end{itemize}
+the constraint on $\lambda$ says that the root of $q$ are the values taken by $\lambda$ on $V$. The reasons for using the rational parametrization with $q'$ as the denominator is well-known \cite{Alonso1996, SaSc16, GiLeSa01, Rouillier1999} : when $\field = \mathbb{Q}$, it leads to a precise theoretical control on the size of the coefficients. 
+
+The main idea behind our ingredient is to use the \emph{homotopy} 
 \[H = (1-T).G + T.F \in \field[T, \mat{X}]^{p \times q}\]
-that connects a \emph{start matrix} $G$ to the target matrix $F$, where $T$ is a new variable. However, we need some properties on the start matrix such that we can compute the isolated solutions for the determinantal system of $F$. Assume that we know the solutions for the determinatal system of $G$, by using the Newton interation to the determinantal system of $H$, we can lift into the isolated solutions for that of $F$. Therefore, we need create a start matrix $G$ such that
+that connects a \emph{start matrix} $G$ to the target matrix $F$, where $T$ is a new variable. However, we need some properties on the start matrix. Assume that we know the solutions for the determinatal system of $G$, by using the Newton interation to the determinantal system of $H$, we can lift into a zero-dimensional parametrization for the isolated solutions for that of $F$. Therefore, we need create a start matrix $G$ such that
 \begin{itemize}
 \item its solutions of the determinantal system can be found effectively,
 \item we can extract a square subsystem with full-rank Jacobian,
 \item there is no solution of its determinantal system is at infinity. 
 \end{itemize}
+
+The initial points for Newton interations are solutions of the determinantal system of the start matrix. Furthermore, in order to use the Newton interations for those points, we need a square subsystem of homotopy system corresponds to each point such that the Jacobian matrix of this system has full-rank at the initial point.  The Newton interations stop at a suitable moment, for which we can deduce a zero-dimensional parametrization for the isolated set of the determinantal system of the target matrix. 
+
 \begin{Theorem} There is an algorithm which solves Problem \ref{problem} in $\big({{q}\choose{p}} \,\mathcal{E}\,\mathcal{T}\big)^{\bigO{1}}$ operations in $\field$.
 \end{Theorem}
 
@@ -472,12 +482,7 @@ Given a set of polynomials $\mathbf{f} = (f_1, \ldots, f_M) \subset \field[\mat{
 \[
 \mathrm{for \ small \ enough} \ \epsilon > 0 : \{\mathbf{y} \in \bar{\field}^n : ||\mathbf{y} - \mathbf{x}^*|| < \epsilon\} \cap A^{-1}(\mat{0}) = \{\mathbf{x}^*\}, 
 \] where $A^{-1}(\mat{0}) := \{\mathbf{y} \in \bar{\field}^n | A(\mathbf{y}) = \mat{0}\}$. We call $\mathbf{x}^*$ a \emph{singular} solution of $A(\mat{X}) = \mat{0}$ if and only if $\mathrm{rank}(\mathrm{Jac}(A)(\mathbf{x}^*)) < n$.  Let us denote $mul(\mathbf{x}^*)$ for the multiplicity of the solution $\mathbf{x}^*$ of $A(\mat{X}) = \mat{0}$.   A solution $\mathbf{x}^*$ is called a \emph{simple} root of $A(\mat{X}) = \mat{0}$ if  $\mathrm{rank}(\mathrm{Jac}(A)(\mathbf{x}^*)) = n$.
-\paragraph{Zero-dimentional parametrization.} Let $V \subset \bar{\field}^n$ be a zero-dimensional variety which is defined over $\field$. A \emph{zero-dimensional parametrization} $\mathscr{R} = ((q,v_1, \ldots, v_n), \lambda)$ of $V$ consists in polynomials $(q,v_1, \ldots, v_n)$ such that $q \in \field[T]$ is monic and squarefree, all $v_i \in \field[T]$ and $\deg(v_i) < \deg(q)$, and $\lambda$ is a $\field$-linear form in $n$ variables, such that 
-\begin{itemize}
-\item $\lambda(v_1, \ldots, v_n) = Tq'$ mod $q$
-\item we have $V = \{(\frac{v_1(\tau)}{q'(\tau)}, \ldots, \frac{v_n(\tau)}{q'(\tau)}) \ | \ q(\tau) = 0\}$;
-\end{itemize}
-the constraint on $\lambda$ says that the root of $q$ are the values taken by $\lambda$ on $V$. 
+%\paragraph{Zero-dimentional parametrization.} 
 
 \section{Start matrix and a bound on the degree of the input}
 \label{sec:startbound}
