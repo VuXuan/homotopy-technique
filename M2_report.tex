@@ -348,13 +348,14 @@ that connects a \emph{start matrix} $G$ to the target matrix $F$, where $T$ is a
 
 Previous works related to Problem \ref{problem} are given in \cite{FauSafSpa13, Miller04, Spa14, SaSc16, NieRan09}. In \cite{FauSafSpa13}, the authors work on the case the input matrix $F$ is a homogeneous polynomial matrix of degree $D$, that is $\deg(f_{i,j}) = D$ for all $1 \leq i \leq p, 1 \leq j \leq q$, under genericity assumptions on the input matrix. By generic, they mean that there exists a non-identically null multivariate polynomial $h$ such that the complexity results hold when this polynomial does not vanish on the coefficients of the polynomials in the matrix \cite{FauSafSpa13}. The authors use Gröbner bases algorithms when the input is the deterninantal system of $F$. By using this algorithm in  \cite{FauSafSpa13}, when the input matrix $F$ is homogeneous of degree $D$, Problem \ref{problem} can be solved in $\bigO{{q \choose p}{{Dm+1} \choose {q-p+1}}^{\expmatmul}}$ operations in $\field$ under genericity assumptions on the input matrix, where $\expmatmul$ the exponent of matrix multiplication with the best known bound being $\expmatmul < 2.38$ \cite{CopWin90, LeGall14}. Notice that in \cite{FauSafSpa13}, the authors provide an algorithm for more general problem: given a matrix $F$ whose entries are polynomials of degree $D$ in $\field[\mat{X}]$ and an integer $r < \min(p,q)$, compute the set of points at which the evaluation $F$ has rank at most $r$ with generic assumptions on the input matrix. In this report, we work on general input matrix $F$ without generic assumptions. We remark that when the input matrix is homogeneous, we can use our algorithm in the case of column degrees. 
 
-The study of determinantal ideal can be found in \cite{Miller04, Spa14}. In \cite[~Chapters 15--16]{Miller04}, there is a more general context for determinantal ideal which is called Schubert determinantal ideal. We recommend \cite[~Chapters 15--16]{Miller04} for the reader who wants to know more properties of Schubert determinantal ideal, in particular determinantal ideal. In \cite{Spa14}, the author studies the determinantal ideal in the computing critical points.
+The study of determinantal ideal can be found in \cite{Miller04, Spa14}. In \cite[~Chapters 15--16]{Miller04}, there is a more general context for determinantal ideal which is called Schubert determinantal ideal. We recommend \cite[~Chapters 15--16]{Miller04} for the reader who wants to know more properties of Schubert determinantal ideal, in particular determinantal ideal. In \cite{Spa14}, the author studies the determinantal ideal in the computing critical points. 
 
 Numerical homotopy techniques have paid a lot of attention in systems of polynomials; for instance, in~\cite{MORGAN872, MORGAN87, Morgan89,SAWC05,Zul88} and referred in their references. On symbolic side, in \cite{SaSc16}, the authors study the multi-homogeneous homotopy to compute a zero-dimensional parametrization of the algebraic set of a given system of polynomials. 
 
 In determinantal problems, recent works on homotopy methods \cite{Ver89} show that they can be solved by numerical algorithms. However, we can not find any references, in our knowledge, for determinantal problems by using symbolic homotopy techniques. In this report, we study how symbolic homotopy techniques can be used to study the determinantal problems, in particular Problem \ref{problem}. 
 
-The report is \todo{organized} as follows.
+The report is organized as follows. We begin in~\cref{sec:not} with some notation as well as the
+definitions of affine varieties and ideals over multivariate polynomial ring. Then, in~\cref{sec:startbound}, we give the construction for a start matrix in column degrees and row degrees cases. A bound on the number of isolated solutions of determinantal systems is also provided in this section. After that, in \cref{sec:extractsubsystem}, we provide the details how to extract a square subsystem for Newton interation. Algorithms which are used to solve our problem are given in \cref{sec:Algorithms}. The report ends in~\cref{sec:conclusion} with conclusions and some perspectives for future research. 
 \section{Notations and preliminaries}
 \label{sec:not}
 Give a polynomial matrix $F \in \field[\mat{X}]^{p \times q}$, we write $F_{l:k \mathbf{;} e:f}$ for the submatrix of $F$ contains the rows $l, \ldots, k$ and the columns $e, \ldots, f$. We also write $F_{l:k \mathbf{;} *}$ for the submatrix of $F$ contains the rows $l, \ldots, k$ and all $q$ columns. The similar meaning is applied for the matrix $F_{* \mathbf{;} e:f}$. 
@@ -479,6 +480,7 @@ Given a set of polynomials $\mathbf{f} = (f_1, \ldots, f_M) \subset \field[\mat{
 the constraint on $\lambda$ says that the root of $q$ are the values taken by $\lambda$ on $V$. 
 
 \section{Start matrix and a bound on the degree of the input}
+\label{sec:startbound}
 We study two cases for the input matrix, those are column degrees and row degrees. We recall here that the notation $\mathcal{T}$ is either $E_{q-p+1}(D_1, \ldots, D_q)$ in the case of column degrees or $S_{q-p+1}(D_1, \ldots, D_p)$ in the row degrees case. Notice that in this report, we are working on the case when $n = q-p+1$. Before going to details of the start matrix, we need some genericity assumptions for the case of row degrees. Hereafter, give a polymomial matrix $G$, we use the notation ${\bf g} = (g_1, \ldots, g_M)$ for the determinanatal system of $G$. 
 \subsection{Genericity assumptions}
 \label{subsec:genericity}
@@ -614,7 +616,7 @@ The number of solutions for $I_G$ is proved as before, so we need give here the 
 
 \newpage
 
-\subsection{A bound for the number isolated solutions of determinantal system}
+\subsection{A bound for the number isolated solutions of determinantal systems}
 \label{subsec:bounddegree}
 Let ${\bf g} = (g_1, \ldots, g_M)$ in $\field[\mat{X}]^M$ be the determinantal system of $G$, and let $\mathcal{T}$ be the number of solutions of ${\bf g}$. That is $\mathcal{T} = E_{n}(D_1, \ldots, D_q)$ in the column degrees case, and $\mathcal{T} = S_{n}(D_1, \ldots, D_p)$ in the row degrees case. We also write ${\bf f} = (f_1, \ldots, f_M)$ in $\field[\mat{X}]^M$ for the determinantal system of $F$. In this section, we are going to prove that the sum of the multiplies of the isolated solutions of ${\bf f}$ is at most $\mathcal{T}$. We first recall here the result in \cite[Proposition~1]{Hen83}. 
 \begin{Proposition}\label{hen} Let $V$ be an irreducible affine variety of dimension $m$ and $\phi: V \to \field^m$ a dominanting morphism. The field extension $\mathsf{k}(\field^m) \subset \mathsf{k}(V)$ induced by $\phi$ is finite. Then $\#\phi^{-1}(y) \leq [ \mathsf{k}(V) : \mathsf{k}(\field^m)]$ for any $y \in \field^m$ with fininte fibre $\phi^{-1}(y)$.
@@ -806,6 +808,7 @@ Since there exists ${G}^* \in \field[\mat{X}]^{(k-1) \times (k-1)}$  of $A$ such
 
 For $\mathbf{x}^* \in V(\g)$, the \todo{remaining problem} in this subsection is to verify that this square subsystem has full rank Jacobian matrix. 
 \section{Homotopy techniques for determinantal systems} 
+\label{sec:Algorithms}
 Given a multivariate polynomial matrix $F \in \field[\mat{X}]^{p \times q}$ with the number of variables is $q-p+1$ and $p \leq q$; in this section, we build an algorithm by using the symbolic homotopy techniques to compute the isolated solutions of the determinantal system made by all $p \times p$ minors of $F$. 
 
 Let us denote ${\bf{f}} = (f_1, \ldots, f_M) \in \field[{\mat{X}}]^M$ be the system of $p \times p$ minors of the input matrix $F \in \field[\mat{X}]^{p \times q}$ with $M = {{q}\choose{p}}$. Let $G \in \field[\mat{X}]^{p \times q}$ be a start matrix and $T$ is a new variable. Let us define the homotopy $H = (1-T)G + T.F \in \field[T,\mat{X}]^{p \times q}$. We denote ${\bf g} = (g_1, \ldots, g_M)$ in $\field[\mat{X}]^M$ and ${\bf h} = (h_1, \ldots, h_M)$ in $\field[T,\mat{X}]^M$ for the determiantal system of $G$ and $H$ respectively. From Proposition $\ref{det}$, for any $h_i$, there exist $\bar{f}_i$ and $\bar{g}_i$ in $\field[T, \mat{X}]$ such that 
@@ -972,6 +975,7 @@ $\mathsf{//* apply \ algorithm \ in~\cref{subsec:isolated}}$
 In summary, if the input matrix is $F \in \field[\mat{X}]^{p \times q}$ such that $p \leq q$ and $\deg(f_{i,j}) \leq D_j$ for all $1 \leq i \leq p$, we will use the Algorithm~$\ref{CDetSys}$; and if the input matrix is $F \in \field[\mat{X}]^{p \times q}$ such that $p \leq q$ and $\deg(f_{i,j}) \leq D_i$ for all $1 \leq i \leq q$, we can use the Algorithm~\ref{RDetSys} for the Problem~\ref{problem}. 
 \subsection{Implementation}
 \section{Conclusions and future research}
+\label{sec:conclusion}
 \section{Acknowledgements}
 \newpage
 \bibliographystyle{plain}
