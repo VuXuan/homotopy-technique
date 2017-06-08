@@ -338,7 +338,7 @@ f_{p,1} & \cdots & f_{p,q}
 \]
 We will present it by means of a \emph{straight-line program}, that is, a sequence of elementary operations $+, -, \times$ that computes all of polynomials $f_{i,j}$ from the input variables $\mat{X}$. The \emph{length $\mathcal{E}$} of the input is the number of operations which we need to perform.
 
-\paragraph{Contributions.} In order to solve Problem \ref{problem}, we study two cases of the input matrix. The first case, which is called \emph{column degrees}, is when the entries in the column $j$ have degrees at most $D_j$, that is, $\deg(f_{i,j}) \leq D_j$ for all $1 \leq i \leq p$; the second case (called \emph{row degrees}) the entries in the row $i$ have degrees at most $D_i$, that is, $\deg(f_{i,j}) \leq D_i$ for all $1 \leq j \leq q$. The elementary symmetric polynomials and the complete homogeneous symmetric polynomials (see \improve{Section \ref{sec:not}} for more details) play a significant role in our algorithm. Let $E_{q-p+1}(D_1, \ldots, D_q)$ and $S_{q-p+1}(D_1, \ldots, D_p)$ be the elementary symmetric polynomial of degree $q-p+1$ in $q$ variables $D_1, \ldots, D_q$ and the complete homogeneous symmetric polynomial of degree $q-p+1$ in $p$ variables $D_1, \ldots, D_p$, respectively. Under generic assumptions on the input, \cite[Proposition A.6~]{NieRan09} and \cite[Exercises 15.5 $\&$ 15.12]{Miller04} give us a bound for the the sum of the multiplicities of the isolated points of the corresponding determinantal ideal is either $E_{q-p+1}(D_1, \ldots, D_q)$ in row degrees case or $S_{q-p+1}(D_1, \ldots, D_p)$ in column degrees case. Meanwhile, we would like to give here a bound for that of any input matrix. 
+\paragraph{Contributions.} In order to solve Problem \ref{problem}, we study two cases of the input matrix. The first case, which is called \emph{column degrees}, is when the entries in the column $j$ have degrees at most $D_j$, that is, $\deg(f_{i,j}) \leq D_j$ for all $1 \leq i \leq p$; the second case (called \emph{row degrees}) the entries in the row $i$ have degrees at most $D_i$, that is, $\deg(f_{i,j}) \leq D_i$ for all $1 \leq j \leq q$. The elementary symmetric polynomials and the complete homogeneous symmetric polynomials (see \improve{Section \ref{sec:not}} for more details) play a significant role in our algorithm. Let $E_{q-p+1}(D_1, \ldots, D_q)$ and $S_{q-p+1}(D_1, \ldots, D_p)$ be the elementary symmetric polynomial of degree $q-p+1$ in $q$ variables $D_1, \ldots, D_q$ and the complete homogeneous symmetric polynomial of degree $q-p+1$ in $p$ variables $D_1, \ldots, D_p$, respectively. Under generic assumptions on the input, \cite[Proposition A.6~]{NieRan09} and \cite[Exercises 15.5 $\&$ 15.12]{Miller04} give us a bound for the the sum of the multiplicities of the isolated points of the corresponding determinantal ideal is either $E_{q-p+1}(D_1, \ldots, D_q)$ in column degrees case or $S_{q-p+1}(D_1, \ldots, D_p)$ in row degrees case. Meanwhile, we would like to give here a bound for that of any input matrix. 
 \begin{Theorem}
 The sum of the multiplicities of the isolated points of the corresponding determinantal ideal is at most $\mathcal{T}$, where $\mathcal{T}$ is either $E_{q-p+1}(D_1, \ldots, D_q)$ in the column degrees case, or $S_{q-p+1}(D_1, \ldots, D_p)$ in the row degrees case.
 \end{Theorem}
@@ -445,9 +445,9 @@ V(\f) = \{{\bm \alpha} = (\alpha_1, \ldots, \alpha_n) \in \bar{\field}^n \ | \ f
 \]
 
 One of the important properties of varieties of $\bar{\field}^n$ is they define a topology on $\bar{\field}^n$, namely \emph{Zariski topology}, where the closed sets of the topology are the varieties. The \emph{Zariski closure} of a set $S$ in $\bar{\field}^n$ is the smallest (for the inclusion ordering) Zariski closed set that contains $S$. A set $V$ is \emph{Zariski dense} in a set $W$ if the Zariski closure of $V$ contains in the Zariski closure of $W$. The Zariski topology will be useful for defining an algebraic notion of genericity for structured system. 
-\begin{Definition} A property of a family of systems $\mathfrak{F} \subset \bar{\field}[\mat{X}]$ which is a $\bar{\field}$-vector space of finite dimension is said to be $\mathrm{generic}$ if this property is satisfied on a nonempty open subset of $\mathfrak{F}$.
+\begin{Definition} A property $\mathscr{P}$ of a family of systems $\mathfrak{F} \subset \bar{\field}[\mat{X}]$ which is a $\bar{\field}$-vector space of finite dimension is said to be $\mathrm{generic}$ if $\mathscr{P}$ is satisfied on a nonempty Zariski open subset of $V(\mathfrak{F})$.
 \end{Definition}
-\begin{Example} \todo{Todo: give an example}
+\begin{Example} Let us define systems $\mathfrak{F}$ as $A\cdot \mat{X} + b = 0$, where $A = [a_{i,j}]$ is the $n \times n$ matrix of variables and $b = [b_i]$ is the $n \times 1$ vector of variables. Let $\mathscr{P}$ be the property that a family of $A\cdot \mat{X} + b = 0$ has unique solution in $\bar{\field}^n$. Then, $\mathscr{P}$ is generic with a Zariski open set here is $\bar{\field}^{n^2} \backslash V(\det(A))$.
 \end{Example}
 \begin{Definition}$\mathrm{[Dimension \ of \ a \ variety]}$ Let $V$ be a variety. The dimension of V is the largest d such that the image of V by $(X_1, \ldots, X_n) \to (X_{i_1}, \ldots, X_{i_d})$ is Zariski dense for some $(i_1, \ldots, i_d) \subset \{1, \ldots, n\}$.
 \end{Definition}
@@ -484,13 +484,6 @@ Given a set of polynomials $\mathbf{f} = (f_1, \ldots, f_M) \subset \field[\mat{
 \frac{\partial f_M}{X_1}  & \cdots & \frac{\partial f_M}{X_n}
 \end{matrix} \right].
 \]
-%Jacobian criterion is an useful tool to check wheather the variety of an ideal is equidimensional. 
-%\begin{Theorem}[Jacobian Criterion] $[\todo{cite}]$  \
-%Let $\mathbf{f} = (F_1, ..., F_k) \subset \field[\mat{X}]^k$ and $V(\mathbf{f}) \subset \bar{\field}^n $. Assume %that $V(\mathbf{f})$ is nonempty and
-%\[
-%\{\mathbf{x} \in V(\mathbf{f}) \ | \ \mathrm{rank}(\mathrm{Jac}(\mathbf{f})({\mathbf{x}})) < k\} = \emptyset .
-%\] Then, V is equidimensional and has dimension $n - k$.
-%\end{Theorem}
 
 \paragraph{Solutions of polynomial systems.} Given a polynomial system of $N$ equations in $n$ unknowns, $A(\mat{X}) = \mat{0}$, we are interested in $\mathbf{x}^*$, an \emph{isolated} solution of $A(\mat{X}) = \mat{0}$:
 \[
@@ -607,7 +600,7 @@ Let $\mathbf{x}$ be a solution of $\g$ and $k$ be an integer such that $k \leq \
 \[\mathrm{rank}(G_{i_1:i_k\mathbf{;}p+1:q}({\mathbf{x}})) \leq k-1, \]
 where $G_{i_1:i_k\mathbf{;}p+1:q}$ is the submatrix of $G$ that contains rows $i_1, \ldots, i_k$ and columns $p+1, \ldots q$ of $G$. 
 \end{Proposition}
-\begin{proof} Without of loss of generality, we prove this result for $(i_1, \ldots, i_k) = (1, \ldots, k)$. This means we have $g_{1}(\mathbf{x}) = \cdots = g_{k}(\mathbf{x}) = 0$ and $g_{j}(\mathbf{x}) \ne 0$ for any $j \in \{k+1, \ldots, p\}$. Let $G_{1:p;*} \in \field[\mat{X}]^{p \times p}$ be the submatrix of $G$ consisting $p$ rows and the columns $k+1, \ldots, p, j_1, \ldots, j_k$ of $G$, where $p+1 \leq j_i \leq q$. Let $f_{1:p;*}$ is the determinant of $G_{1:p;*}$. Then, for any solution $\mathbf{x}$ of $\g$, $g_{1:p;*}(\mathbf{x}) = 0$. Moreover, $f_{1:p;*} = \det(G_{1:p;*}) = g_{k+1,k+1} \ldots g_{p,p} \det(G_{1:k;j_1:j_k})$. Therefore, $\det(G_{1:k;j_1:j_k})(\mathbf{x}) = 0$. This holds for any $(j_1, \ldots, j_k) \in \{p+1, \ldots, q\}^{k}$. This implies that $\mathrm{rank}(G_{i_1:i_k\mathbf{;}p+1:q}({\mathbf{x}})) \leq k-1$. 
+\begin{proof} Without of loss of generality, we prove this result for $(i_1, \ldots, i_k) = (1, \ldots, k)$. This means we have $g_{1}(\mathbf{x}) = \cdots = g_{k}(\mathbf{x}) = 0$ and $g_{j}(\mathbf{x}) \ne 0$ for any $j \in \{k+1, \ldots, p\}$. Let $G_{1:p;*} \in \field[\mat{X}]^{p \times p}$ be the submatrix of $G$ consisting $p$ rows and the columns $k+1, \ldots, p, j_1, \ldots, j_k$ of $G$, where $p+1 \leq j_i \leq q$. Let $f_{1:p;*}$ is the determinant of $G_{1:p;*}$. Then, for any solution $\mathbf{x}$ of $\g$, $f_{1:p;*}(\mathbf{x}) = 0$. Moreover, $f_{1:p;*} = \det(G_{1:p;*}) = g_{k+1,k+1} \ldots g_{p,p} \det(G_{1:k;j_1:j_k})$. Therefore, $\det(G_{1:k;j_1:j_k})(\mathbf{x}) = 0$. This holds for any $(j_1, \ldots, j_k) \in \{p+1, \ldots, q\}^{k}$. This implies that $\mathrm{rank}(G_{i_1:i_k\mathbf{;}p+1:q}({\mathbf{x}})) \leq k-1$. 
 
 \end{proof}
 
@@ -714,64 +707,29 @@ Let $\f = (f_1, \ldots, f_M), \g = (g_1, \ldots, g_M)$ and $\h = (h_1, \ldots, h
 \begin{equation} \label{deteq}
 h_i = (1-T)^pg_i + T.\bar{f}_{i} \ \mathrm{and} \ h_i = (1-T)\bar{g}_i + T^pf_i,
 \end{equation}
-which implies that ${\bf{f}} = {\bf{h}}(1, \mat{X}) = (h_{1,i})_{1 \leq i \leq M}$ and ${\bf{g}} = {\bf{h}}(0, \mat{X}) = (h_{0,i})_{1 \leq i \leq M}$.% Let $(g_{i}^H)_{1 \leq i \leq M}$ be the polynomials in $\bar{\field}[X_0, \mat{X}]^M$ obtained by homozenizing  $(g_i)_{1 \leq i \leq M}$ using a new variable $X_0$. 
-%\begin{Proposition} The only common solution to $g_1^H(0,\mat{X}) = \cdots = g_M^H(0,\mat{X})$ is $(0, \ldots, 0)\in \bar{\field}^n$. 
-%\end{Proposition}
+which implies that ${\bf{f}} = {\bf{h}}(1, \mat{X}) = (h_{1,i})_{1 \leq i \leq M}$ and ${\bf{g}} = {\bf{h}}(0, \mat{X}) = (h_{0,i})_{1 \leq i \leq M}$.\
 
-Puiseux series are a generalization of power series that allow for negative and fractional exponents of the indeterminate $T$. Formally, given a field $\field$, the field of \emph{Puiseux series} with coefficients in $\field$ is the set of expressions of the form $f = \sum_{k \ge k_0}c_kT^{k/n}$. The \emph{valuation} $\nu(f)$ of a series $f = \sum_{k \ge k_0}c_kT^{k/n}$ is the smallest rational $k/n$ such that the coefficient $c_k$ of the term with exponent $k/n$ is non-zero.% Let $(h_{0,k}^H)_{1 \leq k \leq M}$ be the polynomials in $\bar{\field}[X_0, \mat{X}]^M$ obtained by homozenizing  $(h_{0,k})_{1 \leq k \leq M}$ using a new variable $X_0$. 
+Let $\g^H = (g_{i}^H)_{1 \leq i \leq M}$ be the polynomials in $\bar{\field}[X_0, \mat{X}]^M$ obtained by homozenizing  $(g_i)_{1 \leq i \leq M}$ using a new variable $X_0$. 
 
-Let $(T, f_1(T), \ldots, f_n(T)) \in V(\h)$. The next proposition says that there is no solution of ${\bf g}$ at infinity. 
-\begin{Proposition}\label{valuation}
-For any $i \in \{1, \ldots, n\}$, $f_i(T)$ has non-negative valuation. 
+\begin{Proposition} The only common solution to $g_1^H(0,\mat{X}) = \cdots = g_M^H(0,\mat{X})$ is $(0, \ldots, 0)\in \bar{\field}^n$. 
 \end{Proposition}
-\begin{proof}
-Without loss of generality, we can write $f_i(T) = \frac{s_i(T)}{T^d}$ with $\nu(s_i(T)) \ge 0$ for all $1 \leq i \leq n$. We will prove $d \leq 0$. Indeed, assume by contradiction that $d > 0$. From Proposition $\ref{det}$, for any $f_H \in \langle {\bf h} \rangle$, 
-\begin{equation}\label{e1}
-f_H = (1-T)^p f_G + T\cdot h(T, \mat{X}),
-\end{equation}
- where $f_G \in \langle {\bf g} \rangle$ and $h(T, \mat{X}) \in \field[T, \mat{X}]$. Let $D$ be the total degree of $f_G$ and $f_G^{\mathrm{H}} \in \field[X_0, \mat{X}]$ be the homogenized polynomial of $f_G$ using a new variable $X_0$, that is, $f_G^{\mathrm{H}}(X_0, \mat{X}) = X_0^Df_G(\mat{X}/X_0)$. Then, 
- \begin{equation}\label{e2}
- f_G(\mathbf{x}(T)) = T^{-Dd}f_G^{\mathrm{H}}(T^d, s_1(T),\ldots, s_n(T)) 
- \end{equation}
-From \cref{e1} and \cref{e2}, we have 
-\[
-(1-T)^pf_G^{\mathrm{H}}(T^d, s_1(T), \ldots, s_n(T))  + T.h(T, f_1(T), \ldots, f_n(T)).T^{Dd} = 0.
-\]
-On one hand, since the total degree of $h_{\mat{X}}(T, \mat{X})$ is at most $D$, then \[\nu(h(T, f_1(T), \ldots, f_n(T))T^{Dd}) \ge 0\] This means $\nu(T.h(T, f_1(T), \ldots, f_n(T)).T^{Dd}) > 0$. On the other hand, we claim that \[\nu(f_G^{\mathrm{H}}(T^d, s_1(T), \ldots, s_n(T))) = 0.\] Indeed, it is easy to see that $\nu(f_G^{\mathrm{H}}(T^d, s_1(T), \ldots, s_n(T))) \ge 0$. Furthermore, we claim that $f_G^{\mathrm{H}}(0, s_1(0), \ldots, s_n(0)) \ne 0$. Then, as a consequence,  
-\[
-(1-T)^pf_G^{\mathrm{H}}(T^d, s_1(T), \ldots, s_n(T))  + T.h(T, f_1(T), \ldots, f_n(T))T^{Dd} \ne 0
-\]
- which is a contradiction. Thus, we need to prove that $f_G^{\mathrm{H}}(0, s_1(0), \ldots, s_n(0))$ is non-zero. Assume by contradiction that $f_G^{\mathrm{H}}(0, s_1(0), \ldots, s_n(0)) = 0$.
-%\begin{enumerate}
-\paragraph{Column degrees cases:} Since any $f_G \in \langle {\bf g} \rangle$, $f_G$ has the form $f_G = \lambda. g_{i_1} \ldots g_{i_p}$ where $(i_1, \ldots, i_p)\subset \{1, \ldots, q\}^p$ and $\lambda \in \field$, then 
-\[
-f_G^{\mathrm{H}}(X_0, \mat{X}) = \lambda.g_{i_1}^{\mathrm{H}}(X_0,\mat{X}) \ldots g_{i_p}^{\mathrm{H}}(X_0, \mat{X}).
-\] This implies 
-\[
-f_G^{\mathrm{H}}(0, s_1(0), \ldots, s_n(0)) = \lambda.g_{i_1}^{\mathrm{H}}(0, s_1(0), \ldots, s_n(0)) \ldots g_{i_p}^{\mathrm{H}}(0, s_1(0),\ldots, s_n(0)),
-\] i.e., 
-\[
-g_{i_1}^{\mathrm{H}}(0, s_1(0), \ldots, s_n(0)) \ldots g_{i_p}^{\mathrm{H}}(0, s_1(0), \ldots, s_n(0)) = 0.
-\]
-Moreover, $(0, s_1(0), \ldots, s_n(0))$ is a solution of $n$ polynomial equations $f_G^{\mathrm{H}}(T, \mat{X}) = 0$; and $g_{i_j}$ is defined as a product of linear forms as above. Therefore, 
-\[
-\left( \begin{matrix}
-\beta_{1,1} & \cdots & \beta_{1,n}\\
-\vdots &  \ddots & \vdots \\
-\beta_{n,1} & \cdots & \beta_{n,n}\\
-\end{matrix} \right)\left(\begin{matrix}
-s_1(0)\\
-\vdots \\
-s_n(0)
-\end{matrix}\right) = 0,
-\]
-where $(\beta_{i,1}, \ldots, \beta_{i,n}) \in \{(\lambda_{i,1}^{(1)}, \lambda_{i,1}^{(2)}, \ldots, \lambda_{i,1}^{(n)}), \ldots, (\lambda_{i,D_1}^{(1)}, \lambda_{i,D_1}^{(2)}, \ldots, \lambda_{i,D_1}^{(n)})\}$. By the construction of $G$ as above, we have the matrix $B \in \field^{n \times n}$ is full rank, where $B = [\beta_{i,j}]_{1 \leq i \leq n, 1 \leq j \leq n}$. From which and $B[s_1(0), \ldots, s_n(0)]^T = 0$ we deduce that $(s_1(0), \ldots, s_n(0)) = (0, ..., 0)$. This contradicts with the fact that $(s_1(0), \ldots, s_n(0)) \ne (0, \ldots, 0)$. 
 
-\paragraph{Row degrees case:} In this case, each entry in row $i$ of the start matrix is a product of $D_i$ linear form with generic coefficients. Without loss of generality, let us assume that $L_1, \ldots, L_k$ receive $(s_1(0), \ldots, s_n(0))$ as a solutions, where $L_i$ is a linear form of $g_i$. We denote $\s = (s_1(0), \ldots, s_n(0))$. From Proposition~\ref{r2}, any $k \times  k$ minors of $G_{1:k;p+1:q}$ receives $\s$ as a solutions. We will see in \improve{\cref{sec:extractsubsystem}} that we can find $p-k$ equations from all $k \times  k$ minors of $G_{1:k;p+1:q}$ such that those equations together with $L_1, \ldots, L_k$ build a square subsystem $n$ equations that receives $\s$ as solution. Let us denote those $p-k$ equations as $L_{k+1}, \ldots, L_n$. Let $L_i^{\mathrm{H}}(X_0, \mat{X})$ be the homogenize polynomial of $L_i(\mat{X})$. \todo{Todo: To finish}
+\begin{proof} We prove this result for the case of column degrees and row degrees separately.
 
-%Hence, we obtain $f_G^{\mathrm{H}}(0, s_1(0),\ldots, s_n(0)) \ne 0$. Therefore, $\nu(f_G^{\mathrm{H}}(T^d, s_1(T), \ldots, s_n(T))) = 0$, this implies $\nu((1-t)^pf_G^{\mathrm{H}}(T^d, s_1(T), \ldots, s_n(T))) = 0$. Thus, \[(1-T)^pf_G^{\mathrm{H}}(T^d, s_1(T), \ldots, s_n(T))  + T.h(T, f_1(T), \ldots, f_n(T))T^{Dd} \neq 0\] which is a contradiction. 
+\paragraph{Column degree case.} Any $p \times p$ minor $f_G$ of $G$ has the form $f_G = \lambda. g_{i_1} \ldots g_{i_p}$ where $(i_1, \ldots, i_p)\subset \{1, \ldots, q\}^p$ and $\lambda \in \field^*$, then 
+\[
+f_G^{\mathrm{H}}(X_0, \mat{X}) = \lambda.g_{i_1}^{\mathrm{H}}(X_0,\mat{X}) \ldots g_{i_p}^{\mathrm{H}}(X_0, \mat{X}).\]
+Morover, each entry $g_{i,j}$ of the matrix $G$ is a product of $D_j$ linear forms as defined in \improve{Section~\ref{sec:startbound}}. Then, any common solution ${\bf x}$ to the system $\g^H(0,\mat{X})$ is a solution of the system $B\mat{X} = 0$, where $B = [\beta_{i,j}]_{1 \leq i \leq n, 1 \leq j \leq n}$ with $(\beta_{i,1}, \ldots, \beta_{i,n}) \in \{(\lambda_{i,1}^{(1)}, \lambda_{i,1}^{(2)}, \ldots, \lambda_{i,1}^{(n)}), \ldots, (\lambda_{i,D_1}^{(1)}, \lambda_{i,D_1}^{(2)}, \ldots, \lambda_{i,D_1}^{(n)})\}$ and $\lambda_{i,j}^{(k)} = (i+j)^k$. In other words, the matrix $B \in \field^{n \times n}$ is full rank, which implies ${\bf x} = (0, \ldots, 0)$ . 
+
+\paragraph{Row degree case.} \todo{Todo: to finish}
+
 \end{proof}
-As we discuss in the previous subsection, the system $\h$ satisfies $\mathsf{H}_1$ and $\mathsf{H}_2$. Then from Proposition~\ref{degree_fiber}, there exists an integer $c$ such that for all $\tau$ in $\bar{\field}$, the sum of the multiplicities of the isolated solutions of $\mathbf{h}_\tau$ is at most $c$.  Moreover, since $\g = {\bf{h}}_0 = (h_i(0,\mat{X}))_{1 \leq i \leq M}$ and by using the genericity assumption $\mathcal{A}(3)$ in \improve{Section~\ref{subsec:genericity}}, we have $\langle {\bf{h}}_0 \rangle = \langle \g \rangle$ is radical in $\bar{\field}[\mat{X}]$. The property ${\sf G}_2(0)$ can be verified from the construction of $H$; and ${\sf G}_3(0)$ is an other expression of Proposition~\ref{valuation}. In other words, the assumption ${\sf G}(0)$ hold when $\h$ is the determinantal system of $H$. Therefore, the number of isolated solutions of $\mathbf{h}_0$ is exactly $c$ which equals $\mathcal{T}$. We apply again now Proposition~\ref{degree_fiber} for $\tau = 1$ to obtain the following result. 
+Let $\h = (h_1, \ldots, h_M)$ be the determinantal systems of the homotopy matrix $H$ and let $\h^H = (h_{0,i}^H)_{1 \leq i \leq M}$ be the polynomials in $\bar{\field}[X_0, \mat{X}]^M$ obtained by homozenizing $(h_{0,i})_{1 \leq i \leq M}$ using a new variable $X_0$. 
+\begin{Corollary}\label{valuation}
+The only common solution to $\h^H(0,\mat{X})=0$ is $(0,\dots,0)\in \bar{\field}{}^n$. 
+\end{Corollary}
+
+As we discuss in the previous subsection, the system $\h$ satisfies $\mathsf{H}_1$ and $\mathsf{H}_2$. Then from Proposition~\ref{degree_fiber}, there exists an integer $c$ such that for all $\tau$ in $\bar{\field}$, the sum of the multiplicities of the isolated solutions of $\mathbf{h}_\tau$ is at most $c$.  Moreover, since $\g = {\bf{h}}_0 = (h_i(0,\mat{X}))_{1 \leq i \leq M}$ and by using the genericity assumption $\mathcal{A}(3)$ in \improve{Section~\ref{subsec:genericity}}, we have $\langle {\bf{h}}_0 \rangle = \langle \g \rangle$ is radical in $\bar{\field}[\mat{X}]$. The property ${\sf G}_2(0)$ can be verified from the construction of $H$; and ${\sf G}_3(0)$ is obtain from Corollary~\ref{valuation}. In other words, the assumption ${\sf G}(0)$ hold when $\h$ is the determinantal system of $H$. Therefore, the number of isolated solutions of $\mathbf{h}_0$ is exactly $c$ which equals $\mathcal{T}$. We apply again now Proposition~\ref{degree_fiber} for $\tau = 1$ to obtain the following result. 
 \begin{Theorem}
 Let $F \in \field[\mat{X}]^{p \times q}$ with $p \leq q$ and $\f$ be the ideal generated by the $p \times p$ minors of $F$. Then, the number of isolated solutions of $\f$ is at most $\mathcal{T}$. 
 \end{Theorem}
