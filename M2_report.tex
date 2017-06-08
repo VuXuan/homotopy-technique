@@ -707,11 +707,11 @@ Let $\f = (f_1, \ldots, f_M), \g = (g_1, \ldots, g_M)$ and $\h = (h_1, \ldots, h
 \begin{equation} \label{deteq}
 h_i = (1-T)^pg_i + T.\bar{f}_{i} \ \mathrm{and} \ h_i = (1-T)\bar{g}_i + T^pf_i,
 \end{equation}
-which implies that ${\bf{f}} = {\bf{h}}(1, \mat{X}) = (h_{1,i})_{1 \leq i \leq M}$ and ${\bf{g}} = {\bf{h}}(0, \mat{X}) = (h_{0,i})_{1 \leq i \leq M}$.\
+which implies that ${\bf{f}} = {\bf{h}}_1 = (h_{1,i})_{1 \leq i \leq M}$ and ${\bf{g}} = {\bf{h}}_0 = (h_{0,i})_{1 \leq i \leq M}$.\
 
 Let $\g^H = (g_{i}^H)_{1 \leq i \leq M}$ be the polynomials in $\bar{\field}[X_0, \mat{X}]^M$ obtained by homozenizing  $(g_i)_{1 \leq i \leq M}$ using a new variable $X_0$. 
 
-\begin{Proposition} The only common solution to $g_1^H(0,\mat{X}) = \cdots = g_M^H(0,\mat{X})$ is $(0, \ldots, 0)\in \bar{\field}^n$. 
+\begin{Proposition} \label{sol} The only common solution to $g_1^H(0,\mat{X}) = \cdots = g_M^H(0,\mat{X})$ is $(0, \ldots, 0)\in \bar{\field}^n$. 
 \end{Proposition}
 
 \begin{proof} We prove this result for the case of column degrees and row degrees separately.
@@ -724,7 +724,7 @@ Morover, each entry $g_{i,j}$ of the matrix $G$ is a product of $D_j$ linear for
 \paragraph{Row degree case.} \todo{Todo: to finish}
 
 \end{proof}
-Let $\h = (h_1, \ldots, h_M)$ be the determinantal systems of the homotopy matrix $H$ and let $\h_{0}^H = (h_{0,i}^H)_{1 \leq i \leq M}$ be the polynomials in $\bar{\field}[X_0, \mat{X}]^M$ obtained by homozenizing $(h_{0,i})_{1 \leq i \leq M}$ using a new variable $X_0$. 
+Let $\h = (h_1, \ldots, h_M)$ be the determinantal system of the homotopy matrix $H$ and let $\h_{0}^H = (h_{0,i}^H)_{1 \leq i \leq M}$ be the polynomials in $\bar{\field}[X_0, \mat{X}]^M$ obtained by homozenizing $(h_{0,i})_{1 \leq i \leq M}$ using a new variable $X_0$. Since ${\bf{g}} = {\bf{h}}_0$, then ${\bf{g}}^H = {\bf{h}}_0^H$; as a consequence of Proposition~\ref{sol}, we have the following result. 
 \begin{Corollary}\label{valuation}
 The only common solution to $\h_{0}^H(0,\mat{X})=0$ is $(0,\dots,0)\in \bar{\field}{}^n$. 
 \end{Corollary}
