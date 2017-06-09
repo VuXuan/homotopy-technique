@@ -352,7 +352,7 @@ In addition, if we can prove that there exisits a fuction $N(t)$ such that $$
 $$
 with $N(1) = S_{q-p+1}(D_1, \ldots, D_p)$, we can obtain a bound for the sum of the multiplicities of the isolated points of in the row degrees case as value of $N(1)$. However, it seems this equation is not easy to hold. We will prove Theorem~\ref{thm} as a byproduct of homotopy algorithm without any genericity assumptions on the input matrix. 
 
-For each case, we will construct an algorithm whose is in the polynomial of $\mathcal{T}, \mathcal{E}$ and the number of $p \times p$ minors of $F$. The output of the algorithm in each case is a zero-dimensional parametrization for the isolated solutions of the determinantal system of the input matrix $F$. Given a field $\field$, a set in $\bar{\field}^n$ is a \emph{zero-dimensional variety} if its cardinality is finite. Let $V \subset \bar{\field}^n$ be a zero-dimensional variety. A \emph{zero-dimensional parametrization} $\mathscr{R} = ((q,v_1, \ldots, v_n), \lambda)$ of $V$ consists in polynomials $(q,v_1, \ldots, v_n)$ such that $q \in \field[T]$ is monic and squarefree, all $v_i \in \field[T]$ and $\deg(v_i) < \deg(q)$, and $\lambda$ is a $\field$-linear form in $n$ variables, such that 
+For each case, we will construct an algorithm whose complexity is in the polynomial of $d, \mathcal{E}$ and the number of $p \times p$ minors of $F$, where $d$ is either $E_n(D_1+1, \ldots, D_q+1)$ in column degrees case or $S_n(D_1+1, \ldots, D_p+1)$ in the row degrees case. The output of the algorithm in each case is a zero-dimensional parametrization for the isolated solutions of the determinantal system of the input matrix $F$. Given a field $\field$, a set in $\bar{\field}^n$ is a \emph{zero-dimensional variety} if its cardinality is finite. Let $V \subset \bar{\field}^n$ be a zero-dimensional variety. A \emph{zero-dimensional parametrization} $\mathscr{R} = ((q,v_1, \ldots, v_n), \lambda)$ of $V$ consists in polynomials $(q,v_1, \ldots, v_n)$ such that $q \in \field[T]$ is monic and squarefree, all $v_i \in \field[T]$ and $\deg(v_i) < \deg(q)$, and $\lambda$ is a $\field$-linear form in $n$ variables, such that 
 \begin{itemize}
 \item $\lambda(v_1, \ldots, v_n) = Tq'$ mod $q$
 \item we have $V = \{(\frac{v_1(\tau)}{q'(\tau)}, \ldots, \frac{v_n(\tau)}{q'(\tau)}) \ | \ q(\tau) = 0\}$;
@@ -369,7 +369,7 @@ that connects a \emph{start matrix} $G$ to the target matrix $F$, where $T$ is a
 \end{itemize}
 The reasons why we need the third condition can be seen in the \improve{Section~\ref{sec:bounddegree}}. 
 
-\begin{Theorem} There is a randomized algorithm which solves Problem \ref{problem} in $\big({{q}\choose{p}} \,\mathcal{E}\,\mathcal{T}\big)^{\bigO{1}}$ operations in $\field$.
+\begin{Theorem} There is a randomized algorithm which solves Problem \ref{problem} in $\big({{q}\choose{p}} \,\mathcal{E}\,d \big)^{\bigO{1}}$ operations in $\field$.
 \end{Theorem}
 
 %Previous works related to Problem \ref{problem} are given in \cite{FauSafSpa13, Miller04, Spa14, SaSc16, NieRan09}. I
@@ -386,7 +386,7 @@ In determinantal problems, it is mentioned in~\cite{Ver89} that they can be solv
 \label{sec:not}
 Given a polynomial matrix $F \in \field[\mat{X}]^{p \times q}$, we write $F_{l:k \mathbf{;} e:f}$ for the submatrix of $F$ containing rows $l, \ldots, k$ and columns $e, \ldots, f$. We also write $F_{l:k \mathbf{;} *}$ for the submatrix of $F$ containing the rows $l, \ldots, k$ and all $q$ columns. The similar is applied for the matrix $F_{* \mathbf{;} e:f}$. 
 
-We write $M_{pq}$ for the vector space of matrices with $p$ rows and $q$ columns over the field $\field$. Given a multivariate polynomial $g \in \field[\mat{X}]$, if we do not give a specific mention, we will consider the degree of $g$ is the total degree.  \todo{Todo: give a general reference} 
+We write $M_{pq}$ for the vector space of matrices with $p$ rows and $q$ columns over the field $\field$. Given a multivariate polynomial $g \in \field[\mat{X}]$, if we do not give a specific mention, we will consider the degree of $g$ is the total degree.  %\todo{Todo: give a general reference} 
 
 The elementary symmetric polynomial of degree $r$ in $m$ variables $t_1, \ldots, t_m$, written $E_{r}(t_1, \ldots, t_m)$, is defined as the coefficient of $x^r$ in $(1+t_1x)(1+t_2x)\cdots(1+t_mx)$. That is
 \[E_{r}(t_1, \ldots, t_m) = \sum_{(i_1,\ldots,i_{m}) \subset \{1, \ldots, r\}^{m}}\prod_{j =1}^{m}D_{i_j}.\]
@@ -442,7 +442,7 @@ I = \langle X^2, XY \rangle = \langle X \rangle \cap \langle X^2Y \rangle,
 \mathcal{P}_0 \subsetneq \mathcal{P}_1 \subsetneq \cdots \subsetneq \mathcal{P}_d = \mathcal{P}.
 \] 
 The $\mathrm{Krull \ dimension}$ of an ideal $I \subset \field[\mat{X}]$ is the maximum Krull dimension of the prime components of $\sqrt{I}$. 
-\todo{Todo: check again}
+%\todo{Todo: check again}
 \end{Definition} 
 \begin{Example} Let $I$ be the ideal defined as in the Example \ref{Ex1}. Then, the dimension of $I$ equals one. 
 \end{Example}
@@ -480,7 +480,7 @@ When $\field$ is algebraically closed, there is one-to-one correspondence betwee
 A \emph{hyperplane} $H$ is the vanishing set of a linear polynomial in $\field[\mat{X}]$, that is $H = V(\sum a_iX_i + b)$. 
 \begin{Definition}$\mathrm{[Degree \ of \ a \ variety]}$ Let V be an equidimensional variety of dimension d. The $\mathrm{degree}$ of $V$ is the unique integer $D$ such that $V \cap H_1 \cap \cdots \cap H_d$ consists of D points for generic hyperplanes $H_1, \ldots, H_p$. 
 
-For any variety V, the degree of V is the sum of degrees of all irreducible components of V. \todo{Todo: Check the existence of $H_i$}
+For any variety V, the degree of V is the sum of degrees of all irreducible components of V. %\todo{Todo: Check the existence of $H_i$}
 \end{Definition}
 
 Given a set of polynomials $\mathbf{f} = (f_1, \ldots, f_M) \subset \field[\mat{X}]^M$, the \emph{Jacobian matrix} of $\mathbf{f}$ is an $M \times n$ matrix defined as follows 
@@ -897,9 +897,16 @@ Given polynomials ${\bf{f}} = (f_1, \ldots, f_M) \in \field[\mat{X}]^M$, we give
 %\item[${\sf A}_4$.] We can compute $\h$ using a straight-line program of length $\mathcal{E}' \ge \mathcal{E}$.
 \end{description}
 
-In the determinantal systems context, for the assumption ${\sf A}_1$, as we dicussed in \improve{Section~\ref{sec:extractsubsystem}}, given ${\bf x} \in V(\h_0)$, we can find ${\bm i}_{\bf x}$ in $\bigO{1}$ for the column degrees case; and for the row degrees case, $B$ is in fuction of evaluating point ${\bf x}$ in $\bar{G}$ and the complexity of Gaussian eliminations.  
+\begin{Proposition}\label{compute_isolated}
+  Using the previous assumptions, we can compute a zero-dimensional
+  parametrization of the isolated points of 
+ of $V(\f)$ using $(B c + d\,\mathcal{E}\,M)^{\mathcal{O}(1)}$ operations in~$\field$.
+\end{Proposition}
 
-\todo{Todo: Check assumptions ${\sf A}_2$, ${\sf A}_3$}
+In the determinantal systems context, for the assumption ${\sf A}_1$, as we dicussed in \improve{Section~\ref{sec:extractsubsystem}}, given ${\bf x} \in V(\h_0)$, we can find ${\bm i}_{\bf x}$ in $\bigO{1}$ for the column degrees case; and for the row degrees case, $B$ is in fuction of evaluating point ${\bf x}$ in $\bar{G}$ and the complexity of Gaussian eliminations. The homotopy matrix is constructed form the start matrix $G$ and the target matrix $F$. Then, the degree of the curve  $V(J')$ is at most either $E_{n}(D_1 + 1, \ldots, D_q+1)$ in the case of column degree or $S_{n}(D_1+1, \ldots, D_p+1)$ in the row degrees case; and for any ${\bm i}=(i_1,\dots,i_n)$, with $1 \le i_1 < \dots < i_n \le M$, we can compute $(h_{i_1},\dots,h_{{i_n}})$ using
+  a straight-line program of length $\mathcal{E}$. 
+
+%\todo{Todo: Check assumptions ${\sf A}_2$, ${\sf A}_3$}
 \paragraph{Starting points.} The algorithm starts by using the set of solution of the determiantal system of a start matrix which is defined as in \improve{Section~\ref{subsec:cd}}. We can use either Algorithm \ref{StartMatCol} for column degrees case or Algorithm \ref{StartMatRow} for the case of row degrees. We denote this set as $V(\g)$; and $|V(\g)| = \mathcal{T}$ with $\mathcal{T} = E_{n}(D_1, \ldots, D_q)$ in column degrees case  or $\mathcal{T} = S_{n}(D_1, \ldots, D_p)$ in row degrees case. For $j  =1, \ldots, \mathcal{T}$, from ${\sf A}_1 $, we can find ${\bm i}_{\bf x}$ such that $(h_{0,i})_{i \in {\bm i}_{\bf x}}$ has full rank $n$. By using the assumption ${\sf A}_1$, the runtime in this step is $(B \,\mathcal{T})^{\bigO{1}}$ . 
 
 \paragraph{Lifting power series and rational reconstruction.} For $j  =1, \ldots, \mathcal{T}$, we apply the Newton interation to the system $(h_{0,i})_{i \in {\bm i}_{\bf x}}$ to lift ${\bf x}$ into a zero-dimensional parametrization $\mathscr{R}_j = ((q_j,v_{j,1}, \ldots, v_{j,n}), \lambda)$ with coefficients in $\field[[T]]/\langle T^{2d}\rangle$, for $d$ as in ${\sf A}_2$. 
@@ -911,7 +918,7 @@ if we require that $q, v_1, \ldots, v_n$ are in $\field[T][U]$ and without a com
 their total degrees are at most $d$, so this normalization can be
 computed using $(d\,n)^{\bigO{1}}$ operations in $\field$. 
 \paragraph{A finite set containing the isolated points of $V(\f)$.} Let us denote $J_1' = J + \langle T -1 \rangle$, then it can be seen in the proof of Lemma~\ref{lemma:19} that $V(J_1')$ is finite. In addition, Lemma~\ref{lemma:vPi} implies that for any isolated solution ${\bf x}$ of $\f$, $(1,{\bf x})$ is in $V(J'_1)$. So, we first deduce from $\mathscr{S}$ a zero-dimensional parametrization $\mathscr{R}_1$ with coefficients in $\field$
-of $V(J'_1)$; and then by using the algorithm of \improve{Section~\ref{subsec:isolated}}, we discard from $V(J'_1)$ those points that do not correspond to isolated points of $V(\f)$. 
+of $V(J'_1)$; and then by using the algorithm of \improve{Section~\ref{subsec:isolated}}, we discard from $V(J'_1)$ those points that do not correspond to isolated points of $V(\f)$. The complexity for testing isolated step is $(d\,\mathcal{E}\,M)^{\bigO{1}}$.
 
 Let $\Phi'_1,\dots,\Phi'_c$ be the roots of $\mathfrak{J}'$ in the field of Puiseux series $\bar{\field}\langle\langle T'\rangle\rangle$ at $T=1$, where $T' = T-1$. Without loss of generality, we assume that
 $\Phi'_1,\dots,\Phi'_\kappa$ are bounded, and
@@ -922,11 +929,21 @@ $i=1,\dots,\kappa$, where $\lim_0(\Phi'_i)$ is the coefficient of $T^0$ in $\var
 $\mathscr{R}_1=((q_1,v_{1,1},\dots,v_{1,n}),\lambda)$ with coefficients in
 $\field$ for the limit set $\{\varphi'_i \mid i=1,\dots,\kappa\}$
 starting from $\mathscr{S}$, under some conditions on the linear form
-$\lambda$. As showed in~\cite{SaSc16}, these conditions are satisfied for a generic choice
-of $\lambda$. Overall, $\mathscr{R}_1$ can be computed in time $(d\,n)^{\mathcal{O}(1)}$.
+$\lambda$. Following~\cite{RRS} and~\cite{SaSc16}, we ask that $\lambda$ is a {\rm well-separating
+  element},
+\begin{enumerate}
+\item $\lambda$ is separating for $V(\mathfrak{J}')=\{\Phi'_1,\dots,\Phi'_c\}$;
+\item $\lambda$ is separating for $V(J' + \langle T-1\rangle) = \{ \varphi'_1,\dots,\varphi'_{\kappa'}\}$.
+\item $\nu(\lambda(\Phi_i)) = \mu_i$ for all $i=1,\dots,c$, where $\nu$ denotes
+ the $T'$-adic valuation.
+\end{enumerate}
+These conditions are satisfied for a generic choice of $\lambda$, as
+showed in~\cite{SaSc16}. When this is the case, Lemma~4.4
+in~\cite{RRS} shows how to recover a zero-dimensional parametrization
+$\mathscr{R}_1$ with coefficients in $\field$ for the limit set $\{\varphi'_i \mid i=1,\dots,\kappa\}$
+starting from $\mathscr{S}$, in time $(d\,n)^{\mathcal{O}(1)}$.
 
-The following lemma shows that the parametrization $\mathscr{R}_1$ we just obtained 
-describes $V(J' + \langle T' \rangle)=V(J' + \langle T-1 \rangle)$.
+Thus, in order to finish the proof for Proposition~\ref{compute_isolated}, we need to the following lemma. It shows that the parametrization $\mathscr{R}_1$ we just obtained  describes $V(J' + \langle T' \rangle)=V(J' + \langle T-1 \rangle)$.
 
 \begin{Lemma}\label{lemma:Z1}
   The equality $V(J' +\langle T' \rangle)=\{\varphi'_i \mid i=1,\dots,\kappa\}$ holds.
@@ -935,11 +952,9 @@ describes $V(J' + \langle T' \rangle)=V(J' + \langle T-1 \rangle)$.
 The proof is given in \improve{\cref{sec:proofZ1}}. 
 \end{proof}
 
-\subsection{Algorithms.} We first give an algorithm called Algorithm~\ref{DetSys} to compute the isolated solutions set, $S$,  for the determinanal system $\f$ when knowing the solution set $V(\g)$ of the determinantal system of a start matrix. We denote $\mathscr{R}_{1}$ for a zero-dimensional parametrization with coefficients in $\field$ such that $S \subset \mathscr{R}_{1}$. Let $H \in \field[T, \mat{X}]^{p \times q}$ be defined as before, that is $H = (1 - T).G + T.F$. For each ${\bf x} \in V(\g)$, let $\h^{(\bf x)}$ in $\field[T,\mat{X}]^n$ a square subsystem such that $\h^{(\bf x)}(0,{\bf x}) = 0$ and the Jacobian matrix of $\h^{(\bf x)}$ has full rank $n$ at ${\bf x}$. Let us denote $d$ is either $E_{n}(D_1+1, \ldots, D_q+1)$ in column degrees case or $S_{n}(D_1+1, \ldots, D_p+1)$ in row degrees case. 
-
-Through all sections of this report, we obtain the result as follows.
+\subsection{Algorithms.} We first give an algorithm called Algorithm~\ref{DetSys} to compute the isolated solutions set, $S$,  for the determinanal system $\f$ when knowing the solution set $V(\g)$ of the determinantal system of a start matrix. We denote $\mathscr{R}_{1}$ for a zero-dimensional parametrization with coefficients in $\field$ such that $S \subset \mathscr{R}_{1}$. Let $H \in \field[T, \mat{X}]^{p \times q}$ be defined as before, that is $H = (1 - T).G + T.F$. For each ${\bf x} \in V(\g)$, let $\h^{(\bf x)}$ in $\field[T,\mat{X}]^n$ a square subsystem such that $\h^{(\bf x)}(0,{\bf x}) = 0$ and the Jacobian matrix of $\h^{(\bf x)}$ has full rank $n$ at ${\bf x}$. If we use Proposition~\ref{compute_isolated} in determinantal system context when $M = {{q}\choose{p}}$ the number of $p \times p$ minors of the input matrix $F$, $d$ is either $E_n(D_1+1, \ldots, D_q+1)$ or $S_n(D_1+1, \ldots, D_p+1)$, $c \leq d$, we obtain the following result. 
 \begin{Theorem}
-The Algorithm \ref{DetSys} is correct and its complexity is $\big({{q}\choose{p}} \,\mathcal{E}\,\mathcal{T}\big)^{\bigO{1}}$ operations in $\field$.
+The Algorithm \ref{DetSys} is correct and its complexity is $\big({{q}\choose{p}} \,\mathcal{E}\,d\big)^{\bigO{1}}$ operations in $\field$.
 \end{Theorem}
 \begin{algorithm}
 \caption{$\mathsf{Determinantal System}$}
@@ -951,7 +966,7 @@ The Algorithm \ref{DetSys} is correct and its complexity is $\big({{q}\choose{p}
 \begin{enumerate}
 \item find a system $\h^{(\bf x)}$ in $\field[T,\mat{X}]^n$
 \item compute $\mathscr{R}_{\bf x}$ zero-dimensional parametrization at precision $2d$. \\
-$\mathsf{//* \ use \ \todo{algorithm???} \ in~\cite{GiLeSa01} \ }$
+$\mathsf{//* \ use \ algorithm \ in~\cite{GiLeSa01} \ }$
 \end{enumerate}
 \item combine $\{\mathscr{R}_{\bf x}\}_{{\bf x} \in V(\g)}$ into $\mathscr{R}$
 \item compute $\mathscr{S}$ with coefficients in $\field(T)$ from  $\mathscr{R}$\\
@@ -988,13 +1003,12 @@ $\mathsf{//* apply \ algorithm \ in~\cref{subsec:isolated}}$
 \end{enumerate}
 \end{algorithm}
 
-
 In summary, if the input matrix is $F \in \field[\mat{X}]^{p \times q}$ such that $p \leq q$ and $\deg(f_{i,j}) \leq D_j$ for all $1 \leq i \leq p$, we will use the Algorithm~$\ref{CDetSys}$; and if the input matrix is $F \in \field[\mat{X}]^{p \times q}$ such that $p \leq q$ and $\deg(f_{i,j}) \leq D_i$ for all $1 \leq i \leq q$, we can use the Algorithm~\ref{RDetSys} for the Problem~\ref{problem}.
 %\subsection{Implementation}
 \section{Conclusions and future research}
-Given a field $\field$ and a matrix $F$ in multivariate polymomial ring $\field[\mat{X}]$, in this report, we design an algorithm to compute the set of points with coordinates in algebraically closed field $\bar{\field}$ such that at those points the matrix does not have full-rank.  Our algorithm mainly uses the symbolic homopoty approach. The runtime of this algorithm is \todo{Todo: runtime}. 
+Given a field $\field$ and a matrix $F$ in multivariate polymomial ring $\field[\mat{X}]$, in this report, we design an algorithm to compute the set of points with coordinates in algebraically closed field $\bar{\field}$ such that at those points the matrix does not have full rank.  Our algorithm mainly uses the symbolic homopoty approach. %The runtime of this algorithm is \todo{Todo: runtime}. 
 
-In the future, we would like to study how symbolic homotopy teachniques could be applied in the more general question, that is given a field $\field$, a matrix $F \in \field[\mat{X}]^{p \times q}$ and an integer $r \leq \min(p,q)$, compute the points in $\bar{\field}^n$, at which the rank of the matrix is at most $r$. %We also would like to study the polynomial systems solving with structures input systems, for instance, symetries, multi-homogeneity. 
+In the future, we would like to study how symbolic homotopy teachniques could be applied in the more general question, that is given a field $\field$, a matrix $F \in \field[\mat{X}]^{p \times q}$ and an integer $r \leq \min(p,q)$, compute the points in $\bar{\field}^n$, at which the rank of the matrix is at most $r$. We also would like to study the polynomial systems solving with structures input systems, for instance, symetries, multi-homogeneity. 
 \label{sec:conclusion}
 \section{Acknowledgements}
 \newpage
