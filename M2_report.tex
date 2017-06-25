@@ -3,7 +3,7 @@
 \usepackage{amsmath,amsxtra,amssymb,latexsym, amscd,amsthm,eufrak, amsfonts, mathrsfs, bm, algorithm, pseudocode}
 % \usepackage[pdftex]{color,graphicx}
 \usepackage{pgf,tikz}
-%\usepackage[T5,T1]{fontenc}
+\usepackage[T5,T1]{fontenc}
 \usepackage[]{fontenc}
 \usepackage{cleveref}
 \usetikzlibrary{arrows}
@@ -15,7 +15,7 @@
 \usepackage[all]{xy}
 \UseComputerModernTips
 
- \usepackage[nottoc]{tocbibind}
+\usepackage[nottoc]{tocbibind}
 \newcommand*\DNA{\textsc{dna}}
 
 
@@ -320,7 +320,7 @@ In this report, we study how the symbolic homotopy techniques can be used in ord
 %\addtocontentsline{toc}{\protect\newpage}
 %\addcontentsline{toc}{Section}{abstract}
 \label{sec:intro}
-\subsection{Problem} In what follows, $\field$ is a field, $\mat{X} = (X_1, \ldots, X_n)$ is a set of $n$ variables and $\field[\mat{X}]$ is the multivariate polynomial ring with coefficients in $\field$. Let $F \in \field[\mat{X}]^{p \times q}$ be a polynomial matrix, without loss of generity, we assume that $p \leq q$. For several reasons, one is interested in computing the set of points at which the evaluation of the matrix has rank at most $p-1$, called \emph{maximal rank} problem. We restrict to the case $n = q-p+1$. Hereafter, given a polynomial matrix $F \in \field[\mat{X}]^{p \times q}$ and a point $\mathbf{x} \in \bar{\field}^n$, the notation $F({\mathbf{x}})$ means the evaluation of the matrix $F$ at the point $\mathbf{x}$. 
+\subsection{Problem} In what follows, $\field$ is a field, $\mat{X} = (X_1, \ldots, X_n)$ is a set of $n$ variables and $\field[\mat{X}]$ is the multivariate polynomial ring with coefficients in $\field$. Let $F \in \field[\mat{X}]^{p \times q}$ be a polynomial matrix, without loss of generality, we assume that $p \leq q$. For several reasons, one is interested in computing the set of points at which the evaluation of the matrix has rank at most $p-1$, called \emph{maximal rank} problem. We restrict to the case $n = q-p+1$. Hereafter, given a polynomial matrix $F \in \field[\mat{X}]^{p \times q}$ and a point $\mathbf{x} \in \bar{\field}^n$, the notation $F({\mathbf{x}})$ means the evaluation of the matrix $F$ at the point $\mathbf{x}$. 
 
 \begin{pbm}[Maximal rank problem] \label{problem} Given a field $\field$, a matrix $F \in \field[\mat{X}]^{p \times q}$ with $p \leq q$ and $n = q-p+1$, compute the set of isolated points at which the evaluation of $F$ has rank at most $p-1$, that is compute the set
 \[S := \{\mathbf{x} \in \bar{\field}^n : \mathrm{rank}(F({\mathbf{x}})) \leq p - 1 \}.\]
@@ -347,7 +347,7 @@ Concerning this bound for the case of row degrees, by using the similar argument
 \[
 \mathrm{HS}_{\field[\mat{X}]/\langle \f \rangle}(t) = \frac{1 - \left[\displaystyle \sum_{0 \leq k \leq q-p} \left[ (-1)^k \sum_{i_1 + \cdots + i_p = k} {{q}\choose{p+k}} t^{\sum_{1 \leq j \leq p}(i_j+1)D_j}\right] \right]}{(1-t)^{n+1}}.
 \]
-In addition, if we can prove that there exists a fuction $N(t)$ such that $$
+In addition, if we can prove that there exists a function $N(t)$ such that $$
 1 - \left[\displaystyle \sum_{0 \leq k \leq q-p} \left[ (-1)^k \sum_{i_1 + \cdots + i_p = k} {{q}\choose{p+k}} t^{\sum_{1 \leq j \leq p}(i_j+1)D_j}\right]\right] = (1-t)^n N(t).
 $$
 with $N(1) = S_{q-p+1}(D_1, \ldots, D_p)$, we can obtain a bound for the sum of the multiplicities of the isolated points of in the row degrees case as value of $N(1)$ under genericity assumptions on the input. However, it seems this equation is not easy to hold. We will prove Theorem~\ref{thm} as a product of homotopy algorithm without any genericity assumptions on the input matrix. 
@@ -389,7 +389,7 @@ Given a polynomial matrix $F \in \field[\mat{X}]^{p \times q}$, we write $F_{l:k
 We write $M_{pq}$ for the vector space of matrices with $p$ rows and $q$ columns over the field $\field$. Given a multivariate polynomial $g \in \field[\mat{X}]$, if we do not give a specific mention, we will consider the degree of $g$ is the total degree.  %\todo{Todo: give a general reference} 
 
 The elementary symmetric polynomial of degree $r$ in $m$ variables $t_1, \ldots, t_m$, written $E_{r}(t_1, \ldots, t_m)$, is defined as the coefficient of $x^r$ in $(1+t_1x)(1+t_2x)\cdots(1+t_mx)$. That is
-\[E_{r}(t_1, \ldots, t_m) = \sum_{(i_1,\ldots,i_{m}) \subset \{1, \ldots, r\}^{m}}\prod_{j =1}^{m}D_{i_j}.\]
+\[E_{r}(t_1, \ldots, t_m) = \sum_{(i_1,\ldots,i_{m}) \subset \{1, \ldots, r\}^{m}}\prod_{j =1}^{m}t_{i_j}.\]
 
 The complete homogeneous symmetric polynomial of degree $r$ in $m$ variables $t_1, \ldots, t_m$, written $S_{r}(t_1, \ldots, t_m)$, is defined as the coefficient of $x^{r}$ in $$\frac{1}{(1-t_1x)(1-t_2x)\cdots(1-t_mx)} = (1+t_1x + t_1^2x^2 + \cdots)\cdots(1+t_mx + t_m^2x^2 + \cdots).$$
 That is 
@@ -492,15 +492,14 @@ Given a set of polynomials $\mathbf{f} = (f_1, \ldots, f_M) \subset \field[\mat{
 \end{matrix} \right].
 \]
 
-\paragraph{Solutions of polynomial systems.} Given a polynomial system of $N$ equations in $n$ unknowns, $A(\mat{X}) = \mat{0}$.%, we are interested in $\mathbf{x}^*$, an \emph{isolated} solution of $A(\mat{X}) = \mat{0}$:
+\paragraph{Solutions of polynomial systems.} Given a polynomial system of $N$ equations in $n$ unknowns, $A(\mat{X}) = \mat{0}$. An isolated solution ${\bf x}^*$ of $A(\mat{X}) = \mat{0}$ is called a \emph{singular} solution of $A(\mat{X}) = \mat{0}$ if and only if $\mathrm{rank}(\mathrm{Jac}(A)(\mathbf{x}^*)) < n$.  Let us denote $\mathrm{mult}(\mathbf{x}^*)$ for the multiplicity of the solution $\mathbf{x}^*$ of $A(\mat{X}) = \mat{0}$. A solution $\mathbf{x}^*$ is called a \emph{simple} root of $A(\mat{X}) = \mat{0}$ if  $\mathrm{rank}(\mathrm{Jac}(A)(\mathbf{x}^*)) = n$.
+%\paragraph{Zero-dimentional parametrization.} 
+%, we are interested in $\mathbf{x}^*$, an \emph{isolated} solution of $A(\mat{X}) = \mat{0}$:
 %\[
 %\mathrm{for \ small \ enough} \ \epsilon > 0 : \{\mathbf{y} \in \bar{\field}^n : ||\mathbf{y} - \mathbf{x}^*|| < \epsilon\} \cap A^{-1}(\mat{0}) = \{\mathbf{x}^*\}, 
 %\] where $A^{-1}(\mat{0}) := \{\mathbf{y} \in \bar{\field}^n | A(\mathbf{y}) = \mat{0}\}$. 
 %\todo{Todo: Given the algebraic def NOT geometric def}
-An isolated solution ${\bf x}^*$ of $A(\mat{X}) = \mat{0}$ is called a \emph{singular} solution of $A(\mat{X}) = \mat{0}$ if and only if $\mathrm{rank}(\mathrm{Jac}(A)(\mathbf{x}^*)) < n$.  Let us denote $\mathrm{mult}(\mathbf{x}^*)$ for the multiplicity of the solution $\mathbf{x}^*$ of $A(\mat{X}) = \mat{0}$.   A solution $\mathbf{x}^*$ is called a \emph{simple} root of $A(\mat{X}) = \mat{0}$ if  $\mathrm{rank}(\mathrm{Jac}(A)(\mathbf{x}^*)) = n$.
-%\paragraph{Zero-dimentional parametrization.} 
-
-\section{Start matrix and a bound on the degree of the input}
+\section{Start matrix}
 \label{sec:startbound}
 We study two cases for the input matrix of Problem~\ref{problem}, those are column degrees and row degrees. We recall here that the notation $\mathcal{T}$ is either $E_{q-p+1}(D_1, \ldots, D_q)$ in the case of column degrees or $S_{q-p+1}(D_1, \ldots, D_p)$ in the row degrees case. Before going in the details of the start matrix, we need to define some genericity assumptions for the case of row degrees. Hereafter, give a polymomial matrix $G$, we use the notation ${\bf g} = (g_1, \ldots, g_M)$ for the determinantal system of $G$. 
 \subsection{Genericity assumptions}
@@ -814,12 +813,12 @@ g_1 & 2^pg_2 & \cdots & q^pg_q
 \]
 where $g_{i}$ is the product of $D_i$ linear forms, i.e., $g_i = \prod_{j = 1}^{D_i}L_{i,j}$. Moreover, any $p \times p$ minor of $G$ has the form $\lambda g_{i_1}\ldots g_{i_p}$, where $(i_1, \ldots, i_p) \in \{1, \ldots,q\}^{p}$ and $\lambda \in \field$.
 
-Without loss of generity, we take $\mathbf{x}^*$ is a solution of the system of $q-p+1$ equations, i.e., $n$ equations $g_1 = \cdots = g_{q-p+1} = 0$. Let $\bar{G} \in \field[\mat{X}]^{(p-1) \times (p-1)}$ be a submatrix of $G_{*;q-p+2:q}$, where $G_{*;q-p+2:q} \in \field[\mat{X}]^{p \times (p-1)}$ contains the columns $q-p+2, \ldots, q$ of $G$. So, $\det(\bar{G}) = \lambda g_{q-p+2}\ldots g_{q}$ for $\lambda \in \field^*$. By the construction of $\{g_i\}_{i=1}^{q}$, we have $g_i(\mathbf{x}^*) \ne 0$ for all $q-p+2 \leq i \leq q$. As a consequence, $\det(\bar{G})(\mathbf{x}^*) \ne 0$. 
+Without loss of generality, we take $\mathbf{x}^*$ is a solution of the system of $q-p+1$ equations, i.e., $n$ equations $g_1 = \cdots = g_{q-p+1} = 0$. Let $\bar{G} \in \field[\mat{X}]^{(p-1) \times (p-1)}$ be a submatrix of $G_{*;q-p+2:q}$, where $G_{*;q-p+2:q} \in \field[\mat{X}]^{p \times (p-1)}$ contains the columns $q-p+2, \ldots, q$ of $G$. So, $\det(\bar{G}) = \lambda g_{q-p+2}\ldots g_{q}$ for $\lambda \in \field^*$. By the construction of $\{g_i\}_{i=1}^{q}$, we have $g_i(\mathbf{x}^*) \ne 0$ for all $q-p+2 \leq i \leq q$. As a consequence, $\det(\bar{G})(\mathbf{x}^*) \ne 0$. 
 
 Furthermore, it can be verified that the Jacobian matrix of this system at $\mathbf{x}^*$ has full rank.
 \subsection{Row degrees}
 \label{subsec:row2}
-In this section, we will find a $(p-1)\times (p-1)$ submatrix of $H$, namely $\bar{H}$, such that $m(\mathbf{x}^*) \ne 0$, where $m = \det(\bar{H})$ and $\mathbf{x}^*$ is a solution of $\g$ when we work on the case $\deg(f_{i,j}) \leq D_i$ for all $1\leq j \leq q$. Let us recall the starting matrix $G$ in this case is 
+In this section, we will find a $(p-1)\times (p-1)$ submatrix of $H$, namely $\bar{H}$, such that $m(\mathbf{x}^*) \ne 0$, where $m = \det(\bar{H})$ and $\mathbf{x}^*$ is a solution of $\g$ when we work on the case $\deg(f_{i,j}) \leq D_i$ for all $1\leq j \leq q$. Let us recall the start matrix $G$ in this case is 
 \[ G = \left( \begin{matrix}
 g_1 & 0 & \cdots & 0 & g_{1,p+1} & \cdots & g_{1, q}\\
 0 & g_2 & \cdots & 0 & g_{2,p+1} & \cdots & g_{2, q}\\
@@ -827,9 +826,9 @@ g_1 & 0 & \cdots & 0 & g_{1,p+1} & \cdots & g_{1, q}\\
 0 & 0 & \cdots & g_p & g_{p,p+1} & \cdots & g_{p, q}
 \end{matrix} \right), \] where all $\{g_i\}_{1 \leq i \leq p}$ and $\{g_{k,j}\}_{1 \leq k \leq p, p+1\leq j \leq q}$ has generic coefficients. We have seen that for any solution $\mathbf{x}^{*}$ of $\g$, there is at least one $i \in \{1, \ldots , p\}$ such that $g_i(\mathbf{x}^*) = 0$. 
 
-If there is only one $i \in \{1, \ldots, p\}$, without loss of generility we assume that $i=p$, such that $g_{p}(\mathbf{x}^*) = 0$ and $g_{j}(\mathbf{x}^*) \ne 0$ for $j \in \{1, \ldots, p-1\}$; then we define $\bar{G} = \mathrm{diag}(g_1, \ldots, g_{p-1})$. So, $\det(\bar{G})(\mathbf{x}^*) = \prod_{j=1}^{p-1}g_j(\mathbf{x}^*) \ne 0$.
+If there is only one $i \in \{1, \ldots, p\}$, without loss of generality we assume that $i=p$, such that $g_{p}(\mathbf{x}^*) = 0$ and $g_{j}(\mathbf{x}^*) \ne 0$ for $j \in \{1, \ldots, p-1\}$; then we define $\bar{G} = \mathrm{diag}(g_1, \ldots, g_{p-1})$. So, $\det(\bar{G})(\mathbf{x}^*) = \prod_{j=1}^{p-1}g_j(\mathbf{x}^*) \ne 0$.
 
-If there are $k$ polynomials $g_{i_1}, \ldots, g_{i_k}$ for $(i_1, \ldots, i_k) \subset \{1, \ldots, p\}^k$ such that $g_{i_1}(\mathbf{x}^*) = \cdots = g_{i_k}(\mathbf{x}^*) = 0$ and $g_{i_j}(\mathbf{x}^*) \ne 0$ for $i_j \in \{1, \ldots, p\} \setminus \{i_1, \ldots, i_k\}$, we define $\bar{G} \in \field[\mat{X}]^{(p-1) \times (p-1)}$ as follows. Without loss of generity, let us work on $(i_1, \ldots, i_k) = (p-k+1, \ldots, p)$. For other tuples $(i_1, \ldots, i_k)$, we can use the similar argument. The idea is using these $g_{i_j}$ such that $g_{i_j}(\mathbf{x}^*) \ne 0$ to build the matrix $\bar{G}$. To sum up, we have $g_{p-k+1}(\mathbf{x}^*) = \cdots = g_{p}(\mathbf{x}^*) = 0$ and $g_j(\mathbf{x}^*) \ne 0$ for $1 \leq j \leq p-k$. Let us denote $A \in \field[\mat{X}]^{k \times (q-p)}$ for $G_{p-k+1:p\mathbf{;}p+1:q}$. Then, by using the genericity assumption $\mathcal{A}(1)$, there exists a submatrix ${G}^* \in \field[\mat{X}]^{(k-1) \times (k-1)}$ of $A$ such that $\det({G}^*)(\mathbf{x}^*) \ne 0$. We have finished the existence of the matrix ${G}^*$, we are going to find where is ${G}^*$ in $A$. 
+If there are $k$ polynomials $g_{i_1}, \ldots, g_{i_k}$ for $(i_1, \ldots, i_k) \subset \{1, \ldots, p\}^k$ such that $g_{i_1}(\mathbf{x}^*) = \cdots = g_{i_k}(\mathbf{x}^*) = 0$ and $g_{i_j}(\mathbf{x}^*) \ne 0$ for $i_j \in \{1, \ldots, p\} \setminus \{i_1, \ldots, i_k\}$, we define $\bar{G} \in \field[\mat{X}]^{(p-1) \times (p-1)}$ as follows. Without loss of generality, let us work on $(i_1, \ldots, i_k) = (p-k+1, \ldots, p)$. For other tuples $(i_1, \ldots, i_k)$, we can use the similar argument. The idea is using these $g_{i_j}$ such that $g_{i_j}(\mathbf{x}^*) \ne 0$ to build the matrix $\bar{G}$. To sum up, we have $g_{p-k+1}(\mathbf{x}^*) = \cdots = g_{p}(\mathbf{x}^*) = 0$ and $g_j(\mathbf{x}^*) \ne 0$ for $1 \leq j \leq p-k$. Let us denote $A \in \field[\mat{X}]^{k \times (q-p)}$ for $G_{p-k+1:p\mathbf{;}p+1:q}$. Then, by using the genericity assumption $\mathcal{A}(1)$, there exists a submatrix ${G}^* \in \field[\mat{X}]^{(k-1) \times (k-1)}$ of $A$ such that $\det({G}^*)(\mathbf{x}^*) \ne 0$. We have finished the existence of the matrix ${G}^*$, we are going to find where is ${G}^*$ in $A$. 
 
 Since ${G}^* \in \field[\mat{X}]^{(k-1) \times (k-1)}$  is a submatrix of $A$ such that $\det{{G}^*}(\mathbf{x}^*) \ne 0$, then ${G}^*(\mathbf{x}^*) \in \field^{(k-1)\times (k-1)}$ is a submatrix of $A(\mathbf{x}^*) \in \field^{k \times (q-p)}$ such that ${G}^*(\mathbf{x}^*)$ is full rank. Therefore, we can first, evaluate the matrix $A$ at the point $\mathbf{x}^*$ to obtain the matrix $A(\mathbf{x}^*) \in \field^{k \times (q-p)}$; and afterthat, thanks to Gaussian eliminations we can find a submatrix ${G}^*(\mathbf{x}^*)$ of $A(\mathbf{x}^*)$ such that $\mathrm{rank}({G}^*(\mathbf{x}^*)) = k-1$.  We obtain the matrix ${G}^* \in \field[\mat{X}]^{(k-1) \times (k-1)}$ with the indices are the same as those of ${G}^*(\mathbf{x}^*)$. Finally, let us define $\bar{G}$ as 
 \[\bar{G} = 
@@ -858,7 +857,7 @@ In order to obtain \cref{ideal}, we use the fact that any $(k-1) \times (q-p)$ s
 \label{sec:Algorithms}
 Given a multivariate polynomial matrix $F \in \field[\mat{X}]^{p \times q}$ with the number of variables is $q-p+1$ and $p \leq q$; in this section, we build an algorithm by using the symbolic homotopy techniques to compute the isolated solutions of the determinantal system made by all $p \times p$ minors of $F$. 
 
-Let us denote ${\bf{f}} = (f_1, \ldots, f_M) \in \field[{\mat{X}}]^M$ be the system of $p \times p$ minors of the input matrix $F \in \field[\mat{X}]^{p \times q}$ with $M = {{q}\choose{p}}$. Let $G \in \field[\mat{X}]^{p \times q}$ be a start matrix and $T$ is a new variable. Let us define the homotopy $H = (1-T)G + T.F \in \field[T,\mat{X}]^{p \times q}$. We denote ${\bf g} = (g_1, \ldots, g_M)$ in $\field[\mat{X}]^M$ and ${\bf h} = (h_1, \ldots, h_M)$ in $\field[T,\mat{X}]^M$ for the determiantal system of $G$ and $H$ respectively. 
+Let us denote ${\bf{f}} = (f_1, \ldots, f_M) \in \field[{\mat{X}}]^M$ be the system of $p \times p$ minors of the input matrix $F \in \field[\mat{X}]^{p \times q}$ with $M = {{q}\choose{p}}$. Let $G \in \field[\mat{X}]^{p \times q}$ be a start matrix and $T$ be a new variable. Let us define the homotopy $H = (1-T)G + T.F \in \field[T,\mat{X}]^{p \times q}$. We denote ${\bf g} = (g_1, \ldots, g_M)$ in $\field[\mat{X}]^M$ and ${\bf h} = (h_1, \ldots, h_M)$ in $\field[T,\mat{X}]^M$ for the determiantal system of $G$ and $H$, respectively. 
 
 \subsection{Testing a point is isolated}
 \label{subsec:isolated}
@@ -876,7 +875,7 @@ cannot be an isolated solution. In the determinantal system context, $M$ equals 
 The proof is given in \improve{\cref{sec:prooftestisolated}}. 
 \end{proof}
 
-\subsection{Computing the isolted solutions for determinantal systems}
+\subsection{Computing the isolated solutions for determinantal systems}
 Given polynomials ${\bf{f}} = (f_1, \ldots, f_M) \in \field[\mat{X}]^M$, we give an algorithm to compute a zero-dimensional parametrization of the isolated points of $V(\bf{f})$. All the notation of the previous subsection is still in use. In order to control the cost of the algorithm, we introduce the following assumptions:
 \begin{description}
 \item[${\sf A}_1$] Given ${\bf x} \in V(\h_0)$ having coordinates in a field extension $\mathbb{L}$ of $\field$, we can find in time $O\tilde{~}(B\, [\mathbb{L} : \field])$ a sequence ${\bm i}_{\mathbf{x}}= (i_1,\dots,i_n)$, with $1 \le i_1 < \dots < i_n \le M$, such that the Jacobian matrix of $(h_{0,i_1},\dots,h_{0,{i_n}})$ has full rank $n$ at ${\bf x}$, for some $B$ independent of ${\bf x}$.
@@ -893,17 +892,17 @@ Given polynomials ${\bf{f}} = (f_1, \ldots, f_M) \in \field[\mat{X}]^M$, we give
  of $V(\f)$ using $(B c + d\,\mathcal{E}\,M)^{\mathcal{O}(1)}$ operations in~$\field$.
 \end{Proposition}
 
-In the determinantal systems context, for the assumption ${\sf A}_1$, as we dicussed in \improve{Section~\ref{sec:extractsubsystem}}, given ${\bf x} \in V(\h_0)$, we can find ${\bm i}_{\bf x}$ in $\bigO{1}$ for the column degrees case; and for the row degrees case, $B$ is in fuction of evaluating point ${\bf x}$ in $\bar{G}$ and the complexity of Gaussian eliminations. The homotopy matrix is constructed form the start matrix $G$ and the target matrix $F$. Then, the degree of the curve  $V(J')$ is at most either $E_{n}(D_1 + 1, \ldots, D_q+1)$ in the case of column degree or $S_{n}(D_1+1, \ldots, D_p+1)$ in the row degrees case; and for any ${\bm i}=(i_1,\dots,i_n)$, with $1 \le i_1 < \dots < i_n \le M$, we can compute $(h_{i_1},\dots,h_{{i_n}})$ using
+In the determinantal systems context, for the assumption ${\sf A}_1$, as we discuss in \improve{Section~\ref{sec:extractsubsystem}}, given ${\bf x} \in V(\h_0)$, we can find ${\bm i}_{\bf x}$ in $\bigO{1}$ for the column degrees case; and for the row degrees case, $B$ is in fuction of evaluating point ${\bf x}$ in $\bar{G}$ and the complexity of Gaussian eliminations. The homotopy matrix is constructed form the start matrix $G$ and the target matrix $F$. Then, the degree of the curve  $V(J')$ is at most either $E_{n}(D_1 + 1, \ldots, D_q+1)$ in the case of column degree or $S_{n}(D_1+1, \ldots, D_p+1)$ in the row degrees case; and for any ${\bm i}=(i_1,\dots,i_n)$, with $1 \le i_1 < \dots < i_n \le M$, we can compute $(h_{i_1},\dots,h_{{i_n}})$ using
   a straight-line program of length $(\mathcal{E})^{\bigO{1}}$, where $\mathcal{E}$ is the length of a straight-line program of the input matrix $F$. 
 
 %\todo{Todo: Check assumptions ${\sf A}_2$, ${\sf A}_3$}
 \paragraph{Starting points.} The algorithm starts by using the set of solution of the determiantal system of a start matrix which is defined as in \improve{Section~\ref{subsec:cd}}. We can use either Algorithm \ref{StartMatCol} for column degrees case or Algorithm \ref{StartMatRow} for the case of row degrees. We denote this set as $V(\g)$; and $|V(\g)| = \mathcal{T}$ with $\mathcal{T} = E_{n}(D_1, \ldots, D_q)$ in column degrees case  or $\mathcal{T} = S_{n}(D_1, \ldots, D_p)$ in row degrees case. For $j  =1, \ldots, \mathcal{T}$, from ${\sf A}_1 $, we can find ${\bm i}_{\bf x}$ such that $(h_{0,i})_{i \in {\bm i}_{\bf x}}$ has full rank $n$. By using the assumption ${\sf A}_1$, the runtime in this step is $(B \,\mathcal{T})^{\bigO{1}}$ . 
 
-\paragraph{Lifting power series and rational reconstruction.} For $j  =1, \ldots, \mathcal{T}$, we apply the Newton interation to the system $(h_{0,i})_{i \in {\bm i}_{\bf x}}$ to lift ${\bf x}$ into a zero-dimensional parametrization $\mathscr{R}_j = ((q_j,v_{j,1}, \ldots, v_{j,n}), \lambda)$ with coefficients in $\field[[T]]/\langle T^{2d}\rangle$, for $d$ as in ${\sf A}_2$. 
+\paragraph{Lifting power series and rational reconstruction.} For $j  =1, \ldots, \mathcal{T}$, we apply the Newton iteration to the system $(h_{0,i})_{i \in {\bm i}_{\bf x}}$ to lift ${\bf x}$ into a zero-dimensional parametrization $\mathscr{R}_j = ((q_j,v_{j,1}, \ldots, v_{j,n}), \lambda)$ with coefficients in $\field[[T]]/\langle T^{2d}\rangle$, for $d$ as in ${\sf A}_2$. 
 
 As explained in~\cite[Section~2.2]{SaSc16}, using the algorithm of~\cite{GiLeSa01}, this can be done using $(d\,\mathcal{E}\,n)^{\bigO{1}}$ operations in $\field$. Using the Chinese Remainder Theorem, we can combine all $\mathscr{R}_j$ into a single zero-dimensional parametrization $\mathscr{R}$ with coefficients in $\field[[T]]/\langle T^{2d}\rangle$; this can be done in $(dn)^{\bigO{1}}$. 
 
-Using the notation of the previous subsection and let $\Phi_1,\dots,\Phi_{c}$ be the points of $V(\mathfrak{J}')$, with coordinates taken in $\bar{\field}\langle\langle T \rangle\rangle$, then the zeros of $\mathscr{R}$ in $\bar{\field}[[T]]/\langle T^{2d} \rangle$ are truncations of $\Phi_1,\dots,\Phi_{c}$. Moreover, from ${\sf A}_2$, $J'$ is supposed to has degree at most $d$, knowing $\mathscr{R}$  at precision $2d$ allows us to reconstruct a zero-dimensional parametrization $\mathscr{S}$ with coefficients in $\field(T)$ such that the zeros of $\mathscr{S}$ is $V(\mathfrak{J}')$. This is done by applying rational function reconstruction to allcoefficients of $\mathscr{R}$, as in~\cite{Schost03}, and takes time $(d\,n)^{\bigO{1}}$. Without loss of generality, by multiplying all denominators of $\mathscr{R}$ coefficients in $\field(T)$ by the least common multiple of theirs, we can deduce that all polynomials of $\mathscr{R}$, say $q, v_1, \ldots, v_n$, have coefficients in $\field[T]$. The degree bounds in~\cite{Schost03} show that
+Using the notation of the previous subsection and let $\Phi_1,\dots,\Phi_{c}$ be the points of $V(\mathfrak{J}')$, with coordinates taken in $\bar{\field}\langle\langle T \rangle\rangle$, then the zeros of $\mathscr{R}$ in $\bar{\field}[[T]]/\langle T^{2d} \rangle$ are truncations of $\Phi_1,\dots,\Phi_{c}$. Moreover, from ${\sf A}_2$, $J'$ is supposed to has degree at most $d$, knowing $\mathscr{R}$  at precision $2d$ allows us to reconstruct a zero-dimensional parametrization $\mathscr{S}$ with coefficients in $\field(T)$ such that the zeros of $\mathscr{S}$ is $V(\mathfrak{J}')$. This is done by applying rational function reconstruction to all coefficients of $\mathscr{R}$, as in~\cite{Schost03}, and takes time $(d\,n)^{\bigO{1}}$. Without loss of generality, by multiplying all denominators of $\mathscr{R}$ coefficients in $\field(T)$ by the least common multiple of theirs, we can deduce that all polynomials of $\mathscr{R}$, say $q, v_1, \ldots, v_n$, have coefficients in $\field[T]$. The degree bounds in~\cite{Schost03} show that
 if we require that $q, v_1, \ldots, v_n$ are in $\field[T][U]$ and without a common factor in $\field[T]$,
 their total degrees are at most $d$, so this normalization can be
 computed using $(d\,n)^{\bigO{1}}$ operations in $\field$. 
@@ -935,7 +934,7 @@ in~\cite{RRS} shows how to recover a zero-dimensional parametrization
 $\mathscr{R}_1$ with coefficients in $\field$ for the limit set $\{\varphi'_i \mid i=1,\dots,\kappa\}$
 starting from $\mathscr{S}$, in time $(d\,n)^{\mathcal{O}(1)}$.
 
-\subsection{Algorithms.} We first give an algorithm called Algorithm~\ref{DetSys} to compute the isolated solutions set, $S$,  for the determinanal system $\f$ when knowing the solution set $V(\g)$ of the determinantal system of a start matrix. We denote $\mathscr{R}_{1}$ for a zero-dimensional parametrization with coefficients in $\field$ such that $S \subset \mathscr{R}_{1}$. Let $H \in \field[T, \mat{X}]^{p \times q}$ be defined as before, that is $H = (1 - T).G + T.F$. For each ${\bf x} \in V(\g)$, let $\h^{(\bf x)}$ in $\field[T,\mat{X}]^n$ a square subsystem such that $\h^{(\bf x)}(0,{\bf x}) = 0$ and the Jacobian matrix of $\h^{(\bf x)}$ has full rank $n$ at ${\bf x}$. If we use Proposition~\ref{compute_isolated} in determinantal system context when $M = {{q}\choose{p}}$ the number of $p \times p$ minors of the input matrix $F$, $d$ is either $E_n(D_1+1, \ldots, D_q+1)$ or $S_n(D_1+1, \ldots, D_p+1)$, $c \leq d$, $\mathcal{E}$ is the length of a straight-line program of the input matrix $F$ and $B = (\mathcal{E}q)^{\bigO{1}}$, we obtain the following result.
+\subsection{Algorithms.} We give an algorithm called Algorithm~\ref{DetSys} to compute the isolated solutions set, $S$,  for the determinanal system $\f$ when knowing the solution set $V(\g)$ of the determinantal system of a start matrix. We denote $\mathscr{R}_{1}$ for a zero-dimensional parametrization with coefficients in $\field$ such that $S \subset \mathscr{R}_{1}$. Let $H \in \field[T, \mat{X}]^{p \times q}$ be defined as before, that is $H = (1 - T).G + T.F$. For each ${\bf x} \in V(\g)$, let $\h^{(\bf x)}$ in $\field[T,\mat{X}]^n$ a square subsystem such that $\h^{(\bf x)}(0,{\bf x}) = 0$ and the Jacobian matrix of $\h^{(\bf x)}$ has full rank $n$ at ${\bf x}$. If we use Proposition~\ref{compute_isolated} in determinantal system context when $M = {{q}\choose{p}}$ the number of $p \times p$ minors of the input matrix $F$, $d$ is either $E_n(D_1+1, \ldots, D_q+1)$ or $S_n(D_1+1, \ldots, D_p+1)$, $c \leq d$, $\mathcal{E}$ is the length of a straight-line program of the input matrix $F$ and $B = (\mathcal{E}q)^{\bigO{1}}$, we obtain the following result.
 %(something like (E q)^{O(1)})).
 \begin{Theorem}
 The Algorithm \ref{DetSys} is correct and its complexity is $\big({{q}\choose{p}} \,\mathcal{E}\,d\big)^{\bigO{1}}$ operations in $\field$.
@@ -992,11 +991,11 @@ In summary, if the input matrix is $F \in \field[\mat{X}]^{p \times q}$ such tha
 \section{Conclusions and future research}
 Given a field $\field$ and a matrix $F$ in multivariate polymomial ring $\field[\mat{X}]$, in this report, we design an algorithm to compute the set of points with coordinates in algebraically closed field $\bar{\field}$ such that at those points the matrix does not have full rank.  Our algorithm mainly uses the symbolic homopoty approach. %The runtime of this algorithm is \todo{Todo: runtime}. 
 
-In the future, we would like to study how symbolic homotopy teachniques could be applied in the more general question, that is given a field $\field$, a matrix $F \in \field[\mat{X}]^{p \times q}$ and an integer $r \leq \min(p,q)$, compute the points in $\bar{\field}^n$, at which the rank of the matrix is at most $r$. We also would like to study the polynomial systems solving with structures input systems, for instance, symetries, multi-homogeneity. 
+In the future, we would like to study how symbolic homotopy techniques could be applied in the more general question, that is given a field $\field$, a matrix $F \in \field[\mat{X}]^{p \times q}$ and an integer $r \leq \min(p,q)$, compute the points in $\bar{\field}^n$, at which the rank of the matrix is at most $r$. We also would like to study the polynomial systems solving with structures input systems, for instance, symetries, multi-homogeneity. 
 \label{sec:conclusion}
 \section{Acknowledgements}
 I would like to gratefully thank my two supervisors for giving me interesting research problems during my internship. They were fully available for answering all of my questions. I would also like to thank
-Labex Milyon for giving me a scholarship to come to ENS Lyon for studying. I acknowledge financial support provided by the scholarship \emph{Explora Doc} from \emph{Rêgion Rhône-Alpes, France}.  
+Labex Milyon for giving me a scholarship to come to ENS Lyon for studying. I acknowledge financial support provided by the scholarship \emph{Explora Doc} from \emph{Région Rhône-Alpes, France}.  
 \bibliographystyle{plain}
 \bibliography{biblio}
 \appendix
@@ -1104,7 +1103,7 @@ We prove this result for the case of column degrees and row degrees separately.
 \paragraph{Column degree case.} Any $p \times p$ minor $f_G$ of $G$ has the form $f_G = \lambda. g_{i_1} \ldots g_{i_p}$ where $(i_1, \ldots, i_p)\subset \{1, \ldots, q\}^p$ and $\lambda \in \field^*$, then 
 \[
 f_G^{\mathrm{H}}(X_0, \mat{X}) = \lambda.g_{i_1}^{\mathrm{H}}(X_0,\mat{X}) \ldots g_{i_p}^{\mathrm{H}}(X_0, \mat{X}).\]
-Morover, each entry $g_{i,j}$ of the matrix $G$ is a product of $D_j$ linear forms as defined in \improve{Section~\ref{subsec:cd}}. Then, any common solution ${\bf x}$ to the system $\g^H(0,\mat{X})$ is a solution of the system $B\mat{X} = 0$, where $B = [\beta_{i,j}]_{1 \leq i \leq n, 1 \leq j \leq n}$ with $(\beta_{i,1}, \ldots, \beta_{i,n}) \in \{(\lambda_{i,1}^{(1)}, \lambda_{i,1}^{(2)}, \ldots, \lambda_{i,1}^{(n)}), \ldots, (\lambda_{i,D_1}^{(1)}, \lambda_{i,D_1}^{(2)}, \ldots, \lambda_{i,D_1}^{(n)})\}$ and $\lambda_{i,j}^{(k)} = (i+j)^k$. In other words, the matrix $B \in \field^{n \times n}$ is full rank, which implies ${\bf x} = (0, \ldots, 0)$ . 
+Moreover, each entry $g_{i,j}$ of the matrix $G$ is a product of $D_j$ linear forms as defined in \improve{Section~\ref{subsec:cd}}. Then, any common solution ${\bf x}$ to the system $\g^H(0,\mat{X})$ is a solution of the system $B\mat{X} = 0$, where $B = [\beta_{i,j}]_{1 \leq i \leq n, 1 \leq j \leq n}$ with $(\beta_{i,1}, \ldots, \beta_{i,n}) \in \{(\lambda_{i,1}^{(1)}, \lambda_{i,1}^{(2)}, \ldots, \lambda_{i,1}^{(n)}), \ldots, (\lambda_{i,D_1}^{(1)}, \lambda_{i,D_1}^{(2)}, \ldots, \lambda_{i,D_1}^{(n)})\}$ and $\lambda_{i,j}^{(k)} = (i+j)^k$. In other words, the matrix $B \in \field^{n \times n}$ is full rank, which implies ${\bf x} = (0, \ldots, 0)$ . 
 \paragraph{Row degree case.} Let us recall here that the start matrix $G$ has the form 
 \[
 G = \left( \begin{matrix}
@@ -1125,8 +1124,8 @@ G = \left( \begin{matrix}
 %The idea to prove this Proposition~\ref{sol} is similar as the idea we used to prove the genericity assumptions in \improve{Section~\ref{subsec:genericity}}. That is using induction on the number of variables $n$ for the matrix of form $G_1$. Using the induction properties for smaller values of $n$, we show this property is true for the matrix $G$. Finally, by using this property of form $G$, we prove by a geometric argument that it holds for any matrix of form $G_1$. As a consequence, we obtain the result for $G$. 
 
 %When $n$ equals one, the minor of $G_1$ is its determinant called $m(X_1)$. All monomials of $m(X_1)$ is a product of $\sum_{i=1}^pD_i$ linear forms in one variables $X_1$ with generic coefficients; then $m^H(0,X_1)$ has the form $\ell(\boldsymbol{\cdot})X_1$, where $\ell(\boldsymbol{\cdot})$ is a function in generic coefficients. This means $m^H(0,X_1) = 0$ has only solution $X_1 = 0$. Let us now assume that the property holds for any matrix $G_1$ with the number of variable $n' < n$, we will prove that it also holds for matrix $G$ of $n$ variables. 
-Let ${\bf x}$ be a solution of the system $g_1^H(0,\mat{X}) = \cdots = g_M^H(0,\mat{X})$. We would like to prove ${\bf x} = (0,\ldots, 0)$. Let us assume there exists one coordinate of ${\bf x} = (x_1, \ldots, x_n)$ is non-zero. Without loss of generily, let us assume that $x_n = 0$ and $L_1^H(0,{\bf x}) = \cdots = L_k^H(0,{\bf x}) = 0$, where $L_i$ is a linear form of $\prod_{t=1}^{D_i}L_i^{(t)}$ and $k \leq \min(n,p)$. Let us denote $A$ for the submatrix of $G$ that contains first $k$ rows and columns $p+1, \ldots, q$ of $G$, that is, $A = G_{1:k;p+1:q}$. Let ${\bf a} = (a_1, \ldots, a_m)$ be the system of all $k \times k$ minors of $A$, then ${\bf a}^H(0,{\bf x}) = 0$. From $L_1^H(0,{\bf X}) = \cdots = L_k^H({\bf X}) = 0$, we can rewrite $\{X_i\}_{i=1}^k$ in the form $\sum_{j = k+1}^n \ell_{i,j}(\boldsymbol{\cdot})X_j$, 
-where $\ell_{i,j}(\boldsymbol{\cdot})$ are fuctions in generic coefficients; and then substitute $\{X_i\}_{i=1}^k$ into $A$. The matrix $A$ now is in dimension $k \times (q-p)$ of $n-k$ variables $X_{k+1}, \ldots, X_n$. Since $g_{i,j}$ is a product of $D_i$ linear form, then all of $a_i^H(0,{\bf X})$ is a homogeneous polynomial in the form 
+Let ${\bf x}$ be a solution of the system $g_1^H(0,\mat{X}) = \cdots = g_M^H(0,\mat{X})$. We would like to prove ${\bf x} = (0,\ldots, 0)$. Let us assume there exists one coordinate of ${\bf x} = (x_1, \ldots, x_n)$ is non-zero. Without loss of generality, let us assume that $x_n \ne 0$ and $L_1^H(0,{\bf x}) = \cdots = L_k^H(0,{\bf x}) = 0$, where $L_i$ is a linear form of $\prod_{t=1}^{D_i}L_i^{(t)}$ and $k \leq \min(n,p)$. Let us denote $A$ for the submatrix of $G$ that contains first $k$ rows and columns $p+1, \ldots, q$ of $G$, that is, $A = G_{1:k;p+1:q}$. Let ${\bf a} = (a_1, \ldots, a_m)$ be the system of all $k \times k$ minors of $A$, then ${\bf a}^H(0,{\bf x}) = 0$. From $L_1^H(0,{\bf X}) = \cdots = L_k^H({\bf X}) = 0$, we can rewrite $\{X_i\}_{i=1}^k$ in the form $\sum_{j = k+1}^n \ell_{i,j}(\boldsymbol{\cdot})X_j$, 
+where $\ell_{i,j}(\boldsymbol{\cdot})$ are functions in generic coefficients; and then substitute $\{X_i\}_{i=1}^k$ into $A$. The matrix $A$ now is in dimension $k \times (q-p)$ of $n-k$ variables $X_{k+1}, \ldots, X_n$. Since $g_{i,j}$ is a product of $D_i$ linear form, then all of $a_i^H(0,{\bf X})$ is a homogeneous polynomial in the form 
 \begin{equation}
 a_i^H(0,{\bf X}) = \sum_{(j_1, \ldots, j_{n-k}): \sum_{i =1}^{n-k}j_i = \sum_{i = 1}^kD_i} f_{(j_1, \ldots, j_{n-k})}(\boldsymbol{\cdot}) \cdot X_{k+1}^{j_1}\cdots X_{n}^{j_{n-k}},
 \end{equation}
