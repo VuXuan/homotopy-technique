@@ -80,7 +80,7 @@ def var1(A,R,p,q): ## g_11 = 0 or g_22 = 0
         l2.append(ideal(G[i,2], G[i,3], x0 - ll[i]).variety())
     return l2
   
-lll1 = var1(G,R,p,q)
+list1 = var1(G,R,p,q)
 
 def var2(A,R,p,q): ## g_11 = g_22 = 0
     (x0, x1, x2) = R.gens()
@@ -106,7 +106,7 @@ def var2(A,R,p,q): ## g_11 = g_22 = 0
         d2[R.gen(i)] = l32[i]
     return [[d2]] + [[d1]] 
 
-lll2 = var2(G,R,p,q)
+list2 = var2(G,R,p,q)
     
 F = randmat(D)
 H = (1-S.gens()[n])*G + S.gens()[n]*F ## Homotopy
