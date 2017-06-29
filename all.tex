@@ -1,0 +1,2204 @@
+\documentclass[12pt]{article}
+\usepackage{bbm,fullpage}
+\usepackage{bm}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{algorithm, pseudocode}
+\usepackage{mathrsfs}
+\usepackage{enumitem}
+\usepackage[titles]{tocloft}
+\usepackage{yfonts}
+\usepackage{xcolor}
+\usepackage[pdftex,                %
+%    pagebackref,                %
+    bookmarks         = true,%     % Signets
+    bookmarksnumbered = true,%     % Signets numérotés
+    pdfpagemode       = None,%     % Signets/vignettes fermé à l'ouverture
+    pdfstartview      = FitH,%     % La page prend toute la largeur
+    pdfpagelayout     = SinglePage,% Vue par page
+    colorlinks        = true,%     % Liens en couleur
+%    linkcolor= monvert, %    % couleur des liens internes
+%    anchorcolor= blue, %    % couleur des liens internes
+   citecolor         =blue,
+    urlcolor          = magenta,%  % Couleur des liens externes
+    pdfborder         = {0 0 0}%   % Style de bordure : ici, pas de bordure
+    ]{hyperref}%                   % Utilisation de HyperTeX
+
+\usepackage{amsmath}
+\usepackage{easybmat}
+\usepackage{multirow,bigdelim}
+
+\newcommand*\hexbrace[2]{%
+  \underset{#2}{\underbrace{\rule{#1}{0pt}}}}
+
+\usepackage[indexonlyfirst,ucmark,toc]{glossaries}
+\renewcommand*{\glstextformat}[1]{\textcolor{black}{#1}}
+%\glsdisablehyper %pour enlever les liens hypertexte
+
+
+\input{macros.tex}
+
+
+
+\def\NOTE#1#2{{\begin{quote}\marginpar[\hfill{#1}]{{#1}}{{\textsf{[\![{#2}]\!]}}}\end{quote}}}
+\def\respond#1{\NOTE{\textcircled{\textsc{a}}}{Note:~{#1}}}
+
+\title{Solving determinantal systems using homotopy techniques}
+
+\newtheorem{pbm}{Problem}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}\label{sec:intro}
+
+In what follows, $\KK$ is a field, $(X_1, \ldots, X_n)$ is a set of
+$n$ variables and $\KK[X_1,\dots,X_n]$ is the multivariate polynomial
+ring with coefficients in $\KK$. Let $\mF=[f_{i,j}] \in
+\KK[X_1,\dots,X_n]^{p \times q}$ be a polynomial matrix, with $p \leq
+q$. The first question which will interest us in this paper is to
+describe the set $S_\mF$ of points $\x \in \KKbar{}^n$ at which the
+evaluation of the matrix $\mF$ has rank less than $p$. In the
+particular case $p=1$, this simply means finding all common solutions
+of $f_{1,1},\dots,f_{1,q}$; in general, $S_\mF$ is an algebraic set,
+since it is defined by the vanishing of all maximal minors of $\mF$.
+
+We restrict ourselves to the case where $n = q-p+1$.  Indeed, in this
+case, $S_\mF$ is expected to be finite: for arbitrary $n$, results due
+to Macaulay~\cite{Macaulay16} and Eagon and Northcott~\cite{EN62}
+imply that all irreducible components of $S_\mF$ have dimension at
+least (and, expectedly, equal to) $n-(q-p+1)$; indeed, in the
+case $n = q-p+1$, $S_\mF$ is finite for a generic choice of $\mF$ (we
+will make this statement more precise in the following
+sections). However, beyond the inequality $n = q-p+1$, we make no
+assumption on the input matrix $\mF$.
+
+Because $S_\mF$ is an algebraic set, its {\em isolated points} form a
+finite subset of $\KKbar{}^n$, defined over $\KK$; this notion makes
+sense for any field $\KK$; when $\KK=\mathbb{R}$, these points are
+indeed isolated for the metric topology. (The next section recalls the
+basic facts we need regarding polynomial systems and algebraic
+varieties.)  Then, our first question is the following.
+
+
+\begin{pbm} \label{problem} 
+  Given a field $\KK$, a matrix $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$ with $p
+  \leq q$ and $n = q-p+1$, compute the isolated points of $S_\mF$.
+\end{pbm}
+
+Problem~\ref{problem} is a particular case of a slightly more general
+question, where we solve determinantal systems of an algebraic set. In
+addition to matrix $\mF$, we may indeed take into account algebraic
+equations of the form $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$. In this
+setting, the natural relation between the number $n$ of variables,
+the size of $\mF$ and the number $s$ of polynomials in $G$ is 
+now $n=q-p+s+1$. Then, we define the algebraic set
+$$S_{\mF,G} =  \{\bx \in \KKbar{}^n \mid
+\mathrm{rank}(\mF({\bx})) < p \text{~and~}
+g_1(\bx)=\cdots=g_s(\bx)=0   \};$$
+for generic $\mF$ and $G$, this is a finite set. Our main problem is then
+the following.
+\begin{pbm} \label{problem2} 
+  Given a field $\KK$, a matrix $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$ and
+  polynomials $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$, with $p \leq q$ and
+  $n = q-p+s+1$, compute the isolated points of $S_{\mF,G}$.
+\end{pbm}
+
+We will represent the output of our algorithm using univariate
+polynomials. Let $V \subset \KKbar{}^n$ be a zero-dimensional algebraic
+set defined over $\KK$. A \emph{zero-dimensional parametrization}
+$\scrR = ((q,v_1, \ldots, v_n), \lambda)$ of $V$ consists in
+polynomials $(q,v_1, \ldots, v_n)$ such that $q \in \KK[X]$ is monic
+and squarefree, all $v_i \in \KK[X]$ and $\deg(v_i) < \deg(q)$, and
+$\lambda$ is a $\KK$-linear form in $n$ variables, such that
+\begin{itemize}
+\item $\lambda(v_1, \ldots, v_n) = Xq'$ mod $q$
+\item we have $V = Z(\scrR)$, with $$Z(\scrR)= \left\{\left(\frac{v_1(\tau)}{q'(\tau)}, \ldots, \frac{v_n(\tau)}{q'(\tau)}\right) \ | \ q(\tau) = 0\right\};$$
+\end{itemize}
+the constraint on $\lambda$ says that the root of $q$ are the values
+taken by $\lambda$ on $V$. This representation was introduced
+in~\cite{Kronecker82,Macaulay16}, and has been used in a variety of
+algorithms, such
+as those in~\cite{GiMo89,GiHeMoPa95,ABRW,GiHeMoMoPa98,Rouillier99,GiLeSa01}.
+The reason we use a rational parametrization, with $q'$ as a
+denominator, goes back to~\cite{ABRW, Rouillier99, GiLeSa01}: when
+$\KK=\Q$, this allows us to control precisely the bit-size of the
+coefficients, using bounds such as those
+in~\cite{Schost03,DaSc04}. (The same phenomenom holds with $\K=k(T)$,
+in which case we want to control degrees in $T$ of the numerators and
+denominators of the coefficients of $\scrR$.)
+
+
+Henceforth, we write the matrix $\mF$ as 
+\[ \mF = 
+\left( \begin{matrix}
+f_{1,1} & \cdots & f_{1,q}\\
+\vdots & \ddots & \vdots \\
+f_{p,1} & \cdots & f_{p,q}
+\end{matrix} \right), \ \mathrm{where} \ f_{i,j} \in \KK[X_1,\dots,X_n] \ \mathrm{for} \ 1 \leq i \leq p, 1 \leq j \leq q.
+\]
+We will consider two kinds of degree for matrix $\mF$ (these two
+situations have been discussed before for determinantal
+ideals~\cite{NieRan09,MiSt04}). For $i=1,\dots,p$, we will write $\rdeg(\mF,i)$ for the
+degree of the $i$th row of $\mF$, that is,
+$\rdeg(\mF,i)=\max(\deg(f_{i,j}))_{1 \le j \le q}$; similarly, for $j=1,\dots,q$, we write
+$\cdeg(\mF,j)$ for the degree of the $j$th column of $\mF$, that is,
+$\cdeg(\mF,j)=\max(\deg(f_{i,j}))_{1 \le i \le p}$. Then, we define
+$$\delta_{\rm row}(\mF) = S_{q-p+1}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p)),$$
+where for $k\ge 0$, $S_k(C_1,\dots,C_p)$ is the $k$th complete symmetric
+polynomial in variables $C_1,\dots,C_p$; we also set 
+$$\delta_{\rm col}(\mF) = E_{q-p+1}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q)),$$
+where for $k \ge 0$, $E_k(\delta_1,\dots,\delta_q)$ is the 
+elementary symmetric polynomial of degree $k$ in $\delta_1, \ldots, \delta_q$.
+
+For any matrix $\mF$ over a ring $R$, and for any integer $m$,
+$M_r(\mF)$ will denote the set of $r$-minors of $\mF$, and $I_r(\mF)$
+will denote the ideal they generate in $R$. If $R$ is a polynomial
+ring in $n$ variables over a field $\KK$, $V_r(\mF)$ will denote the
+zero-set of $I_r(\mF)$ in $\KKbar{}^n$. Our first result is 
+then the following.
+\begin{theorem}\label{theo:1}
+  Let $\mF$ be in $\KK[X_1,\dots,X_n]^{p \times q}$ and let
+  $(g_1,\dots,g_s)$ be in $\KK[X_1,\dots,X_n]$, with $p \le q$ and
+  $n=q-p+s+1$. Then, sum of the multiplicities of the isolated points
+  of $I_p(\mF) + \langle g_1,\dots,g_s \rangle$ is at most $\deg(g_1)
+  \cdots \deg(g_s) \min(\delta_{\rm row}(\mF), \delta_{\rm
+    col}(\mF))$.
+\end{theorem}
+Previous work by Miller and Sturmfels~\cite[Chapter~15]{MiSt04} proved
+very general results on the multi-degrees of determinantal ideals
+built from matrices with indeterminate entries (in which case we have
+$s=0$, but the assumption $n=q-p+1$ does not hold); in particular,
+they obtain analogues (and generalizations) of the result in
+Theorem~\ref{theo:1} in that context.
+
+Nie and Ranestad proved (in a homogeneous context) that the bounds in
+Theorem~\ref{theo:1} are equalities for two families of polynomials:
+if the entries of $\mF$ are chosen generic and such that
+$\deg(f_{i,j}) = \rdeg(\mF,i)$ for all $i,j$, then the ideal $I_{\mF}$
+has degree $\delta_{\rm row}(\mF)$; when the entries of $\mF$ are
+chosen generic and such that $\deg(f_{i,j}) = \cdeg(\mF,j)$ for all
+$i,j$, the ideal $I_{\mF}$ has degree $\delta_{\rm col}(\mF)$. From
+this, they deduce that the degree of the ideal $I_{\mF,G}$ is at most
+$\deg(g_1) \cdots \deg(g_s) \delta_{\rm row}(\mF)$, in the particular
+case when the matrix $\mF$ is the Jacobian matrix of $G$ (together
+with one extra row, corresponding to the gradient of a function $q$
+that we want to optimize on $V(G)$), and assuming that this ideal has
+dimension zero.
+
+For generic (homogeneous) polynomials $G$, and $\mF$ as in the
+previous paragraph, Spaenlehauer gave in~\cite{Spa14} an explicit
+expression for the Hilbert function of the ideal $I_{\mF,G}$.
+
+
+Our second result gives a bound on the cost of computing a
+zero-dimensional parametrization of the isolated solutions of
+$I_\mF$. Our algorithms take as input a \emph{straight-line program}
+(that is, a sequence of elementary operations $+, -, \times$) that
+computes the entries of $\mF$ from the input variables $\X$. The
+\emph{length $L$} of the input is the number of operations it
+performs. This assumption is not restrictive, since any matrix $\mF$
+can be computed by a (trivial) straight-line program.
+
+\begin{theorem}
+  Let $\mF$ be in $\KK[\X]^{p \times q}$, with $p \le q$, and assume
+  that either~\eqref{eq:rowdeg} or~\eqref{eq:coldeg} holds. Then,
+  there exists a randomized algorithm which computes a
+  zero-dimensional parametrization for the isolated solutions of
+  $I_\mF$, using $({q \choose p} L \delta)^{O(1)}$.
+\end{theorem}
+The number ${q \choose p}$ is the number of elements in the
+determinantal system of $\mF$. In several cases, we can improve the
+algorithm and replace this by the number $q$ of columns of $\mF$,
+for instance, when all isolated solutions of $I_\mF$ are known
+to have multiplicity one.
+
+The main idea of our algorithms is to use the \emph{homotopy}
+\[\mH = (1-T)\cdot \mG + T \cdot \mF \in \KK[T, \X]^{p \times q}\]
+that connects a \emph{start matrix} $\mG$ to the target matrix $\mF$,
+where $T$ is a new variable. However, we need some properties on the
+start matrix such that we can compute the isolated solutions for the
+determinantal system of $F$. Assume that we know the solutions for the
+determinatal system of $G$, by using the Newton interation to the
+determinantal system of $H$, we can lift into the isolated solutions
+for that of $F$. Therefore, we need create a start matrix $G$ such
+that
+\begin{itemize}
+\item its solutions of the determinantal system can be found effectively,
+\item we can extract a square subsystem with full-rank Jacobian,
+\item there is no solution of its determinantal system is at infinity. 
+\end{itemize}
+
+This paper is organized as follows.
+
+\todo{Some background on polynomial systems and stuff}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Preliminary: a local dimension test} \label{sec:isolated}
+
+Let $\bC=(c_1,\dots,c_m)$ be polynomials in $\KK[\bX]$, with
+$\bX=(X_1,\dots,X_n)$, for a field $\KK$. Given a point $\bx$ in
+$V(\bC)$, we discuss here how to decide whether $\bx$ is an isolated
+point in $V(\bC)$. We make the following assumption:
+\begin{description}[leftmargin=*]
+\item [$\assH.$] We are given as input an integer $\mu$ such that
+ either $\bx$ belongs to a positive-dimensional component of $V(\bC)$,
+ or $\bx$ is isolated in $V(\bC)$, with multiplicity at most $\mu$
+  with respect to the ideal $\langle \bC\rangle$.
+\end{description}
+
+\begin{proposition}\label{prop:testisolated}
+  Suppose that $\bC$ is given by a straight-line program of length $E$.
+  If assumption $\assH$ is satisfied, we can decide whether $\bx$ is an
+  isolated root of $V(\bC)$ using $(\mu\,E\,m)^{O(1)}$ operations in~$\KK$.
+\end{proposition}
+Reference~\cite{BaHaPeSo09} gives an algorithm to compute the
+dimension of $V(\bC)$ at $\bx$, but its complexity is not known to us, as
+it relies on linear algebra with matrices of potentially large size
+(not necessarily polynomial in $\mu,E,m$).
+Instead, we use an adaptation of a prior result by
+Mourrain~\cite{Mourrain97}, which allows us to control the size of the
+matrices we handle. We only give detailed proofs for new ingredients
+that are specific to our context, a key difference being the cost
+analysis in the straight-line program model: Mourrain's original
+result depends on the number of monomials appearing when we expand
+$\bC$, which would be too high for the applications we will make of
+this result.
+
+Without loss of generality, we assume that $m\ge n$ (otherwise, $\bx$
+cannot be an isolated solution). We also assume that $\bx=0$; this is
+done by replacing $\bC$ by the polynomials $\bC(\bX+\bx)$, which have
+complexity of evaluation $E'=E+n$.  The basis of our algorithm is the
+following remark.
+
+\begin{lemma}
+  Let $I$ be the zero-dimensional ideal $\langle \bC \rangle +
+  \m^{\mu+1}$, where $\m=\langle X_1,\dots,X_n\rangle$ is the maximal
+  ideal at the origin. Then, if $0$ is isolated in $V(\bC)$ if and only
+  if the multiplicity $m$ of $I$ at the origin is at most $\mu$.
+\end{lemma}
+\begin{proof}
+  This follows from the following
+  result~\cite[Theorem~A.1]{BaHaPeSo09}.  For $k \ge 1$, let $I_k$ be
+  the zero-dimensional ideal $\langle \bC \rangle + \m^{k}$, and let
+  $\nu_k$ be multiplicity of the origin with respect to this
+  ideal. Then, the reference above proves that the sequence
+  $(\nu_k)_{k \ge 1}$ is non-decreasing, and that $0$ is isolated in
+  $V(\bC)$ if and only if there exists $k\ge 1$ such that
+  $\nu_k=\nu_{k+1}$.
+  \begin{itemize}
+  \item If $0$ is isolated in $V(\bC)$, then by assumption $\assH$ 
+    its multiplicity with respect to $\langle \bC\rangle$ is at most $\mu$,
+    and its multiplicity $m$ with respect to $I$ cannot be larger.
+  \item Otherwise, by the result above, $\nu_{k+1} > \nu_k$ holds for
+    all $k \ge 1$, so that $\nu_k \ge k$ holds for all such $k$ (since
+    $\nu_1=1$). In particular, the multiplicity $m$ of 
+ $I$ at the origin, which is $\nu_{\mu+1}$, is at least $\mu+1$.
+    \qedhere
+  \end{itemize}
+\end{proof}
+
+Hence, we are left with deciding whether the multiplicity of the
+$\m$-primary ideal $I$ is at most $\mu$. We do this by following and
+slightly modifying Mourrain's algorithm for the computation of the
+orthogonal $I^{\perp}$, that is, the set of $\KK$-linear forms
+$\KK[\bX] \to \KK$ that vanish on $I$; this is a $\KK$-vector space
+naturally identified with the dual of $\KK[\bX]/I$, so it has dimension
+$m$, the multiplicity of $I$ at the origin (note that $I$ is $\m$-primary).
+
+We do not need to give all details of the algorithm, let alone proof
+of correctness; we just mention the key ingredients for the cost
+analysis in our setting. A linear form $\beta: \KK[\bX] \to \KK$ that
+vanishes on $I$ must vanish on all monomials, except a finite number
+(since all monomials, except a finite number, belong to $I$); a
+natural way to represent such a linear form would then be as the
+finite generating series $\sum_{\balpha \in \N^n}
+\beta(X_1^{\alpha_1}\cdots X_n^{\alpha_n}) d_1^{\alpha_1}\cdots
+d_n^{\alpha_n}$, for some new variables $d_1,\dots,d_n$; however the
+number of non-zero coefficients in such a sum cannot be bounded
+polynomially in terms of $n,\mu$.
+
+Hence, the algorithm uses another way to represent the elements in
+$I^{\perp}$, by means of {\em multiplication matrices}. An important
+feature of $I^{\perp}$ is that it admits the structure of a
+$\KK[\bX]$-module: for $k$ in $\{1,\dots,n\}$ and $\beta$ in
+$I^{\perp}$, the $\KK$-linear form $X_k \cdot \beta: f \mapsto
+\beta(X_k f)$ is easily seen to still be in $I^{\perp}$.  In
+particular, if $\bbeta=(\beta_1,\dots,\beta_m)$ is a $\KK$-basis of
+$I^{\perp}$, then for all $k$ as above, and all $i$ in
+$\{1,\dots,m\}$, $X_k \cdot \beta_i$ is a linear combination of
+$\beta_1,\dots,\beta_m$. Mourrain's algorithm computes a
+basis $\bbeta=(\beta_1,\dots,\beta_m)$ with the following features:
+\begin{itemize}
+\item for $i$ in $\{1,\dots,m\}$ and $k$ in $\{1,\dots,n\}$, we have
+  $X_k \cdot \beta_i=\sum_{0 \le j < i} \lambda^{(k)}_{i,j} \beta_j$
+  (hence $\lambda^{(k)}_{i,j}$ may be non-zero 
+  only for $j<i$)
+\item $\beta_1$ is the evaluation at $0$, $f \mapsto f(0)$
+\item for $i$ in $\{2,\dots,m\}$, $\beta_i(1)=0$.
+\end{itemize}
+The following lemma shows that the coefficients $(\lambda^{(k)}_{i,j})$
+are sufficient to evaluate  the linear forms $\beta_i$ at any $f$ in
+$\KK[\bX]$. More precisely, knowing only their values for $j < i \le s$,
+for any $s \le m$, allows us to evaluate $\beta_1,\dots,\beta_s$ at such an $f$.
+The following lemma follows~\cite{Mourrain97} in its description
+of the matrices $\bM_{k,s}$; the (rather straightforward) complexity analysis 
+in the straight-line program model is new.
+\begin{lemma}\label{lemma:evalbeta}
+   Let $s$ be in $1,\dots,m$, and suppose that the coefficients
+  $\lambda^{(k)}_{i,j}$ are known for $i=1,\dots,s$, $j=0,\dots,i-1$
+  and $k=1,\dots,n$. Given a straight-line program $\Gamma$ of length
+  $L$ that computes $\h=(h_1,\dots,h_R)$, one can compute
+  $\beta_i(h_r)$, for all $i=1,\dots,s$ and $r=1,\dots,R$, using
+  $(s\,L)^{O(1)}$ operations.
+\end{lemma}
+\begin{proof}
+  By definition, for $h$ in $\KK[\bX]$ and $k=1,\dots,n$, the following equality
+  holds:
+$$
+  \begin{bmatrix}
+    \beta_1(X_k h)\\
+    \vdots\\
+    \beta_s(X_k h)
+  \end{bmatrix}=
+\bM_{k,s}
+  \begin{bmatrix}
+    \beta_1(h)\\
+    \vdots\\
+    \beta_s(h)
+  \end{bmatrix},
+\quad\text{with}\quad
+\bM_{k,s}= \begin{bmatrix}
+    \lambda^{(k)}_{1,1} & \cdots & \lambda^{(k)}_{s,1}\\
+    \vdots && \vdots \\
+    \lambda^{(k)}_{1,s} & \cdots & \lambda^{(k)}_{s,s}
+  \end{bmatrix}.
+$$ 
+ Remark that the matrices $\bM_{k,s}$ all commute. Indeed, 
+for any $k,k'$ in $\{1,\dots,n\}$, and $h$ as above, the relation above implies
+that 
+$$
+\Delta_{k,k',s}
+  \begin{bmatrix}
+    \beta_1(h)\\
+    \vdots\\
+    \beta_s(h)
+  \end{bmatrix} =
+  \begin{bmatrix}
+0\\ \vdots \\ 0 
+  \end{bmatrix},
+$$
+where $\Delta_{k,k',s} = \bM_{k,s}\bM_{k',s}-\bM_{k',s}\bM_{k,s}.$ Because 
+the linear forms $\beta_1,\dots,\beta_s$ are linearly independent, this implies
+that all rows of $\Delta_{k,k',s}$ must be zero, as claimed.
+We then deduce that for any polynomial $h$ in $\KK[\bX]$, we have
+the equality
+$$  \begin{bmatrix}
+    \beta_1(h)\\
+    \vdots\\
+    \beta_s(h)
+  \end{bmatrix} =
+h(\bM_{1,s},\dots,\bM_{n,s})   \begin{bmatrix}
+    \beta_1(1)\\
+    \vdots\\
+    \beta_s(1)
+  \end{bmatrix} $$ On the other hand, our assumptions imply that the
+  sequence $(\beta_1(1),\dots,\beta_s(1))$ is simply $(1,0,\dots,0)$.
+  To prove the proposition, it is enough to note that the evaluations \sloppy
+  $h_1(\bM_{1,s},\dots,\bM_{n,s}),\dots,h_R(\bM_{1,s},\dots,\bM_{n,s})$
+  can be computed using the straight-line program doing
+  $(s\,L)^{O(1)}$ operations.
+\end{proof}
+
+Mourrain's alorithm proceeds in an iterative manner, starting from
+$\bbeta^{(1)}=(\beta_{1})$ (and setting $e_1=1$), and computing
+successively $\bbeta^{(2)}=(\beta_{e_1+1},\dots,\beta_{e_2})$,
+$\bbeta^{(3)}=(\beta_{e_2+1},\dots,\beta_{e_3})$, \dots for some
+integers $e_1 \le e_2 \le e_3 \dots$ Mourrain's algorithm stops when
+$e_{\ell+1}=e_{\ell}$, in which case $\beta_1,\dots,\beta_{e_\ell}$ is
+a $\KK$-basis of $I^\perp$, and $e_\ell=m$. In our case, we
+are not interested in computing this multiplicity, but only in
+deciding whether it is less than or equal to the parameter $\mu$. We do it as follows: assume that we have
+computed $\bbeta^{(1)},\bbeta^{(2)},\dots,\bbeta^{(\ell)}$, together
+with the corresponding integers $e_1,e_2,\dots,e_\ell$, with $e_1 <
+\cdots < e_\ell \le \mu$. We compute $\bbeta^{(\ell+1)}$ and $e_{\ell+1}$,
+and continue according to the following:
+\begin{itemize}
+\item if $e_{\ell+1}=e_{\ell}$, we conclude that the multiplicity $\mult(0,I)$
+  is $e_\ell \le \mu$; we stop the algorithm;
+\item if $e_{\ell+1} > \mu$, we conclude that the multiplicity is greater 
+  than $\mu$; we stop the algorithm;
+\item else, when $e_\ell < e_{\ell+1} \le \mu$, we do another loop.
+\end{itemize}
+Because the $e_\ell$'s are an increasing sequence of integers, they
+satisfy $e_\ell \ge \ell$; hence, every time we enter the loop above we
+have $\ell \le \mu$. To finish the analysis of the algorithm, it
+remains to explain how to compute $\bbeta^{(\ell+1)}$ from
+$(\bbeta^{(1)},\bbeta^{(2)},\dots,\bbeta^{(\ell)})=(\beta_{1},\dots,\beta_{e_\ell})$.
+
+As per our description above, at any step of the algorithm,
+$\beta_{1},\dots,\beta_{e_\ell}$ are represented by means of the
+coefficients $\lambda^{(k)}_{i,j}$, for $0 \le j < i \le e_{\ell}$ and
+$1 \le k \le n$.  At step $\ell$, Mourrain's algorithm solves a homogeneous linear system
+$S_\ell$ with $n(n-1) e_\ell/2+m'$ equations and $n e_\ell$ unknowns,
+where $m'$ is the number of generators of the ideal $I= \langle \bC
+\rangle + \m^{\mu+1}$. Remark that $m'$ is not polynomial in $\mu$ 
+and $n$, so the size of $S_\ell$ is {\em a priori} too large to 
+fit our cost bound; we will explain below how to resolve this issue.
+
+The nullspace dimension of this linear system gives us the cardinality
+$e_{\ell+1}-e_{\ell}$ of $\bbeta^{(\ell+1)}$. Similarly, the coordinates of
+the $e_{\ell+1}-e_{\ell}$ vectors in a nullspace basis are precisely
+the coefficients $\lambda^{(k)}_{i,j}$ for
+$i=e_{\ell}+1,\dots,e_{\ell+1}$, $j=1,\dots,e_\ell$ and $k=1,\dots,n$
+(we have $\lambda^{(k)}_{i,j}=0$ for $j=e_{\ell}+1,\dots,i-1$). For
+all $\ell \ge 2$, all linear forms $\beta$ in $\bbeta^{(\ell)}$ are
+such that for all $k$ in $\{1,\dots,n\}$, $X_k \cdot \beta$ belongs to
+the span of $\bbeta^{(1)},\dots,\bbeta^{(\ell-1)}$; in particular, a
+quick induction shows that all linear forms in
+$\bbeta^{(1)},\dots,\bbeta^{(\ell)}$ vanish on all monomials of degree
+at least $\ell$.
+
+There remains the question of setting up the system $S_\ell$. For $k$
+in $\{1,\dots,n\}$ and a $\KK$-linear form $\beta$, we denote by
+$X_k^{-1} \cdot \beta$ the $\KK$-linear form defined as follows:
+\begin{itemize}
+\item $(X_k^{-1} \cdot \beta)(X_k f) = \beta(f)$ for all $f$ in $\KK[\bX]$,
+\item $(X_k^{-1} \cdot \beta)(f)=0$ if $f\in \KK[\bX]$ does not depend on $X_k$.
+\end{itemize}
+In other words, $(X_k^{-1} \cdot \beta)(f)=\beta(\delta_k(f))$ holds
+for all $f$, where $\delta_k:\KK[\bX] \to \KK[\bX]$ is the $k$th divided
+difference operator
+$$f\mapsto \frac
+{f(X_1,\dots,X_n)-f(X_1,\dots,X_{k-1},0,X_{k+1},\dots,X_n)}{X_k}.$$
+One verifies that, as the notation suggests, $X_k \cdot (X_k^{-1}
+\cdot \beta)$ is equal to $\beta$. This being said, we can then
+describe what the entries of $S_\ell$ are:
+\begin{itemize}
+\item the first $n(n-1) e_\ell/2$ equations involve only the coefficients 
+  $\lambda^{(k)}_{i,j}$ previously computed (we refer to~\cite[Section~4.4]{Mourrain97} for details of how exactly 
+these entries are distributed in $S_\ell$, as we do not need such details here).
+\item each of the other $m'$ equations has coefficient vector
+$$v_f = \big (\
+ (X_k^{-1} \cdot \beta_1)(f(X_1,\dots,X_k,0,\dots,0)),\dots,\ (X_k^{-1} \cdot \beta_{e_\ell})(f(X_1,\dots,X_k,0,\dots,0))\
+\big )_{1 \le k \le n},$$
+where $f$ is a generator of $I=\langle \bC \rangle +\m^{\mu+1}$.
+\end{itemize}
+We claim that only those equations corresponding to generators
+$c_1,\dots,c_m$ of the input system $\bC$ are useful, as all others are identically
+zero.
+
+We pointed out above that any linear form $\beta_i$ in
+$\beta_1,\dots,\beta_{e_\ell}$ vanishes on all monomials of degree at
+least $\ell$. Since we saw that we must have $\ell \le \mu$, all
+$\beta_i$ as above vanish on monomials of degree $\mu$; this implies
+that $X_k^{-1}\cdot \beta_i$ vanishes on all monomials of degree
+$\mu+1$. The generators $f$ of $\m^{\mu+1}$ have degree $\mu+1$, and
+for any such $f$, $f(X_1,\dots,X_k,0,\dots,0)$ is either zero, or of
+degree $\mu+1$ as well. Hence, for any $k$, $\beta_i$ in
+$\beta_1,\dots,\beta_{e_\ell}$ and $f$ as above, $(X_k^{-1} \cdot
+\beta_i)(f(X_1,\dots,X_k,0,\dots,0))$ vanishes. This implies that the
+vector $v_f$ is identically zero for such an $f$, and that the
+corresponding equation can be discarded.
+
+Altogether, as claimed above, we see that we have to compute the
+values
+$$(X_k^{-1} \cdot \beta_i)(c_j(X_1,\dots,X_k,0,\dots,0)),$$ for
+$k=1,\dots,n$, $i=1,\dots,e_\ell$ and $j=1,\dots,m$.  Fixing $k$, we
+let $\bC_k = (c_{j,k})_{1 \le j \le m}$, where $c_{j,k}$ is the
+polynomial $c_j(X_1,\dots,X_k,0,\dots,0)$; note that the system $\bC_k$
+can be computed by a straight-line program of length $E'=E+n$. Then,
+applying the following lemma with $s=e_\ell \le \mu$ and $\h = \bC_k$,
+we deduce that the values $(X_k^{-1} \cdot
+\beta_i)(C_j(X_1,\dots,X_k,0,\dots,0))$, for $k$ fixed, can be
+computed in time $(\mu\,E\,n)^{O(1)}$.
+
+
+\begin{lemma}
+  Let $s$ be in $1,\dots,m$, and suppose that the coefficients
+  $\lambda^{(k)}_{i,j}$ are known for $i=1,\dots,s$, $j=0,\dots,i-1$
+  and $k=1,\dots,n$. Given a straight-line program $\Gamma$ of length
+  $L$ that computes $\h=(h_1,\dots,h_R)$ and given $k$ in
+  $\{1,\dots,n\}$, one can compute $(X_k^{-1}\cdot \beta_i)(h_r)$, for
+  all $i=1,\dots,s$ and $r=1,\dots,R$, using $(s\,L\,n)^{O(1)}$
+  operations in $\KK$.
+\end{lemma}
+\begin{proof}
+  In view of the formula $(X_k^{-1} \cdot
+  \beta)(f)=\beta(\delta_k(f))$, and of Lemma~\ref{lemma:evalbeta}, it is
+  enough to prove the existence of a straight-line program of length
+  $O(L+n)$ that computes $(\delta_k(h_1),\dots,\delta_k(h_R))$.
+
+  To do this, we replace all polynomials
+  $\gamma_{-n+1},\dots,\gamma_L$ computed by $\Gamma$ by terms
+  $\lambda_{-n+1},\dots,\lambda_L$ and $\mu_{-n+1},\dots,\mu_L$, with
+  $\lambda_\ell=\gamma_\ell(X_1,\dots,X_{k-1},0,X_{k+1},\dots,X_n)$
+  and $\mu_\ell$ in $\KK[\bX]$ such that $\gamma_\ell= \lambda_\ell+X_k
+  \mu_\ell$ holds for all $\ell$, so that in particular
+  $\mu_\ell=\delta_k(\gamma_\ell)$.  To compute $\lambda_\ell$ and
+  $\mu_\ell$, assuming all previous $\lambda_{\ell'}$ and
+  $\mu_{\ell'}$ are known, we proceed as follows:
+  \begin{itemize}
+  \item if $\gamma_\ell=X_k$, we set $\lambda_\ell=0$ and $\mu_\ell=1$;
+  \item if $\gamma_\ell=X_{k'}$, with $k' \ne k$, we set $\lambda_\ell=X_{k'}$ and $\mu_\ell=0$;
+  \item if $\gamma_\ell =c_\ell$, with $c_\ell \in \KK$,
+    then we set $\lambda_\ell=c_\ell$ and  $\mu_\ell=0$;
+  \item if $\gamma_\ell = \gamma_{a_\ell} \pm \gamma_{b_\ell}$,
+    for some indices $a_\ell,b_\ell < \ell$, 
+    then we set $\lambda_\ell=\lambda_{a_\ell}\pm\lambda_{b_\ell}$
+    and $\mu_\ell=\mu_{a_\ell}\pm\mu_{b_\ell}$;
+\item if $\gamma_\ell = \gamma_{a_\ell} \gamma_{b_\ell}$,
+      for some indices $a_\ell,b_\ell < \ell$,
+    then we set $\lambda_\ell=\lambda_{a_\ell} \lambda_{b_\ell}$
+    and $$\mu_\ell=
+\lambda_{a_\ell} \mu_{b_\ell}
++
+\mu_{a_\ell} \lambda_{b_\ell}
++
+X_k\mu_{a_\ell} \mu_{b_\ell}.$$
+\end{itemize}
+One verifies that in all cases, the relation $\gamma_\ell=
+\lambda_\ell+X_k \mu_\ell$ still holds. Since the previous
+construction allows us to compute $\lambda_\ell$ and $\mu_\ell$ in
+$O(1)$ operations from the knowledge of all previous $\lambda_{\ell'}$
+and $\mu_{\ell'}$, we deduce that all $\lambda_\ell$ and $\mu_\ell$,
+for $\ell=-n+1,\dots,L$, can be computed by a straight-line program of
+length $O(L+n)$.
+\end{proof}
+
+Taking all values of $k$ into account, we see that we can compute all
+entries we need to set up the linear system $S_\ell$ using
+$(\mu\,E\,n)^{O(1)}$ operations in $\KK$. After discarding the useless
+equations described above, the number of equations and unknowns in the
+system $S_\ell$ is polynomial in $n$, $m$ and $e_\ell$; since we saw
+that $n \le m$ and $e_\ell \le \mu$, this implies that we can find a
+nullspace basis of it in time $(\mu\,m)^{O(1)}$. 
+
+Altogether, the time spent to find $\bbeta^{(\ell+1)}$ from
+$(\bbeta^{(1)},\bbeta^{(2)},\dots,\bbeta^{(\ell)})=(\beta_{1},\dots,\beta_{e_\ell})$
+is polynomial in $\mu\,E\,m$. Since we saw that we do at most $\mu$
+such loops, the cumulated time remains polynomial in $\mu\,E\,m$, and
+Proposition~\ref{prop:testisolated} is proved.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Symbolic homotopies}\label{sec:homotopy}
+
+In this section, we work over a field $\KK$, using $n$ variables
+$\bX=(X_1,\dots,X_n)$. Given polynomials $\bC=(c_1,\dots,c_m)$ in
+$\KK[\bX]^m$, we give an algorithm to compute a zero-dimensional
+parametrization of the isolated points of $V(\bC)$, assuming the
+existing of a suitable {\em homotopy deformation} of $\bC$. We assume
+$m\ge n$, otherwise no isolated points exist in $V(\bC)$.
+
+Let $T$ be a new variable and consider polynomials
+$\bB=(B_1,\dots,B_m)$ in $\KK[T,\bX]$; for $\tau$ in $\KKbar$,
+we write $\bB_\tau=(B_{\tau,1},\dots,B_{\tau,m})=\bB(\tau,\bX)\subset
+\KKbar[\bX]$ and we assume that $\bB$ is such that $\bB_1=\bC$.
+Define further the ideal $J=\langle \bB \rangle \subset \KKbar[T,\bX]$ and
+consider the folllowing assumptions.
+\begin{description}[leftmargin=*]
+\item[$\assA_1.$] Any irreducible component of $V(J) \subset
+  \KKbar{}^{n+1}$ has dimension at least one.
+\item[$\assA_2.$] For any maximal ideal $\m \subset\KKbar[T,\bX]$, if the
+  localization $J_\m \subset \KKbar[T,\bX]_\m$ has height $n$, then it is
+  unmixed (that is, all associated primes have height $n$).
+\end{description}
+An obvious example where such properties hold is when $m=n$. Then,
+$\assA_1$ is Krull's theorem, and $\assA_2$ is Macaulay's unmixedness
+theorem in the Cohen-Macaulay ring
+$\KKbar[T,\bX]_\m$~\cite[Corollary~18.14]{Eisenbud95}. More generally,
+these properties hold when $\bB$ is the sequence of $p$-minors of a $p
+\times q$ matrix with entries in $\KK[T,\bX]$, with $n=q-p+1$; we
+discuss this in Section~\ref{sec:check}.  For $\tau$ in $\KKbar$, we
+further denote by $\assG(\tau)$ the following three properties.
+\begin{description}[leftmargin=*]
+\item[$\assG_1(\tau).$] For $k=1,\dots,m$,
+  $\deg_\bX(B_k)=\deg_\bX(B_{\tau,k})$.
+\item[$\assG_2(\tau).$] The only common solution to
+  $B_{\tau,1}^H(0,\bX)=\cdots=B_{\tau,m}^H(0,\bX)=0$ is
+  $(0,\dots,0)\in\KKbar{}^n$, where for $k=1,\dots,m$, $B_{\tau,k}^H$ is
+  the polynomial in $\KKbar[X_0,\bX]$ obtained by homogenizing
+  $B_{\tau,k}$ using a new variable $X_0$. In particular, $V(\bB_\tau)
+  \subset \KKbar{}^n$ is finite.
+\item[$\assG_3(\tau).$] The ideal $\langle \bB_\tau \rangle$ is
+  radical in $\KKbar[\bX]$.
+\end{description}
+
+The first result in this section is the following.
+\begin{proposition}\label{prop:degree_fiber}
+  Suppose that $\assA_1$ and $\assA_2$ hold. Then, there exists an
+  integer $c$ such that for all $\tau$ in $\KKbar$, the sum of the
+  multiplicities of the isolated solutions of $\bB_\tau$ is at most
+  $c$, and is equal to $c$ if $\assG(\tau)$ holds.
+\end{proposition}
+
+We next give our algorithm to compute the isolated solutions of the
+polynomial system $\bC=(c_1,\dots,c_m)$. In order to control the cost
+of the algorithm, we introduce the following assumptions.
+\begin{description}[leftmargin=*]
+\item[${\assD}_1$.] We are given $\tau$ in $\KK$ such that $\assG(\tau)$
+  holds; without loss of generality, we assume that $\tau=0$. We also
+  suppose that we know a description of $V(\bB_{0})$ by means of a
+  zero-dimensional parametrization
+  $\scrR_{0}=((q_{0},v_{0,1},\dots,v_{0,n}),\lambda)$ with
+  coefficients in $\KK$. The linear form $\lambda$ needs to satisfy
+  some genericity requirements, that are described in
+  Subsection~\ref{proof:prop2}.
+\item[${\assD}_2$.] Given $\bx \in V(\bB_0)$ having coordinates in a field
+  extension $\LL$ of $\KK$, we can find in time $(D [\LL:\KK])^{O(1)}$ a sequence $\bi_\bx=(i_1,\dots,i_n)$, with
+$1 \le i_1 < \dots < i_n \le m$, such that the
+  Jacobian matrix of $(B_{0,i_1},\dots,B_{0,{i_n}})$ has full
+  rank $n$ at $\bx$, for some $D$ independent of $\bx$.
+\item[${\assD}_3$.] We know an integer $e$ such that the curve $V(J')$
+  has degree at most $e$.  \todo{define $J'$}
+\item[${\assD}_4$.] We can compute $\bB$ using a straight-line program
+  of length $E$.
+\end{description}
+Then, the second result in this section is the following.
+\begin{proposition}\label{prop:compute_isolated}
+  Under the previous assumptions, we can compute a zero-dimensional
+  parametrization of the isolated points of 
+ of $V(\bC)$ using $(D\,e\,E\,m)^{O(1)}$ operations in~$\KK$.
+\end{proposition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Proof of Proposition~\ref{prop:degree_fiber}}
+
+The rest of this subsection is devoted to prove
+Proposition~\ref{prop:degree_fiber}. In the course of the proof, we
+will give a precise characterization of the integer $c$ mentioned in
+the proposition, although the statement given in the proposition will
+actually be enough for our further purposes. {\em In all the rest of
+  this subsection, we assume that $\assA_1$ and $\assA_2$ hold.}
+
+Consider an irredundant primary decomposition of $J$ in
+$\KKbar[T,\bX]$, of the form $J=Q_1 \cap \cdots
+\cap Q_r$, and let $P_1,\dots,P_r$ be the associated primes, that is,
+the respective radicals of $Q_1,\dots,Q_r$. We assume that
+$P_1,\dots,P_s$ are the minimal primes, for some $s \le r$, so that
+$V(P_1),\dots,V(P_s)$ are the (absolutely) irreducible components of
+$V(J)\subset \KKbar{}^{n+1}$. By $\assA_1$, these irreducible
+components all have dimension at least one. Refining further, we
+assume that $t \le s$ is such that $V(P_1),\dots,V(P_t)$ are the
+ irreducible components of $V(J)$ of dimension one whose
+image by $\pi_T: (\tau,x_1,\dots,x_n) \mapsto \tau$ is dense in
+$\KKbar$.
+
+\begin{lemma}\label{lemma:vPi}
+  Let $\tau$ be in $\KKbar$ and let $\bx \in \KKbar{}^n$ be an isolated
+  solution of the system $\bB_\tau$. Then, $(\tau,\bx)$ belongs to $V(P_i)$
+  for at least one index $i$ in $\{1,\dots,t\}$, and does not belong
+  to $V(P_i)$ for any index $i$ in $\{t+1,\dots,r\}$.
+\end{lemma}
+\begin{proof}
+  Because $(\tau,\bx)$ cancels $\bB$, it belongs at least to one of
+  $V(P_1),\dots,V(P_r)$. It remains to rule out the possibility that
+  $(\tau,\bx)$ belongs to $V(P_i)$ for some index $i$ in
+  $\{t+1,\dots,r\}$.
+
+  We first deal with indices $i$ in $\{t+1,\dots,s\}$. These are those
+  primary components with minimal associated primes $P_i$ that either
+  have dimension at least two, or have dimension one but whose image
+  by $\pi$ is a single point. In both cases, all irreducible
+  components of the intersection $V(P_i)\cap V(T-\tau)$ have dimension
+  at least one. Since $\bx$ is isolated in $V(\bB_\tau)$, $(\tau,\bx)$ is
+  isolated in $V(\bB)\cap V(T-\tau)$, so it cannot belong to
+  $V(P_i)\cap V(T-\tau)$ for any $i$ in $\{t+1,\dots,s\}$.
+  
+  We conclude by proving that $(\tau,\bx)$ does not belong to $V(P_i)$,
+  for any of the embedded primes $P_{s+1},\dots,P_r$. We proceed by
+  contradiction, assuming for definiteness that $(\tau,\bx)$ belongs to
+  $V(P_{s+1})$. Because $P_{s+1}$ is an embedded prime, $V(P_{s+1})$
+  is contained in (at least) one of $V(P_1),\dots,V(P_s)$. In view of
+  the previous paragraph, it cannot be one of
+  $V(P_{t+1}),\dots,V(P_s)$.  Now, all of $V(P_1),\dots,V(P_t)$ have
+  dimension one, so $V(P_{s+1})$ has dimension zero (so it is the point $\{(\tau,\bx)\}$). For the same
+  reason, if $(\tau,\bx)$ belonged to another $V(P_i)$, for some $i >
+  s+1$, $V(P_i)$ would also be zero-dimensional, and thus equal to $\{(\tau,\bx)\}$; as a result, $V(P_i)$
+  would be equal to $V(P_{s+1})$, and this would contradict the
+  irredundancy of our decomposition.
+  
+  To summarize, $(\tau,\bx)$ belongs to $V(P_{s+1})$, together with
+  $V(P_i)$ for some indices $P_i$ in $\{1,\dots,t\}$ (say
+  $P_1,\dots,P_u$, up to reordering, for some $u \ge 1$), and avoids
+  all other associated primes.  Let us localize the decomposition
+  $J=Q_1 \cap \cdots \cap Q_r$ at
+  $P_{s+1}$. By~\cite[Proposition~4.9]{AtMc},
+  $J_{P_{s+1}}={Q_1}_{P_{s+1}} \cap \cdots \cap {Q_u}_{P_{s+1}}\cap
+  {Q_{s+1}}_{P_{s+1}}$ is an irredundant primary decomposition of
+  $J_{P_{s+1}}$ in $\KKbar[T,\bX]_{P_{s+1}}$; the minimal primes are
+  ${P_1}_{P_{s+1}},\dots,{P_u}_{P_{s+1}}$.
+
+  By Corollary~4 p.24 in~\cite{Matsumura86}, for any prime
+  ${P_i}_{P_{s+1}}$, $i=1,\dots,u$ or $i=s+1$, the localization of
+  $\KKbar[T,\bX]_{P_{s+1}}$ at ${P_i}_{P_{s+1}}$ is equal to
+  $\KKbar[T,\bX]_{P_{i}}$. In particular, the height of ${P_i}_{P_{s+1}}$
+  in $\KKbar[T,\bX]_{P_{s+1}}$ is equal to that of $P_i$ in
+  $\KKbar[T,\bX]_{P_{i}}$, that is, $n$ if $i=1,\dots,u$, since then
+  $V(P_i)$ has dimension $1$, or $n+1$ if $i=s+1$. Since $u \ge 1$,
+  this proves that $J_{P_{s+1}}$ has height $n$. As a result, $\assA_2$ implies that $J_{P_{s+1}}$ is unmixed, a contradiction.
+\end{proof}
+
+Let us write $J=J' \cap J''$, with $J'=Q_1 \cap \cdots \cap Q_t$ and
+$J''=Q_{t+1} \cap \cdots \cap Q_r$. For $\tau$ in $\KKbar$, we denote
+by $J_\tau \subset \KKbar[T,\bX]$ the ideal $J + \langle T-\tau \rangle$,
+and similarly for $J'_\tau$ and $ J''_\tau$.
+
+\begin{lemma}\label{lemma:JJprime}
+  Let $\tau$ and $\bx$ be as in Lemma~\ref{lemma:vPi}. Then, the
+  multiplicities of the ideals $J_\tau$ and $J'_\tau$ at $(\tau,\bx)$
+  are the same.
+\end{lemma}
+\begin{proof}
+  Without loss of generality, assume that $\tau=0 \in \KKbar$ and
+  $\bx=0 \in \KKbar{}^n$. We start from the equality $J=J' \cap J''$,
+  which holds in $\KKbar[T,\bX]$, and we see it in $\KKbar[[T,\bX]]$.  The
+  previous lemma implies that there exists a polynomial in $J''$ that
+  does not vanish at $(\tau,\bx)=0 \in \KKbar{}^{n+1}$.  This polynomial
+  is a unit in $\KKbar[[T,\bX]]$, which implies that the extension of
+  $J''$ in $\KKbar[[T,\bX]]$ is the trivial ideal $\langle 1 \rangle$, and
+  finally that the equality of extended ideals $J=J'$ holds in
+  $\KKbar[[T,\bX]]$. This implies the equality $J+\langle T \rangle
+  =J'+\langle T \rangle $ in $\KKbar[[T,\bX]]$, and the conclusion
+  follows.
+\end{proof}
+
+Our goal is now to give a bound on the sum of the multiplicites of
+$\bB_\tau$ at all its isolated roots, for any $\tau$ in $\KKbar$.  To
+achieve this, we introduce $\frak{J}$, the extension of $J$ in
+$\KKbar(T)[\bX]$, and similarly $\frak{J}'$ and ${\frak J}''$.
+
+\begin{lemma}
+  The ideal $\frak{J}'$ has dimension zero and $V(\frak{J}') \subset
+  \overline{\KK(T)}{}^n$ is the set of isolated solutions of
+  $V(\frak{J}) \subset \overline{\KK(T)}{}^n$.
+\end{lemma}
+\begin{proof}
+ From the equality $J=J' \cap J''$ and Corollary~3.4 in~\cite{AtMc},
+ we deduce that $\frak{J}=\frak{J'} \cap \frak{J''}$; the properties
+ of $J'$ (the irreducible components of $V(J')$ are precisely those
+ irreducible components of $V(J)$ that have dimension one and with a
+ dense image by $\pi_T$) imply our claim.
+\end{proof}
+
+
+Let us write $c=\dim_{\KKbar(T)}(\KKbar(T)[\bX]/{\frak J}')$.  The
+following lemma relates this quantity to the multiplicities of the
+solutions in any fiber $\bB_\tau$. This proves the first statement
+in Proposition~\ref{prop:degree_fiber}.
+
+\begin{lemma}\label{lemma:19}
+  Let $\tau$ be in $\KKbar$. The sum of the multiplicities of the
+  isolated solutions of $\bB_\tau$ is at most equal to $c$.
+\end{lemma}
+\begin{proof}
+  The sum in the lemma is also the sum of the multiplicities of the
+  ideal $J_\tau$ at all $(\tau,\bx)$, for $\bx$ an isolated solution of
+  $\bB_\tau$.  By Lemma~\ref{lemma:JJprime}, this is also the sum of
+  the multiplicities of $J'_\tau$ at all $(\tau,\bx)$, for $\bx$ an
+  isolated solution of $\bB_\tau$. We prove below that the sum of the
+  multiplicities of $J'_\tau$ at all $(\tau,\bx)$, for $\bx$ such that
+  $(\tau,\bx)$ cancels $J'_\tau$, is at most $c$; this will be enough
+  to conclude (for any isolated solution $\bx$ of $\bB_\tau$,
+  $(\tau,\bx)$ is a root of $J'_\tau$, though the converse may not be
+  true).
+  
+  Let $m_1,\dots,m_\mu$ be monomials that form a $\KKbar$-basis of
+  $\KKbar[T,\bX]/J'_\tau$; since $T-\tau$ is in $J'_\tau$, these
+  monomials can be assumed not to involve $T$.  We will prove that
+  they are still $\KKbar(T)$-linearly independent in
+  $\KKbar(T)[\bX]/{\frak J}'$; this will imply that $\mu \le c$,
+  and finish the proof of the first statement.
+  
+  Suppose that there exists a linear combination $A_1 m_1 + \cdots +
+  A_\mu m_\mu$ in ${\frak J}'$, with all $A_i$'s in $\KKbar(T)$, not
+  all of them zero. Thus, we have an equality $a_1/d_1\, m_1 + \cdots
+  + a_\mu/d_\mu\, m_\mu = a/d$, with $a_1,\dots,a_\mu$ and
+  $d,d_1,\dots,d_\mu$ in $\KKbar[T]$ and $a$ in the ideal
+  $J'$. Clearing denominators, we obtain a relation of the form $b_1
+  m_1 +\cdots+ b_\mu m_\mu \in J'$, with not all $b_i$'s zero. Let
+  $(T-\tau)^e$ be the highest power of $T-\tau$ that divides all
+  $b_i$'s (this is well-defined, since not all $b_i$'s vanish) so that
+  we can rewrite the above as $(T-\tau)^e (c_1 m_1 +\cdots+ c_\mu
+  m_\mu) \in J'$, with $c_i=b_i/(T-\tau)^e \in \KKbar[T]$ for all $i$.
+  In particular, our definition of $e$ implies that the values
+  $c_i(\tau)$ are not all zero.
+
+  Recall that the ideal $J'$ has the form $J'=Q_1 \cap \cdots \cap
+  Q_t$. For $i=1,\dots,t$, since $Q_i$ is primary, the membership
+  equality $(T-\tau)^e (c_1 m_1 +\cdots +c_\mu m_\mu) \in J'$ implies
+  that either $c_1 m_1 +\cdots +c_\mu m_\mu$ or some power
+  $(T-\tau)^{ef}$, for some $f > 0$, is in $Q_i$. Since $Q_i$ does not
+  contain non-zero polynomials in $\KKbar[T]$, $c_1 m_1 +\cdots+ c_\mu
+  m_\mu$ belongs to all $Q_i$'s, that is, to $J'$. We can then
+  evaluate this relation at $T=\tau$. We saw that the values
+  $c_i(\tau)$ do not all vanish on the left, which is a contradiction
+  with the independence of the monomials $m_1,\dots,m_\mu$ modulo
+  $J'_\tau$.
+\end{proof}
+
+
+We now take $\tau$ in $\KKbar$ and we discuss the geometry of $V(J)$
+near $\tau$; without loss of generality, we suppose that $\tau=0$.
+The field of Puiseux series $\KKbar\langle\langle T \rangle\rangle$
+contains an algebraic closure of $\KKbar(T)$; we thus let
+$\Phi_1,\dots,\Phi_{c'}$ be the points of $V(\mathfrak{J}')$, with
+coordinates taken in $\KKbar\langle\langle T \rangle\rangle$. In
+particular, we see that $c' \le c$; we prove below that we actually
+have $c'=c$.
+
+Any Puiseux series $\varphi$ in $\KKbar\langle\langle T
+\rangle\rangle$ admits a well-defined {\em valuation} $\nu(\varphi)$,
+which is the smallest exponent that appears in its expansion; the
+valuation $\nu(\Phi)$, for a vector $\Phi=(\varphi_1,\dots,\varphi_s)$
+with entries in $\KKbar\langle\langle T \rangle\rangle$, is the
+minimum of the valuations of its exponents. We say that $\Phi$ is {\em
+  bounded} if it has non-negative valuation; in this case,
+$\lim_0(\Phi)$ is defined as the vector
+$(\lim_0(\varphi_1),\dots,\lim_0(\varphi_s))$, with
+$\lim_0(\varphi_i)={\rm coeff}(\varphi_i,T^0)$ for all $i$.
+
+Without loss of generality, we assume that
+$\Phi_1,\dots,\Phi_\kappa$ are bounded, and
+$\Phi_{\kappa+1},\dots,\Phi_{c'}$ are not, for some $\kappa$ in
+$\{0,\dots,c'\}$, and we define $\varphi_1,\dots,\varphi_\kappa$ by
+$\varphi_i=\lim_0(\Phi_i)\in\KKbar{}^n$ for
+$i=1,\dots,\kappa$.
+
+\begin{lemma}\label{lemma:Z1}
+  The equality $V(J +\langle T \rangle)=\{\varphi_i \mid i=1,\dots,\kappa\}$ holds.
+\end{lemma}
+\begin{proof}
+  Let $S_1,\dots,S_R$ be generators of the ideal $J$ in
+  $\KK[T,\bX]$, so that these polynomials also generate
+  $\mathfrak{J}$ in $\KK(T)[\bX]$; then, the polynomials
+  $s_i=S_i(0,\bX) \in \KK[\bX]$, for $i=1,\dots,R$, are such that
+  $J+\langle T\rangle = \langle T,S_1,\dots,S_R \rangle$.  Consider
+  $i \le \kappa$, and the corresponding vector of Puiseux series
+  $\Phi_i$. We know that for $j=1,\dots,R$, we have $S_j(\Phi_i)=0$.
+  Since all elements involved have non-negative valuation, we can take
+  the coefficient of degree $0$ in $T$ in this equality and deduce
+  $s_j(\varphi_i)=0$, as claimed. Hence, each $\varphi_i$, for $i \le
+  \kappa$, is in $V(J + \langle T \rangle)$.
+
+  Conversely, take indeterminates $T_1,\dots,T_n$, and let $\LL$ be
+  the algebraic closure of the field $\KKbar(T_1,\dots,T_n)$; let
+  $W\subset{\LL}{}^{n+1}$ be the zero-set of the ideal $J\cdot
+  \LL[T,\bX]$ and consider the projection $W \to {\LL}{}^2$ defined
+  by $(\tau,x_1,\dots,x_n)\mapsto (\tau,T_1 x_1 + \cdots + T_n x_n)$. The
+  Zariski closure $S$ of the image of this mapping is a
+  hypersurface. 
+  Since
+  the ideal $J$ is generated by polynomials with coefficients in $\KK$,
+  one deduces that $S$ admits a squarefree defining equation in
+  $\KK(T_1,\dots,T_n)[T,T_0]$.
+
+  Consider such a polynomial, say $C$, and assume without loss of
+  generality that $C$ belongs to 
+  $\KK[T_1,\dots,T_n][T,T_0]$. Because $J$ admits no irreducible
+  component lying above $T=\tau$, for any $\tau$ in $\KKbar$, $C$
+  admits no factor in $\KK[T]$; thus, $C(0,T_0)$ is non-zero.
+
+  Let $\ell \in \KK[T_1,\dots,T_n,T]$ be the leading coefficient of
+  $C$ with respect to $T_0$. Proposition~1 in~\cite{Schost03} proves
+  that $C/\ell$, seen in $\KK(T_1,\dots,T_n,T)[T_0] \subset
+  \LL(T)[T_0]$, is the minimal polynomial of $T_1 X_1 + \cdots +
+  T_n X_n$ in $\LL(T)[\bX]/J\cdot \LL(T)[\bX]$. The latter ideal
+  is also the extension of $\mathfrak{J}$ to $\LL(T)[\bX]$, 
+  so $C/\ell$ factors as
+  $$\frac C\ell = \prod_{1\le i \le c'}(T_0-T_1 \Phi_{i,1} - \cdots - T_n \Phi_{i,n})$$
+  in $\LL\langle\langle T \rangle\rangle[T_0]$.
+  This gives the equality 
+  $$C =\ell \prod_{1\le i \le  c'}(T_0-T_1 \Phi_{i,1} - \cdots - T_n
+  \Phi_{i,n})$$ over $\KKbar\langle\langle T \rangle\rangle[T_1,\dots,T_n,T_0]$. 
+
+  Let us extend the valuation $\nu$ on $\KKbar\langle\langle T\rangle\rangle$
+to $\KKbar\langle\langle T \rangle\rangle[T_1,\dots,T_n,T_0]$ in the
+  direct manner, by setting $\nu(\sum_\alpha f_\alpha T_0^{\alpha_0}
+  \cdots T_n^{\alpha_n}) = \min_\alpha \nu(f_\alpha)$. The fact that
+  $C$ has no factor in $\KK[T]$ implies that
+  $\nu(C)=0$. Using Gauss' Lemma, we see that the valuation of the
+  right-hand side is $\nu(\ell) + \sum_{\kappa < i \le c}\mu_i$, with $\mu_i= \nu(\Phi_i)$ for all $i$;
+  note that $\mu_i < 0$ for $i > \kappa$. Thus, we can
+  rewrite
+  $$C =\left ({T}^{-\nu(\ell)} \ell\right ) 
+  \prod_{1 \le i \le \kappa}(T_0-T_1 \Phi_{i,1} - \cdots - T_n  \Phi_{i,n} )
+  \prod_{\kappa < i \le c'} ({T}^{-\mu_i}T_0-{T}^{-\mu_i}T_1 \Phi_{i,1} - \cdots - {T}^{-\mu_i}T_n  \Phi_{i,n} ),$$
+  where all terms appearing above have non-negative valuation.
+  As a result, we can take the coefficient of ${T}^0$ term-wise,
+  and obtain
+  $$C(0,T_0) = s \prod_{1 \le i \le \kappa}(T_0-T_1 \varphi_{i,1} -
+  \cdots - T_n \varphi_{i,n} ),$$ where $s$ is in $\KKbar[T_1,\dots,T_n]$;
+  note that $s \ne 0$, since $C(0,T_0)$ is non-zero.
+ By construction of $C$, for any
+  $\bx=(x_1,\dots,x_n)$ in $V(J+\langle T \rangle)$, $T_1 x_1 + \cdots + T_n x_n$
+  cancels $C(0,T_0)$, so $\bx$ must be one of
+  $\varphi_1,\dots,\varphi_{\kappa}$.
+\end{proof}
+
+To conclude the proof of Proposition~\ref{prop:degree_fiber}, 
+we now assume that property $\assG(0)$ holds.
+
+\begin{lemma}
+   $\Phi_1,\dots,\Phi_{c'}$ are bounded.
+\end{lemma}
+\begin{proof}
+  For $i=1,\dots,c'$, write $\Phi_i=1/T^{e_i}
+  (\Psi_{i,1},\dots,\Psi_{i,n})$, for a vector
+  $(\Psi_{i,1},\dots,\Psi_{i,n})$ of Puiseux series of valuation
+  zero, that is, such that all $\Psi_{i,j}$ are bounded and
+  $(\psi_{i,1},\dots,\psi_{i,n})=\lim_0(\Psi_{i,1},\dots,\Psi_{i,n})$
+  is nonzero. Hence,
+  $e_i=-\nu(\Phi_i)$, and we have to prove that $e_i \le 0$.  By way
+  of contradiction, we assume that $e_i > 0$.
+
+  The Puiseux series $\Phi_i$ cancels $B_1,\dots,B_m$. For
+  $k=1,\dots,m$, let $B_k^H \in \KKbar[T][X_0,\bX]$ be the homogenization
+  of $B_k$ with respect to $\bX$. From the equality
+  $B_k^H(T^{e_i},\Psi_{i,1},\dots,\Psi_{i,n})=
+  T^{e_i}B_k(\Phi_i)$, we deduce that
+  $B_k^H(T^{e_i},\Psi_{i,1},\dots,\Psi_{i,n})=0$ for all $k$. We
+  can write $B_k = B_{0,k} + T \tilde B_k$, for some polynomial
+  $\tilde B_k$ in $\KKbar[T,\bX]$, and $\assG_1(0)$ implies that
+  $\deg_\bX(\tilde B_k) \le \deg_\bX(B_{0,k})$. As a result, the
+  homogenizations (with respect to $\bX$) of $B_{k},B_{0,k}$ and $\tilde
+  B_k$ satisfy a relation of the form $h^H_k = B_{0,k}^H +
+  X_0^{\delta_k} T \tilde h^H_k$, for some $\delta_k \ge 0$. This
+  implies the equality
+  $$B_{0,k}^H(T^{e_i},\Psi_{i,1},\dots,\Psi_{i,n}) + T^{\delta_k
+    e_i+1}\tilde B_k^H(T^{e_i},\Psi_{i,1},\dots,\Psi_{i,n})=0.$$
+  The second term has positive valuation, so that
+  $B_{0,k}^H(T^{e_i},\Psi_{i,1},\dots,\Psi_{i,n})$ has positive
+  valuation as well. Taking the coefficient of $T^0$, this means 
+  that $B_{0,k}^H(0,\psi_{i,1},\dots,\psi_{i,n})=0$ (since $e_i > 0$), which implies 
+  that $(\psi_{i,1},\dots,\psi_{i,n})=(0,\dots,0)$, in view of $\assG_2(0)$.
+  This however contradicts the definition of $(\psi_{i,1},\dots,\psi_{i,n})$.
+\end{proof}
+
+\begin{lemma}\label{lemma:Jprimerad}
+  The ideal $\frak{J}'$ is radical; equivalently, $c'=c$.
+\end{lemma}
+\begin{proof}
+ We know that $\frak{J}'$ has dimension zero, so it is enough to prove
+ that for $i=1,\dots,c'$, the localization of $\KKbar\langle\langle T
+ \rangle\rangle[\bX]/\frak{J}'$ at the maximal ideal
+ $\mathfrak{m}_{\Phi_i}$ is a field, or equivalently that the
+ localization of $\KKbar\langle\langle T \rangle\rangle[\bX]/\frak{J}$
+ at $\mathfrak{m}_{\Phi_i}$ is a field.  By the Jacobian
+ criterion~\cite[Theorem~16.19.b]{Eisenbud95}, this is the case if and
+ only if the Jacobian matrix of $\bB$ with respect to $\bX$ has full
+ rank $n$ at $\Phi_i$. We know that $\varphi_i=\lim_0(\Phi_i)$ is a
+ root of $\bB_0$, and the Jacobian criterion conversely implies that
+ since the ideal $\langle \bB_0 \rangle$ is radical (by assumption
+ $\assG_3(0)$) and zero-dimensional (by assumption $\assG_2(0)$),
+ the Jacobian matrix of $\bB_0(\bX)=\bB(0,\bX)$ has full rank $n$. Since
+ this matrix is the limit at zero of the Jacobian matrix of $\bB$ with
+ respect to $\bX$, taken at $\Phi_i$, the latter must have full rank
+ $n$, and our claim that $\frak{J}'$ is radical is proved.
+\end{proof}
+
+To finish the proof of Proposition~\ref{prop:degree_fiber}, we have to
+establish that $V(\bB_0)$ consists of exactly $c$ solutions.  Let thus
+$d$ be the number of points in $V(\bB_0)$.  Since $\langle \bB_0
+\rangle$ is radical (this is $\assG_3(0)$), Lemma~\ref{lemma:19}
+implies that $d \le c$, so we only have to prove that $c \le d$. To
+prove this, we prove that for $i,i'$ in $\{1,\dots,c\}$, with $i \ne
+i'$, we have $\varphi_i \ne \varphi_{i'}$.
+
+Suppose to the contrary that $\varphi_i = \varphi_{i'}$. We know that
+the Jacobian matrix of $\bB_0$ has full rank $n$ at $\varphi_i$; up to
+reindexing, we assume that rows $1,\dots,n$ correspond to a maximal
+nonzero minor. Let $\bB'=(B_1,\dots,B_n)$.
+
+Let $m=\nu(\Phi_i-\Phi_{i'})$; since  $\varphi_i = \varphi_{i'}$, we have
+$m > 0$. We can thus write $\Phi_i=f + T^m
+\delta_i$ and $\Phi_{i'}=f + T^m \delta_{i'}$, for some vectors of
+bounded Puiseux series $f, \delta_i, \delta_{i'}$ such that all terms
+in $f$ have valuation less than~$m$; in addition, $\lim_0(\delta_i)
+\ne \lim_0(\delta_{i'})$. Write the Taylor expansion of $\bB'$ at $f$ as
+$$\bB'(\Phi_i) = \bB'(f) + \jac_f(\bB',\bX) T^m \delta_i + T^{2m} r_i =0$$
+and
+$$\bB'(\Phi_{i'}) = \bB'(f) + \jac_f(\bB',\bX) T^m \delta_{i'} + T^{2m}
+r_{i'} =0,$$ for some vectors of bounded Puiseux series $r_i,r_{i'}$.
+By subtraction and division by $T^m$, we obtain $\jac_f(\bB',\bX)
+(\delta_i-\delta_{i'}) = T^m r$, for some vector of bounded Puiseux
+series $r$.  Since $\jac_f(\bB',\bX)$ is invertible, this further gives
+$\delta_i-\delta_{i'} = T^m r'$, where again $r'$ is a vector of
+bounded Puiseux series.  However, by construction the left-hand side
+has valuation zero, while the right-hand side has positive valuation
+(since $m > 0$). Hence, we derived a contradiction to our assumption
+that $\varphi_i = \varphi_{i'}$. The proof of Proposition~\ref{prop:degree_fiber} is
+complete. (Although we do not need it now, the linearization
+used above also implies that all $\Phi_i$ are actually power series.)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Proof of Proposition~\ref{prop:compute_isolated}} \label{proof:prop2}
+
+Let $\scrR_0 =((q_{0},v_{0,1},\dots,v_{0,n}),\lambda)$ be a
+zero-dimensional parametrization of $V(\bB_{0})$ obtained by 
+means of assumption $\assD_1$.
+
+\paragraph{Decomposing $\scrR_0$.}
+We start by decomposing $\scrR_0$ into finitely many zero-dimensional
+parametrizations
+$\scrR_{0,j}=((q_{0,j},v_{0,j,1},\dots,v_{0,j,n}),\lambda)_{1\le j\le
+  t}$, all with coefficients in $\KK$, such that for $j$ in
+$\{1,\dots,t\}$, there exist $\bi_j=(i_{j,1},\dots,i_{j,n})$ such that
+$\bi_\bx=\bi_j$ for all $\bx$ in $Z(\scrR_{0,j})$. In other words, for
+all points described by $\scrR_{0,j}$, the jacobian of $(B_{0,i})_{i
+  \in \bi_j}$ has full rank $n$ at $\bx$, for all $\bx$ in
+$Z(\scrR_{0,j})$. This is done by applying the algorithm of assumption
+${\assD}_2$ to the point $(v_{0,1}/q_0',\dots,v_{0,n}/q_0')$ that has
+coordinates in the ring $\LL=\KK[T]/\langle q_0 \rangle$.
+
+If the algorithm goes through, we have obtained our answer. However,
+$\LL$ may not be a field.  One workaround would be to factor $q_0$,
+but we do not want our runtime to depend on the cost of factoring
+polynomials. Hence, we will use {\em dynamic evaluation techniques},
+as in~\cite{D5}. Indeed, the only issue that may arise is that we
+attempt to invert a zero-divisor. If this is the case, it means we
+have found a non-trivial factor $r_0$ of $q_0$: we can then replace
+$\scrR_0$ by two new zero-dimensional parametrizations,
+$\scrR'_0=((r_0,(v_1 s_0) \bmod r_0,\dots,(v_n s_0)\bmod
+r_0),\lambda)$ and $\scrR''_0=((s_0,(v_1 r_0) \bmod s_0,\dots,(v_n
+r_0)\bmod s_0),\lambda)$, with $s_0=q_0/r_0$ \todo{check the
+  formulas!}, that define a partition of $Z(\scrR_0)$ into the
+subsets where $r_0$ vanishes, resp.\ is non-zero. 
+
+We can then start over again, from $\scrR'_0$ and $\scrR''_0$
+independently. The runtime assumption in ${\assD}_2$ implies that the
+overall time spent in this step is $(D c)^{O(1)}$.
+
+\paragraph{Lifting power series and rational reconstruction.}
+For $j=1,\dots,t$, we can then apply Newton iteration to the system
+$(B_i)_{i \in \bi_j}$ to lift
+$\scrR_{0,j}=((q_{0,j},v_{0,j,1},\dots,v_{0,j,n}),\lambda)$ into a
+zero-dimensional parametrization
+$\scrR_{j}=((q_{j},v_{j,1},\dots,v_{j,n}),\lambda)$ with coefficients
+in $\KK[[T]]/\langle T^{2e}\rangle$, for $e$ as in ${\assD}_3$.
+(Note that Lemma~\ref{lemma:vPi} implies that $c \le e$).
+
+As explained in~\cite[Section~2.2]{SaSc16}, using the algorithm
+of~\cite{GiLeSa01}, this can be done using $(e\,E\,n)^{O(1)}$
+operations in $\KK$. Using the Chinese Remainder Theorem, we can
+combine all $\scrR_{j}$ into a single zero-dimensional parametrization
+$\scrR$ with coefficients in $\KK[[T]]/\langle T^{2d}\rangle$,
+since for $j\ne j'$ $q_{0,j}$ and $q_{0,j'}$ generate the unit ideal
+in $\KK[[T]]/\langle T^{2e}\rangle$; this takes time
+$(e\,n)^{O(1)}$.
+
+Using the notation of the previous subsection, the zeros of $\scrR$ in
+$\KKbar[[T]]/\langle T^{2d}\rangle$ are the truncations of the power
+series roots $\Phi_1,\dots,\Phi_c$ of $\mathfrak{J}'$. Since $J'$ is
+supposed to have degree at most $e$, knowing $\scrR$ at precision $2e$
+allows us to reconstruct a zero-dimensional parametrization $\scrS$
+with coefficients in $\KK(\tau)$ such that
+$Z(\scrS)=V(\mathfrak{J}')$, with all coefficients having numerator
+and denominator of degree at most $e$~\cite[Theorem~1]{Schost03}.
+This is done by applying rational function reconstruction to all
+coefficients of $\scrR$, as in~\cite{Schost03}, and takes time
+$(e\,n)^{O(1)}$.
+
+
+\paragraph{A finite set containing the isolated points of $V(\bC)$.}
+As we did in the previous subsection for $T=0$, we let
+$\Phi'_1,\dots,\Phi'_c$ be the roots of $\mathfrak{J}'$ in the field
+of Puiseux series $\KKbar\langle\langle T'\rangle\rangle$ at $T=1$,
+with $T'=T-1$. Without loss of generality, we assume that
+$\Phi'_1,\dots,\Phi'_{\kappa'}$ are bounded, and
+$\Phi'_{\kappa'+1},\dots,\Phi'_c$ are not, for some $\kappa'$ in
+$\{0,\dots,c\}$, and we let $\varphi'_1,\dots,\varphi'_\kappa$ by
+$\varphi'_i=\lim_0(\Phi'_i)\in\KKbar{}^n$ for $i=1,\dots,\kappa'$.  By
+Lemma~\ref{lemma:Z1}, $V(J' + \langle T-1\rangle) = \{ \varphi'_i \mid
+i=1,\dots,k\}$.
+
+We can now specify our requirements on the linear form $\lambda$.
+Following~\cite{RRS} and~\cite{SaSc16}, we ask that $\lambda$ is a {\rm well-separating
+  element},
+\begin{enumerate}
+\item $\lambda$ is separating for $V(\mathfrak{J}')=\{\Phi'_1,\dots,\Phi'_c\}$;
+\item $\lambda$ is separating for $V(J' + \langle T-1\rangle) = \{ \varphi'_1,\dots,\varphi'_{\kappa'}\}$.
+\item $\nu(\lambda(\Phi_i)) = \mu_i$ for all $i=1,\dots,c$, where $\nu$ denotes
+ the $T'$-adic valuation.
+\end{enumerate}
+These conditions are satisfied for a generic choice of $\lambda$, as
+showed in~\cite{SaSc16}. When this is the case, Lemma~4.4
+in~\cite{RRS} shows how to recover a zero-dimensional parametrization
+$\scrR_1=((q_1,v_{1,1},\dots,v_{1,n}),\lambda)$ with coefficients in
+$\KK$ for the limit set $V(J' + \langle T-1\rangle) =\{\varphi'_i \mid i=1,\dots,\kappa\}$
+starting from $\scrS$, in time $(e\,n)^{O(1)}$.
+
+\paragraph{Cleaning.}
+Lemma~\ref{lemma:vPi} implies that for any isolated solution $\bx$ of
+$\bC$, $(1,\bx)$ is in $V(J' + \langle T-1\rangle)$, so in a second
+time, we discard from $V(J'_1)$ those points that do not correspond to
+isolated points of $V(\bC)$. All such points belong to a
+positive-dimensional component of $V(\bC)$, so we can use the algorithm
+of Section~\ref{sec:isolated}. By Proposition~\ref{prop:degree_fiber},
+we can take $c$ as an upper bound on the multiplicity of isolated
+solutions of $\bC$ (in the cost analysis below, we simply use $e$, 
+since $e \ge c$).
+
+Using the same dynamic evaluation techniques as in the first paragraph
+above, we can use the algorithm of Section~\ref{sec:isolated} as if
+$Z(\scrR_1)$ were an irreducible variety, with an overhead polynomial
+in $c$. The runtime deduced from Proposition~\ref{prop:testisolated}
+is $(e\,E\,m)^{O(1)}$ operations in~$\KK$, where $E$ is from
+$\assD_4$. Adding all costs seen so far, we prove
+Proposition~\ref{prop:compute_isolated}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Properties of determinantal ideals}\label{sec:check}
+
+The following two sections will show how to apply the algorithm of the
+previous section to Problems~\ref{problem} and~\ref{problem2}, by
+applying Proposition~\ref{prop:compute_isolated} to suitable
+deformations of our input systems. This proposition requires several
+assumptions to hold: some (noted $\assA_1$ and $\assA_2$) are related
+to the deformed system as a whole, while the other ($\assG_3$ to
+$\assG_2$) involve properties at the starting point of the homotopy
+($T=0$). In this section, we prove that a large variety of systems
+satisfy $\assA_1$ and $\assA_2$.
+
+Let $T$ and $\bX=(X_1,\dots,X_n)$ be variables, let $J$ be an ideal in
+$\KKbar[T,\bX]$, and consider the following properties:
+\begin{description}[leftmargin=*]
+\item[$\assA_1.$] Any irreducible component of $V(J) \subset
+  \KKbar{}^{n+1}$ has dimension at least one.
+\item[$\assA_2.$] For any maximal ideal $\m \subset\KKbar[T,\bX]$,
+  if the localization $J_\m \subset \KKbar[T,\bX]_\m$ has height $n$,
+  then it is unmixed (that is, all associated primes have height $n$).
+\end{description}
+
+We pointed out in the previous section that when $J$ is generated by
+$n$ polynomials, these results are well-known. To study the case of
+maximal minors of a polynomial matrix, we will use the following
+results, taken from~\cite[Section~6]{EN62}. Let $R$ be a
+Cohen-Macaulay ring and let $I$ the ideal generated by all $p$-minors
+of a $p\times q$ matrix $\mF \in R^{p\times q}$, with $p \le q$. Then:
+\begin{itemize}
+\item if $I \ne R$, then the height of $I$ is at most $q-p+1$;
+\item if $I$ has height $q-p+1$, then $I$ is unmixed (all associated
+  primes have height $q-p+1$).
+\end{itemize}
+Let us transcribe these properties in the case of a matrix $\mF$ in
+$\KK[T,\bX]^{p \times q}$, $p \le q$, by letting $I=I_p(\mF)$; we do not make any
+assumption relating $n$ and $q-p+1$ yet, since we will need the extra
+generality further down. Let thus, and assume that $V(I)\ne
+\emptyset$, so that $I \ne \KK[T,\bX]$. Let $V_1,\dots,V_s$ be the
+$\KKbar$-irreducible components of $V(I)\subset \KKbar{}^n$.  Then, we
+claim that $\dim(V_i) \ge (n+1) -(q-p+1)$ holds for all $i$.
+
+Take a point $\bx$ in $V(I)\subset \KKbar{}^{n+1}$, and let $\m \subset
+\KKbar[T,\bX]$ be the maximal ideal at $\bx$. The height of
+$I_\m$ in $\KKbar[T,\bX]_\m$ is equal to $(n+1)-\max\{ \dim(V_i)
+\mid 1 \le i \le s, \bx \in V_i\}$. For $i=1,\dots,t$, let $\bx_i$
+be a point in $V_i$ that does not belong to any other $V_{i'}$, $i'
+\ne i$ and let $\m_i$ be the corresponding maximal ideal; then, the
+previous equality becomes ${\rm height}(I_{\m_i})=(n+1)-\dim(V_i)$.
+Applying the first item above in $\KKbar[T,\bX]_{\m_i}$ (which
+is Cohen-Macaulay), we deduce that $(n+1)-\dim(V_i) \le q-p+1$, that is,
+$\dim(V_i) \ge (n+1) -(q-p+1)$. The following proposition
+follows easily.
+
+\begin{proposition}
+  If $n=q-p+1$, the ideal $I$ satisfies $\assA_1$ and $\assA_2$.
+\end{proposition}
+\begin{proof}
+  Taking $n=q-p+1$, the previous inequality becomes $\dim(V_i) \ge 1$;
+  this proves $\assA_1$.  To prove $\assA_2$, we take maximal
+  ideal $\m$ in $\KKbar[T,\bX]$, and we apply the second item above
+  over the ring $R=\KKbar[T,\bX]_\m$; this gives the conclusion
+  immediately.
+\end{proof}
+
+%% (bonus) Indeed, write the primary decomposition of $I$ as $I=Q_1 \cap \cdots
+%% Q_t \cap Q_{t+1}\cdots \cap Q_u$, where $\x \in V(Q_i)$ if and
+%% only if $i \le t$. Then, the localization of $I$ at $\m$ admits the
+%% primary decomposition
+%% $I_\m={Q_1}_\m \cap \cdots {Q_t}_\m$ in $\KKbar[X_1,\dots,X_n]_\m$,
+%% so that its height is the minimum of the heights of ${P_i}_\m$,
+%% for $i=1,\dots,t$, where $P_i=\sqrt{Q_i}$ for all $i$. Now, 
+%% that height is simply the height of $P_i$. The minimum is reached for one of
+%% the minimal primes.
+
+%% (bonus): If $I=Q_1 \cots Q_t$, then $h(I)=\min(h(P_i))$, with
+%% $P_i=\sqrt{Q_i}$. Indeed, $I \subset P_i$ for all $i$.  On the other
+%% hand, take a prime $J$ containing $I$. Then, there is $i$ such that
+%% $Q_i \subset J$ (otherwise, for all $i$ there is $q_i$ in $Q_i$, $q_i$
+%% not in $J$; then $q_1\cdots q_t$ is in $I$, but not in $J$). Then,
+%% $P_i$ is in $J$ too, so $h(P_i) \le h(J)$.
+
+Finally, we prove a generalization of this claim, which will be the
+most general form we will need for such statements. Let
+$G=(g_1,\dots,g_s)$ be polynomials in $\KK[T,\bX]$, with $s \le
+n$. Let also $\mF$ be a polynomial matrix in $\KK[T,\bX]^{p \times
+  q}$, with $p \le q$; we denote by $K$ the ideal generated by all
+$p$-minors of $\mF$, together with the polynomials $G$ in
+$\KKbar[T,\bX]$.
+
+\begin{proposition}\label{prop:KH1H2}
+  If $n=q-p+s+1$, the ideal $K$ satisfies $\assA_1$ and $\assA_2$.
+\end{proposition}
+
+The proof occupies the rest of this section. Let $\bB=M_p(\mF)$, the
+set of all $p$-minors of~$\mF$. For $\assA_1$, we saw in the previous
+paragraphs that all irreducible components of $V(\bB)$ have dimension
+at least $(n+1)-(q-p+1)=s+1$. Since $G$ consists of $s$ polynomials,
+all irreducible components of $V(K)$ must have dimension at least $1$,
+as claimed.
+
+We next prove $\assA_2$. Let $K_\m=Q_1 \cap \cdots \cap Q_t$ be an
+irredundant primary decomposition of $K_\m$ in $\KKbar[T,\bX]_\m$, and
+let $P_1,\dots,P_t$ be the corresponding primes; we assume that the
+height of $K_\m$ is $n$, and our goal is to prove that all $P_i$'s
+have height~$n$.
+
+Of course, we can restrict to an ideal $\m$ containing $K$; $\m$ is
+then the maximal ideal at a point $\x \in \KKbar{}^{n+1}$ that belongs
+to $V(K)$. The height of the localization $K_\m \subset
+\KKbar[T,\bX]_\m$ can be rewritten as $(n+1)-\dim(V_\x)$, where $V_\x$
+is the union of the irreducible components of $V(K)$ passing through
+$\x$. Our assumption is that the height of $K_\m$ is $n$, that is,
+that $\dim(V_\x)=1$. Thus, every irreducible component of $V(K)$
+containing $\x$ has dimension~$1$.
+
+Let $W$ be an irreducible component of $V(\bB)$ containing $\x$.  We
+claim that $\dim(W)=s+1$. Indeed, we mentioned in the first paragraph
+that $\dim(W) \ge s+1$. If $\dim(W) > s+1$, then by Krull's theorem,
+every irreducible component of $W \cap V(G)$ has dimension greater
+than $1$; since $W \cap V(G)$ is a subset of $V(K)$ and contains $\x$,
+we have reached a contradiction. Now, the fact that $\dim(W)=s+1$ for
+any irreducible component of $V(\bB)$ containing $\x$ means that
+$\langle \bB \rangle_\m$ has height $n-s=q-p+1$.  As a
+result,~\cite[Theorem~18.18]{Eisenbud95} shows that
+$\KKbar[T,\bX]_\m/\langle \bB \rangle_\m$ is Cohen-Macaulay.
+
+By the remarks following~\cite[Theorem~IV.5.9]{ZaSa58}, $\bar Q_1 \cap
+\cdots \cap \bar Q_t$ is an irredundant primary decomposition of $\bar
+K_\m$ in $\KK[T,\bX]_\m/\langle \bB \rangle_\m$, with associated
+primes $\bar P_1,\dots,\bar P_t$, where for an ideal $I \subset
+\KKbar[T,\bX]_\m$, $\bar I$ denotes its image modulo $\langle \bB
+\rangle_\m$. In addition, if we let $P_1,\dots,P_u$ be the minimal
+primes of $K_\m$, for some $s \le t$, $\bar P_1,\dots,\bar P_u$ are
+the minimal primes of $\bar K_\m$.
+
+Our assumption says that $P_1,\dots,P_u$ have height $n$. Because
+$\KKbar[T,\bX]_\m/\langle \bB \rangle_\m$ is Cohen-Macaulay, for any
+$i \le t$, we have 
+$$\dim(\KKbar[T,\bX]_\m/\langle \bB \rangle_\m)=\dim((\KKbar[T,\bX]_\m/\langle \bB \rangle_\m) / \bar P_i) + {\rm height}(\bar P_i).$$
+The factor ring $(\KKbar[T,\bX]_\m/\langle \bB \rangle_\m) / \bar P_i$ is simply
+$\KKbar[T,\bX]_\m/P_i$, so this can be rewritten as
+$$s+1 = \dim(\KKbar[T,\bX]_\m/P_i) + {\rm height}(\bar P_i).$$ For $i\le
+u$, we have $\dim(\KKbar[T,\bX]_\m/P_i)=1$, so that ${\rm height}(\bar
+P_i)=s$; for $i > u$, the height of $\bar P_i$ is necessarily
+$s+1$. Because $\bar P_1,\dots,\bar P_u$ are the minimal primes of
+$\bar K_\m$, the height of $\bar K_\m$ is thus $s$ as well.
+
+The ideal $\bar K_\m$ is generated in $\KKbar[T,\bX]_\m/\langle \bB
+\rangle_\m$ by $G=(g_1,\dots,g_s)$. Since $\KKbar[T,\bX]_\m/\langle
+\bB \rangle_\m$ is Cohen-Macaulay, $\bar K_\m$ is unmixed, that is,
+$u=t$.  As a result, $Q_1 \cap \cdots \cap Q_u$ is an irredundant
+primary decomposition of $K_\m$, and $K_\m$ is unmixed.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Column-degree homotopy for determinantal systems}
+
+Consider an input to Problem~\ref{problem2}: we are given a matrix
+$\mF =[f_{i,j}]\in \KK[X_1,\dots,X_n]^{p \times q}$ and polynomials
+$G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$, with $p \leq q$ and $n =
+q-p+s+1$; we want to compute the isolated points of $S_{\mF,G}$,
+with
+$$S_{\mF,G} = \{\bx \in \KKbar{}^n \mid  \mathrm{rank}(\mF({\bx})) < p
+\text{~and~} g_1(\bx)=\cdots=g_s(\bx)=0\}.$$ In this section, we
+design an algorithm for this task whose costs depends on the column
+degrees $\delta_1=\cdeg(\mF,1),\dots,\delta_q=\cdeg(\mF,q)$; note in particular
+that with this notation, $\deg(f_{i,j}) \leq \delta_j$ holds for all $i,j$.
+We will also write $\gamma_1=\deg(g_1),\dots,\gamma_s=\deg(g_s)$.
+
+\begin{proposition}
+  There exists a randomized algorithm that computes the isolated
+  points of $S_{\mF,G}$ using $XXX$ operations in $\KK$.
+\end{proposition}
+
+We use the algorithm of Section~\ref{sec:homotopy}. To match the
+notation of that section, we let $\bC=(c_1,\dots,c_{s},\dots,c_m)$ be
+polynomials defined as follows: $(c_1,\dots,c_{s})=(g_1,\dots,g_s)$,
+and $(c_{s+1},\dots,c_{m})$ are the $p$-minors of $\mF$, so that 
+$m=s+{q \choose p}$. Thus, $S_{\mF,G}$ is the zero-set of~$\bC$.
+
+Using the degrees $\gamma_1,\dots,\gamma_s$ and  $\delta_1,\dots,\delta_q$, we construct a polynomial matrix $\mL \in
+\KK[\bX]^{p \times q}$, and polynomials $M=(m_1,\dots,m_s)$ in
+$\KK[\bX]$, to use as a starting point for the homotopy
+algorithm. For any $1 \leq j \leq q$ and $1 \leq k \leq \delta_j$, let us
+define $$\lambda_{j,k} = \lambda_{j,k,0} + \sum_{\ell = 1}^{n}\lambda_{j,k,\ell}X_\ell,$$ 
+where all $\lambda_{j,k,\ell}$ are random elements in
+$\KK$. Then, for $j=1,\dots,q$, we define
+$$\ell_j = \prod_{k=1}^{\delta_j}\lambda_{j,k},$$
+and we let  $\mL$ be the matrix
+\[\mL = 
+\left( \begin{matrix}
+\ell_1 & 2\ell_2 & \cdots & q\ell_{q}\\
+\ell_1 & 2^2\ell_2 & \cdots & q^2\ell_q\\
+\vdots & \vdots &  & \vdots \\
+\ell_1 & 2^p\ell_2 & \cdots & q^p\ell_q
+\end{matrix} \right) \in \KK[\bX]^{p\times q}.
+\]
+For $i=1,\dots,s$ and $k=1,\dots,\gamma_i$, let us further define
+$$\mu_{i,k} =  \mu_{i,k,0} + \sum_{\ell = 1}^{n}\mu_{i,k,\ell}X_\ell,$$ where
+all $\mu_{i,k,\ell}$ are random elements in $\KK$; then, we let
+$$m_i=\prod_{k=1}^{\gamma_i} \mu_{i,k}.$$ We can thus define the system
+of equations $\bA=(a_1,\dots,a_s,\dots,a_m)$, where $a_i=m_i$ for
+$i=1,\dots,s$, and $(a_{s+1},\dots,a_{m})$ are the $p$-minors of
+$\mL$ (taken in the same order as those in the system $\bC$).
+
+Finally, we let $T$ be a new variable, we define the matrix
+$\mU=(1-T)\, \mL + T \, \mF \in \KK[T,\bX]^{p\times q}$, and we let $\bB$ be the polynomials in
+$\KK[T,\bX]$ given by $\bB=(b_1,\dots,b_s,\dots,b_m)$, where
+\begin{itemize}
+\item $b_i=(1-T) m_i + T g_i$ for $i=1,\dots,s$
+\item $(b_{s+1},\dots,b_{m})$ are the $p$-minors of $\mU$, taken in
+  the same order as those in $\bC$.
+\end{itemize}
+We can then define $J$ as the ideal generated by $\bB$ in
+$\KKbar[T,\bX]$. Using the notation of Section~\ref{sec:homotopy}, we
+see that $\bB_0=\bA$ and $\bB_1=\bC$. Having in mind
+to apply Proposition~\ref{prop:compute_isolated} to compute the
+isolated points of $V(\bC)=S_{\mF,\mG}$, we now verify that all
+required assumptions are satisfied.
+
+\paragraph{Properties $\assA_1$ and $\assA_2$.}
+These follow from Proposition~\ref{prop:KH1H2}.
+
+\paragraph{Property $\assG_1(0)$.} We have to prove that for $i=1,\dots,m$,
+$\deg_\bX(b_i)=\deg_\bX(a_i)$. 
+
+For $i=1,\dots,s$, this amounts to proving that $\deg_\bX((1-T) m_i +
+T g_i)=\deg_\bX(m_i)$. The latter is by construction equal to
+$\gamma_i$. The former is at most $\gamma_i$ (since $b_i$ is the sum
+of two polynomials of degree $\gamma_i$ in $\bX$), but since
+evaluating $T$ at $0$ in $b_i$ gives us $g_i$, its degree in $\bX$
+must be exactly $\gamma_i$.
+
+To each index $i=m+1,\dots,s$ corresponds a sequence
+$\bj_i=(j_{i,1},\dots,j_{i,p})$ such that $b_i$ and $a_i$ are the
+minors built with columns index by $\bj_i$ in respectively
+$\mU=(1-T)\, \mL + T \, \mF$ and $\mL$. In view of the shape of $\mL$,
+the polynomial $a_i$ is equal to $c_i\ell_{j_{i,1}}\cdots
+\ell_{j_{i,p}}$, where $c_i$ is a non-zero constant, so it has degree
+$\delta_{j_{i,1}} + \cdots + \delta_{j_{i,p}}$.  Since the columns
+$(j_{i,1},\dots,j_{i,p})$ of $U$ have respective degrees at most
+$(\delta_{j_{i,1}},\dots,\delta_{j_{i,p}})$, $b_i$ has degree at most
+$\delta_{j_{i,1}} + \cdots + \delta_{j_{i,p}}$. However, evaluating
+$T$ at $0$ in $b_i$ gives us back the polynomial $a_i$, so $b_i$ must
+have degree exactly $\delta_{j_{i,1}} + \cdots + \delta_{j_{i,p}}$.
+
+\paragraph{Property $\assG_2(0)$.} We have to prove that the homogenization
+of the system $\bA$ has no root at infinity. Thus, let $X_0$ be a new
+variable, and let $\bA^H=(a_1^H,\dots,a_m^H)$ be the homogenization
+of $\bA$. For $i=1,\dots,s$, we have
+$$a_i^H=\prod_{k=1}^{\gamma_i} (\mu_{i,k,0}X_0 + \sum_{\ell = 1}^{n}\mu_{i,k,\ell}X_\ell),$$
+whereas for $i=s+1,\dots,m$, 
+$$a_i^H=c_i \ell^H_{j_{i,1}}\ldots \ell^H_{j_{i,p}}, \quad \text{~for~} \bj_i=(j_{i,1},\dots,j_{i,p}) \text{~as above},$$
+where for $j=1,\dots,q$ we set 
+$\ell^H_j = \prod_{k=1}^{\delta_j}\lambda^H_{j,k}$,
+with
+$$\lambda^H_{j,k}=\lambda_{j,k,0}X_0 + \sum_{\ell = 1}^{n}\lambda_{j,k,\ell}X_\ell.$$
+To prove  $\assG_1(0)$, we start by writing down all projective
+solutions of this system (this will be of use below), before adding
+the constraint $X_0=0$.
+
+Since all $a_i^H$ are products of linear forms, we find the solutions
+of $\bA^H$ by setting some of these linear forms to zero. In order to
+cancel $a_1^H,\dots,a_s^H$, we choose indices $\bu=(u_1,\dots,u_s)$,
+with $u_1\in\{1,\dots,\gamma_1\}$, \dots,
+$u_s\in\{1,\dots,\gamma_s\}$, and we consider the equations 
+$$\mu^H_{i,u_i}=0, \quad \text{~that is,~} \quad \mu_{i,u_i,0}X_0 + \sum_{\ell = 1}^{n}\mu_{i,u_i,\ell}X_\ell =0,$$ for $i=1,\dots,s$.
+In what follows, we fix such an $\bu$.
+Then, for a generic choice of coefficients $\mu_{i,k,\ell}$, these equations
+are equivalent to
+$$X_{n-s+1}=\mathfrak{h}_{n-s+1,\bu}(X_0,\dots,X_{n-s}),\dots,X_{n}=\mathfrak{h}_{n,\bu}(X_0,\dots,X_{n-s}),$$
+for some linear forms $\mathfrak{h}_{n-s+1,\bu},\dots,\mathfrak{h}_{n,\bu}$.
+After applying this substitution, for all $j=1,\dots,q$, $\ell^H_j$ can be rewritten as
+$$\ell^H_{j,\bu}=\prod_{k=1}^{\delta_j}\lambda^H_{j,k,\bu},$$
+where 
+$$\lambda^H_{j,k,\bu}=\lambda_{j,k,0}X_0 + \sum_{\ell =
+  1}^{n-s}\lambda_{j,k,\ell}X_k + \sum_{\ell =
+  n-s+1}^{n}\lambda_{j,k,\ell}
+\mathfrak{h}_{\ell,\bu}(X_0,\dots,X_{n-s}).$$ Then,
+$\bx=(x_0,\dots,x_n)$ cancels $a^H_{s+1},\dots,a^H_m$ if and only if
+$\bx'=(x_0,\dots,x_{n-1})$ cancels the product
+$\ell^H_{j_1,\bu}\cdots \ell^H_{j_p,\bu},$ for any choice of columns
+$\bj=(j_1,\dots,j_p)$.
+
+\begin{lemma}
+  For $\bx'$ in $\P^{n-s}(\KKbar)$, the products
+  $\ell^H_{j_1,\bu}(\bx')\cdots \ell^H_{j_p,\bu}(\bx')$
+  vanish for all choices of columns $\bj=(j_1,\dots,j_p)$ if and only
+  if there exist $\{j_1,\dots,j_{n-s}\} \subset \{1,\dots,q\}$ such 
+  that $\ell^H_{j_1,\bu}(\bx')=\cdots=\ell^H_{j_{n-s},\bu}(\bx')=0$.
+\end{lemma}
+\begin{proof}
+  Take an arbitraty representative $\bx^*$ of $\bx'$ in
+  $\KKbar{}^{n+1}$, aonsider the polynomial
+  $(1+\ell^H_{1,\bu}(\bx^*)Y_1) \cdots (1+\ell^H_{q,\bu}(\bx^*)Y_q),$
+  for new variables $Y_1,\dots,Y_q$. The products
+  $\ell^H_{j_1,\bu}(\bx^*)\cdots \ell^H_{j_p,\bu}(\bx^*)$ are all zero
+  if and only if this polynomial has degree less than $p$, that is, if
+  and only if $q-p+1$ terms among
+  $\ell^H_{1,\bu}(\bx^*),\dots,\ell^H_{q,\bu}(\bx^*)$ vanish.
+\end{proof}
+
+
+For generic coefficients $\lambda_{j,k,\ell}$ and $\mu_{i,k,\ell}$,
+the condition of the lemma holds if and only if there exist
+$\bj=\{j_1,\dots,j_{n-s}\} \subset \{1,\dots,q\}$ and
+$\bv=(v_1,\dots,v_{n-s})$, with $v_k$ in $\{1,\dots,\delta_k\}$ for all
+$k$, such that $\lambda^H_{j_k,v_k,\bu}(\bx')=0$ 
+for $k=1,\dots,n-s$.
+
+This implies that for a fixed $\bu$, the possible values of $\bx'$ are
+in finite number (we will write it down precisely below), determined
+as solutions of a linear system of size $n-s$ with generic
+coefficients. In particular, none of these points satisfies $X_0=0$,
+so that $\assG_1(0)$ holds.
+
+\paragraph{Property $\assG_3(0)$.} From $\assG_2(0)$, we know that
+the projective variety defined by $\bA^\mH$ has no point at infinity,
+so it is finite; as a result, the affine algebraic set defined by
+$\bA$ is finite as well. In addition, all the affine solutions to
+$\bA$ are obtained by setting $X_0=1$ in the projective solutions of
+$bA^\mH$. In other words, they are obtained by choosing indices
+$\bu=(u_1,\dots,u_s)$ with $u_k$ in $\{1,\dots,\gamma_k\}$ for all $k$,
+column indices $\bj=(j_1,\dots,j_{n-s})$, and
+$\bv=(v_1,\dots,v_{n-s})$, with $v_k$ in $\{1,\dots,\delta_k\}$
+for all $k$, solving the affine linear system
+$$\lambda_{j_1,v_1,\bu}(X_1,\dots,X_{n-s})=\cdots=\lambda_{j_{n-s},v_{n-s},\bu}(X_1,\dots,X_{n-s})=0$$ 
+and using the expressions
+$$X_{n-s+1}=\mathfrak{h}_{n-s+1,\bu}(1,X_1,\dots,X_{n-s}),\dots,X_{n}=\mathfrak{h}_{n,\bu}(1,X_1,\dots,X_{n-s}).$$
+To prove that the ideal generated by $\bA$ is radical, we prove that
+at any point as described above, the Jacobian matrix of $\bA$ with
+respect to $X_1,\dots,X_n$ has full rank.
+
+Let thus $\bu$, $\bj$ and $\bv$ be as above, let $\bx \in \KKbar{}^n$
+be the corresponding point in $V(\bA)$, and consider equations
+$(a_1,\dots,a_s)$ first. Each such equation is a product of linear forms
+as $a_i=\prod_{k=1}^{\gamma_i} \mu_{i,k}$, with $\mu_{i,u_i}(\bx)=0$.
+Since the coefficients $\mu_{i,k,\ell}$ are chosen generically, for
+$i=1,\dots,s$ and $k \ne u_i$, $\mu_{i,k}(\bx)$ is non-zero; as a
+result, in the local ring at $\bx$, the polynomials $(a_1,\dots,a_s)$
+are equal (up to units) to the linear forms
+$(\mu_{1,u_1},\dots,\mu_{s,u_s})$.
+
+Next, we consider the $p$-minors of $\mA$; in what follows, we 
+write $\bx'=(x_1,\dots,x_{n-1})$. Our starting point is that due to 
+the genericity of the coefficients $\lambda_{j,k,\ell}$, since 
+$$\lambda_{j_1,v_1,\bu}(\bx')=\cdots=\lambda_{j_{n-s},v_{n-s},\bu}(\bx')=0,$$ 
+none of the other linear forms $\lambda_{j,k,\bu}$ vanishes at $\bx'$.
+
+Recall that $n=q-p+s+1$, so that $n-s = q-(p-1)$. Hence, there are
+exactly $p-1$ columns not indexed by $\bj=(j_1,\dots,j_{n-s})$; call
+them $\bj'=(j'_1,\dots,j'_{p-1})$. We can then consider the 
+products
+$$ \ell_{j_1} \ell_{j'_1} \cdots \ell_{j'_{p-1}},\dots, \ell_{j_{n-s}}
+\ell_{j'_1} \cdots \ell_{j'_{p-1}};$$ each of them (up to a non-zero
+constant) is a $p$-minor of $\mA$, so they appear as elements in the
+sequence $(a_{s+1},\dots,a_m)$, say as
+$(a_{e_1},\dots,a_{e_{n-s}})$. By the remark of the previous
+paragraph, in the local ring at $\bx$, up to non-zero constants, these
+polynomials are equal to the linear forms
+$(\lambda_{j_1,v_1},\dots,\lambda_{j_{n-1},v_{n-s}})$.
+
+To summarize, we have found that the linear equations
+$(\mu_{1,u_1},\dots,\mu_{s,u_s})$ and
+$(\lambda_{j_1,v_1},\dots,\lambda_{j_{n-1},v_{n-s}})$ belong to the
+ideal $\langle \bA \rangle_\m$, where $\m$ is the maximal ideal at
+$\bx$. As a result, the Jacobian matrix of $\mA$ must be invertible
+at $\bx$, and $\assG_3(0)$ holds.
+
+
+\medskip
+
+At this stage, we have established all assumptions necessary to apply
+Proposition~\ref{prop:degree_fiber}. Since $\bB$ satisfies
+$\assA_1,\assA_2$ and $\bA=\bB_0$ satisfies $\assG_1,\assG_2,\assG_3$,
+we deduce that the sum of the multiplicities of the isolated solutions
+of $\bC=\bB_1$ is at most $c$, where $c$ is the number of solutions of
+$\bA$. To estimate $c$, note first that there are $\gamma_1\cdots
+\gamma_s$ choices of $\bu$. For each choice of $\bu$, there are
+$\delta_{\rm col}(\mF)=E_{n-s}(\delta_1, \ldots, \delta_q)$ ways to
+choose $\bj$ and $\bv$, where $E_{n-s}$ denotes the elementary
+symmetric polynomials of degree $n-s$. As a result, $c=\gamma_1\cdots
+\gamma_s \delta_{\rm col}(\mF)$. We can now inspect assumptions
+$\assD_1,\dots,\assD_4$ that are needed to apply 
+the algorithm of Proposition~\ref{prop:compute_isolated}.
+
+\paragraph{Property $\assD_1$.} We know that $\assG_1(0),\assG_2(0),\assG_3(0)$,
+so we are going to compute a zero-dimensional parametrization of
+$V(\bA)$.  We do this by following the description of the solutions of
+$\bA$ given in the previous paragraph: for any choice of indices
+$\bu$, $\bj$ and $\bv$ as above, the corresponding point $\bx \in
+\KKbar{}^n$ in $V(\bA)$ can be found by solving a linear system of
+size $n$, so in time $O(n^3)$. We repeat this procedure
+$c=\gamma_1\cdots \gamma_s \delta_{\rm col}(\mF)$ times, using a total
+of $O(c n^3)$ operations in $\KK$.
+
+Knowing all the points in $V(\bA)$, we can reconstruct a zero-dimensional
+parametrization $\scrR_0$ such that $Z(\scrR_0)=V(\bA)$ in time
+$O\tilde{~}(n c)$ by means of fast interpolation~\cite[Chapter~10]{GaGe03}.
+(Note that for practical purposes, we may modify the algorithm
+of Proposition~\ref{prop:compute_isolated} to take into account the
+fact that all points in $V(\bA)$ are in $\KK^n$.)
+
+\paragraph{Property $\assD_2$.} Given $\bx$ in $V(\bA)$,
+corresponding to indices $\bu$, $\bj$ and $\bv$, we saw in the proof
+of $\assG_3$ how to find $n-s$ $p$-minors
+$(a_{e_1},\dots,a_{e_{n-s}})$ of $\mA$ such that
+$(g_1,\dots,g_s,a_{e_1},\dots,a_{e_{n-s}})$ is a unit times a linear
+system, in the local ring at $\bx$. Thus, we have established
+$\assD_2$, with $T=O(1)$. \todo{change $T$}
+
+\paragraph{Property $\assD_3$.} Next, we need to determine an upper bound 
+$e$ on the degree of the curve $V(J')$, where $J'$ is the union of the
+one-dimensional irreducible components of $V(\bB) \subset
+\KKbar{}^{n+1}$ whose projection on the $T$-axis is dense.
+
+Let us write $V(\bB)=V(J') \cup V' \cup V''$, where $V''$ is the union
+of the other components of dimension one of $V(\bB)$ and $V''$ is the
+union of the components of higher dimension (by $\assA_1$, $V(\bB)$
+has no isolated points), and let $H$ be a generic hyperplane in
+coordinates $T,X_1,\dots,X_n$. Then, $(V(J') \cup V') \cap V(H)$ is a
+finite set consisting of $\deg(V(J')) + \deg(V')$ points, whereas $V''
+\cap V(H)$ consits only on components of positive dimension; these two
+sets are disjoint. Thus, we can take for $e$ the number of isolated 
+points of $V(\bB)\cap V(H)$.
+
+The hyperplane $H$ is defined by an equation $h_0 + h_1 X_1 + \cdots +
+h_{n+1}X_{n+1} + h_{n+2} T=0$. This equation allows us to rewrite $T$
+as $\eta(X_1,\dots,X_n)=-(h_0 + h_1 X_1 + \cdots +
+h_{n+1}X_{n+1})/h_{n+2}$; the points in $V(\bB)\cap V(H)$ are thus in
+one-to-one correspondence with the solutions of the system
+$(\beta_1,\dots,\beta_s,\dots,\beta_m)$, where $\beta_i=(1-\eta) m_i +
+\eta g_i$, for $i=1,\dots,s$, and $\beta_s,\dots,\beta_m$ are the
+$p$-minors of the matrix ${\cal U}=(1-\eta)\, \mL + \eta \, \mF $.  Now, the
+polynomials $(\beta_1,\dots,\beta_s)$ have respective degrees at most
+$(\gamma_1+1),\dots,(\gamma_s+1)$, and the column degrees of 
+${\cal U}$ are $\delta_1+1,\dots,\delta_q+1$. 
+
+We can then apply Proposition~\ref{prop:degree_fiber}, which shows we
+can take for $e$ the integer $(\gamma_1+1)\cdots(\gamma_s+1)
+\tilde\delta_{\rm row}(\mF)$.
+
+\paragraph{Property $\assD_4$.} Finally, we need to give an estimate on
+the size of a straight-line program that computes the polynomials
+$\bB=(b_1,\dots,b_m)$, assuming that we are given a straight-line
+program of size $E$ that computes polynomials $G=(g_1,\dots,g_s)$ and
+the entries of $\mF$.
+
+First, we estimate the complexity of computing the polynomials
+$(b_1,\dots,b_s)$. For $i \le s$, the $i$th polynomial $b_i$ is equal
+to $(1-T)m_i + T g_i$, where $m_i$ is a product of $\gamma_i$ linear
+forms in $n$ variables. This polynomial can be computed in $O(n
+\gamma_i)$ operations in $\KK$, hence for a total of $O(n \sum_i
+\gamma_i)$ operations for $(m_1,\dots,m_s)$, and $O(E+n \sum_i
+\gamma_i)$ for $(b_1,\dots,b_s)$. The polynomials
+$(b_{s+1},\dots,b_m)$ are the $p$-minors of $\mU=(1-T)\mL+T\mF$.
+
+The polynomials $\ell_1,\dots,\ell_q$ can be computed in $O(n \sum_j
+\delta_j)$ operations, so that the entries of $\mU$ can be computed in
+$O(n^2 + E + n \sum_j \delta_j)$ operations. From that, all $p$-minors
+of $\mU$ can be deduced in $O({q \choose p} n^3)$ further steps.
+To summarize, all polynomials in $\bB$ can be computed by a straight-line
+program of size
+$O(E + {q \choose p} n^3 +n \sum_i \gamma_i + n \sum_j \delta_j)$.
+
+%% \begin{lemma} \label{G} 
+%% Let G be the matrix as we define above and $\g$ be the ideal generated
+%% by $p \times p$ minors of $G$. Then, $\g$ has exactly solutions and there is an algorithm, namely Algorithm
+%% \ref{StartMatCol}, to compute these solutions in $(nE_{n}(\delta_1, \ldots,
+%% \delta_q))^{O{1}}$ operations in $\KK$.
+%% \end{lemma}
+%% \begin{proof}
+%% Then, for any solution $\mathbf{x} \in V({\bf g})$, $\mathbf{x}$ is a solution of $n$ polynomials which are taken from $\{g_j\}_{1 \leq j \leq q}$. This implies 
+%% \begin{eqnarray*}
+%% \#\{\mathrm{solutions \ of \ } {\bf g} \} &=& \sum_{(i_1, \ldots, i_{n}) \subset \{1, \ldots,q\}^{n}, \ i_j \ne i_k} \#
+%% \{\mathrm{solutions \ of \ }  g_{i_1} = \cdots = g_{i_{n}} = 0  \} \\
+%% &=& \sum_{(i_1, \ldots, i_{n}) \subset \{1, \ldots,q\}^{n}, \ i_j \ne i_k}\prod_{j =1}^{n}\delta_{i_j} = E_{n}(\delta_1, \ldots, \delta_q). 
+%% \end{eqnarray*}
+
+%% For the complexity, since each polynomial $L_{i,j}$ is linear, so the time to solve the system in the step $2.i$ is $n^{O{1}}$; and there are $E_{n}(\delta_1, \ldots, \delta_p)$ systems which we need to solve. Therefore, the complexity of the Algorithm $\ref{StartMatCol}$ is $(nE_{n}(\delta_1, \ldots, \delta_q))^{O{1}}$.
+
+%% \end{proof}
+
+%% \begin{algorithm}
+%% \caption{$\mathsf{Start Matrix Column Degrees}$}
+%% \label{StartMatCol}
+%% {\bf Input}: a matrix $G \in \KK[\bX]^{p \times q}$ which is defined as above.\\
+%% {\bf Output}: $E_{n}(\delta_1, \ldots, \delta_q)$ solutions of $\g$. 
+
+%% \begin{enumerate}
+%% \item $S \gets \emptyset$
+%% \item for any $(i_1, \ldots, i_{n}) \in \{1, \ldots, q \}^{n}$: 
+%% \begin{itemize}
+%% \item for any $(j_1, \ldots, j_n) \in \{1, \ldots, \delta_{i_1}\} \times \cdots \times \{1, \ldots, \delta_{i_n}\} $: 
+%% \begin{enumerate}
+%% \item $\mathbf{x} \gets$ solve the linear system $L_{i_1,j_1} = \cdots = L_{i_n,j_n} = 0$
+%% \item $S = S \cup \{\mathbf{x}\}$
+%% \end{enumerate}
+%% \end{itemize}
+%% \item return $S$
+%% \end{enumerate}
+%% \end{algorithm}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{The row-degree homotopy}
+
+
+For any ring $R$ and any matrix $\mM \in A^{p\times q}$, if $S$ is a
+subsequence of $(1,\dots,p)$ and $T$ a subsequence of $(1,\dots,q)$,
+the $(S,T)$-submatrix of $\mM$ is the submatrix obtained by keeping
+rows indexed by $S$ and columns indexed by $T$.
+
+
+\bibliographystyle{plain} \bibliography{roadmap}
+
+
+\section*{Append: proof of~\ref{xxx}}
+
+Fix positive integers $p,q$, with $p \le q$, and let $n=q-p+1$. Let
+$\bD=(\delta_1,\dots,\delta_p)$ be positive integers. Let $N=q(n+1)(\delta_1 + \cdots
++ \delta_p)$; this is the number of coefficients needed to define affine
+linear forms in $X_1,\dots,X_n$ (or equivalently, homogeneous linear
+forms in $X_0,\dots,X_n$), for $i=1,\dots,p$, $j=1,\dots,q$ and
+$k=1,\dots,\delta_i$. If needed, we will write $N=N(\bD,q)$ to make the
+dependency explicit.
+
+
+Let then $\mathfrak{ G}$ be the sequence of $N$ indeterminates
+$\mathfrak{G}=(\mathfrak{ g}_{i,j,k,r})$, for $i,j,k$ as above and
+$r=0,\dots,n$, and define
+$$\mathfrak{l}_{i,j,k} = \frak{g}_{i,j,k,0}X_0 + \frak{g}_{i,j,k,1} X_1 +\cdots + \frak{g}_{i,j,k,n} X_n,$$
+as well as 
+$$\mathfrak{L}_{i,j} = \mathfrak{ l}_{i,j,1} \cdots \mathfrak{l}_{i,j,\delta_i} \in \KK[\mathfrak{G}][\tilde\bX],$$
+with $\tilde\bX=(X_0,X_1,\dots,X_n)$. We can then define the
+matrix
+\begin{align}\label{eq:matM}
+\mathfrak{M}_{\bD,q}=\left [\begin{matrix}
+\mathfrak{L}_{1,1} & \cdots & \mathfrak{L}_{1,q}\\
+ \vdots & & \vdots\\
+\mathfrak{L}_{p,1} & \cdots & \mathfrak{L}_{p,q}
+  \end{matrix}\right ]\in \KK[\mathfrak{ G}][\tilde\bX]^{p\times q}.  
+\end{align}
+Remark that for all $i,j$, the $(i,j)$-th entry of
+$\mathfrak{M}_{\bD,q}$ has degree $\delta_i$ in $\tilde \bX$.
+
+Given $G=(g_{i,j,k,r})\in \KKbar{}^N$, for any polynomial
+$\mathfrak{F}$ in $\KK(\mathfrak{G})[\tilde \bX]$ with entries in
+$\KK(\mathfrak{ G})[\tilde \bX]$, we write $\mathfrak{F}(G)$ for the
+polynomial obtained by evaluating $\mathfrak{g}_{i,j,k,r}$ at
+$g_{i,j,k,r}$, for all indices $i,j,k,r$ as above, as long as no
+denominator vanishes through this evaluation; the notation extends to
+polynomial matrices. More generally, for a field $\mathfrak{L}$
+containing $\KK$, and $\mathfrak{H}$ in $\mathfrak{L}^N$, the notation
+$\mathfrak{F}(\mathfrak{H})$ is defined similarly.
+
+Let next $N'=n(n+1)(\delta_1+\cdots+\delta_p)$; as above, when needed, we will
+write $N'=N'(\bD,q)$. Let $\mathfrak{ G}'\subset \mathfrak{G}$ be
+the sequence of $N'$ indeterminates $\mathfrak{ G}'=(\mathfrak{
+  g}_{i,j,k,r})$, for indices $i,j,k,r$ as follows: $i$ is in
+$\{1,\dots,p\}$, $j$ is in $\{i,p+1,\dots,q\}$, and as previously, $k$
+is in $\{1,\dots,\delta_i\}$ and $r$ is in $\{0,\dots,n\}$. Remark that the
+polynomials $\mathfrak{L}_{i,j}$, for $i,j$ as above, are in
+$\KK[\mathfrak{G}'][\tilde\bX] \subset \KK[\mathfrak{G}][\tilde \bX]$, and allow
+us to define
+\begin{align}\label{eq:matMprime}
+\mathfrak{N}_{\bD,q}=\left [\begin{matrix} \mathfrak{L}_{1,1} & 0 & 0
+    &\mathfrak{L}_{1,p+1} & \cdots & \mathfrak{L}_{1,q}\\ 0 & \ddots &
+    0 & \vdots & & \vdots\\ 0&0& \mathfrak{L}_{p,p}
+    &\mathfrak{L}_{p,p+1} & \cdots & \mathfrak{L}_{p,q}
+  \end{matrix}\right ]\in \KK[\mathfrak{ G}'][\tilde\bX]^{p\times q}.
+\end{align}
+For $G' \in \KKbar{}^{N'}$, the notation $\mathfrak{F}(G')$ is defined
+as in the case of polynomials over $\KK(\mathfrak{G}')$ described
+previously.
+
+
+\paragraph{Setting up the recurrences.}
+The basic idea behind most proofs is the following: to prove that a
+property holds for a matrix $\mathfrak{M}_{\bD,q}$, we prove that it
+holds for a matrix of the form $\mathfrak{N}_{\bD,q}$, and use an
+openness property. To prove the required property for the latter
+matrices, we proceed by induction, relying on the presence of the
+left-hand diagonal block. Indeed, of a matrix such as, say,
+$\mathfrak{N}_{\bD,q}$ to be rank-deficient at $\bx \in \P^n(\KKGpbar)$,
+one of $\mathfrak{L}_{1,1},\dots,\mathfrak{L}_{p,p}$ must vanish at
+$\bx$.
+
+Suppose for instance that
+$\mathfrak{L}_{1,1}(\bx)=\mathfrak{L}_{2,2}(\bx)=0$, while all other
+terms are non-zero. Then, the $((1,2),(p+1,\dots,q))$-submatrix of
+${\mathfrak{M}_{\bD,q}'}(\bx)$ itself must be rank-deficient.  The
+constraints $\mathfrak{L}_{1,1}(\bx)=\mathfrak{L}_{2,2}(\bx)=0$ give
+us two linear equations, which allow us to eliminate two coordinates
+of $\bx$, say $X_{n-1}$ and $X_n$. We can perform the corresponding
+substitution in the above submatrix, and we are left with a matrix of
+size $2 \times (n-1)$ that is of the form
+$\mathfrak{M}_{(\delta_1,\delta_2),n-1}(\mathfrak{H})$, with entries depending
+on $X_1,\dots,X_{n-2}$, for some vector of coefficients $\mathfrak{H}$
+obtained through the elimination of $X_{n-1}$ and $X_n$. We can then
+invoke our induction assumption on the latter matrix.
+
+To formalize this process, for $1 \le m \le m' \le p$ we let
+$S_{m,m'}$ be the set of all subsequences of $(1,\dots,p)$ of
+cardinality in $\{m,\dots,m'\}$. For $s=(s_1,\dots,s_t)$ in
+$S_{m,m'}$, we let $R_s$ be the set of all tuples $r=(r_1,\dots,r_t)$,
+with $r_1$ in $\{1,\dots,\delta_{s_1}\}$, \dots, $r_t$ in
+$\{1,\dots,\delta_{s_t}\}$; $r_i$ will be the index of the factor
+$\mathfrak{l}_{s_i,s_i,r_i}$ of $\mathfrak{L}_{s_i,s_i}$ we
+cancel. For given $s=(s_1,\dots,s_t)$, with $t \le n$, and $r$, let
+$\mathfrak{G}'_{s,r} \subset \mathfrak{G}'$ be the indeterminates
+corresponding to the coefficients of
+$\mathfrak{l}_{s_1,s_1,r_1},\dots,\mathfrak{l}_{s_t,s_t,r_t}$, and of
+all entries $\mathfrak{L}_{s_1,p+1},\dots,\mathfrak{L}_{s_t,q}$ of the
+submatrix associated to $s$ in $\mathfrak{N}_{\bD,q}$.
+
+
+By Gaussian elimination, we can rewrite the homogeneous linear
+equations
+$\mathfrak{l}_{s_1,s_1,r_1}=\dots=\mathfrak{l}_{s_t,s_t,r_t}=0$ as
+\begin{align}\label{eq:f_sr}
+X_{n-t+1}=\mathfrak{f}_{s,r,n-t+1}(X_0,\dots,X_{n-t}),\dots,X_{n}=\mathfrak{f}_{s,r,n}(X_0,\dots,X_{n-t}),  
+\end{align}
+for some linear forms
+$\mathfrak{f}_{s,r,n-t+1},\dots,\mathfrak{f}_{s,r,n}$ of
+$(X_0,\dots,X_{n-t})$ with coefficients in
+$\KK(\mathfrak{G}'_{s,r})$. Applying this substitution in the entries
+of the submatrix of ${\mathfrak{N}_{\bD,q}}$ associated to $s$ gives
+us the $t \times (n-1)$ matrix
+$\mathfrak{M}_{\b\delta_s,n-1}(\mathfrak{H}_{s,r})$, with
+$\b\delta_s=(\delta_{s_1},\dots,\delta_{s_t})$, whose entries are products of linear
+forms, and where $\mathfrak{H}_{s,r}$ is a vector of $N$ elements in
+$\KK(\mathfrak{G}'_{s,r})$.  The main result we will use in this
+section is the following lemma.
+\begin{lemma}\label{lemma:union}
+  For $k$ in $\{1,\dots,p\}$, $V_p(\mathfrak{N}_{\bD,q})$ is the
+  union of the sets
+ \begin{align}\label{eq:union}
+ \left \{(\tilde\bx',\mathfrak{f}_{s,r,n-t+1}(\tilde\bx'),\dots,\mathfrak{f}_{s,r,n}(\tilde\bx')) \mid \tilde\bx' \in
+  V_{t-(p-k)}(\mathfrak{M}_{\b\delta_s,n-1}(\mathfrak{H}_{s,r})) \subset \P^{n-t}(\KKGpbar)\right \},   
+ \end{align}
+ for $s=(s_1,\dots,s_t)$ in $S_{p-k+1,\min(p,n-1)}$ and $r$ in $R_s$, together with
+ $\left \{
+ (1,\mathfrak{f}_{s,r,1}(1),\dots,\mathfrak{f}_{s,r,n}(1))\right
+ \},$ if $k=p$, with $s=(s_1,\dots,s_n)$ and $r$ in $R_s$.
+\end{lemma}
+\begin{proof}
+  A point $\tilde\bx \in \P^n(\KKGpbar)$ belongs to
+  $V_k(\mathfrak{N}_{\bD,q})$ if and only if some diagonal terms of
+  $\mathfrak{N}_{\bD,q}$ vanish at $\tilde\bx$, say
+  $\mathfrak{L}_{s_i,s_i}$ for $i=1,\dots,t$, and if the
+ submatrix of $\mathfrak{N}_{\bD,q}$ associated to $s$ has rank
+  less than $t-(p-k)$ at $\tilde \bx$, with $s=(s_1,\dots,s_t)$.  In
+  particular, we must have $t-(p-k) > 0$, that is, $t \ge p-k+1$.
+
+  For $i=1,\dots, t$, $\mathfrak{L}_{s_i,s_i}(\tilde\bx)=0$ if and
+  only if there exists $r_i$ in $\{1,\dots,\delta_{s_i}\}$ such that
+  $\mathfrak{l}_{s_i,s_i,r_i}(\tilde\bx)=0$. Thus, $\tilde\bx=(x_0,\dots,x_n)$ is in
+  $V_k(\mathfrak{N}_{\bD,q})$ if and only if there exists
+  $s=(s_1,\dots,s_t)$ in $S_{p-k+1,p}$ and $r$ in $R_s$ such that
+  $\mathfrak{l}_{s_1,s_1,r_1}(\tilde\bx)=\cdots=\mathfrak{l}_{s_t,s_t,r_t}(\tilde\bx)=0$
+  and the submatrix of
+  $\mathfrak{N}_{\bD,q}$ associated to $s$ has rank less than $t-(p-k)$ at $\tilde\bx$.  Applying Gaussian
+  elimination to the equations
+  $\mathfrak{l}_{s_1,s_1,r_1},\dots,\mathfrak{l}_{s_t,s_t,r_t}$  allows us to rewrite them as
+  \begin{align*}
+    x_{n-t+1}=\mathfrak{f}_{s,r,n-t+1}(\tilde\bx'),\dots,x_{n}=\mathfrak{f}_{s,r,n}(\tilde\bx'),
+  \end{align*}
+  with $\tilde\bx'=(x_0,\dots,x_{n-t})$.  In particular, $t \le n$,
+  since otherwise this linear system would have no solution (recall that 
+  the coefficients are algebraically independent indeterminates); hence,
+  $s$ is in $S_{p-k+1,\min(n,p)}$. Remark also that $\tilde\bx'$ is a
+  well-defined element of $\P^{n-t}(\KKGpbar)$; otherwise, $\tilde\bx$
+  would vanish.
+
+  For $s=(s_1,\dots,s_t)$ with $t < n$, applying the above
+  substitution in the submatrix of $\mathfrak{N}_{\bD,q}$ associated
+  to $s$ (which has size $t \times (n-1)$), the rank condition above
+  becomes that $\mathfrak{M}_{\b\delta_s,n-1}(\mathfrak{H}_{s,r})$ has rank
+  less than $t-(p-k)$ at $\tilde \bx'$, that is, $\tilde \bx'$ is in
+  $V_{t-(p-k)}(\mathfrak{M}_{\b\delta_s,n-1}(\mathfrak{H}_{s,r}))$.  
+
+  When $t=n$, that is, $s=(s_1,\dots,s_n)$, the linear equations above
+  determine $\tilde\bx$ entirely; setting $x_0=1$, we obtain
+  $x_{1}=\mathfrak{f}_{s,r,1}(1),\dots,x_{n}=\mathfrak{f}_{s,r,n}(1).$
+  In this case, the submatrix of $\mathfrak{N}_{\bD,q}$ associated to
+  $s$ has size $n \times (n-1)$. Using the specialization of the
+  coefficients that sets the off-diagonal entry to $0$ and the $i$th
+  diagonal entries to $X_0^{\delta_i}$, $i=1,\dots,n-1$, we see that its
+  evaluation at $\tilde\bx$ has rank $n-1$; as a result
+  $\mathfrak{N}_{\bD,q}$ has rank $p-1$ at $\tilde \bx$. Thus, we need
+  to take $t=n$ into account only if $k=p$; in this case, we add the
+  point $\left \{
+  (1,\mathfrak{f}_{s,r,1}(1),\dots,\mathfrak{f}_{s,r,n}(1))\right \}$
+  to our list.
+\end{proof}
+
+
+\paragraph{Solutions with higher rank defect.} 
+First, we discuss the case $k=p-1$.  We take parameters
+$\bD=(\delta_1,\dots,\delta_p)$ and $q$, with $2 \le p \le q$, and we write
+$N=N(\bD,q)$ and $N'=N'(\bD,q)$; we will establish the following
+properties.
+\begin{description}[leftmargin=*]
+\item[$\assI_1(\bD,q).$] The projective algebraic set  $V_{p-1}(\mathfrak{M}_{\bD,q})\subset\P^n(\KKGbar)$
+  is empty.
+\item[$\assJ_1(\bD,q).$] The projective algebraic set 
+ $V_{p-1}(\mathfrak{N}_{\bD,q})\subset\P^n(\KKGpbar)$ is empty.
+\end{description}
+The first step of the proof is to establish that for $\bD$ and $q$ as above,
+$\assJ_1(\bD,q)$ implies $\assI_1(\bD,q)$. Let us thus fix $\bD$
+and $q$.  Assumption $\assJ_1(\bD,q)$ implies that
+$V_{p-1}(\mathfrak{N}_{\bD,q}(G'))$ is empty for a generic $G'$
+in~$\KKbar{}^{N'}$.  We will prove that
+$V_{p-1}(\mathfrak{M}_{\bD,q}(G))$ is empty for a generic $G$
+in~$\KKbar{}^N$, which in turn establishes $\assI_1(\bD,q)$.
+
+Consider the ideal $I_{p-1}(\mathfrak{M}_{\bD,q})$ in the polynomial
+ring $\KK[\mathfrak{G},\tilde\bX]$ in $N+n+1$ variables. This ideal
+defines an algebraic set $Z_{\bD,q}$ in $\KKbar{}^N \times
+\P^n(\KKbar)$, and we let $\Delta_{\bD,q} \subset \KKbar{}^N$ be its
+projection on the first factor: this is the set of all $G$ such that
+$V_{p-1}(\mathfrak{M}_{\bD,q}(G))$ is not empty. Because the source is
+a projective space, $\Delta_{\bD,q}$ is closed (so its complement is
+open), and we just have to verify that it is not equal to the whole
+$\KKbar{}^N$. This follows readily from property $\assJ_1(\bD,q)$,
+which proves that generic matrices of the form
+$\mathfrak{N}_{\bD,q}(G')$ do not belong to $\Delta_{p,q}$, so 
+$\assI_1(\bD,q)$ holds.
+
+We finish the proof by induction. We first take $p=q$ and consider
+$\assJ_1(\bD,q)$.  In this case, $n=1$ and $\mathfrak{N}_{\bD,q}$ is
+a diagonal matrix, whose diagonal entries are products of linear forms
+in $(X_0,X_1)$ with indeterminate coefficients. Hence, no pair of
+entries $\mathfrak{N}_{\bD,q}$ have any common solution in
+$\P^1(\KKGpbar)$, so the rank of $\mathfrak{N}_{\bD,q}$ is at least
+$p-1$. Hence, $\assJ_1(\bD,p)$ holds, and so does $\assI_1(\bD,p)$, by the claim in the previous paragraph.
+
+Consider next a pair $(\bD,q)$, with $\bD=(\delta_1,\dots,\delta_p)$ and $2 \le
+p \le q$, and suppose that $\assI_1(\bD',q')$ holds for all
+$(\bD',q')$ with $\bD'=(D'_1,\dots,D'_{p'})$, $2 \le p' \le q'$, $p'
+\le p$ and $q' < q$; we prove that $\assJ_1(\bD,q)$ holds
+(as above, this will also imply $\assI_1(\bD,q)$).
+
+Take $k=p-1$ in Lemma~\ref{lemma:union}. Then, the parameters
+$(t-(p-k),\b\delta_s,n-1)$ used in each contribution to~\eqref{eq:union}
+are of the form $(t-1,\b\delta_s,n-1)$, with $2 \le t \le \min(p,n-1)$.
+Since the entries of $\mathfrak{H}_{s,r}$ are algebraically
+independent, $\b\delta_s$ has length $t\ge 2$, with also $t \le n-1$, $t
+\le p$ and $n-1 < q$, we can apply the induction hypothesis and deduce
+that all $V_{t-1}(\mathfrak{M}_{\b\delta_s,n-1}(\mathfrak{H}_{s,r}))$
+appearing in Lemma~\ref{lemma:union} are empty. As a consequence,
+$V_{p-1}(\mathfrak{N}_{\bD,q})$ is empty, as claimed.
+
+
+\paragraph{Solutions at infinity.} Next, we focus on the case $k=p$.
+We take parameters $\bD=(\delta_1,\dots,\delta_p)$ and $q$, with $1 \le p \le
+q$, and we write $N=N(\bD,q)$ and $N'=N'(\bD,q)$; then, we prove the following properties.
+\begin{description}[leftmargin=*]
+\item[$\assI_2(\bD,q).$] The projective algebraic set
+  $V_p(\mathfrak{M}_{\bD,q}) \subset \P^n(\KKGbar)$ has no point with $X_0=0$.
+\item[$\assJ_2(\bD,q).$] The projective algebraic set
+  $V_p(\mathfrak{N}_{\bD,q}) \subset \P^n(\KKGpbar)$ has no point with $X_0=0$.
+\end{description}
+ In particular, this implies that these sets are finite. We will prove
+ these properties as we did in the previous paragraph; the first step
+ is thus to establish that for $\bD$ and $q$ as above, $\assJ_2(\bD,q)$
+ implies $\assI_2(\bD,q)$.
+
+Let us thus fix $\bD$ and $q$, and assume that $\assJ_2(\bD,q)$
+holds. We prove that $V_p(\mathfrak{M}_{\bD,q}(G))$ has no point at
+infinity for a generic $G$ in $\KKbar{}^N$; this will imply $\assI_2(\bD,q)$. Consider the ideal generated by
+$I_{p}(\mathfrak{M}_{\bD,q})$ and $X_0$ in the polynomial ring
+$\KK[\mathfrak{G},\tilde\bX]$ in $N+n+1$ variables. This ideal defines
+an algebraic set $Z'_{\bD,q}$ in $\KKbar{}^N \times \P^n(\KKbar)$, and
+we let $\Delta'_{\bD,q} \subset \KKbar{}^N$ be its projection on the
+first factor: this is thus the set of all $G$ in $\KKbar{}^N$ such
+that $V_p(\mathfrak{M}_{\bD,q}(G))$ has a point at infinity. Because
+the source is a projective space, $\Delta'_{p,q}$ is closed (so its
+complement is open), and we just have to verify that it is not equal
+to the whole $\KKbar{}^N$. This follows from property $\assJ_2(\bD,q)$, which implies that matrices of the form
+$\mathfrak{N}_{\bD,q}(G')$, for generic $G'$ in $\KKbar{}^{N'}$, do
+not belong to $\Delta'_{\bD,q}$.
+
+Again, we finish the proof by induction. We first take $p=q$, and we
+prove that $\assJ_2(\bD,q)$ holds ($\assI_2(\bD,q)$ will follow,
+by the previous paragraph). In this case, $n=1$ and
+$\mathfrak{N}_{\bD,q}$ is a diagonal matrix, whose diagonal entries
+are products of linear forms in $(X_0,X_1)$ with indeterminate
+coefficients. Then, $\mathfrak{N}_{\bD,q}$ has rank less than $p$ at
+$\tilde\bx\in\P^1(\KKGpbar)$ if and only if one of the linear factors
+of some diagonal term vanishes at $\tilde \bx$. None of this linear
+forms has a projective root at infinity, so we are done.
+
+Consider next a pair $(\bD,q)$, with $\bD=(\delta_1,\dots,\delta_p)$ and $1 \le p
+\le q$ and suppose that $\assI_2(\bD',q')$ holds for all $(\bD',q')$
+with $\bD'=(D'_1,\dots,D'_{p'})$, $1 \le p' \le q'$, $p' \le p$ and $q' <
+q$; we prove that $\assJ_2(\bD,q)$ holds; as above, this will imply
+ $\assI_2(\bD,q)$.
+
+Take $k=p$ in Lemma~\ref{lemma:union}. We first deal with the last
+contribution, corresponding to $s=(s_1,\dots,s_n)$, and thus $t=n$: by
+design, the corresponding point is not at infinity. For the other
+contributions, the parameters $(t-(p-k),\b\delta_s,n-1)$ used
+in~\eqref{eq:union} are of the form $(t,\b\delta_s,n-1)$, with $\b\delta_s$ of
+length $t \in \{1,\dots, \min(p,n-1)\}$; since all conditions $ 1 \le
+t \le n-1$, $t \le p$ and $n-1 < q$ are satisfied, we can invoke the
+induction assumption. Since the coefficients $\mathfrak{H}_{s,r}$ are
+algebraically independent, we deduce that none of the
+projective sets $V_t(\mathfrak{M}_{\b\delta_s,n-1}(\mathfrak{H}_{s,r}))$
+appearing in Lemma~\ref{lemma:union} has any point with $X_0=0$. As a
+consequence, $V_p(\mathfrak{N}_{\bD,q})$ has no point at infinity
+either, as claimed.
+
+
+\paragraph{Refining $\assI_1$.} The following  is a strengthening of 
+property $\assI_1$ above. Again, we consider $\bD=(\delta_1,\dots,\delta_p)$
+and $q$, with $1 \le p \le q$, together with a matrix
+$\mathfrak{m}_{\bD,q}$, built as $\mathfrak{M}_{\bD,q}$ before, but
+using products of homogeneous linear forms in $n=q-p+1$ variables $X_0,\dots,X_{n-1}$, instead of
+$n+1$ variables $X_0,\dots,X_n$. Such a matrix takes the form
+\begin{align}\label{eq:matM2}
+\mathfrak{m}_{\bD,q}=\left [\begin{matrix}
+\mathfrak{P}_{1,1} & \cdots & \mathfrak{P}_{1,q}\\
+ \vdots & & \vdots\\
+\mathfrak{P}_{p,1} & \cdots & \mathfrak{P}_{p,q}
+  \end{matrix}\right ]\in \KK[\mathfrak{C}][X_0,\dots,X_{n-1}]^{p\times q},
+\end{align}
+with 
+$$\mathfrak{p}_{i,j,k} = \frak{c}_{i,j,k,0}X_0 + \frak{c}_{i,j,k,1} X_1 +\cdots + \frak{c}_{i,j,k,n-1} X_{n-1},$$
+and
+$$\mathfrak{P}_{i,j} = \mathfrak{p}_{i,j,1} \cdots
+\mathfrak{p}_{i,j,\delta_i} \in \KK[\mathfrak{C}][X_0,\dots,X_{n-1}],$$
+where $\mathfrak{C}=(\mathfrak{c}_{i,j,k,\ell})$ are indeterminates,
+for $i=1,\dots,p$, $j=1,\dots,q$, $k=1,\dots,\delta_i$ and
+$\ell=0,\dots,n-1$; we let $M=q n (\delta_1+\cdots +\delta_p)$ be the total
+number of coefficients $\mathfrak{c}_{i,j,k,\ell}$ involved. In this context, the
+following property could be proved by induction as in the other cases,
+but a direct proof is available.
+
+\begin{description}[leftmargin=*]
+\item[$\assI_3(\bD,q).$] The projective algebraic set
+  $V_p(\mathfrak{m}_{\bD,q}) \subset \P^{n-1}(\KKCbar)$ is empty.
+\end{description}
+To prove this property, take $\bD$ and $q$ as above. If $q=p$, we have
+$n=1$, so the $i,j$ entry of $\mathfrak{m}_{\bD,q}$ has the form
+$\mathfrak{c}_{i,j,1,0}\cdots\mathfrak{c}_{i,j,1,\delta_i} X_0^{\delta_i}$; hence, its determinant is non-zero,
+and the claim follows.
+
+We can thus suppose $q > p$, so that $q-1 \ge p$.  Then, the
+$((1,\dots,p),(1,\dots,q-1))$-submatrix of $\mathfrak{m}_{\bD,q}$ is
+of the form $\mathfrak{M}_{\bD,q-1}$, with entries depending on
+$N(\bD,q-1)$ parameters.  Let $(\Delta_i)_{i \in I}$ be the $p$-minors
+of $\mathfrak{m}_{\bD,q}$ built by taking $p-1$ of the first $q-1$
+columns of $\mathfrak{m}_{\bD,q}$, together with its last column.
+Any such minor can be expanded along the last column as $\Delta_i =
+\mathfrak{P}_{1,q} \delta_{i,1} + \cdots + \mathfrak{P}_{p,q}
+\delta_{i,p}$, where $\mathfrak{P}_{1,q},\dots,\mathfrak{P}_{p,q}$ are
+the entries of the last column, and $\delta_{i,1},\dots,\delta_{i,p}$
+are $(p-1)$-minors from $\mathfrak{M}_{\bD,q-1}$. Remark that
+$(\delta_{i,j})_{i \in I, 1 \le j \le p}$ are {\em all} $(p-1)$-minors
+of $\mathfrak{M}_{\bD,q-1}$ (if $p=1$, we have $I=\{1\}$ and
+$\Delta_1=\mathfrak{P}_{1,q}$, with $\delta_{1,1}=1$).
+
+By $\assI_2(\bD,q-1)$, we deduce that $V_p(\mathfrak{M}_{\bD,q-1})
+\subset \P^{n-1}(\KKCbar)$ is finite. For all other points $\tilde\bx$
+in $\P^{n-1}(\KKCbar)$, $\mathfrak{M}_{\bD,q-1}$ has full rank $p$ at
+$\tilde\bx$, and thus so does $\mathfrak{m}_{\bD,q}$. Hence, we can we
+can focus on the points in $V_p(\mathfrak{M}_{\bD,q-1})$.  Consider a
+point $\tilde\bx$ in this set (in particular, by $\assI_2(\bD,q-1)$,
+we can take it first coordinate $x_0$ equal to $1$). Using $\assI_1(\bD,q-1)$, together with our remark on the minors of
+$\mathfrak{M}_{\bD,q-1}$, we deduce that not all minors
+$(\delta_{i,j})_{i \in I, 1 \le j \le p}$ vanish at
+$\tilde\bx$. Suppose thus that $\delta_{i_0,j_0}(\tilde\bx) \ne 0$; we
+prove that $\Delta_{i_0}(\tilde\bx) \ne 0$.
+
+Let us split the $M$ indeterminates $\mathfrak{C}$ into
+$\mathfrak{C}_1$ and $\mathfrak{C}_2$, where $\mathfrak{C}_1$ has
+cardinality $M_1=N(\bD,q-1)$ and corresponds to the coefficients used
+in the entries $\mathfrak{P}_{1,1},\dots,\mathfrak{P}_{p,q-1}$ in
+$\mathfrak{m}_{\bD,q}$, and $\mathfrak{C}_2$ of cardinality
+$M_2=M-M_1$ stands for the coefficients of the entries
+$\mathfrak{P}_{1,q},\dots,\mathfrak{P}_{p,q}$ in the last column of
+$\mathfrak{m}_{\bD,q}$.  Let us further write
+$\Delta_{i_0}(\tilde\bx)= \mathfrak{P}_{1,q}(\tilde\bx)
+\delta_{i_0,1}(\tilde\bx) + \cdots + \mathfrak{P}_{p,q}(\tilde\bx)
+\delta_{i_0,p}(\tilde\bx)$.  Since $x_0=1$, the
+polynomial $\mathfrak{P}_{i,q}(\tilde\bx)$ admits
+$\mathfrak{c}_{i,q,1,0}\cdots \mathfrak{c}_{i,q,\delta_i,0}$ 
+as a specialization (setting all other coefficients to zero), so that
+$\Delta_{i_0}(\tilde\bx)$ admits 
+$$\mathfrak{c}_{1,q,1,0}\cdots \mathfrak{c}_{1,q,\delta_i,0}
+\delta_{i_0,1}(\tilde\bx) + \cdots + \mathfrak{c}_{p,q,1,0}\cdots
+\mathfrak{c}_{p,q,\delta_i,0} \delta_{i_0,p}(\tilde\bx)$$ as a
+specialization. The coefficients
+$\delta_{i_0,j}(\tilde\bx)$ are not all zero, and since
+$V_p(\mathfrak{M}_{\bD,q-1})$ is finite, algebraic over
+$\KK(\mathfrak{C}'_1)$. Since the entries of $\mathfrak{C}'_2$ are
+algebraically independent over $\KK(\mathfrak{C}'_1)$, the sum
+$\Delta_{i_0}(\tilde\bx)$ is non-zero, as claimed.
+
+\paragraph{Multiplicity of the solutions.} 
+Again, we take parameters $\bD=(\delta_1,\dots,\delta_p)$ and $q$, with $1 \le p
+\le q$, and we write $N=N(\bD,q)$ and $N'=N'(\bD,q)$; we will prove
+consider the following properties.
+\begin{description}[leftmargin=*]
+\item[$\assI_4(\bD,q).$] The Jacobian matrix of
+  $M_p(\mathfrak{M}_{\bD,q})$ has rank $n$ at all points in
+  $V_p(\mathfrak{M}_{\bD,q})$.
+\item[$\assJ_4(\bD,q).$] The Jacobian matrix of
+  $M_p(\mathfrak{N}_{\bD,q})$ has rank $n$ at all points in
+  $V_p(\mathfrak{N}_{\bD,q})$.
+\end{description}
+As for other proofs involving both $\mathfrak{M}_{\bD,q}$ and
+$\mathfrak{N}_{\bD,q}$, we first show that $\assJ_4(\bD,q)$ implies
+$\assI_4(\bD,q)$.
+
+We fix $\bD$ and $q$, and we assume that $\assJ_4(\bD,q)$
+holds. Consider the ideal of the polynomial ring
+$\KK[\mathfrak{G},\tilde\bX]$ in $N+n+1$ variables generated by the
+$p$-minors of $\mathfrak{M}_{\bD,q}$, together with the $n$-minors of
+the Jacobian matrix of these equations with respect to
+$X_0,\dots,X_n$. This ideal defines an algebraic set $Z''_{\bD,q}$ in
+$\KKbar{}^N \times \P^n(\KKbar)$, and we let $\Delta''_{\bD,q} \subset
+\KKbar{}^N$ be its projection on the first factor. By construction,
+for $G$ in $\KKbar{}^N-Z''_{\bD,q}$, the Jacobian matrix of
+$M_p(\mathfrak{M}_{\bD,q}(G))$ has rank $n$ at any $\bx$ in
+$V_p(\mathfrak{M}_{\bD,q}(G))$. As before, because the source is a
+projective space, $\Delta''_{p,q}$ is closed (so its complement is
+open), and we just have to verify that it is not equal to the whole
+$\KKbar{}^N$. This follows from property $\assJ_4(\bD,q)$, which
+proves that generic matrices of the form $\mathfrak{N}_{\bD,q}$ do not
+belong to $\Delta''_{\bD,q}$.
+
+Again, we finish the proof by induction. We first take $p=q$, and we
+prove that $\assJ_4(\bD,q)$ holds ($\assI_4(\bD,q)$ will follow,
+by the previous paragraph). In this case, $n=1$ and
+$\mathfrak{N}_{\bD,q}$ is a diagonal matrix, whose diagonal entries
+are products of linear forms $\mathfrak{L}_{i,i}$ depending on
+$(X_0,X_1)$ and with indeterminate coefficients. For $G'$ in
+$\KKbar{}^N$, the ideal $I_p(\mathfrak{N}_{\bD,q}(G'))$ is generated by
+the product of the terms $\mathfrak{L}_{i,i}(G')$; for generic $G'$, it
+admits no repeated factors, and the conclusion follows.
+
+Consider next a pair $(\bD,q)$, with $\bD=(\delta_1,\dots,\delta_p)$ and $1 \le p
+\le q$ and suppose that $\assI_4(\bD',q')$ holds for all $(\bD',q')$
+with $\bD'=(D'_1,\dots,D'_{p'})$, $1 \le p' \le q'$, $p' \le p$ and $q' <
+q$; we prove that $\assJ_4(\bD,q)$ holds; this will imply
+ $\assI_4(\bD,q)$. 
+
+We take $k=p$ in the formula of the lemma, and we first deal with the
+terms in~\eqref{eq:union}.  Thus, we choose a subsequence
+$s=(s_1,\dots,s_t)$ of $(1,\dots,p)$, with $1 \le t\le \min(p,n-1)$,
+and indices $R=(r_1,\dots,r_t)$, with $ 1\le r_i \le \delta_{s_i}$ for all
+$i$; for simplicity, we write the proof with $s=(1,\dots,t)$, so that
+we have $\b\delta_s=(\delta_1,\dots,\delta_t)$. We take $\tilde\bx=(x_0,\dots,x_n)$
+in $\P^n(\KKGpbar)$ such that $\tilde \bx'=(x_0,\dots,x_{n-t})$
+is in $V_t(\mathfrak{M}_{\b\delta_s,n-1}(\mathfrak{H}_{s,r})) \subset
+\P^{n-t}(\KKGpbar)$, and such that 
+\begin{align}\label{eq:subsX}
+  x_{n-t+1}=\mathfrak{f}_{s,r,n-t+1}(x_0,\dots,x_{n-t}),\dots,x_{n}=\mathfrak{f}_{s,r,n}(x_0,\dots,x_{n-t});
+\end{align}
+we then prove that the Jacobian matrix of $M_p(\mathfrak{N}_{\bD,q})$
+with respect to $X_0,\dots,X_n$ has rank $n$ at $\tilde\bx$.  By
+Lemma~\ref{lemma:union}, taking all such $\tilde\bx$ into account, for
+all $s$ and $r$, will cover all points in $V_p(\mathfrak{N}_{\bD,q})$, up to the
+exception of those points obtained from $t=n$, which will admit a
+simpler treatment.
+
+We are going to exhibit some ``nice'' polynomials that belong to
+$I_p(\mathfrak{N}_{\bD,q})$, for which we can control the rank of the
+Jacobian at $\tilde\bx$. First, we prove that for $i\in\{1,\dots,t\}$
+and $r \in \{1,\dots,\delta_i\}-\{r_i\}$, as well as $i\in\{t+1,\dots,p\}$
+and $r \in \{1,\dots,\delta_i\}$, $\mathfrak{l}_{i,i,r}(\tilde\bx)$ is
+non-zero.  We subdivide the coordinates $\mathfrak{G}'$ into
+$\mathfrak{G}'_1$ and $\mathfrak{G}'_2$, where $\mathfrak{G}'_1$
+corresponds to the coefficients involved in $\mathfrak{l}_{i,i,r_i}$,
+for $i=1,\dots,t$, and in the submatrix of $\mathfrak{N}_{\bD,q}$
+associated to $s$, and $\mathfrak{G}'_2$ are the other coordinates.
+By $\assI_2(\b\delta_s,n-1)$,  $V_t(\mathfrak{M}_{\b\delta_s,n-1}(\mathfrak{H}_{s,r}))$ 
+is finite; as a result, all coordinates of $\tilde\bx$ are algebraic
+over $\KK(\mathfrak{G}'_1)$. For $i,r$ as described above, the coefficients of the equation
+$$\mathfrak{l}_{i,i,r} = \frak{g}_{i,i,r,0} X_0+ \frak{g}_{i,i,r,1}
+X_1 +\cdots + \frak{g}_{i,i,r,n} X_n$$ are thus algebraically independent
+over the field of definition of $\bx'$, so that $\mathfrak{l}_{i,i,r}(\tilde\bx)$
+is non-zero.
+
+Next, we take $i$ in $\{1,\dots,t\}$. We can then define
+$s^*=(1,\dots,i-1,i+1,\dots,t)$,
+$\bD^*=(\delta_1,\dots,\delta_{i-1},\delta_{i+1},\dots,\delta_t)$, and we call
+$\mathfrak{N}_{\bD,q}^*$ the submatrix of
+$\mathfrak{N}_{\bD,q}$ associated to $s^*$. We prove that there exists a $(t-1)$-minor
+$\delta_i$ of $\mathfrak{N}_{\bD,q}^*$ such that $\delta_i(\tilde\bx)\ne 0$.  Let indeed
+$\mathfrak{H}^*$ be the coefficients of the linear forms obtained by
+applying the substitution~\eqref{eq:subsX} in
+$\mathfrak{N}_{\bD,q}^*$. Since the coefficients of $\mathfrak{H}^*$
+are algebraically independent over $\KK$, we can apply $\assI_3(\bD^*,n-1)$ to $\mathfrak{N}_{\bD,q}^*(\mathfrak{H}^*)$,
+and deduce that this matrix has full rank $t-1$ at $\tilde\bx'$.
+Thus, $\mathfrak{N}_{\bD,q}^*$ has rank $t-1$ at $\tilde\bx$, 
+from which the existence of the minor $\delta_i$ follows.
+
+We next show that these properties imply that for $i\in\{1,\dots,t\}$,
+there exists a polynomial of the form $B_{i} \mathfrak{l}_{i,i,r_i}$
+in the ideal $I_p(\mathfrak{N}_{\bD,q})$, with $B_{i}(\tilde\bx)\ne
+0$. Indeed, we consider the $p$-minor of $\mathfrak{N}_{\bD,q}$
+obtained by taking the columns $i$,$t+1,\dots,p$, and all $t-1$ columns
+in $\delta_i$. Using the factorization
+$$\mathfrak{L}_{i,i} = b_i \mathfrak{l}_{i,i,r_i},\quad\text{with}\quad
+b_i=\mathfrak{l}_{i,i,1}\cdots \mathfrak{l}_{i,i,r_i-1}\mathfrak{l}_{i,i,r_i+1}\cdots \mathfrak{l}_{i,i,\delta_i},$$
+that minor evaluates to 
+$$B_i \mathfrak{l}_{i,i,r_i}\quad\text{with}\quad B_i = b_i
+\mathfrak{L}_{t+1,t+1}\cdots \mathfrak{L}_{p,p}\delta_i.$$ Hence, $B_i\,
+\mathfrak{l}_{i,i,r_i}$ belongs to $I_p(\mathfrak{N}_{\bD,q})$, and by
+the discussion of the two previous paragraphs, $B_i(\tilde\bx)\ne 0$,
+as claimed.
+
+For the same reasons, for every $t$-minor $\eta$ of the submatrix of
+$\mathfrak{N}_{\bD,q}$ associated to $s$, there exists a polynomial
+$C_\eta$ such that $C_\eta\, \eta$ belongs to
+$I_p(\mathfrak{N}_{\bD,q})$, and $C_\eta(\tilde\bx)\ne 0$. 
+Using the
+fact that (up to the factors $B_i$) the equations
+$\mathfrak{l}_{i,i,r_i}$ are in $I_p(\mathfrak{N}_{\bD,q})$, we deduce
+the existence of cofactors $\tilde C_\eta$ such that $C_\eta\, \eta(\mathfrak{H}_{s,r})$
+belongs to $I_p(\mathfrak{N}_{\bD,q})$, and $C_\eta(\tilde\bx)\ne 0$.
+
+
+
+
+\end{document}
