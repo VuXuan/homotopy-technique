@@ -57,33 +57,35 @@
 
 \section{Introduction}\label{sec:intro}
 
-In what follows, $\KK$ is a field, $(X_1, \ldots, X_n)$ is a set of
-$n$ variables and $\KK[X_1,\dots,X_n]$ is the multivariate polynomial
-ring with coefficients in $\KK$. Let $\mF=[f_{i,j}] \in
-\KK[X_1,\dots,X_n]^{p \times q}$ be a polynomial matrix, with $p \leq
-q$. The first question which will interest us in this paper is to
-describe the set $S_\mF$ of points $\x \in \KKbar{}^n$ at which the
-evaluation of the matrix $\mF$ has rank less than $p$. In the
+In what follows, $\KK$ is a field and $\KKbar$ is an algebraic closure
+of $\KK$, $(X_1, \ldots, X_n)$ is a set of $n$ variables and
+$\KK[X_1,\dots,X_n]$ is the multivariate polynomial ring with
+coefficients in $\KK$. Let
+$\mF=[f_{i,j}] \in \KK[X_1,\dots,X_n]^{p \times q}$ be a polynomial
+matrix, with $p \leq q$. The first question which will interest us in
+this paper is to describe the set $S_\mF$ of points
+$\x \in \KKbar{}^n$ at which the evaluation of the matrix $\mF$ has
+rank less than $p$. Observe that $S_\mF$ is an algebraic set, since it
+is defined by the vanishing of all maximal minors of $\mF$.  In the
 particular case $p=1$, this simply means finding all common solutions
-of $f_{1,1},\dots,f_{1,q}$; in general, $S_\mF$ is an algebraic set,
-since it is defined by the vanishing of all maximal minors of $\mF$.
+of $f_{1,1},\dots,f_{1,q}$. 
 
 We restrict ourselves to the case where $n = q-p+1$.  Indeed, in this
 case, $S_\mF$ is expected to be finite: for arbitrary $n$, results due
 to Macaulay~\cite{Macaulay16} and Eagon and Northcott~\cite{EN62}
 imply that all irreducible components of $S_\mF$ have dimension at
-least (and, expectedly, equal to) $n-(q-p+1)$; indeed, in the
-case $n = q-p+1$, $S_\mF$ is finite for a generic choice of $\mF$ (we
-will make this statement more precise in the following
-sections). However, beyond the inequality $n = q-p+1$, we make no
+least (and, expectedly, equal to) $n-(q-p+1)$; indeed, in the case
+$n = q-p+1$, $S_\mF$ is finite for a generic choice of the entries of
+$\mF$ (we will make this statement more precise in the following
+sections). However, beyond the equality $n = q-p+1$, we make no
 assumption on the input matrix $\mF$.
 
 Because $S_\mF$ is an algebraic set, its {\em isolated points} form a
 finite subset of $\KKbar{}^n$, defined over $\KK$; this notion makes
 sense for any field $\KK$; when $\KK=\mathbb{R}$, these points are
-indeed isolated for the metric topology. (The next section recalls the
+indeed isolated for the metric topology. The next section recalls the
 basic facts we need regarding polynomial systems and algebraic
-varieties.)  Then, our first question is the following.
+varieties.  Then, our first question is the following.
 
 
 \begin{pbm} \label{problem} 
@@ -92,12 +94,13 @@ varieties.)  Then, our first question is the following.
 \end{pbm}
 
 Problem~\ref{problem} is a particular case of a slightly more general
-question, where we solve determinantal systems of an algebraic set. In
-addition to matrix $\mF$, we may indeed take into account algebraic
-equations of the form $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$. In this
-setting, the natural relation between the number $n$ of variables,
-the size of $\mF$ and the number $s$ of polynomials in $G$ is 
-now $n=q-p+s+1$. Then, we define the algebraic set
+question% , where we solve determinantal systems of an algebraic set
+. In addition to matrix $\mF$, we may indeed take into account
+algebraic equations of the form $G=(g_1,\dots,g_s)$ in
+$\KK[X_1,\dots,X_n]$. In this setting, the natural relation between
+the number $n$ of variables, the size of $\mF$ and the number $s$ of
+polynomials in $G$ is now $n=q-p+s+1$. Then, we define the algebraic
+set
 $$S_{\mF,G} =  \{\bx \in \KKbar{}^n \mid
 \mathrm{rank}(\mF({\bx})) < p \text{~and~}
 g_1(\bx)=\cdots=g_s(\bx)=0   \};$$
@@ -156,12 +159,12 @@ $$\delta_{\rm col}(\mF) = E_{q-p+1}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q)),$$
 where for $k \ge 0$, $E_k(\delta_1,\dots,\delta_q)$ is the 
 elementary symmetric polynomial of degree $k$ in $\delta_1, \ldots, \delta_q$.
 
-For any matrix $\mF$ over a ring $R$, and for any integer $m$,
+For any matrix $\mF$ over a ring $R$, and for any integer $r$,
 $M_r(\mF)$ will denote the set of $r$-minors of $\mF$, and $I_r(\mF)$
 will denote the ideal they generate in $R$. If $R$ is a polynomial
 ring in $n$ variables over a field $\KK$, $V_r(\mF)$ will denote the
-zero-set of $I_r(\mF)$ in $\KKbar{}^n$. Our first result is 
-then the following.
+zero-set of $I_r(\mF)$ in $\KKbar{}^n$. Our first result is then the
+following.
 \begin{theorem}\label{theo:1}
   Let $\mF$ be in $\KK[X_1,\dots,X_n]^{p \times q}$ and let
   $(g_1,\dots,g_s)$ be in $\KK[X_1,\dots,X_n]$, with $p \le q$ and
@@ -177,19 +180,23 @@ $s=0$, but the assumption $n=q-p+1$ does not hold); in particular,
 they obtain analogues (and generalizations) of the result in
 Theorem~\ref{theo:1} in that context.
 
-Nie and Ranestad proved (in a homogeneous context) that the bounds in
-Theorem~\ref{theo:1} are equalities for two families of polynomials:
-if the entries of $\mF$ are chosen generic and such that
-$\deg(f_{i,j}) = \rdeg(\mF,i)$ for all $i,j$, then the ideal $I_{\mF}$
-has degree $\delta_{\rm row}(\mF)$; when the entries of $\mF$ are
-chosen generic and such that $\deg(f_{i,j}) = \cdeg(\mF,j)$ for all
-$i,j$, the ideal $I_{\mF}$ has degree $\delta_{\rm col}(\mF)$. From
-this, they deduce that the degree of the ideal $I_{\mF,G}$ is at most
-$\deg(g_1) \cdots \deg(g_s) \delta_{\rm row}(\mF)$, in the particular
-case when the matrix $\mF$ is the Jacobian matrix of $G$ (together
-with one extra row, corresponding to the gradient of a function $q$
-that we want to optimize on $V(G)$), and assuming that this ideal has
-dimension zero.
+Nie and Ranestad proved that the bounds in Theorem~\ref{theo:1} are
+equalities for two families of polynomials:
+\begin{itemize}
+\item when the entries of $\mF$ are chosen generic homogeneous and
+  such that $\deg(f_{i,j}) = \rdeg(\mF,i)$ for all $i,j$, then the
+  ideal $I_{\mF}$ has degree $\delta_{\rm row}(\mF)$;
+\item when the entries of $\mF$ are chosen generic homogeneous and
+  such that $\deg(f_{i,j}) = \cdeg(\mF,j)$ for all $i,j$, the ideal
+  $I_{\mF}$ has degree $\delta_{\rm col}(\mF)$.
+\end{itemize}
+From this, they deduce that the degree of the ideal $I_{\mF,G}$ is at
+most $\deg(g_1) \cdots \deg(g_s) \delta_{\rm row}(\mF)$, in the
+particular case when the matrix $\mF$ is the Jacobian matrix of $G$
+(together with one extra row, corresponding to the gradient of a
+function $q$\footnote{\`a changer car $q$ est utilis\'e dans les
+  param\'etrisations et le nombre de colonnes} that we want to
+optimize on $V(G)$), and assuming that this ideal has dimension zero.
 
 For generic (homogeneous) polynomials $G$, and $\mF$ as in the
 previous paragraph, Spaenlehauer gave in~\cite{Spa14} an explicit
@@ -221,17 +228,18 @@ to have multiplicity one.
 The main idea of our algorithms is to use the \emph{homotopy}
 \[\mH = (1-T)\cdot \mG + T \cdot \mF \in \KK[T, \X]^{p \times q}\]
 that connects a \emph{start matrix} $\mG$ to the target matrix $\mF$,
-where $T$ is a new variable. However, we need some properties on the
-start matrix such that we can compute the isolated solutions for the
-determinantal system of $F$. Assume that we know the solutions for the
-determinatal system of $G$, by using the Newton interation to the
-determinantal system of $H$, we can lift into the isolated solutions
-for that of $F$. Therefore, we need create a start matrix $G$ such
-that
+where $T$ is a new variable\footnote{\`a changer car $\mG$ est
+  utilis\'e aussi comme une liste de polyn\^omes}. However, we need
+some properties on the start matrix such that we can compute the
+isolated solutions for the determinantal system of $F$. Assume that we
+know the solutions for the determinatal system of $G$, by using the
+Newton iteration to the determinantal system of $H$, we can lift into
+the isolated solutions for that of $F$. Therefore, we need to create a
+start matrix $G$ such that
 \begin{itemize}
 \item its solutions of the determinantal system can be found effectively,
 \item we can extract a square subsystem with full-rank Jacobian,
-\item there is no solution of its determinantal system is at infinity. 
+\item there is no solution of its determinantal system at infinity. 
 \end{itemize}
 
 This paper is organized as follows.
