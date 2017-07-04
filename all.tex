@@ -1414,14 +1414,14 @@ algorithm. For any $1 \leq j \leq q$ and $1 \leq k \leq \delta_j$, let us
 define $$\lambda_{j,k} = \lambda_{j,k,0} + \sum_{\ell = 1}^{n}\lambda_{j,k,\ell}X_\ell,$$ 
 where all $\lambda_{j,k,\ell}$ are random elements in
 $\KK$. Then, for $j=1,\dots,q$, we define
-$$\ell_j = \prod_{k=1}^{\delta_j}\lambda_{j,k},$$
+$$\lambda_j = \prod_{k=1}^{\delta_j}\lambda_{j,k},$$
 and we let  $\mL$ be the matrix
 \[\mL = 
 \left( \begin{matrix}
-\ell_1 & 2\ell_2 & \cdots & q\ell_{q}\\
-\ell_1 & 2^2\ell_2 & \cdots & q^2\ell_q\\
+\lambda_1 & 2\lambda_2 & \cdots & q\lambda_{q}\\
+\lambda_1 & 2^2\lambda_2 & \cdots & q^2\lambda_q\\
 \vdots & \vdots &  & \vdots \\
-\ell_1 & 2^p\ell_2 & \cdots & q^p\ell_q
+\lambda_1 & 2^p\lambda_2 & \cdots & q^p\lambda_q
 \end{matrix} \right) \in \KK[\bX]^{p\times q}.
 \]
 For $i=1,\dots,s$ and $k=1,\dots,\gamma_i$, let us further define
@@ -1464,8 +1464,8 @@ To each index $i=m+1,\dots,s$ corresponds a sequence
 $\bj_i=(j_{i,1},\dots,j_{i,p})$ such that $b_i$ and $a_i$ are the
 minors built with columns index by $\bj_i$ in respectively
 $\mU=(1-T)\, \mL + T \, \mF$ and $\mL$. In view of the shape of $\mL$,
-the polynomial $a_i$ is equal to $c_i\ell_{j_{i,1}}\cdots
-\ell_{j_{i,p}}$, where $c_i$ is a non-zero constant, so it has degree
+the polynomial $a_i$ is equal to $c_i\lambda_{j_{i,1}}\cdots
+\lambda_{j_{i,p}}$, where $c_i$ is a non-zero constant, so it has degree
 $\delta_{j_{i,1}} + \cdots + \delta_{j_{i,p}}$.  Since the columns
 $(j_{i,1},\dots,j_{i,p})$ of $U$ have respective degrees at most
 $(\delta_{j_{i,1}},\dots,\delta_{j_{i,p}})$, $b_i$ has degree at most
@@ -1477,11 +1477,11 @@ have degree exactly $\delta_{j_{i,1}} + \cdots + \delta_{j_{i,p}}$.
 of the system $\bA$ has no root at infinity. Thus, let $X_0$ be a new
 variable, and let $\bA^H=(a_1^H,\dots,a_m^H)$ be the homogenization
 of $\bA$. For $i=1,\dots,s$, we have
-$$a_i^H=\prod_{k=1}^{\gamma_i} \mu^H_{i,k} \quad\text{with}\quad \mu^H_{i,j}=(\mu_{i,k,0}X_0 + \sum_{\ell = 1}^{n}\mu_{i,k,\ell}X_\ell),$$
+$$a_i^H=\prod_{k=1}^{\gamma_i} \mu^H_{i,k} \quad\text{with}\quad \mu^H_{i,k}=(\mu_{i,k,0}X_0 + \sum_{\ell = 1}^{n}\mu_{i,k,\ell}X_\ell),$$
 whereas for $i=s+1,\dots,m$, 
-$$a_i^H=c_i \ell^H_{j_{i,1}}\ldots \ell^H_{j_{i,p}}, \quad \text{~for~} \bj_i=(j_{i,1},\dots,j_{i,p}) \text{~as above},$$
+$$a_i^H=c_i \lambda^H_{j_{i,1}}\ldots \lambda^H_{j_{i,p}}, \quad \text{~for~} \bj_i=(j_{i,1},\dots,j_{i,p}) \text{~as above},$$
 where for $j=1,\dots,q$ we set 
-$\ell^H_j = \prod_{k=1}^{\delta_j}\lambda^H_{j,k}$,
+$\lambda^H_j = \prod_{k=1}^{\delta_j}\lambda^H_{j,k}$,
 with
 $$\lambda^H_{j,k}=\lambda_{j,k,0}X_0 + \sum_{\ell = 1}^{n}\lambda_{j,k,\ell}X_\ell.$$
 To prove  $\assG_1(0)$, we start by writing down all projective
@@ -1498,9 +1498,9 @@ In what follows, we fix such an $\bu$.
 Then, for a generic choice of coefficients $\mu_{i,k,\ell}$, these equations
 are equivalent to
 $$X_{n-s+1}=\mathfrak{h}_{n-s+1,\bu}(X_0,\dots,X_{n-s}),\dots,X_{n}=\mathfrak{h}_{n,\bu}(X_0,\dots,X_{n-s}),$$
-for some linear forms $\mathfrak{h}_{n-s+1,\bu},\dots,\mathfrak{h}_{n,\bu}$.
-After applying this substitution, for all $j=1,\dots,q$, $\ell^H_j$ can be rewritten as
-$$\ell^H_{j,\bu}=\prod_{k=1}^{\delta_j}\lambda^H_{j,k,\bu},$$
+for some homogeneous linear forms $\mathfrak{h}_{n-s+1,\bu},\dots,\mathfrak{h}_{n,\bu}$.
+After applying this substitution, for all $j=1,\dots,q$, $\lambda^H_j$ can be rewritten as
+$$\lambda^H_{j,\bu}=\prod_{k=1}^{\delta_j}\lambda^H_{j,k,\bu},$$
 where 
 $$\lambda^H_{j,k,\bu}=\lambda_{j,k,0}X_0 + \sum_{\ell =
   1}^{n-s}\lambda_{j,k,\ell}X_\ell + \sum_{\ell =
@@ -1508,25 +1508,25 @@ $$\lambda^H_{j,k,\bu}=\lambda_{j,k,0}X_0 + \sum_{\ell =
 \mathfrak{h}_{\ell,\bu}(X_0,\dots,X_{n-s}).$$ Then,
 $\bx=(x_0,\dots,x_n)$ cancels $a^H_{s+1},\dots,a^H_m$ if and only if
 $\bx'=(x_0,\dots,x_{n-1})$ cancels the product
-$\ell^H_{j_1,\bu}\cdots \ell^H_{j_p,\bu},$ for any choice of columns
+$\lambda^H_{j_1,\bu}\cdots \lambda^H_{j_p,\bu},$ for any choice of columns
 $\bj=(j_1,\dots,j_p)$.
 
 \begin{lemma}
   For $\bx'$ in $\P^{n-s}(\KKbar)$, the products
-  $\ell^H_{j_1,\bu}(\bx')\cdots \ell^H_{j_p,\bu}(\bx')$
+  $\lambda^H_{j_1,\bu}(\bx')\cdots \lambda^H_{j_p,\bu}(\bx')$
   vanish for all choices of columns $\bj=(j_1,\dots,j_p)$ if and only
   if there exist $\{j_1,\dots,j_{n-s}\} \subset \{1,\dots,q\}$ such 
-  that $\ell^H_{j_1,\bu}(\bx')=\cdots=\ell^H_{j_{n-s},\bu}(\bx')=0$.
+  that $\lambda^H_{j_1,\bu}(\bx')=\cdots=\lambda^H_{j_{n-s},\bu}(\bx')=0$.
 \end{lemma}
 \begin{proof}
   Take an arbitraty representative $\bx^*$ of $\bx'$ in
   $\KKbar{}^{n+1}$, aonsider the polynomial
-  $(1+\ell^H_{1,\bu}(\bx^*)Y_1) \cdots (1+\ell^H_{q,\bu}(\bx^*)Y_q),$
+  $(1+\lambda^H_{1,\bu}(\bx^*)Y_1) \cdots (1+\lambda^H_{q,\bu}(\bx^*)Y_q),$
   for new variables $Y_1,\dots,Y_q$. The products
-  $\ell^H_{j_1,\bu}(\bx^*)\cdots \ell^H_{j_p,\bu}(\bx^*)$ are all zero
+  $\lambda^H_{j_1,\bu}(\bx^*)\cdots \lambda^H_{j_p,\bu}(\bx^*)$ are all zero
   if and only if this polynomial has degree less than $p$, that is, if
   and only if $q-p+1$ terms among
-  $\ell^H_{1,\bu}(\bx^*),\dots,\ell^H_{q,\bu}(\bx^*)$ vanish.
+  $\lambda^H_{1,\bu}(\bx^*),\dots,\lambda^H_{q,\bu}(\bx^*)$ vanish.
 \end{proof}
 
 
@@ -1580,8 +1580,8 @@ Recall that $n=q-p+s+1$, so that $n-s = q-(p-1)$. Hence, there are
 exactly $p-1$ columns not indexed by $\bj=(j_1,\dots,j_{n-s})$; call
 them $\bj'=(j'_1,\dots,j'_{p-1})$. We can then consider the 
 products
-$$ \ell_{j_1} \ell_{j'_1} \cdots \ell_{j'_{p-1}},\dots, \ell_{j_{n-s}}
-\ell_{j'_1} \cdots \ell_{j'_{p-1}};$$ each of them (up to a non-zero
+$$ \lambda_{j_1} \lambda_{j'_1} \cdots \lambda_{j'_{p-1}},\dots, \lambda_{j_{n-s}}
+\lambda_{j'_1} \cdots \lambda_{j'_{p-1}};$$ each of them (up to a non-zero
 constant) is a $p$-minor of $\mA$, so they appear as elements in the
 sequence $(a_{s+1},\dots,a_m)$, say as
 $(a_{e_1},\dots,a_{e_{n-s}})$. By the remark of the previous
@@ -1630,14 +1630,6 @@ $O\tilde{~}(n c)$ by means of fast interpolation~\cite[Chapter~10]{GaGe03}.
 of Proposition~\ref{prop:compute_isolated} to take into account the
 fact that all points in $V(\bA)$ are in $\KK^n$.)
 
-%% \paragraph{Property $\assD_2$.} Given $\bx$ in $V(\bA)$,
-%% corresponding to indices $\bu$, $\bj$ and $\bv$, we saw in the proof
-%% of $\assG_3$ how to find $n-s$ $p$-minors
-%% $(a_{e_1},\dots,a_{e_{n-s}})$ of $\mA$ such that
-%% $(g_1,\dots,g_s,a_{e_1},\dots,a_{e_{n-s}})$ is a unit times a linear
-%% system, in the local ring at $\bx$. Thus, we have established
-%% $\assD_2$, with $T=O(1)$. \todo{change $T$}
-
 \paragraph{Property $\assD_2$.} Next, we need to determine an upper bound 
 $e$ on the degree of the curve $V(J')$, where $J'$ is the union of the
 one-dimensional irreducible components of $V(\bB) \subset
@@ -1684,7 +1676,7 @@ forms in $n$ variables. This polynomial can be computed in $O(n
 \gamma_i)$ for $(b_1,\dots,b_s)$. The polynomials
 $(b_{s+1},\dots,b_m)$ are the $p$-minors of $\mU=(1-T)\mL+T\mF$.
 
-The polynomials $\ell_1,\dots,\ell_q$ can be computed in $O(n \sum_j
+The polynomials $\lambda_1,\dots,\lambda_q$ can be computed in $O(n \sum_j
 \delta_j)$ operations, so that the entries of $\mU$ can be computed in
 $O(n^2 + E + n \sum_j \delta_j)$ operations. From that, all $p$-minors
 of $\mU$ can be deduced in $O({q \choose p} n^3)$ further steps.
@@ -1703,6 +1695,7 @@ $$\softO\left (c(e+c^5 n)\left(E + {q \choose p} n^3 +n \sum_i
 with $c=\gamma_1\cdots\gamma_s \delta_{\rm row}(\mF)$ and
 $e=(\gamma_1+1)\cdots(\gamma_s+1) \tilde\delta_{\rm row}(\mF)$.
 This is also  $\softO\left (c(e+c^5 )(E + c)\right).$
+
 %% case discussion on e and c^5 n.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1730,7 +1723,7 @@ notation, $\deg(f_{i,j}) \leq \alpha_i$ holds for all $i,j$. As in the
 previous section, we write
 $\gamma_1=\deg(g_1),\dots,\gamma_s=\deg(g_s)$.
 
-\begin{proposition}
+\begin{proposition}\label{prop:rowdegree}
   There exists a randomized algorithm that computes the isolated
   points of $S_{\mF,G}$ using $\softO\left (\ \right)$ operations in
   $\KK$, with $d=\gamma_1\cdots\gamma_s \delta_{\rm row}(\mF)$ and
@@ -1746,51 +1739,53 @@ the $\mM_{S,T}$ is the submatrix obtained by keeping rows indexed by
 $S$ and columns indexed by $T$.
 
 \paragraph{Preliminaries.}
-In what follows, we will work with two families of matrices, namely matrices
+In what follows, we will work with two families of matrices in $\KK[Y_0,\dots,Y_N]^{p\times q}$, namely matrices
 such as
 \begin{align}\label{eqdef:type1}
-\left( \begin{matrix}
-\ell^H_{1,1} & 0 & \cdots & 0 & \ell^H_{1,p+1} & \cdots & \ell^H_{1, q}\\
-0 & \ell^H_{2,2\bu} & \cdots & 0 & \ell^H_{2,p+1} & \cdots & \ell^H_{2, q}\\
+\mN= \left( \begin{matrix}
+\lambda^H_{1,1} & 0 & \cdots & 0 & \lambda^H_{1,p+1} & \cdots & \lambda^H_{1, q}\\
+0 & \lambda^H_{2,2} & \cdots & 0 & \lambda^H_{2,p+1} & \cdots & \lambda^H_{2, q}\\
 \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
-0 & 0 & \cdots & \ell^H_{p,p} & \ell^H_{p,p+1} & \cdots & \ell^H_{p, q}
+0 & 0 & \cdots & \lambda^H_{p,p} & \lambda^H_{p,p+1} & \cdots & \lambda^H_{p, q}
 \end{matrix} \right),
 \end{align}
 and matrices of a more general form such as
 \begin{align}\label{eqdef:type2}
- \left( \begin{matrix}
-\ell^H_{1,1} & \ell^H_{1,2} & \cdots & \ell^H_{1, q}\\
- \ell^H_{2,1} &  \ell^H_{2,2} & \cdots & \ell^H_{2, q}\\
+\mM= \left( \begin{matrix}
+\lambda^H_{1,1} & \lambda^H_{1,2} & \cdots & \lambda^H_{1, q}\\
+ \lambda^H_{2,1} &  \lambda^H_{2,2} & \cdots & \lambda^H_{2, q}\\
  \vdots & & & \vdots\\
- \ell^H_{p,1} &  \ell^H_{p,2}& \cdots & \ell^H_{p, q}
+ \lambda^H_{p,1} &  \lambda^H_{p,2}& \cdots & \lambda^H_{p, q}
 \end{matrix} \right).
 \end{align}
-In both cases, for all $i,j$, the entry $\ell^H_{i,j}$ is a product of
+In both cases, for all $i,j$, the entry $\lambda^H_{i,j}$ is a product of
 $\alpha_i$ homogeneous linear forms in $N+1$ variables $Y_0,\dots,Y_N$
-with generic coefficients (except when $\ell^H_{i,j}$ is explicitly
+with generic coefficients (except when $\lambda^H_{i,j}$ is explicitly
 set to zero in the first case), that is,
-$\ell^H_{i,j}=\prod_{k=1}^{\alpha} \lambda^H_{i,j,k}$. In both cases,
-the number $N$ is given by $N=q-p+1$.
+$\lambda^H_{i,j}=\prod_{k=1}^{\alpha} \lambda^H_{i,j,k}$. In both cases,
+the number $N$ is given by $N=q-p+1$. In appendix, we prove the following properties.
 
-In appendix, we prove the following properties.
+\begin{lemma}\label{lemma:appendix}
 For generic choices of the coefficients of the linear forms
-$\lambda_{i,j,k}$,
+$\lambda^H_{i,j,k}$,
 \begin{itemize}
-\item the projective algebraic sets defined by $I_p(\mM_1)$ and $I_p(\mM_2)$ 
-  have no solution at infinity
-\item the Jacobian matrix of $I_p(\mM_1)$ and $I_p(\mM_2)$ with
-  respect to $Y_0,\dots,Y_N$ has rank $N$ at every point of the above
+\item the projective algebraic sets defined in $\P^N(\KKbar)$ by
+  $I_p(\mN)$ and $I_p(\mM)$ have no solution at infinity (that is, with $Y_0=0$);
+\item the Jacobian matrix of $I_p(\mN)$ and $I_p(\mM)$ with
+  respect to $(Y_0,\dots,Y_N)$ has rank $N$ at every point of the above
   sets.
 \end{itemize}
+\end{lemma}
 
 \paragraph{Setting up the homotopy.}
-Again, we are going to rely on the algorithm of
-Section~\ref{sec:homotopy}. As in the previous section, we let
-$\bC=(c_1,\dots,c_s,\dots,c_m)$ be such that
+Let $\mF$ and $G$ be as in Proposition~\ref{prop:rowdegree}.
+To solve Problem~\ref{problem2}, we are again going to rely on the
+algorithm of Section~\ref{sec:homotopy}. As in the previous section,
+we let $\bC=(c_1,\dots,c_s,\dots,c_m)$ be such that
 $(c_1,\dots,c_s)=(g_1,\dots,g_s)$ and $(c_{s+1},\dots,c_m)$ are the
 $p$-minors of $\mF$. Our main concern is to design a sequence of
-polynomials $\bB=(b_1,\dots,b_m)$ in $\KK[T,\bX]$ such that
-$\bB_1=\bC$, such that we can solve efficiently the system
+polynomials $\bB=(b_1,\dots,b_s,\dots,b_m)$ in $\KK[T,\bX]$ such that
+$\bC=\bB_1$, such that we can solve efficiently the system
 $\bA=\bB_0$, and with the same degree profile as our target system
 $\bC$.
 
@@ -1807,30 +1802,27 @@ $(b_{s+1},\dots,b_m)$ as the $p$-minors of $\mU$.
 The construction of the matrix $\mL$ presented in the previous section
 does not carry over if we want to take row degrees into account (one
 could imagine a matrix with $i$th row of the form $[1^i
-  \ell_i~\cdots~q^i \ell_i]$, but the corresponding determinantal
+  \lambda_i~\cdots~q^i \lambda_i]$, but the corresponding determinantal
 variety has positive dimension). Instead, we use a deformation that
-cancels out many off-diagonal terms.
-
-%% As in the proof of Proposition \ref{generic}, we can use a matrix $G$ as in the form of $G_2$ under some genericity assumptions. So, let us define a start matrix $G$ as follows 
-
+cancels out many off-diagonal terms, and we define
 \[ \mL = \left( \begin{matrix}
-\ell_{1,1} & 0 & \cdots & 0 & \ell_{1,p+1} & \cdots & \ell_{1, q}\\
-0 & \ell_{2,2} & \cdots & 0 & \ell_{2,p+1} & \cdots & \ell_{2, q}\\
+\lambda_{1,1} & 0 & \cdots & 0 & \lambda_{1,p+1} & \cdots & \lambda_{1, q}\\
+0 & \lambda_{2,2} & \cdots & 0 & \lambda_{2,p+1} & \cdots & \lambda_{2, q}\\
 \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
-0 & 0 & \cdots & \ell_{p,p} & \ell_{p,p+1} & \cdots & \ell_{p, q}
+0 & 0 & \cdots & \lambda_{p,p} & \lambda_{p,p+1} & \cdots & \lambda_{p, q}
 \end{matrix} \right), \] 
-where all $\ell_{i,j}$ are products of $D_i$ linear forms with generic
+where for all $i,$, $\lambda_{i,j}$ is a product of $\alpha_i$ linear forms with generic
 coefficients, of the form
-$$\ell_{i,j}= \prod_{k=1}^{\alpha_i}\lambda_{i,j,k},
+$$\lambda_{i,j}= \prod_{k=1}^{\alpha_i}\lambda_{i,j,k},
 \quad\text{with}\quad
 \lambda_{i,j,k} =\lambda_{i,j,k,0} + \sum_{\ell=1}^n \lambda_{i,j,k,\ell}X_\ell.
-$$ Then, as said we define $(b_{s+1},\dots,b_m)$ as the $p$-minors of
+$$ Then, as said above, we define $(b_{s+1},\dots,b_m)$ as the $p$-minors of
 $\mU=(1-T)\,\mL + T\, \mF$, and $\bB=(b_1,\dots,b_m)$: the polynomials
 $\bA=(a_1,\dots,a_m)$ are defined by letting $T=0$ in $\bB$ (that is,
 $\bA=\bB_0$); on the other hand, we also have $\bC=\bB_1$.  Our next
 step is to prove that all assumptions of
 Propositions~\ref{prop:degree_fiber} and~\ref{prop:compute_isolated}
-are satisfied for $\bB$.
+are satisfied for $\bB$ and $\bA=\bB_0$.
 
 \paragraph{Properties $\assA_1$ and $\assA_2$.}
 These follow from Proposition~\ref{prop:KH1H2}.
@@ -1842,39 +1834,44 @@ know that the degree of $b_i$ in $\bX$ is at most $\alpha_1 + \cdots +
 \alpha_p$, so it suffices to prove that the degree of all $p$-minors
 $(a_{s+1},\dots,a_m)$ of $\mL$ is $\alpha_1 + \cdots + \alpha_p$.
 
-Indeed, any $p$-minor of $\mL$ is of the form $\ell_{i_1,i_1} \cdots
-\ell_{i_\kappa,i_\kappa} \det(\mL_{\bi \mathbf{;}(p+1,\dots,q)})$, for
-some sequence $\bi=(i_1,\dots,i_\kappa)$ of length $\kappa \in
-\{0,\dots,n\}$. Since the entries of $\mL_{\bi
+Indeed, any $p$-minor of $\mL$ is of the form $\lambda_{i_1,i_1}
+\cdots \lambda_{i_\kappa,i_\kappa} \zeta$, for some sequence
+$\bi=(i_1,\dots,i_\kappa) \subset (1,\dots,p)$ of length $\kappa \in
+\{0,\dots,p\}$ and some $(p-\kappa)$-minor $\zeta$ of $\mL_{\bi
+  \mathbf{;}(p+1,\dots,q)}$.  Since the entries of $\mL_{\bi
   \mathbf{;}(p+1,\dots,q)}$ are products of linear form with randomly
 chosen coefficients $(\lambda_{i,j,k,\ell})$, for a generic choice of
-these coefficients, the determinant of this matrix has degree
-$\sum_{i' \notin \bi} \alpha_{i'}$. As a result, the corresponding $p$-minor of $\mL$ 
-has degree $\alpha_1 + \cdots + \alpha_p$, as claimed.
+these coefficients, the determinant $\zeta$ has degree
+$\sum_{i' \notin \bi} \alpha_{i'}$. As a result, the corresponding
+$p$-minor of $\mL$ has degree $\alpha_1 + \cdots + \alpha_p$, as
+claimed.
 
 \paragraph{Property $\assG_2(0)$.} Next, we prove that the system $\bA=\bB_0$ has no solution 
 at infinity. As in the previous section, we introduce a homogenization
-variable $X_0$, and we consider the system $\bA^H=(a_1^H,\dots,a_m^H)$ obtained 
+variable $X_0$, and we consider the system $\bA^H=(a_1^H,\dots,a_s^H,\dots,a_m^H)$ obtained 
 by homogenizing all equations in $\bA$. Thus we have
-$$a_i^H=\prod_{k=1}^{\gamma_i} \mu^H_{i,k} \quad\text{with}\quad \mu^H_{i,j}=(\mu_{i,k,0}X_0 + \sum_{\ell = 1}^{n}\mu_{i,k,\ell}X_\ell)$$
-for $i=1,\dots,s$, whereas $a_{s+1},\dots,a_m$ are the $p$-minors of the matrix
+$$a_i^H=\prod_{k=1}^{\gamma_i} \mu^H_{i,k} \quad\text{with}\quad \mu^H_{i,k}=(\mu_{i,k,0}X_0 + \sum_{\ell = 1}^{n}\mu_{i,k,\ell}X_\ell)$$
+for $i=1,\dots,s$, whereas $a_{s+1}^H,\dots,a_m^H$ are the $p$-minors of the matrix
 \begin{align*}
 \mL^H = \left( \begin{matrix}
-\ell^H_{1,1} & 0 & \cdots & 0 & \ell^H_{1,p+1} & \cdots & \ell^H_{1, q}\\
-0 & \ell^H_{2,2} & \cdots & 0 & \ell^H_{2,p+1} & \cdots & \ell^H_{2, q}\\
+\lambda^H_{1,1} & 0 & \cdots & 0 & \lambda^H_{1,p+1} & \cdots & \lambda^H_{1, q}\\
+0 & \lambda^H_{2,2} & \cdots & 0 & \lambda^H_{2,p+1} & \cdots & \lambda^H_{2, q}\\
 \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
-0 & 0 & \cdots & \ell^H_{p,p} & \ell^H_{p,p+1} & \cdots & \ell^H_{p, q}
+0 & 0 & \cdots & \lambda^H_{p,p} & \lambda^H_{p,p+1} & \cdots & \lambda^H_{p, q}
 \end{matrix} \right),  
 \end{align*}
-where $\ell^H_{i,j}$ is the homogenization of $\ell_{i,j}$. The
-solutions of $\bA^H$ in $\P^n(\KKbar)$ are found by first solving the
-equations $a^H_1,\dots,a^H_s$.
+where $\lambda^H_{i,k}$ is the homogenization of
+$\lambda_{i,j}$. (This latter property requires genericity of the
+coefficients of the linear forms $\lambda^H_{i,k}$; it is enough that 
+each $p$-minor of $\mL$ have degree $\alpha_1 + \cdots + \alpha_p$.)
 
-As in the previous section, all $a_i^H$ are products of linear forms,
-so any solution of $a^H_1,\dots,a^H_s$ is obtained by setting some of
-these linear forms to zero. We choose indices $\bu=(u_1,\dots,u_s)$,
-with $u_1\in\{1,\dots,\gamma_1\}$, \dots,
-$u_s\in\{1,\dots,\gamma_s\}$, and we solve
+The solutions of $\bA^H$ in $\P^n(\KKbar)$ are found by first solving
+the equations $(a^H_1,\dots,a^H_s)$. As in the previous section, all
+$a_i^H$ are products of linear forms, so any solution of
+$(a^H_1,\dots,a^H_s)$ is obtained by setting some of these linear forms
+to zero (at least one for each $i=1,\dots,s$). We choose indices $\bu=(u_1,\dots,u_s)$, with
+$u_1\in\{1,\dots,\gamma_1\}$, \dots, $u_s\in\{1,\dots,\gamma_s\}$, and
+we solve
 $$\mu^H_{i,u_i}=0, \quad \text{~that is,~} \quad \mu_{i,u_i,0}X_0 + \sum_{\ell = 1}^{n}\mu_{i,u_i,\ell}X_\ell =0,$$ for $i=1,\dots,s$.
 In what follows, we fix such an $\bu$.
 Then, for a generic choice of coefficients $\mu_{i,k,\ell}$, these equations
@@ -1885,18 +1882,45 @@ After applying this substitution, for all $i,j$,
 $\mL^H$ can be rewritten as 
 \begin{align}\label{eqdef:mLH}
  \mL^H_\bu = \left( \begin{matrix}
-\ell^H_{1,1,\bu} & 0 & \cdots & 0 & \ell^H_{1,p+1,\bu} & \cdots & \ell^H_{1, q,\bu}\\
-0 & \ell^H_{2,2\bu} & \cdots & 0 & \ell^H_{2,p+1,\bu} & \cdots & \ell^H_{2, q,\bu}\\
+\lambda^H_{1,1,\bu} & 0 & \cdots & 0 & \lambda^H_{1,p+1,\bu} & \cdots & \lambda^H_{1, q,\bu}\\
+0 & \lambda^H_{2,2,\bu} & \cdots & 0 & \lambda^H_{2,p+1,\bu} & \cdots & \lambda^H_{2, q,\bu}\\
 \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
-0 & 0 & \cdots & \ell^H_{p,p,\bu} & \ell^H_{p,p+1,\bu} & \cdots & \ell^H_{p, q,\bu}
+0 & 0 & \cdots & \lambda^H_{p,p,\bu} & \lambda^H_{p,p+1,\bu} & \cdots & \lambda^H_{p, q,\bu}
 \end{matrix} \right),
 \end{align}
 with
-$$\ell^H_{i,j,\bu}=\prod_{k=1}^{\alpha_i}\lambda^H_{i,j,k,\bu},
+$$\lambda^H_{i,j,\bu}=\prod_{k=1}^{\alpha_i}\lambda^H_{i,j,k,\bu},
 \quad\text{and}\quad \lambda^H_{i,j,k,\bu}=\sum_{\ell =
   0}^{n-s}\lambda_{i,j,k,\ell}X_\ell + \sum_{\ell =
   n-s+1}^{n}\lambda_{i,j,k,\ell}
-\mathfrak{h}_{\ell,\bu}(X_0,\dots,X_{n-s}).$$ At this stage, we are
+\mathfrak{h}_{\ell,\bu}(X_0,\dots,X_{n-s}).$$ 
+
+Remark that the entries of $\mL^H_\bu$ are products of homogeneous
+linear forms in $(n-s)+s$ variables $(X_0,\dots,X_{n-s})$, so that
+this matrix has the form seen in~\eqref{eqdef:type1}. As a result, for
+a generic choice of the coefficients $\mu_{i,k,\ell}$ and
+$\lambda_{i,j,k,\ell}$, the first item in Lemma~\ref{lemma:appendix}
+implies that there is no projective solution to $I_p(\mL^H_\bu)$
+satisfying $X_0=0$. Taking into account all possible choices of $\bu$,
+we deduce that there is no projective solution to $\bA^H$ satisfying
+$X_0=0$, and  $\assG_2(0)$ is proved.
+
+\paragraph{Property $\assG_3(0)$.} Finally, we have to prove that the Jacobian
+matrix of $\bA$ has full rank $n$ at any point in $V(\bA) \subset
+\KKbar{}^n$. Let thus $\bx=(x_1,\dots,x_n)$ be in $V(\bA)$; in
+particular, $\tilde \bx=(1,x_1,\dots,x_n)$ is a projective solution of
+$\bA^H$.  Thus, there exists $\bu=(u_1,\dots,u_s)$ as above such that
+$$x_{n-s+1}=\mathfrak{h}_{n-s+1,\bu}(1,x_1\dots,x_{n-s}),\dots,x_{n}=\mathfrak{h}_{n,\bu}(1,x_1,\dots,x_{n-s}),$$
+and $\mL^H_\bu$ has rank less than $p$ at  $\tilde \bx'=(1,x_1,\dots,x_{n-1})$.
+The second item of Lemma~\ref{lemma:appendix} shows that
+the Jacobian matrix of $I_p(\mL^H_\bu)$
+has rank $(n-s)+1$ at  $\tilde \bx'$.
+
+
+
+
+
+At this stage, we are
 left with finding the points $\bx'\in\P^{n-s}(\KKbar)$ where
 $\mL^H_\bu$ has rank less than~$p$. Remark that this is a $p\times q$
 matrix, with entries that are products of linear forms with generic coefficients,
@@ -1907,28 +1931,28 @@ our recurrence.
   Let $\bx'\in\P^{n-s}(\KKbar)$. Then, $\mL^H_\bu(\bx')$ has rank less than~$p$
   if and only if there exists $\bi=(i_1,\dots,i_\kappa)$ subsequence
   of $(1,\dots,p)$ of length  $\kappa\in \{1,\dots,\min(n-s,p)\}$,
-  such that $\ell^H_{i_1,i_1}(\bx') = \cdots = \ell^H_{i_\kappa,i_\kappa}(\bx') = 0$
+  such that $\lambda^H_{i_1,i_1}(\bx') = \cdots = \lambda^H_{i_\kappa,i_\kappa}(\bx') = 0$
   and $\mL^H_{\bi;(p+1,\dots,q)}(\bx')$ has rank less than $\kappa$.
 \end{lemma}
 \begin{proof}
   If $\mL^H_\bu(\bx')$ has rank less than~$p$, then some diagonal
-  terms, say $\ell^H_{i_1,i_1},\dots,\ell^H_{i_\kappa,i_\kappa}$, must
+  terms, say $\lambda^H_{i_1,i_1},\dots,\lambda^H_{i_\kappa,i_\kappa}$, must
   vanish at $\bx'$, all other ones being non-zero. Thus, we must 
   have $\kappa \ge 1$; on the other hand, since the
   coefficients of the linear forms making up the polynomials
-  $\ell^H_{i,i,\bu}$ are random, any system made of more than $n-s$ of
+  $\lambda^H_{i,i,\bu}$ are random, any system made of more than $n-s$ of
   these polynomials has no solution. Hence, $\kappa$ is in
   $\{1,\dots,\min(n-s,p)\}$.
 
   Let us write $\bi'=(i'_1,\dots,i'_{p-\kappa})$ for the complement of
   $\bi$ in $(1,\dots,p)$. Then, for any $\kappa$-minor $\zeta$ of $\mL^H_{\bi;(p+1,\dots,q)}$,
   the polynomial
-  $\ell^H_{i'_1,i'_1,\bu}\cdots\ell^H_{i'_{p-\kappa},i'_{p-\kappa},\bu}\zeta$
+  $\lambda^H_{i'_1,i'_1,\bu}\cdots\lambda^H_{i'_{p-\kappa},i'_{p-\kappa},\bu}\zeta$
   is a $p$-minor of $\mL^H_\bu$, so that $\zeta(\bx')$ must vanish.
   As a result, $\mL^H_{\bi;(p+1,\dots,q)}$ has rank less thank $\kappa$.
 
-  Conversely, if $\ell^H_{i_1,i_1}(\bx') = \cdots =
-  \ell^H_{i_\kappa,i_\kappa}(\bx') = 0$ and
+  Conversely, if $\lambda^H_{i_1,i_1}(\bx') = \cdots =
+  \lambda^H_{i_\kappa,i_\kappa}(\bx') = 0$ and
   $\mL^H_{\bi;(p+1,\dots,q)}(\bx')$, the $(\kappa \times q)$-submatrix ${\mL^H_\bu}{}_{\bi;(1,\dots,q)}$ 
   has rank less than $\kappa$ and $\mL^H_\bu$ has rank less than $p$.
 \end{proof}
@@ -1937,7 +1961,7 @@ our recurrence.
 %% Then,
 %% $\bx=(x_0,\dots,x_n)$ cancels $a^H_{s+1},\dots,a^H_m$ if and only if
 %% $\bx'=(x_0,\dots,x_{n-1})$ cancels the product
-%% $\ell^H_{j_1,\bu}\cdots \ell^H_{j_p,\bu},$ for any choice of columns
+%% $\lambda^H_{j_1,\bu}\cdots \lambda^H_{j_p,\bu},$ for any choice of columns
 %% $\bj=(j_1,\dots,j_p)$.
 
 
