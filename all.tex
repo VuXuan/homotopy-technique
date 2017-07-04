@@ -55,6 +55,38 @@
 
 \maketitle
 
+\begin{abstract}
+  Let $\KK$ be a field of characteristic $0$ and $\KKbar$ be an
+  algebraic closure of $\KK$. Consider a sequence of polynomials
+  $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$, a polynomial matrix
+  $\mF=[f_{i,j}] \in \KK[X_1,\dots,X_n]^{p \times q}$, with $p \leq q$
+  and the set $S_{\mF, G}$ of points in $\KKbar$ at which all polynomials in $\mG$
+  vanish and the rank of $\mF$ is deficient.
+
+  For $i=1,\dots,p$, we write $\rdeg(\mF,i)$ for the degree of the
+  $i$th row of $\mF$ and let
+  $\delta_{\rm row}(\mF) = S_{q-p+1}(\rdeg(\mF,1), \ldots,
+  \rdeg(\mF,p))$
+  where for $k\ge 0$, $S_k(C_1,\dots,C_p)$ is the $k$th complete
+  symmetric polynomial in variables $C_1,\dots,C_p$.
+
+  Assume that a straight-line program of length $E$ evaluating $G$ and
+  $\mF$ is given.  We describe a probabilistic algorithm for computing
+  \emph{all} isolated points of $S_{\mF, G}$. When these solutions
+  have multiplicity one, the algorithm runs in time linear in $E$,
+  quadratic in $\deg(g_1)\cdots \deg(g_s)\delta_{{\rm row}}(\mF)$.
+  This latter quantity is the generic (and maximum) number of
+  solutions which somewhat reflects the optimality of our algorithm.
+
+  Variants of this algorithm are given when isolated points have
+  positive multiplicity (at the cost of an extra factor
+  ${{q}\choose{p}}$). 
+
+  Applying these results to polynomial optimization problems allows to
+  compute all local minimizers and maximizers in time polynomial in
+  their algebraic degree.
+\end{abstract}
+
 \section{Introduction}\label{sec:intro}
 
 In what follows, $\KK$ is a field and $\KKbar$ is an algebraic closure
