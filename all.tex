@@ -1704,6 +1704,84 @@ This is also  $\softO\left (c(e+c^5 )(E + c)\right).$
 
 \section{The row-degree homotopy}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Preliminaries}
+
+In this subsection, we work with two families of matrices in
+$\KK[X_0,\dots,X_t]^{p\times q}$, with $t=q-p+1$. These matrices are
+\begin{align}\label{eqdef:type1}
+\mN^H= \left( \begin{matrix}
+\lambda^H_{1,1} & 0 & \cdots & 0 & \lambda^H_{1,p+1} & \cdots & \lambda^H_{1, q}\\
+0 & \lambda^H_{2,2} & \cdots & 0 & \lambda^H_{2,p+1} & \cdots & \lambda^H_{2, q}\\
+\vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
+0 & 0 & \cdots & \lambda^H_{p,p} & \lambda^H_{p,p+1} & \cdots & \lambda^H_{p, q}
+\end{matrix} \right),
+\end{align}
+and matrices of a more general form such as
+\begin{align}\label{eqdef:type2}
+\mM^H= \left( \begin{matrix}
+\lambda^H_{1,1} & \lambda^H_{1,2} & \cdots & \lambda^H_{1, q}\\
+ \lambda^H_{2,1} &  \lambda^H_{2,2} & \cdots & \lambda^H_{2, q}\\
+ \vdots & & & \vdots\\
+ \lambda^H_{p,1} &  \lambda^H_{p,2}& \cdots & \lambda^H_{p, q}
+\end{matrix} \right),
+\end{align}
+where the ${}^H$ superscript indicates that all entries are
+homogenous.  In both cases, for all $i,j$, the entry $\lambda^H_{i,j}$
+is a product of $\alpha_i$ homogeneous linear forms in $t+1$ variables
+$X_0,\dots,X_t$ with generic coefficients (except when
+$\lambda^H_{i,j}$ is explicitly set to zero in the first case), that
+is, $\lambda^H_{i,j}=\prod_{k=1}^{\alpha} \lambda^H_{i,j,k}$. In
+appendix, we prove the following properties.
+
+\begin{lemma}\label{lemma:appendix}
+  For generic choices of the coefficients of the linear forms
+  $\lambda^H_{i,j,k}$, the following holds:
+  \begin{itemize}
+  \item the projective algebraic sets defined in $\P^t(\KKbar)$ by
+    $I_p(\mN^H)$ and $I_p(\mM^H)$ have no solution at infinity (that is,
+    with $X_0=0$);
+  \item the Jacobian matrix of $I_p(\mN^H)$ and $I_p(\mM^H)$ with
+    respect to $(X_0,\dots,X_t)$ has rank $t$ at every point of the above
+    sets.
+\end{itemize}
+\end{lemma}
+We are interested in describing the projective algebraic set defined
+in $\P^t(\KKbar)$ by $I_p(\mN^H)$ (note that these minors are all
+homogeous). One easily verifies that $\mN^H$ has rank less than $p$ at
+$\tilde \bx \in \P^t(\KKbar)$ if and only if there exists a
+subsequence $\bi=(i_1,\dots,i_\kappa)$ of $(1,\dots,p)$ of length
+$\kappa\in \{1,\dots,\min(t,p)\}$ such that
+$$ \lambda^H_{i_1,i_1}(\tilde\bx) =
+\cdots = \lambda^H_{i_\kappa,i_\kappa}(\tilde\bx) = 0
+\text{~and~}
+\rank(\mN^H_{\bi;(p+1,\dots,q)}(\tilde\bx)) < \kappa.$$
+In turn, $\lambda^H_{i_1,i_1},\dots,\lambda^H_{i_\kappa,i_\kappa}$
+vanish at $\tilde\bx$ if and only if there exist
+$\br=(r_1,\dots,r_\kappa)$, with $r_j$ in $\{1,\dots,\alpha_j\}$ 
+for all $j$, such that $\lambda^H_{i_k,i_k,r_k}(\tilde\bx)=0$ 
+for $k=1,\dots,\kappa$. For a generic choice of the coefficients 
+$\lambda_{i,j,k,\ell}$, the latter linear equations can be rewritten
+as 
+$$X_{t-\kappa+1}=f_{\bi,\br,t-\kappa+1}(X_0,\dots,X_{t-\kappa}),\dots,
+X_{t}=f_{\bi,\br,t}(X_0,\dots,X_{t-\kappa}),$$ for some homogeneous
+linear forms $f_{\bi,\br,t-\kappa+1},\dots,f_{\bi,\br,t}$ that depend
+on the choice of the indices $\bi$ and $\br$. Applying these
+substitutions in the submatrix $\mN^H_{\bi;(p+1,\dots,q)}$ gives us a
+matrix $\mM^H_{\bi,\br}$ of size $\kappa \times (t-1)$ whose entries
+are products of linear forms, of degrees
+$\alpha_{i_1},\dots,\alpha_{i_\kappa}$ on rows $1,\dots,\kappa$. We
+deduce that the projective set $V_p(\mN^H)$ is the union of the set
+$$V_{\bi,\br}=\{ (x_0,\dots,x_{t-\kappa},f_{\bi,\br,t-\kappa+1}(x_0,\dots,_{t-\kappa}),\dots,
+f_{\bi,\br,t}(x_0,\dots,x_{t-\kappa})) \mid (x_0,\dots,x_{t-\kappa}) \in V_\kappa(\mM^H_{\bi,\br}) \}.$$
+For generic coefficients, the union is disjoint.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{The main algorithm}
+
 We now give an algorithm to solve Problem~\ref{problem2} whose runtime
 will depend on the row-degrees of the input matrix $\mF$. This
 algorithm is more complex than the one in the previous section, due to
@@ -1738,56 +1816,7 @@ subsequence of $(1,\dots,p)$ and $T$ a subsequence of $(1,\dots,q)$,
 the $\mM_{S,T}$ is the submatrix obtained by keeping rows indexed by
 $S$ and columns indexed by $T$.
 
-\paragraph{Preliminaries.}
-In what follows, we will work with two families of matrices in $\KK[Y_0,\dots,Y_N]^{p\times q}$, namely matrices
-such as
-\begin{align}\label{eqdef:type1}
-\mN= \left( \begin{matrix}
-\lambda^H_{1,1} & 0 & \cdots & 0 & \lambda^H_{1,p+1} & \cdots & \lambda^H_{1, q}\\
-0 & \lambda^H_{2,2} & \cdots & 0 & \lambda^H_{2,p+1} & \cdots & \lambda^H_{2, q}\\
-\vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
-0 & 0 & \cdots & \lambda^H_{p,p} & \lambda^H_{p,p+1} & \cdots & \lambda^H_{p, q}
-\end{matrix} \right),
-\end{align}
-and matrices of a more general form such as
-\begin{align}\label{eqdef:type2}
-\mM= \left( \begin{matrix}
-\lambda^H_{1,1} & \lambda^H_{1,2} & \cdots & \lambda^H_{1, q}\\
- \lambda^H_{2,1} &  \lambda^H_{2,2} & \cdots & \lambda^H_{2, q}\\
- \vdots & & & \vdots\\
- \lambda^H_{p,1} &  \lambda^H_{p,2}& \cdots & \lambda^H_{p, q}
-\end{matrix} \right).
-\end{align}
-In both cases, for all $i,j$, the entry $\lambda^H_{i,j}$ is a product of
-$\alpha_i$ homogeneous linear forms in $N+1$ variables $Y_0,\dots,Y_N$
-with generic coefficients (except when $\lambda^H_{i,j}$ is explicitly
-set to zero in the first case), that is,
-$\lambda^H_{i,j}=\prod_{k=1}^{\alpha} \lambda^H_{i,j,k}$. In both cases,
-the number $N$ is given by $N=q-p+1$. In appendix, we prove the following properties.
 
-\begin{lemma}\label{lemma:appendix}
-For generic choices of the coefficients of the linear forms
-$\lambda^H_{i,j,k}$,
-\begin{itemize}
-\item the projective algebraic sets defined in $\P^N(\KKbar)$ by
-  $I_p(\mN)$ and $I_p(\mM)$ have no solution at infinity (that is,
-  with $Y_0=0$);
-\item the Jacobian matrix of $I_p(\mN)$ and $I_p(\mM)$ with
-  respect to $(Y_0,\dots,Y_N)$ has rank $N$ at every point of the above
-  sets.
-\end{itemize}
-\end{lemma}
-
-We next discuss how to find the points $\by\in\P^{N}(\KKbar)$ where
-$\mN$ has rank less than~$p$.
-\begin{lemma}
-  Let $\by\in\P^{N}(\KKbar)$. Then, $\mN$ has rank less than~$p$ if
-  and only if there exists a subsequence $\bi=(i_1,\dots,i_\kappa)$ of
-  $(1,\dots,p)$ of length $\kappa\in \{1,\dots,\min(N,p)\}$, such that
-  $\lambda^H_{i_1,i_1}(\by) = \cdots =
-  \lambda^H_{i_\kappa,i_\kappa}(\by) = 0$ and
-  $\mN_{\bi;(p+1,\dots,q)}$ has rank less than $\kappa$ at $\by$.
-\end{lemma}
 % \begin{proof}
 %   If $\mN(\by)$ has rank less than~$p$, then some diagonal terms must
 %   vanish at $\by$; thus, say
@@ -2005,7 +2034,38 @@ satisfies $\assA_1,\assA_2$ and $\bA=\bB_0$ satisfies
 $\assG_1,\assG_2,\assG_3$, we deduce that the sum of the
 multiplicities of the isolated solutions of $\bC=\bB_1$ is at most
 $c$, where $c$ is the number of solutions of $\bA$. Our next step
-is to prove that $c=S_{n-s}(\alpha_1,\dots,\alpha_p)$.
+is to establish the value of $c$
+
+\begin{lemma}
+  For a generic choice of coefficients $\mu_{i,k,\ell}$ and
+  $\lambda_{i,j,k,\ell}$, the cardinality $c$ of the algebraic set
+  $V(\mA)$ is $\gamma_1 \cdots \gamma_s
+  S_{n-s}(\alpha_1,\dots,\alpha_p)$.
+\end{lemma}
+\begin{proof}
+  For a sequence $\bu=(u_1,\dots,u_s)$ as above, let $V_\bu$ be the
+  subset of $V(\bA)$ consisting of all those points $\bx$ such that
+  $\mu_{i,u_i}(\bx)=0$ for all $i$. Remark first that the sets $V_\bu$
+  are (generically) pairwise disjoint: for $\bx$ in $V_\bu$, any index
+  $i$ and any $k \ne u_i$, $\mu_{i,k}(\bx)$ is non-zero.
+  
+  We will prove in the following paragraphs that for any $\bu$,
+  $V_\bu$ has cardinality $S_{n-s}(\alpha_1,\dots,\alpha_p)$; in view of 
+  the remark above, this is enough to conclude the proof of the lemma.
+
+  Let us thus fix $\bu=(u_1,\dots,u_s)$. The cardinality of $V_\bu$ is
+  equal to the number of points in $V_p(\mL_\bu)$, which is a
+  polynomial matrix of size $p \times q$, with entries that are
+  products of linear forms in $t=n-s$ variables, with row degrees
+  $\alpha_1,\dots,\alpha_p$. We prove by induction that for generic
+  choices of the coefficients of these linear forms, $V_\bu$ has
+  cardinality $S_{t}(\alpha_1,\dots,\alpha_p)$.
+  
+  
+\end{proof}
+
+
+
 
 
 % estimate $c$,
