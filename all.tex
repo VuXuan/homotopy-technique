@@ -1577,7 +1577,7 @@ $$\lambda_{j_1,v_1,\bu}(\bx')=\cdots=\lambda_{j_{n-s},v_{n-s},\bu}(\bx')=0,$$
 none of the other linear forms $\lambda_{j,k,\bu}$ vanishes at $\bx'$.
 
 Recall that $n=q-p+s+1$, so that $n-s = q-(p-1)$. Hence, there are
-exactly $p-1$ columns not indexed by $\bj=(j_1,\dots,j_{n-s})$; call
+exactly $p-1$ columns of $\mA$ not indexed by $\bj=(j_1,\dots,j_{n-s})$; call
 them $\bj'=(j'_1,\dots,j'_{p-1})$. We can then consider the 
 products
 $$ \lambda_{j_1} \lambda_{j'_1} \cdots \lambda_{j'_{p-1}},\dots, \lambda_{j_{n-s}}
@@ -1586,8 +1586,8 @@ constant) is a $p$-minor of $\mA$, so they appear as elements in the
 sequence $(a_{s+1},\dots,a_m)$, say as
 $(a_{e_1},\dots,a_{e_{n-s}})$. By the remark of the previous
 paragraph, in the local ring at $\bx$, up to non-zero constants, these
-polynomials are equal to the linear forms
-$(\lambda_{j_1,v_1},\dots,\lambda_{j_{n-1},v_{n-s}})$.
+polynomials are respectively equal to the linear forms
+$\lambda_{j_1,v_1},\dots,\lambda_{j_{n-1},v_{n-s}}$.  
 
 To summarize, we have found that the linear equations
 $(\mu_{1,u_1},\dots,\mu_{s,u_s})$ and
@@ -1770,12 +1770,47 @@ For generic choices of the coefficients of the linear forms
 $\lambda^H_{i,j,k}$,
 \begin{itemize}
 \item the projective algebraic sets defined in $\P^N(\KKbar)$ by
-  $I_p(\mN)$ and $I_p(\mM)$ have no solution at infinity (that is, with $Y_0=0$);
+  $I_p(\mN)$ and $I_p(\mM)$ have no solution at infinity (that is,
+  with $Y_0=0$);
 \item the Jacobian matrix of $I_p(\mN)$ and $I_p(\mM)$ with
   respect to $(Y_0,\dots,Y_N)$ has rank $N$ at every point of the above
   sets.
 \end{itemize}
 \end{lemma}
+
+We next discuss how to find the points $\by\in\P^{N}(\KKbar)$ where
+$\mN$ has rank less than~$p$.
+\begin{lemma}
+  Let $\by\in\P^{N}(\KKbar)$. Then, $\mN$ has rank less than~$p$ if
+  and only if there exists a subsequence $\bi=(i_1,\dots,i_\kappa)$ of
+  $(1,\dots,p)$ of length $\kappa\in \{1,\dots,\min(N,p)\}$, such that
+  $\lambda^H_{i_1,i_1}(\by) = \cdots =
+  \lambda^H_{i_\kappa,i_\kappa}(\by) = 0$ and
+  $\mN_{\bi;(p+1,\dots,q)}$ has rank less than $\kappa$ at $\by$.
+\end{lemma}
+% \begin{proof}
+%   If $\mN(\by)$ has rank less than~$p$, then some diagonal terms must
+%   vanish at $\by$; thus, say
+%   $\lambda^H_{i_1,i_1},\dots,\lambda^H_{i_\kappa,i_\kappa}$, , all
+%   other ones being non-zero. Thus, we must have $\kappa \ge 1$; on the
+%   other hand, since the coefficients of the linear forms making up the
+%   polynomials $\lambda^H_{i,i,\bu}$ are random, any system made of
+%   more than $n-s$ of these polynomials has no solution. Hence,
+%   $\kappa$ is in $\{1,\dots,\min(n-s,p)\}$.
+
+%   Let us write $\bi'=(i'_1,\dots,i'_{p-\kappa})$ for the complement of
+%   $\bi$ in $(1,\dots,p)$. Then, for any $\kappa$-minor $\zeta$ of $\mL^H_{\bi;(p+1,\dots,q)}$,
+%   the polynomial
+%   $\lambda^H_{i'_1,i'_1,\bu}\cdots\lambda^H_{i'_{p-\kappa},i'_{p-\kappa},\bu}\zeta$
+%   is a $p$-minor of $\mL^H_\bu$, so that $\zeta(\bx')$ must vanish.
+%   As a result, $\mL^H_{\bi;(p+1,\dots,q)}$ has rank less thank $\kappa$.
+
+%   Conversely, if $\lambda^H_{i_1,i_1}(\bx') = \cdots =
+%   \lambda^H_{i_\kappa,i_\kappa}(\bx') = 0$ and
+%   $\mL^H_{\bi;(p+1,\dots,q)}(\bx')$, the $(\kappa \times q)$-submatrix ${\mL^H_\bu}{}_{\bi;(1,\dots,q)}$ 
+%   has rank less than $\kappa$ and $\mL^H_\bu$ has rank less than $p$.
+% \end{proof}
+
 
 \paragraph{Setting up the homotopy.}
 Let $\mF$ and $G$ be as in Proposition~\ref{prop:rowdegree}.
@@ -1880,14 +1915,14 @@ $$X_{n-s+1}=\mathfrak{h}_{n-s+1,\bu}(X_0,\dots,X_{n-s}),\dots,X_{n}=\mathfrak{h}
 for some linear forms $\mathfrak{h}_{n-s+1,\bu},\dots,\mathfrak{h}_{n,\bu}$.
 After applying this substitution, for all $i,j$,
 $\mL^H$ can be rewritten as 
-\begin{align}\label{eqdef:mLH}
+\begin{align*}
  \mL^H_\bu = \left( \begin{matrix}
 \lambda^H_{1,1,\bu} & 0 & \cdots & 0 & \lambda^H_{1,p+1,\bu} & \cdots & \lambda^H_{1, q,\bu}\\
 0 & \lambda^H_{2,2,\bu} & \cdots & 0 & \lambda^H_{2,p+1,\bu} & \cdots & \lambda^H_{2, q,\bu}\\
 \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
 0 & 0 & \cdots & \lambda^H_{p,p,\bu} & \lambda^H_{p,p+1,\bu} & \cdots & \lambda^H_{p, q,\bu}
 \end{matrix} \right),
-\end{align}
+\end{align*}
 with
 $$\lambda^H_{i,j,\bu}=\prod_{k=1}^{\alpha_i}\lambda^H_{i,j,k,\bu},
 \quad\text{and}\quad \lambda^H_{i,j,k,\bu}=\sum_{\ell =
@@ -1911,51 +1946,87 @@ matrix of $\bA$ has full rank $n$ at any point in $V(\bA) \subset
 particular, $\tilde \bx=(1,x_1,\dots,x_n)$ is a projective solution of
 $\bA^H$.  Thus, there exists $\bu=(u_1,\dots,u_s)$ as above such that
 $$x_{n-s+1}=\mathfrak{h}_{n-s+1,\bu}(1,x_1\dots,x_{n-s}),\dots,x_{n}=\mathfrak{h}_{n,\bu}(1,x_1,\dots,x_{n-s}),$$
-and $\mL^H_\bu$ has rank less than $p$ at  $\tilde \bx'=(1,x_1,\dots,x_{n-1})$.
-The second item of Lemma~\ref{lemma:appendix} shows that
-the Jacobian matrix of $I_p(\mL^H_\bu)$
-has rank $(n-s)+1$ at  $\tilde \bx'$.
+and $\mL^H_\bu$ has rank less than $p$ at $\tilde\bx'=(1,x_1,\dots,x_{n-1})$.  The second item of
+Lemma~\ref{lemma:appendix} shows that the Jacobian matrix of
+$I_p(\mL^H_\bu)$ with respect to $X_0,\dots,X_{n-1}$ has rank $n-s$
+at $\tilde \bx'$. Since the first coordinate of $\tilde\bx'$ is non-zero,
+and all generating polynomials of $I_p(\mL^H_\bu)$ are homogeneous,
+Euler's relation implies that the Jacobian matrix of $I_p(\mL_\bu)$
+with respect to $X_1,\dots,X_{n-s}$
+has full rank $n-s$ at $\bx'=(x_1,\dots,x_{n-s})$, where  
+\begin{align}\label{eqdef:Lu}
+ \mL_\bu = \left( \begin{matrix}
+\lambda_{1,1,\bu} & 0 & \cdots & 0 & \lambda_{1,p+1,\bu} & \cdots & \lambda_{1, q,\bu}\\
+0 & \lambda_{2,2,\bu} & \cdots & 0 & \lambda_{2,p+1,\bu} & \cdots & \lambda_{2, q,\bu}\\
+\vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
+0 & 0 & \cdots & \lambda_{p,p,\bu} & \lambda_{p,p+1,\bu} & \cdots & \lambda_{p, q,\bu}
+\end{matrix} \right),
+\end{align}
+with
+$$\lambda_{i,j,\bu}=\prod_{k=1}^{\alpha_i}\lambda_{i,j,k,\bu},
+\quad\text{and}\quad \lambda_{i,j,k,\bu}=\lambda_{i,j,k,0}+\sum_{\ell
+  = 1}^{n-s}\lambda_{i,j,k,\ell}X_\ell + \sum_{\ell =
+  n-s+1}^{n}\lambda_{i,j,k,\ell}
+\mathfrak{h}_{\ell,\bu}(1,X_1,\dots,X_{n-s}).$$ We now  prove
+that the Jacobian matrix of $\bA$ with respect to $X_1,\dots,X_n$ has
+full rank at $\bx$.
+
+The first step is similar to what we did in the previous section.  For
+$i=1,\dots,s$, $a_i$ is a product of linear forms of the form
+$a_i=\prod_{k=1}^{\gamma_i} \mu_{i,k}$, with $\mu_{i,u_i}(\bx)=0$.
+Since the coefficients $\mu_{i,k,\ell}$ are chosen generically, for
+$i=1,\dots,s$ and $k \ne u_i$, $\mu_{i,k}(\bx)$ is non-zero; as a
+result, in the local ring at $\bx$, the polynomials $(a_1,\dots,a_s)$
+are equal (up to units) to the linear forms
+$(\mu_{1,u_1},\dots,\mu_{s,u_s})$. This further implies that
+\begin{align}\label{eq:subst}
+X_{n-s+1}-\mathfrak{h}_{n-s+1,\bu}(1,X_1,\dots,X_{n-s}),\dots,X_{n}-\mathfrak{h}_{n,\bu}(1,X_1,\dots,X_{n-s})
+\end{align}
+belong to the ideal generated by $(a_1,\dots,a_s)$ in the local 
+ring at $\bx$.
+
+Next, we consider the $p$-minors $(a_{s+1},\dots,a_m)$ of $\mA$. Let
+$\zeta \in\KK[X_1,\dots,X_n]$ be a $p$-minor of $\mA$, and let
+$\zeta_\bu \in \KK[X_1,\dots,X_{n-s}]$ be the polynomial obtained
+after applying the substitution in~\eqref{eq:subst} in $\mA$. Since
+$\zeta$ and all polynomials in~\eqref{eq:subst} are in the ideal
+$\langle \bA \rangle \cdot \mathcal{O}_\bx$, the polynomial
+$\zeta_\bu$ is in this ideal as well. Now, note that $\zeta_\bu$ is a
+$p$-minor of $\mL_\bu$ as defined in~\eqref{eqdef:Lu}, and that all
+its $p$-minors are obtained this way. We pointed out above that the
+Jacobian matrix of these equations with respect to $X_1,\dots,X_{n-s}$
+has full rank $n-s$. As a result, taking all $\zeta_\bu$ into account,
+together with the equations in~\eqref{eq:subst}, we obtain 
+a family of polynomials in $\langle \bA \rangle \cdot \mathcal{O}_\bx$ 
+whose Jacobian matrix has rank $n$, and $\assG_3(0)$ is proved.
+
+We can then apply Proposition~\ref{prop:degree_fiber}. Since $\bB$
+satisfies $\assA_1,\assA_2$ and $\bA=\bB_0$ satisfies
+$\assG_1,\assG_2,\assG_3$, we deduce that the sum of the
+multiplicities of the isolated solutions of $\bC=\bB_1$ is at most
+$c$, where $c$ is the number of solutions of $\bA$. Our next step
+is to prove that $c=S_{n-s}(\alpha_1,\dots,\alpha_p)$.
+
+
+% estimate $c$,
+% note first that there are $\gamma_1\cdots \gamma_s$ choices of
+% $\bu$. For each choice of $\bu$, there are $\delta_{\rm
+%   col}(\mF)=E_{n-s}(\delta_1, \ldots, \delta_q)$ ways to choose $\bj$
+% and $\bv$, where $E_{n-s}$ denotes the elementary symmetric
+% polynomials of degree $n-s$. As a result, $c=\gamma_1\cdots \gamma_s
+% \delta_{\rm col}(\mF)$. We can now inspect assumptions
+% $\assD_1,\dots,\assD_4$ that are needed to apply the algorithm of
+% Proposition~\ref{prop:compute_isolated}.
+% To summarize, we have found that the linear equations
+% $(\mu_{1,u_1},\dots,\mu_{s,u_s})$ and
+% $(\lambda_{j_1,v_1},\dots,\lambda_{j_{n-1},v_{n-s}})$ belong to the
+% ideal $\langle \bA \rangle_\m$, where $\m$ is the maximal ideal at
+% $\bx$. As a result, the Jacobian matrix of $\mA$ must be invertible
+% at $\bx$, and $\assG_3(0)$ holds.
 
 
 
 
-
-At this stage, we are
-left with finding the points $\bx'\in\P^{n-s}(\KKbar)$ where
-$\mL^H_\bu$ has rank less than~$p$. Remark that this is a $p\times q$
-matrix, with entries that are products of linear forms with generic coefficients,
-all entries of row $i$ having degree $\alpha_i$.
- The next property is the key of
-our recurrence.
-\begin{lemma}
-  Let $\bx'\in\P^{n-s}(\KKbar)$. Then, $\mL^H_\bu(\bx')$ has rank less than~$p$
-  if and only if there exists $\bi=(i_1,\dots,i_\kappa)$ subsequence
-  of $(1,\dots,p)$ of length  $\kappa\in \{1,\dots,\min(n-s,p)\}$,
-  such that $\lambda^H_{i_1,i_1}(\bx') = \cdots = \lambda^H_{i_\kappa,i_\kappa}(\bx') = 0$
-  and $\mL^H_{\bi;(p+1,\dots,q)}(\bx')$ has rank less than $\kappa$.
-\end{lemma}
-\begin{proof}
-  If $\mL^H_\bu(\bx')$ has rank less than~$p$, then some diagonal
-  terms, say $\lambda^H_{i_1,i_1},\dots,\lambda^H_{i_\kappa,i_\kappa}$, must
-  vanish at $\bx'$, all other ones being non-zero. Thus, we must 
-  have $\kappa \ge 1$; on the other hand, since the
-  coefficients of the linear forms making up the polynomials
-  $\lambda^H_{i,i,\bu}$ are random, any system made of more than $n-s$ of
-  these polynomials has no solution. Hence, $\kappa$ is in
-  $\{1,\dots,\min(n-s,p)\}$.
-
-  Let us write $\bi'=(i'_1,\dots,i'_{p-\kappa})$ for the complement of
-  $\bi$ in $(1,\dots,p)$. Then, for any $\kappa$-minor $\zeta$ of $\mL^H_{\bi;(p+1,\dots,q)}$,
-  the polynomial
-  $\lambda^H_{i'_1,i'_1,\bu}\cdots\lambda^H_{i'_{p-\kappa},i'_{p-\kappa},\bu}\zeta$
-  is a $p$-minor of $\mL^H_\bu$, so that $\zeta(\bx')$ must vanish.
-  As a result, $\mL^H_{\bi;(p+1,\dots,q)}$ has rank less thank $\kappa$.
-
-  Conversely, if $\lambda^H_{i_1,i_1}(\bx') = \cdots =
-  \lambda^H_{i_\kappa,i_\kappa}(\bx') = 0$ and
-  $\mL^H_{\bi;(p+1,\dots,q)}(\bx')$, the $(\kappa \times q)$-submatrix ${\mL^H_\bu}{}_{\bi;(1,\dots,q)}$ 
-  has rank less than $\kappa$ and $\mL^H_\bu$ has rank less than $p$.
-\end{proof}
 
 
 %% Then,
