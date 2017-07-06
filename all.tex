@@ -1428,16 +1428,17 @@ and we let  $\mL$ be the matrix
 For $i=1,\dots,s$ and $k=1,\dots,\gamma_i$, let us further define
 $$\mu_{i,k} =  \mu_{i,k,0} + \sum_{\ell = 1}^{n}\mu_{i,k,\ell}X_\ell,$$ where
 all $\mu_{i,k,\ell}$ are random elements in $\KK$; then, we let
-$$m_i=\prod_{k=1}^{\gamma_i} \mu_{i,k}.$$ We can thus define the system
-of equations $\bA=(a_1,\dots,a_s,\dots,a_m)$, where $a_i=m_i$ for
-$i=1,\dots,s$, and $(a_{s+1},\dots,a_{m})$ are the $p$-minors of
-$\mL$ (taken in the same order as those in the system $\bC$).
+$$a_i=\prod_{k=1}^{\gamma_i} \mu_{i,k}.$$ We can thus define the
+system of equations $\bA=(a_1,\dots,a_s,\dots,a_m)$, with $a_i$ as
+above for $i=1,\dots,s$, and $(a_{s+1},\dots,a_{m})$ are the
+$p$-minors of $\mL$ (taken in the same order as those in the system
+$\bC$).
 
 Finally, we let $T$ be a new variable, we define the matrix
 $\mU=(1-T)\, \mL + T \, \mF \in \KK[T,\bX]^{p\times q}$, and we let $\bB$ be the polynomials in
 $\KK[T,\bX]$ given by $\bB=(b_1,\dots,b_s,\dots,b_m)$, where
 \begin{itemize}
-\item $b_i=(1-T) m_i + T g_i$ for $i=1,\dots,s$
+\item $b_i=(1-T) a_i + T g_i$ for $i=1,\dots,s$
 \item $(b_{s+1},\dots,b_{m})$ are the $p$-minors of $\mU$, taken in
   the same order as those in $\bC$.
 \end{itemize}
@@ -1454,8 +1455,8 @@ These follow from Proposition~\ref{prop:KH1H2}.
 \paragraph{Property $\assG_1(0)$.} We have to prove that for $i=1,\dots,m$,
 $\deg_\bX(b_i)=\deg_\bX(a_i)$. 
 
-For $i=1,\dots,s$, this amounts to proving that $\deg_\bX((1-T) m_i +
-T g_i)=\deg_\bX(m_i)$. The latter is by construction equal to
+For $i=1,\dots,s$, this amounts to proving that $\deg_\bX((1-T) a_i +
+T g_i)=\deg_\bX(a_i)$. The latter is by construction equal to
 $\gamma_i$. The former is at most $\gamma_i$ (since $b_i$ is the sum
 of two polynomials of degree $\gamma_i$ in $\bX$), but since
 evaluating $T$ at $0$ in $b_i$ gives us $g_i$, its degree in $\bX$
@@ -1508,7 +1509,7 @@ $$\lambda^H_{j,k,\bu}=\lambda_{j,k,0}X_0 + \sum_{\ell =
   n-s+1}^{n}\lambda_{j,k,\ell}
 \mathfrak{h}_{\ell,\bu}(X_0,\dots,X_{n-s}).$$ Then,
 $\bx=(x_0,\dots,x_n)$ cancels $a^H_{s+1},\dots,a^H_m$ if and only if
-$\bx'=(x_0,\dots,x_{n-1})$ cancels the product
+$\bx'=(x_0,\dots,x_{n-s})$ cancels the product
 $\lambda^H_{j_1,\bu}\cdots \lambda^H_{j_p,\bu},$ for any choice of columns
 $\bj=(j_1,\dots,j_p)$.
 
@@ -1572,7 +1573,7 @@ are equal (up to units) to the linear forms
 $(\mu_{1,u_1},\dots,\mu_{s,u_s})$.
 
 Next, we consider the $p$-minors of $\mA$; in what follows, we 
-write $\bx'=(x_1,\dots,x_{n-1})$. Our starting point is that due to 
+write $\bx'=(x_1,\dots,x_{n-s})$. Our starting point is that due to 
 the genericity of the coefficients $\lambda_{j,k,\ell}$, since 
 $$\lambda_{j_1,v_1,\bu}(\bx')=\cdots=\lambda_{j_{n-s},v_{n-s},\bu}(\bx')=0,$$ 
 none of the other linear forms $\lambda_{j,k,\bu}$ vanishes at $\bx'$.
@@ -1588,11 +1589,11 @@ sequence $(a_{s+1},\dots,a_m)$, say as
 $(a_{e_1},\dots,a_{e_{n-s}})$. By the remark of the previous
 paragraph, in the local ring at $\bx$, up to non-zero constants, these
 polynomials are respectively equal to the linear forms
-$\lambda_{j_1,v_1},\dots,\lambda_{j_{n-1},v_{n-s}}$.  
+$\lambda_{j_1,v_1},\dots,\lambda_{j_{n-s},v_{n-s}}$.  
 
 To summarize, we have found that the linear equations
 $(\mu_{1,u_1},\dots,\mu_{s,u_s})$ and
-$(\lambda_{j_1,v_1},\dots,\lambda_{j_{n-1},v_{n-s}})$ belong to the
+$(\lambda_{j_1,v_1},\dots,\lambda_{j_{n-s},v_{n-s}})$ belong to the
 ideal $\langle \bA \rangle_\m$, where $\m$ is the maximal ideal at
 $\bx$. As a result, the Jacobian matrix of $\mA$ must be invertible
 at $\bx$, and $\assG_3(0)$ holds.
@@ -1651,7 +1652,7 @@ h_{n+1}X_{n+1} + h_{n+2} T=0$. This equation allows us to rewrite $T$
 as $\eta(X_1,\dots,X_n)=-(h_0 + h_1 X_1 + \cdots +
 h_{n+1}X_{n+1})/h_{n+2}$; the points in $V(\bB)\cap V(H)$ are thus in
 one-to-one correspondence with the solutions of the system
-$(\beta_1,\dots,\beta_s,\dots,\beta_m)$, where $\beta_i=(1-\eta) m_i +
+$(\beta_1,\dots,\beta_s,\dots,\beta_m)$, where $\beta_i=(1-\eta) a_i +
 \eta g_i$, for $i=1,\dots,s$, and $\beta_s,\dots,\beta_m$ are the
 $p$-minors of the matrix ${\cal U}=(1-\eta)\, \mL + \eta \, \mF $.  Now, the
 polynomials $(\beta_1,\dots,\beta_s)$ have respective degrees at most
@@ -1670,10 +1671,10 @@ the entries of $\mF$.
 
 First, we estimate the complexity of computing the polynomials
 $(b_1,\dots,b_s)$. For $i \le s$, the $i$th polynomial $b_i$ is equal
-to $(1-T)m_i + T g_i$, where $m_i$ is a product of $\gamma_i$ linear
+to $(1-T)a_i + T g_i$, where $a_i$ is a product of $\gamma_i$ linear
 forms in $n$ variables. This polynomial can be computed in $O(n
 \gamma_i)$ operations in $\KK$, hence for a total of $O(n \sum_i
-\gamma_i)$ operations for $(m_1,\dots,m_s)$, and $O(E+n \sum_i
+\gamma_i)$ operations for $(a_1,\dots,a_s)$, and $O(E+n \sum_i
 \gamma_i)$ for $(b_1,\dots,b_s)$. The polynomials
 $(b_{s+1},\dots,b_m)$ are the $p$-minors of $\mU=(1-T)\mL+T\mF$.
 
@@ -1705,6 +1706,11 @@ This is also  $\softO\left (c(e+c^5 )(E + c)\right).$
 
 \section{The row-degree homotopy}
 
+For any ring $R$ and any matrix $\mM \in R^{p\times q}$, if $S$ is a
+subsequence of $(1,\dots,p)$ and $T$ a subsequence of $(1,\dots,q)$,
+the $\mM_{S,T}$ is the submatrix obtained by keeping rows indexed by
+$S$ and columns indexed by $T$.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Preliminaries}
@@ -1733,9 +1739,12 @@ homogenous.  In both cases, for all $i,j$, the entry $\lambda^H_{i,j}$
 is a product of $\alpha_i$ homogeneous linear forms in $t+1$ variables
 $X_0,\dots,X_t$ with generic coefficients (except when
 $\lambda^H_{i,j}$ is explicitly set to zero in the first case), that
-is, $\lambda^H_{i,j}=\prod_{k=1}^{\alpha} \lambda^H_{i,j,k}$. In
-appendix, we prove the following properties.
+is, $\lambda^H_{i,j}=\prod_{k=1}^{\alpha_i} \lambda^H_{i,j,k}$. 
 
+We are interested in describing the projective algebraic set defined
+in $\P^t(\KKbar)$ by $I_p(\mN^H)$ and $I_p(\mM^H)$ (note that these
+minors are all homogeous). In appendix, we prove the following
+properties.
 \begin{lemma}\label{lemma:appendix}
   For generic choices of the coefficients of the linear forms
   $\lambda^H_{i,j,k}$, the following holds:
@@ -1743,14 +1752,12 @@ appendix, we prove the following properties.
   \item the projective algebraic sets defined in $\P^t(\KKbar)$ by
     $I_p(\mN^H)$ and $I_p(\mM^H)$ have no solution at infinity (that is,
     with $X_0=0$);
-  \item the Jacobian matrix of $I_p(\mN^H)$ and $I_p(\mM^H)$ with
-    respect to $(X_0,\dots,X_t)$ has rank $t$ at every point of the above
+  \item the Jacobian matrices of $I_p(\mN^H)$ and $I_p(\mM^H)$ with
+    respect to $(X_0,\dots,X_t)$ have rank $t$ at every point of the above
     sets.
 \end{itemize}
 \end{lemma}
-We are interested in describing the projective algebraic set defined
-in $\P^t(\KKbar)$ by $I_p(\mN^H)$ (note that these minors are all
-homogeous). One easily verifies that $\mN^H$ has rank less than $p$ at
+ One easily verifies that $\mN^H$ has rank less than $p$ at
 $\tilde \bx \in \P^t(\KKbar)$ if and only if there exists a
 subsequence $\bi=(i_1,\dots,i_\kappa)$ of $(1,\dots,p)$ of length
 $\kappa\in \{1,\dots,\min(t,p)\}$ such that
@@ -1768,16 +1775,54 @@ as
 $$X_{t-\kappa+1}=f_{\bi,\br,t-\kappa+1}(X_0,\dots,X_{t-\kappa}),\dots,
 X_{t}=f_{\bi,\br,t}(X_0,\dots,X_{t-\kappa}),$$ for some homogeneous
 linear forms $f_{\bi,\br,t-\kappa+1},\dots,f_{\bi,\br,t}$ that depend
-on the choice of the indices $\bi$ and $\br$. Applying these
+on the choice of indices $\bi$ and $\br$. Applying these
 substitutions in the submatrix $\mN^H_{\bi;(p+1,\dots,q)}$ gives us a
 matrix $\mM^H_{\bi,\br}$ of size $\kappa \times (t-1)$ whose entries
-are products of linear forms, of degrees
+are products of linear forms, of respective degrees
 $\alpha_{i_1},\dots,\alpha_{i_\kappa}$ on rows $1,\dots,\kappa$. We
-deduce that the projective set $V_p(\mN^H)$ is the union of the set
-$$V_{\bi,\br}=\{ (x_0,\dots,x_{t-\kappa},f_{\bi,\br,t-\kappa+1}(x_0,\dots,_{t-\kappa}),\dots,
-f_{\bi,\br,t}(x_0,\dots,x_{t-\kappa})) \mid (x_0,\dots,x_{t-\kappa}) \in V_\kappa(\mM^H_{\bi,\br}) \}.$$
-For generic coefficients, the union is disjoint.
+deduce that the projective set defined by $I_p(\mN^H)$ is the union of the sets
+$$V_{\bi,\br}=\{
+(x_0,\dots,x_{t-\kappa},f_{\bi,\br,t-\kappa+1}(x_0,\dots,_{t-\kappa}),\dots,
+f_{\bi,\br,t}(x_0,\dots,x_{t-\kappa})) \mid (x_0,\dots,x_{t-\kappa})
+\in V(I_\kappa(\mM^H_{\bi,\br})) \},$$ for all choices of $\bi$ and
+$\br$.  Remark that for generic choices of the coefficients of $N^H$, the union
+above is disjoint: indeed, for $\bi,\br$ as above, $V_{\bi,\br}$ being
+finite (by the previous lemma) implies that for a generic choice of
+the coefficients of $\lambda^H_{i,i,k}$, for $(i,k)$ not of the form
+$(i_k,r_k)$, $k=1,\dots,\kappa$, this linear form does not vanish on
+$V_{\bi,\br}$.
 
+Finally, let $\mN$ and $\mM$ be matrices obtained by setting $X_0=1$
+in respectively $\mN^H$ and $\mM_ {\bi,\br}^H$;
+explicitly, we have
+\begin{align}\label{eqdef:type1aff}
+\mN= \left( \begin{matrix}
+\lambda_{1,1} & 0 & \cdots & 0 & \lambda_{1,p+1} & \cdots & \lambda_{1, q}\\
+0 & \lambda_{2,2} & \cdots & 0 & \lambda_{2,p+1} & \cdots & \lambda_{2, q}\\
+\vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
+0 & 0 & \cdots & \lambda_{p,p} & \lambda_{p,p+1} & \cdots & \lambda_{p, q}
+\end{matrix} \right),
+\end{align}
+and matrices of a more general form such as
+\begin{align}\label{eqdef:type2aff}
+\mM= \left( \begin{matrix}
+\lambda_{1,1} & \lambda_{1,2} & \cdots & \lambda_{1, q}\\
+ \lambda_{2,1} &  \lambda_{2,2} & \cdots & \lambda_{2, q}\\
+ \vdots & & & \vdots\\
+ \lambda_{p,1} &  \lambda_{p,2}& \cdots & \lambda_{p, q}
+\end{matrix} \right),
+\end{align}
+
+ Using the first item in
+Lemma~\ref{lemma:appendix}, together with the previous discussion, we
+deduce the equality
+\begin{align}\label{eq:cardinality}
+|V_p(\mN)| = \sum_{\bi=(i_1,\dots,i_\kappa),\br=(r_1,\dots,r_\kappa)}  |V_\kappa(\mM_{\bi,\br})|.
+\end{align}
+
+Assuming we are given a procedure to compute a zero-dimensional
+representation of the algebraic sets $V_\kappa(\mM_{\bi,\br})$, the
+following pseudo-code summarizes the discussion above.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1788,7 +1833,8 @@ will depend on the row-degrees of the input matrix $\mF$. This
 algorithm is more complex than the one in the previous section, due to
 a recursive nature; this boils down to the fact that the start system
 we use for the homotopy must itself be solved by means of several
-homotopies of smaller size.
+homotopies of smaller size (along the lines of the discussion in the 
+previous subsection).
 
 Again, we are given a matrix $\mF =[f_{i,j}]\in \KK[X_1,\dots,X_n]^{p
   \times q}$ and polynomials $G=(g_1,\dots,g_s)$ in
@@ -1811,11 +1857,6 @@ $\gamma_1=\deg(g_1),\dots,\gamma_s=\deg(g_s)$.
 %% Remark that if all $\gamma_i$'s and $\delta_j$'s are at least equal to
 %% $2$, we have the inequality $e \le c^2$, and the runtime becomes
 %% $\softO\left (c^6 (E + c)\right)$.
-
-For any ring $R$ and any matrix $\mM \in R^{p\times q}$, if $S$ is a
-subsequence of $(1,\dots,p)$ and $T$ a subsequence of $(1,\dots,q)$,
-the $\mM_{S,T}$ is the submatrix obtained by keeping rows indexed by
-$S$ and columns indexed by $T$.
 
 
 % \begin{proof}
@@ -1843,7 +1884,6 @@ $S$ and columns indexed by $T$.
 
 
 \paragraph{Setting up the homotopy.}
-Let $\mF$ and $G$ be as in Proposition~\ref{prop:rowdegree}.
 To solve Problem~\ref{problem2}, we are again going to rely on the
 algorithm of Section~\ref{sec:homotopy}. As in the previous section,
 we let $\bC=(c_1,\dots,c_s,\dots,c_m)$ be such that
@@ -1851,14 +1891,15 @@ $(c_1,\dots,c_s)=(g_1,\dots,g_s)$ and $(c_{s+1},\dots,c_m)$ are the
 $p$-minors of $\mF$. Our main concern is to design a sequence of
 polynomials $\bB=(b_1,\dots,b_s,\dots,b_m)$ in $\KK[T,\bX]$ such that
 $\bC=\bB_1$, such that we can solve efficiently the system
-$\bA=\bB_0$, and with the same degree profile as our target system
+$\bA=\bB_0$, and such that $\bB$ has the same degree profile as our target system
 $\bC$.
 
 The polynomials $(b_1,\dots,b_s)$ are defined as in the previous
 section, letting $a_i$ be a product of $\gamma_i$ linear forms
 $\mu_{i,k}$ with randomly chosen coefficients, of the form
 $$a_i=\prod_{k=1}^{\gamma_i} \mu_{i,k},\quad\text{with}\quad
-\mu_{i,k}=\mu_{i,k,0} + \sum_{\ell=1}^n \mu_{i,k,\ell}X_\ell.$$ The
+\mu_{i,k}=\mu_{i,k,0} + \sum_{\ell=1}^n \mu_{i,k,\ell}X_\ell$$ 
+and writing $b_i=(1-T)a_i + T g_i$ for $i=1,\dots,s$. The
 difference will lie in the construction of the matrix $\mL$ in
 $\KK[\bX]^{p\times q}$, which will then allow us to define
 $\mU=(1-T)\,\mL + T\, \mF$, and finally the polynomials
@@ -1869,7 +1910,8 @@ does not carry over if we want to take row degrees into account (one
 could imagine a matrix with $i$th row of the form $[1^i
   \lambda_i~\cdots~q^i \lambda_i]$, but the corresponding determinantal
 variety has positive dimension). Instead, we use a deformation that
-cancels out many off-diagonal terms, and we define
+cancels out many off-diagonal terms; following the 
+construction in the previous subsection, we define
 \[ \mL = \left( \begin{matrix}
 \lambda_{1,1} & 0 & \cdots & 0 & \lambda_{1,p+1} & \cdots & \lambda_{1, q}\\
 0 & \lambda_{2,2} & \cdots & 0 & \lambda_{2,p+1} & \cdots & \lambda_{2, q}\\
@@ -1881,13 +1923,14 @@ coefficients, of the form
 $$\lambda_{i,j}= \prod_{k=1}^{\alpha_i}\lambda_{i,j,k},
 \quad\text{with}\quad
 \lambda_{i,j,k} =\lambda_{i,j,k,0} + \sum_{\ell=1}^n \lambda_{i,j,k,\ell}X_\ell.
-$$ Then, as said above, we define $(b_{s+1},\dots,b_m)$ as the $p$-minors of
-$\mU=(1-T)\,\mL + T\, \mF$, and $\bB=(b_1,\dots,b_m)$: the polynomials
-$\bA=(a_1,\dots,a_m)$ are defined by letting $T=0$ in $\bB$ (that is,
-$\bA=\bB_0$); on the other hand, we also have $\bC=\bB_1$.  Our next
-step is to prove that all assumptions of
+$$ Then, as said above, we define $(b_{s+1},\dots,b_m)$ as the
+$p$-minors of $\mU=(1-T)\,\mL + T\, \mF$, and $\bB=(b_1,\dots,b_m)$:
+the polynomials $(a_{s+1},\dots,a_m)$ are defined as the $p$-minors of
+$\mL$, so that $\bA=\bB_0$; on the other hand, we also have
+$\bC=\bB_1$.  Our next step is to prove that all assumptions of
 Propositions~\ref{prop:degree_fiber} and~\ref{prop:compute_isolated}
-are satisfied for $\bB$ and $\bA=\bB_0$.
+are satisfied for $\bB$ and $\bA=\bB_0$, as long as the coefficients 
+of $a_1,\dots,a_s$ and $\mL$ are chosen generically.
 
 \paragraph{Properties $\assA_1$ and $\assA_2$.}
 These follow from Proposition~\ref{prop:KH1H2}.
@@ -1976,9 +2019,9 @@ matrix of $\bA$ has full rank $n$ at any point in $V(\bA) \subset
 particular, $\tilde \bx=(1,x_1,\dots,x_n)$ is a projective solution of
 $\bA^H$.  Thus, there exists $\bu=(u_1,\dots,u_s)$ as above such that
 $$x_{n-s+1}=\mathfrak{h}_{n-s+1,\bu}(1,x_1\dots,x_{n-s}),\dots,x_{n}=\mathfrak{h}_{n,\bu}(1,x_1,\dots,x_{n-s}),$$
-and $\mL^H_\bu$ has rank less than $p$ at $\tilde\bx'=(1,x_1,\dots,x_{n-1})$.  The second item of
+and $\mL^H_\bu$ has rank less than $p$ at $\tilde\bx'=(1,x_1,\dots,x_{n-s})$.  The second item of
 Lemma~\ref{lemma:appendix} shows that the Jacobian matrix of
-$I_p(\mL^H_\bu)$ with respect to $X_0,\dots,X_{n-1}$ has rank $n-s$
+$I_p(\mL^H_\bu)$ with respect to $X_0,\dots,X_{n-s}$ has rank $n-s$
 at $\tilde \bx'$. Since the first coordinate of $\tilde\bx'$ is non-zero,
 and all generating polynomials of $I_p(\mL^H_\bu)$ are homogeneous,
 Euler's relation implies that the Jacobian matrix of $I_p(\mL_\bu)$
@@ -2030,6 +2073,8 @@ together with the equations in~\eqref{eq:subst}, we obtain
 a family of polynomials in $\langle \bA \rangle \cdot \mathcal{O}_\bx$ 
 whose Jacobian matrix has rank $n$, and $\assG_3(0)$ is proved.
 
+\medskip
+
 We can then apply Proposition~\ref{prop:degree_fiber}. Since $\bB$
 satisfies $\assA_1,\assA_2$ and $\bA=\bB_0$ satisfies
 $\assG_1,\assG_2,\assG_3$, we deduce that the sum of the
@@ -2040,7 +2085,7 @@ is to establish the value of $c$
 \begin{lemma}
   For a generic choice of coefficients $\mu_{i,k,\ell}$ and
   $\lambda_{i,j,k,\ell}$, the cardinality $c$ of the algebraic set
-  $V(\mA)$ is $\gamma_1 \cdots \gamma_s
+  $V(\bA)$ is $\gamma_1 \cdots \gamma_s
   S_{n-s}(\alpha_1,\dots,\alpha_p)$.
 \end{lemma}
 \begin{proof}
@@ -2050,19 +2095,54 @@ is to establish the value of $c$
   are (generically) pairwise disjoint: for $\bx$ in $V_\bu$, any index
   $i$ and any $k \ne u_i$, $\mu_{i,k}(\bx)$ is non-zero.
   
-  We will prove in the following paragraphs that for any $\bu$,
-  $V_\bu$ has cardinality $S_{n-s}(\alpha_1,\dots,\alpha_p)$; in view of 
-  the remark above, this is enough to conclude the proof of the lemma.
+  We prove in the following paragraphs that for any $\bu$, $V_\bu$ has
+  cardinality $S_{n-s}(\alpha_1,\dots,\alpha_p)$; in view of the
+  remark above, this is enough to conclude the proof of the lemma.
 
   Let us thus fix $\bu=(u_1,\dots,u_s)$. The cardinality of $V_\bu$ is
-  equal to the number of points in $V_p(\mL_\bu)$, which is a
-  polynomial matrix of size $p \times q$, with entries that are
-  products of linear forms in $t=n-s$ variables, with row degrees
-  $\alpha_1,\dots,\alpha_p$. We prove by induction that for generic
-  choices of the coefficients of these linear forms, $V_\bu$ has
-  cardinality $S_{t}(\alpha_1,\dots,\alpha_p)$.
+  equal to the number of points in $V_p(\mL_\bu)$; this is a
+  polynomial matrix of the form introduced in the previous subsection,
+  of size $p \times q$, with entries that are products of linear forms
+  in $t=q-p+1$ variables and with row degrees
+  $\alpha_1,\dots,\alpha_p$.  We prove that for any such matrix $\mN$
+  or $\mN$ as in respectively~\eqref{eqdef:type1aff}
+  and~\eqref{eqdef:type2aff}, with entries that are generic choices of
+  the coefficients of these linear forms, $V_p(\mN)$ and have
+  $V_p(\mM)$ cardinality $S_{t}(\alpha_1,\dots,\alpha_p)$.
   
-  
+  First, let us show that if the claim holds for $\mN$ in size $p
+  \times q$, it holds for $\mM$ as well. To this effect, we set up a
+  homotopy between $\mN$ and $\mM$, by considering the matrix
+  $(1-T)\mN + T\mM$.  The discussion in the previous paragraphs shows
+  that (for generic choices of the coefficients) this matrix satisfies
+  Properties $\assA_1$ and $\assA_2$, together with
+  $\assG_1(0),\assG_2(0),\assG_3(0)$.  We claim that
+  $\assG_1(1),\assG_2(1),\assG_3(1)$ hold as well: the degree property
+  in $\assG_1(1)$ is proved as we did for $\assG_1(0)$, and
+  $\assG_2(1),\assG_3(1)$ are restatements of
+  Lemma~\ref{lemma:appendix}. As a result, we can
+  Proposition~\ref{prop:degree_fiber} to the specializations of
+  $(1-T)\mN + T\mM$ at $T=0$ and $T=1$, and conclude that $V_p(\mN)$
+  and $V_p(\mM)$ have the same cardinality, for generic choices of
+  the coefficients of $\mN$ and $\mM$.
+
+  We finish the proof by induction. If $p=q$, $\mN$ is diagonal, and
+  its determinant has degree $\alpha_1 + \cdots + \alpha_p =
+  S_1(\alpha_1,\dots,\alpha_p)$, so our claim holds for $\mN$ (and
+  thus for $\mM$). Suppose now that the claim is true for all choices
+  of degrees $(\alpha_i)$, for all $p'\le p$ and all $q' < q$ with $p'
+  \le q'$. Equation~\eqref{eq:cardinality} shows that 
+$$
+    |V_p(\mN)| = \sum_{\bi=(i_1,\dots,i_\kappa),\br=(r_1,\dots,r_\kappa)}  |V_\kappa(\mM_{\bi,\br})|,
+$$
+  for indices $\bi,\br$ and matrices $\mM_{\bi,\br}$ as defined  in the 
+  previous subsection. Any such matrix has $\kappa \le p$ rows,
+  $q-p < q$ columns, with $\kappa \le q-p$ \todo{say why}. As a result, we 
+  can apply our induction assumption, and deduce
+ $$
+    |V_p(\mN)| = \sum_{\bi=(i_1,\dots,i_\kappa),\br=(r_1,\dots,r_\kappa)}  S_{q-p-\kappa}(\alpha_{i_1},\dots,\alpha_{i_\kappa}).
+$$
+
 \end{proof}
 
 
