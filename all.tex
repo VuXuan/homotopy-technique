@@ -655,7 +655,7 @@ In this section, we work over a field $\KK$, using $n$ variables
 $\bX=(X_1,\dots,X_n)$. Given polynomials $\bC=(c_1,\dots,c_m)$ in
 $\KK[\bX]^m$, we give an algorithm to compute a zero-dimensional
 parametrization of the isolated points of $V(\bC)$, assuming the
-existing of a suitable {\em homotopy deformation} of $\bC$. We assume
+existence of a suitable {\em homotopy deformation} of $\bC$. We assume
 $m\ge n$, otherwise no isolated points exist in $V(\bC)$.
 
 Let $T$ be a new variable and consider polynomials
@@ -685,7 +685,7 @@ following three properties.
 \item[$\assG_1(\tau).$] For $k=1,\dots,m$,
   $\deg_\bX(b_k)=\deg_\bX(b_{\tau,k})$.
 \item[$\assG_2(\tau).$] The only common solution to
-  $b_{\tau,1}^H(0,\bX)=\cdots=b_{\tau,m}^H(0,\bX)=0$ is
+  $b_{\tau,1}^H(\tau,\bX)=\cdots=b_{\tau,m}^H(\tau,\bX)=0$ is
   $(0,\dots,0)\in\KKbar{}^n$, where for $k=1,\dots,m$, $b_{\tau,k}^H$ is
   the polynomial in $\KKbar[X_0,\bX]$ obtained by homogenizing
   $b_{\tau,k}$ using a new variable $X_0$. In particular, $V(\bB_\tau)
@@ -706,12 +706,12 @@ We next give our algorithm to compute the isolated solutions of the
 polynomial system $\bC=(c_1,\dots,c_m)$. In order to control the cost
 of the algorithm, we introduce the following assumptions.
 \begin{description}[leftmargin=*]
-\item[${\assD}_1$.] We are given $\tau$ in $\KK$ such that $\assG(\tau)$
-  holds; without loss of generality, we assume that $\tau=0$. We also
-  suppose that we know a description of $V(\bB_{0})$ by means of a
-  zero-dimensional parametrization with
-  coefficients in $\KK$. The linear form $\lambda$ needs to satisfy
-  some genericity requirements, that are described in
+\item[${\assD}_1$.] We are given $\tau$ in $\KK$ such that
+  $\assG(\tau)$ holds; without loss of generality, we assume that
+  $\tau=0$. We also suppose that we know a description of $V(\bB_{0})$
+  by means of a zero-dimensional parametrization with coefficients in
+  $\KK$. The linear form $\lambda$ used in that parametrization needs
+  to satisfy some genericity requirements, that are described in
   Subsection~\ref{proof:prop2}.
 \item[${\assD}_2$.] We know an integer $e$ such that the union of the
   one-dimensional components of $V(J)$ in $\KKbar{}^{n+1}$ has degree
