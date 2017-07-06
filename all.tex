@@ -1210,8 +1210,39 @@ $Z(\scrR_1)$ were an irreducible variety, with an overhead
 $O(c)$. The runtime deduced from Proposition~\ref{prop:testisolated} is
 $$O(n^4 c^6 + n^2 m c^5 + n E c^6)$$ operations in~$\KK$. Adding all
 costs seen so far, we prove Proposition~\ref{prop:compute_isolated}.
-
-
+\begin{algorithm}
+\caption{$\mathsf{Determinantal System}$}
+{\bf Input}:\begin{itemize}
+\item the targent system $\bC \in \KK[\bX]^{m}$, a start system $\bA \in \KK[\X]^m$
+\item $\scrR_0$ a zero-dimensional parametrization of the system $\bA$
+\item a homotopy system $\bB \in \KK[T,\bX]^m$ such that $\bB_{0} = \bA$ and $\bB_1 = \bC$
+\end{itemize}
+{\bf Output}: a zero-dimensional parametrization of the isolated points of $V(\bC)$
+\begin{enumerate}
+\item decompose $\scrR_0$ into finitely zero-dimensional parametrizations $(\scrR_{0,j})_{1 \leq j \leq t}$\\
+$\mathsf{cost: \softO( (mn^2 + nE) c^2)}$
+\item 
+\end{enumerate}
+\label{DetSys}
+\end{algorithm}
+%\begin{enumerate}
+%\item for any ${\bf x} \in V(\g)$: 
+%\begin{enumerate}
+%\item find a system $\h^{(\bf x)}$ in $\field[T,\mat{X}]^n$
+%\item compute $\mathscr{R}_{\bf x}$ zero-dimensional parametrization at precision $2d$. \\
+%$\mathsf{//* \ use \ algorithm \ in~\cite{GiLeSa01} \ }$
+%\end{enumerate}
+%\item combine $\{\mathscr{R}_{\bf x}\}_{{\bf x} \in V(\g)}$ into $\mathscr{R}$
+%\item compute $\mathscr{S}$ with coefficients in $\field(T)$ from  $\mathscr{R}$\\
+%$\mathsf{//* apply \ RationalReconstruction \ algorithm \ in~\cite{Schost03} \ to \ all \ coefficients \ of \ \mathscr{R} \ at \ degree} \ d$
+%\item clean denominators of $\mathscr{S}$
+%\item deduce $\mathscr{R}_{1}$ from $\mathscr{S}$
+%\item  $S \gets$ removing from $\mathscr{R}_{1}$ non-isolated points of $V(\f)$\\
+%$\mathsf{//* apply \ algorithm \ in~\cref{subsec:isolated}}$
+%\item return $S$
+%\end{enumerate}
+%\end{algorithm}
+ 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
