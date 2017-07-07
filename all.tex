@@ -2212,43 +2212,46 @@ the following properties.
 \item[$\assJ_1(\balpha,q).$] The projective algebraic set
   $V_{p-1}(\mathfrak{N}^H_{\balpha,q})\subset\P^n(\KKGpbar)$ is empty.
 \end{description}
-The first step of the proof is to establish that for $\balpha$ and $q$ as above,
-$\assJ_1(\balpha,q)$ implies $\assI_1(\balpha,q)$. Let us thus fix $\balpha$
-and $q$.  Assumption $\assJ_1(\balpha,q)$ implies that
-$V_{p-1}(\mathfrak{N}_{\balpha,q}(G'))$ is empty for a generic $G'$
-in~$\KKbar{}^{N'}$.  We will prove that
-$V_{p-1}(\mathfrak{M}_{\balpha,q}(G))$ is empty for a generic $G$
-in~$\KKbar{}^N$, which in turn establishes $\assI_1(\balpha,q)$.
+The first step of the proof is to establish that for $\balpha$ and $q$
+as above, $\assJ_1(\balpha,q)$ implies $\assI_1(\balpha,q)$. Let us
+thus fix $\balpha$ and $q$.  Assumption $\assJ_1(\balpha,q)$ implies
+that $V_{p-1}(\mathfrak{N}^H_{\balpha,q}(\Lambda',\tilde\bX))$ is
+empty for a generic $\Lambda'$ in~$\KKbar{}^{A'}$.  We will prove that
+$V_{p-1}(\mathfrak{M}^H_{\balpha,q}(\Lambda,\tilde\bX))$ is empty for a generic $\Lambda$
+in~$\KKbar{}^A$, which in turn establishes $\assI_1(\balpha,q)$.
 
-Consider the ideal $I_{p-1}(\mathfrak{M}_{\balpha,q})$ in the polynomial
-ring $\KK[\mathfrak{G},\tilde\bX]$ in $N+n+1$ variables. This ideal
-defines an algebraic set $Z_{\balpha,q}$ in $\KKbar{}^N \times
-\P^n(\KKbar)$, and we let $\alpha_{\balpha,q} \subset \KKbar{}^N$ be its
-projection on the first factor: this is the set of all $G$ such that
-$V_{p-1}(\mathfrak{M}_{\balpha,q}(G))$ is not empty. Because the source is
-a projective space, $\alpha_{\balpha,q}$ is closed (so its complement is
+Consider the ideal $I_{p-1}(\mathfrak{M}^H_{\balpha,q})$ in the polynomial
+ring $\KK[\mathfrak{L},\tilde\bX]$ in $A+n+1$ variables. This ideal
+defines an algebraic set $Z_{\balpha,q}$ in $\KKbar{}^A \times
+\P^n(\KKbar)$, and we let $\Delta_{\balpha,q} \subset \KKbar{}^A$ be its
+projection on the first factor: this is the set of all $\Lambda$ such that
+$V_{p-1}(\mathfrak{M}^H_{\balpha,q}(\Lambda,\tilde\bX))$ is not empty. Because the source is
+a projective space, $\Delta_{\balpha,q}$ is closed (so its complement is
 open), and we just have to verify that it is not equal to the whole
-$\KKbar{}^N$. This follows readily from property $\assJ_1(\balpha,q)$,
+$\KKbar{}^A$. This follows readily from property $\assJ_1(\balpha,q)$,
 which proves that generic matrices of the form
-$\mathfrak{N}_{\balpha,q}(G')$ do not belong to $\alpha_{p,q}$, so 
+$\mathfrak{N}^H_{\balpha,q}(\Lambda',\tilde\bX)$ do not belong to $\Delta_{\balpha,q}$, so 
 $\assI_1(\balpha,q)$ holds.
 
 We finish the proof by induction. We first take $p=q$ and consider
-$\assJ_1(\balpha,q)$.  In this case, $n=1$ and $\mathfrak{N}_{\balpha,q}$ is
-a diagonal matrix, whose diagonal entries are products of linear forms
-in $(X_0,X_1)$ with indeterminate coefficients. Hence, no pair of
-entries $\mathfrak{N}_{\balpha,q}$ have any common solution in
-$\P^1(\KKGpbar)$, so the rank of $\mathfrak{N}_{\balpha,q}$ is at least
-$p-1$. Hence, $\assJ_1(\balpha,p)$ holds, and so does $\assI_1(\balpha,p)$, by the claim in the previous paragraph.
+$\assJ_1(\balpha,q)$.  In this case, $n=1$ and
+$\mathfrak{N}^H_{\balpha,q}$ is a diagonal matrix, whose diagonal
+entries are products of linear forms in $(X_0,X_1)$ with indeterminate
+coefficients. Hence, no pair of entries $\mathfrak{N}^H_{\balpha,q}$
+have any common solution in $\P^1(\KKGpbar)$, so the rank of
+$\mathfrak{N}^H_{\balpha,q}$ is at least $p-1$ at any $\tilde\bx \in
+\P^1(\KKGpbar)$. Hence, $\assJ_1(\balpha,p)$ holds, and so does
+$\assI_1(\balpha,p)$, by the claim in the previous paragraph.
 
-Consider next a pair $(\balpha,q)$, with $\balpha=(\alpha_1,\dots,\alpha_p)$ and $2 \le
-p \le q$, and suppose that $\assI_1(\balpha',q')$ holds for all
-$(\balpha',q')$ with $\balpha'=(D'_1,\dots,D'_{p'})$, $2 \le p' \le q'$, $p'
-\le p$ and $q' < q$; we prove that $\assJ_1(\balpha,q)$ holds
-(as above, this will also imply $\assI_1(\balpha,q)$).
+Consider next a pair $(\balpha,q)$, with
+$\balpha=(\alpha_1,\dots,\alpha_p)$ and $2 \le p < q$, and suppose
+that $\assI_1(\balpha',q')$ holds for all $(\balpha',q')$ with
+$\balpha'=(\alpha'_1,\dots,\alpha'_{p'})$, $2 \le p' \le q'$, $p' \le p$ and $q'
+< q$; we prove that $\assJ_1(\balpha,q)$ holds (as above, this will
+also imply $\assI_1(\balpha,q)$).
 
-Take $k=p-1$ in Lemma~\ref{lemma:union}. Then, the parameters
-$(t-(p-k),\balpha_s,n-1)$ used in each contribution to~\eqref{eq:union}
+Take $t=p-1$ in Lemma~\ref{lemma:union}. Then, the parameters
+$(\kappa-(p-t),\balpha_\bi,n-1)$ used in each expression~\eqref{eq:union}
 are of the form $(t-1,\balpha_s,n-1)$, with $2 \le t \le \min(p,n-1)$.
 Since the entries of $\mathfrak{H}_{s,r}$ are algebraically
 independent, $\balpha_s$ has length $t\ge 2$, with also $t \le n-1$, $t
