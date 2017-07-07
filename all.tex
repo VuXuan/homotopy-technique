@@ -261,14 +261,14 @@ to have multiplicity one.
 The main idea of our algorithms is to use the \emph{homotopy}
 \[\mU = (1-T)\cdot \mL + T \cdot \mF \in \KK[T, \X]^{p \times q}\footnote{Notations changed in order to match those in Sections 5 and 6.}\]
 that connects a \emph{start matrix} $\mL$ to the target matrix $\mF$,
-where $T$ is a new variable\footnote{\`a changer car $\mG$ est
-  utilis\'e aussi comme une liste de polyn\^omes}. However, we need
-some properties on the start matrix such that we can compute the
-isolated solutions for the determinantal system of $F$. Assume that we
-know the solutions for the determinatal system of $G$, by using the
-Newton iteration to the determinantal system of $H$, we can lift into
-the isolated solutions for that of $F$. Therefore, we need to create a
-start matrix $G$ such that
+together with a more standard homotopy 
+\[V = (1-T) \cdot K + T \cdot G\]
+where $T$ is a new variable. However, we need some properties on the
+start matrix such that we can compute the isolated points of
+$S_{\mF, G}$. Assume that we know the solutions for the determinantal
+system of $\mL$, by using the Newton iteration to the determinantal
+system of $\mU$, we can lift into the isolated solutions for that of
+$\mF$. Therefore, we need to create a start matrix $\mG$ such that
 \begin{itemize}
 \item its solutions of the determinantal system can be found effectively,
 \item we can extract a square subsystem with full-rank Jacobian,
@@ -276,6 +276,12 @@ start matrix $G$ such that
 \end{itemize}
 
 This paper is organized as follows.
+
+
+One difficulty raised by the above homotopy process is  
+In Section~\ref{sec:isolated}, we revisit an algorithm and its
+complexity analysis which, given a polynomial system $\bC$ and a point
+$\bx$
 
 \todo{Some background on polynomial systems and stuff}
 
