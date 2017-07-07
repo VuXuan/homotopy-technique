@@ -1179,45 +1179,48 @@ used above also implies that all $\Phi_i$ are actually power series.)
 
 \subsection{Proof of Proposition~\ref{prop:compute_isolated}} \label{proof:prop2}
 
-Let $\scrR_0 =((q_{0},v_{0,1},\dots,v_{0,n}),\lambda)$ be a
+Let $\scrR_0 =((w_{0},v_{0,1},\dots,v_{0,n}),\lambda)$ be a
 zero-dimensional parametrization of $V(\bB_{0})$ obtained by means of
 assumption $\assD_1$, with $q_0$ and all $v_{0,j}$ in $\KK[Y]$. Note
-that the degree of $q_0$ is the integer $c$.
+that the degree of $w_0$ is the integer $c$.
 
 \paragraph{Decomposing $\scrR_0$.}
 We start by decomposing $\scrR_0$ into finitely many zero-dimensional
 parametrizations
-$\scrR_{0,j}=((q_{0,j},v_{0,j,1},\dots,v_{0,j,n}),\lambda)_{1\le j\le
+$\scrR_{0,j}=((w_{0,j},v_{0,j,1},\dots,v_{0,j,n}),\lambda)_{1\le j\le
   t}$, all with coefficients in $\KK$, such that for $j$ in
 $\{1,\dots,t\}$, there exist $\bi_j=(i_{j,1},\dots,i_{j,n})$ such that
 the Jacobian matrix of $(b_{0,i})_{i \in \bi_j}$ has full rank $n$ at
 $\bx$, for all $\bx$ in $Z(\scrR_{0,j})$.
 
-If $q_0$ were irreducible, we would simply evaluate the Jacobian
-matrix of $\bB_0$ at the point $(v_{0,1}/q_0',\dots,v_{0,n}/q_0')$,
-which has coordinates in the field $\LL=\KK[Y]/\langle q_0 \rangle$,
-and find a non-zero minor of size $n$ in this matrix. It takes $O(n
-E)$ oeprations in $\LL$ to compute this Jacobian matrix, and $O(mn^2)$
-operations in $\LL$ to find an invertible minor. The total time, under
-the assumption that $q_0$ is invertible, is thus $O(mn^2 + nE)$ operations
-in $\LL$, that is, $\softO( (mn^2 + nE) c)$ operations in $\KK$.
+If $w_0$ were irreducible, we would simply evaluate the Jacobian
+matrix of $\bB_0$ at the point $(v_{0,1}/w_0',\dots,v_{0,n}/w_0')$,
+which has coordinates in the field $\LL=\KK[Y]/\langle w_0 \rangle$,
+and find a non-zero minor of size $n$ in this matrix. It takes
+$O(n E)$ oeprations in $\LL$ to compute this Jacobian matrix, and
+$O(mn^2)$ operations in $\LL$ to find an invertible minor, e.g. using
+Gaussian elimination. The total time, under the assumption that $q_0$
+is invertible, is thus $O(mn^2 + nE)$ operations in $\LL$, that is,
+$\softO( (mn^2 + nE) c)$ operations in $\KK$.
 
-When $q_0$ is not invertible, $\LL=\KK[Y]/\langle q_0 \rangle$ is a
+When $w_0$ is not invertible, $\LL=\KK[Y]/\langle w_0 \rangle$ is a
 product of fields. We can still apply the same process as in the
 irreducible case; if the algorithm goes through, we have obtained our
-answer. In general, one workaround would be to factor $q_0$, but we do
+answer. In general, one workaround would be to factor $w_0$, but we do
 not want our runtime to depend on the cost of factoring
 polynomials. Hence, we will use {\em dynamic evaluation techniques},
 as in~\cite{D5}. Indeed, the only issue that may arise is that we
 attempt to invert a zero-divisor. If this is the case, it means we
-have found a non-trivial factor $r_0$ of $q_0$: we can then replace
+have found a non-trivial factor $r_0$ of $w_0$: we can then replace
 $\scrR_0$ by two new zero-dimensional parametrizations,
 $\scrR'_0=((r_0,(v_{0,1}/s_0) \bmod r_0,\dots,(v_{0,n}/s_0)\bmod
-r_0),\lambda)$ and $\scrR''_0=((s_0,(v_{0,1}/r_0) \bmod
-s_0,\dots,(v_{0,n}/ r_0)\bmod s_0),\lambda)$, with $s_0=q_0/r_0$, that
-define a partition of $Z(\scrR_0)$ into the subsets
-$Z(\scrR'_0)$ and $Z(\scrR''_0)$ where $r_0$
-vanishes, resp.\ is non-zero.
+r_0),\lambda)$
+and
+$\scrR''_0=((s_0,(v_{0,1}/r_0) \bmod s_0,\dots,(v_{0,n}/ r_0)\bmod
+s_0),\lambda)$,
+with $s_0=w_0/r_0$, that define a partition of $Z(\scrR_0)$ into the
+subsets $Z(\scrR'_0)$ and $Z(\scrR''_0)$ where $r_0$ vanishes, resp.\
+is non-zero.
 
 We can then start over again, from $\scrR'_0$ and $\scrR''_0$
 independently. Overall, in the worst case, this splitting process 
@@ -1227,9 +1230,9 @@ for a total of $\softO( (mn^2 + nE) c^2)$ operations in $\KK$.
 \paragraph{Lifting power series and rational reconstruction.}
 For $j=1,\dots,t$, we can then apply Newton iteration to the system
 $(b_i)_{i \in \bi_j}$ to lift
-$\scrR_{0,j}=((q_{0,j},v_{0,j,1},\dots,v_{0,j,n}),\lambda)$ into a
+$\scrR_{0,j}=((w_{0,j},v_{0,j,1},\dots,v_{0,j,n}),\lambda)$ into a
 zero-dimensional parametrization
-$\scrR_{j}=((q_{j},v_{j,1},\dots,v_{j,n}),\lambda)$ with coefficients
+$\scrR_{j}=((w_{j},v_{j,1},\dots,v_{j,n}),\lambda)$ with coefficients
 in $\KK[[T]]/\langle T^{2e}\rangle$, for $e$ as in ${\assD}_2$.
 (Note that Lemma~\ref{lemma:vPi} implies that $c \le e$).
 
@@ -1264,12 +1267,12 @@ $\Phi'_1,\dots,\Phi'_{\kappa'}$ are bounded, and
 $\Phi'_{\kappa'+1},\dots,\Phi'_c$ are not, for some $\kappa'$ in
 $\{0,\dots,c\}$, and we let $\varphi'_1,\dots,\varphi'_\kappa$ by
 $\varphi'_i=\lim_0(\Phi'_i)\in\KKbar{}^n$ for $i=1,\dots,\kappa'$.  By
-Lemma~\ref{lemma:Z1}, $V(J' + \langle T-1\rangle) = \{ \varphi'_i \mid
-i=1,\dots,k\}$.
+Lemma~\ref{lemma:Z1},
+$V(J' + \langle T-1\rangle) = \{ \varphi'_i \mid i=1,\dots,k\}$.
 
 We can now specify our requirements on the linear form $\lambda$.
-Following~\cite{RRS} and~\cite{SaSc16}, we ask that $\lambda$ is a {\rm well-separating
-  element},
+Following~\cite{RRS} and~\cite{SaSc16}, we ask that $\lambda$ is a
+{\rm well-separating element},
 \begin{enumerate}
 \item $\lambda$ is separating for $V(\mathfrak{J}')=\{\Phi'_1,\dots,\Phi'_c\}$;
 \item $\lambda$ is separating for $V(J' + \langle T-1\rangle) = \{ \varphi'_1,\dots,\varphi'_{\kappa'}\}$.
