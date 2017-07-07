@@ -106,8 +106,14 @@ of $f_{1,1},\dots,f_{1,q}$.
 As $S_\mF$ is an algebraic set, it can be defined as the finite union
 of its \emph{irreducible components}: these are the algebraic sets
 contained in $S_{\mF}$ which are not the union of two proper algebraic
-sets defined over $\KK$ \cite[xxx]{Shafarevich77}.
+sets defined over $\KK$. In the sequel, we use the classical notion of
+dimension which is the largest integer $d$ such that intersecting
+$S_{\mF}$ with $d$ generic hyperplanes yields a finite set. Those
+algebraic sets with all irreducible components of the same dimension
+are said to be equidimensional. We refer to \cite[xxx]{Shafarevich77}
+for these notions.
 
+\smallskip
 We restrict ourselves to the case where $n = q-p+1$.  Indeed, in this
 case, $S_\mF$ is expected to be finite: for arbitrary $n$, results due
 to Macaulay~\cite{Macaulay16} and Eagon and Northcott~\cite{EN62}
@@ -199,12 +205,26 @@ $$\delta_{\rm col}(\mF) = E_{q-p+1}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q)),$$
 where for $k \ge 0$, $E_k(\delta_1,\dots,\delta_q)$ is the 
 elementary symmetric polynomial of degree $k$ in $\delta_1, \ldots, \delta_q$.
 
+\smallskip
 For any matrix $\mF$ over a ring $R$, and for any integer $r$,
 $M_r(\mF)$ will denote the set of $r$-minors of $\mF$, and $I_r(\mF)$
 will denote the ideal they generate in $R$. If $R$ is a polynomial
 ring in $n$ variables over a field $\KK$, $V_r(\mF)$ will denote the
-zero-set of $I_r(\mF)$ in $\KKbar{}^n$. Our first result is then the
-following.
+zero-set of $I_r(\mF)$ in $\KKbar{}^n$. 
+
+More generally, for any ideal $I$ in $R$, $V(I)$ will denote the
+zero-set of $I$ in $\KKbar{}^n$. As $V(I)$ is the union of irreducible
+components, $I$ is the intersection of finitely many primary
+components $Q_1\cap\cdots \cap Q_s$ and this decomposition is said to
+be minimal when $V(Q_i)\neq V(Q_j)$ for $i\neq j$. Observe that, for
+$\bx \in V(I)$ isolated, there exists a unique primary component (from
+a minimal primary decomposition of $I$) of dimension zero such that
+$\bx \in V(Q_i)$. Then, the \emph{multiplicity} of $\bx$ is defined as
+the dimension of $\KK[\X]/Q_i$. We refer to \cite{Eisenbud95} for more
+details on these notions.
+
+\smallskip
+Our first result is then the following.
 \begin{theorem}\label{theo:1}
   Let $\mF$ be in $\KK[X_1,\dots,X_n]^{p \times q}$ and let
   $(g_1,\dots,g_s)$ be in $\KK[X_1,\dots,X_n]$, with $p \le q$ and
@@ -270,7 +290,7 @@ use the \emph{homotopy}
 \[\mU = (1-T)\cdot \mL + T \cdot \mF \in \KK[T, \X]^{p \times q}\footnote{Notations changed in order to match those in Sections 5 and 6.}\]
 that connects a \emph{start matrix} $\mL$ to the target matrix $\mF$,
 together with a more standard homotopy\footnote{MS: Is it
-  understandable? I wonder}
+  understandable? I wonder...}
 \[V = (1-T) \cdot K + T \cdot G\]
 connecting a start system $K$ to the target system $G$. However, we
 need some properties on the start matrix such that we can compute the
@@ -300,29 +320,15 @@ of $\bC$ and which decides whether $\bx$ is an isolated solution to
 $\bC$.
 
 That decision problem is difficult to solve in a well-controlled
-runtime. One crucial information that can be exploited is the
-\emph{multiplicity} of $\bx$ as a root of $\bC$. To explain what it
-is, we need to introduce some material on algbera and polynomial
-systems.
+runtime. However, when a bound $\mu$ is known on the multiplicity of
+$\bx$ as a root of $\bC$, it becomes possible to make this decision in
+time linear in the evaluation complexity of $\bC$, and polynomial in
+the cardinality of $\bC$, the dimension of the ambient space and
+$\mu$. This is explained in Section~\ref{sec:isolated} where we
+revisit an algorithm and its complexity analysis for getting such a
+runtime.
 
-
-
-
-However, when knowing a bound $\mu$ on the \emph{multiplicity} of
-$\bx$ yields allows to do better. In Section~\ref{sec:isolated}, we
-revisit an algorithm and its complexity analysis which, decides given
-a polynomial system $\bC$ and a point $\bx$
-
-
-
-
-and an integer $\mu$ such and decides if the point
-$\bx$ is an isolated solution 
-
-In the sequel, we denote by $V(\bC)$ the zero-set of $\bC$ and by
-$\langle \bC\rangle$ the ideal it generated. For any prime ideal $P$,
-$\langle \bC\rangle_P$ denotes the localized ideal. 
-
+In Section~\ref{sec:homotopy}, 
 
 
 
@@ -706,7 +712,7 @@ In this section, we work over a field $\KK$, using $n$ variables
 $\bX=(X_1,\dots,X_n)$. Given polynomials $\bC=(c_1,\dots,c_m)$ in
 $\KK[\bX]^m$, we give an algorithm to compute a zero-dimensional
 parametrization of the isolated points of $V(\bC)$, assuming the
-existing of a suitable {\em homotopy deformation} of $\bC$. We assume
+existence of a suitable {\em homotopy deformation} of $\bC$. We assume
 $m\ge n$, otherwise no isolated points exist in $V(\bC)$.
 
 Let $T$ be a new variable and consider polynomials
