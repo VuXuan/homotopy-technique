@@ -60,8 +60,10 @@
   algebraic closure of $\KK$. Consider a sequence of polynomials
   $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$, a polynomial matrix
   $\mF=[f_{i,j}] \in \KK[X_1,\dots,X_n]^{p \times q}$, with $p \leq q$
-  and the set $S_{\mF, G}$ of points in $\KKbar$ at which all polynomials in $\mG$
-  vanish and the rank of $\mF$ is deficient.
+  and the set $S_{\mF, G}$ of points in $\KKbar$ at which all
+  polynomials in $\mG$ and all $p$-minors of $\mF$ vanish. Such
+  polynomial systems appear naturally in polynomial optimization,
+  computational geometry and multivariate cryptography.
 
   For $i=1,\dots,p$, we write $\rdeg(\mF,i)$ for the degree of the
   $i$th row of $\mF$ and let
@@ -72,19 +74,18 @@
 
   Assume that a straight-line program of length $E$ evaluating $G$ and
   $\mF$ is given.  We describe a probabilistic algorithm for computing
-  \emph{all} isolated points of $S_{\mF, G}$. When these solutions
-  have multiplicity one, the algorithm runs in time linear in $E$,
-  quadratic in $\deg(g_1)\cdots \deg(g_s)\delta_{{\rm row}}(\mF)$.
-  This latter quantity is the generic (and maximum) number of
-  solutions which somewhat reflects the optimality of our algorithm.
+  \emph{all} isolated points of $S_{\mF, G}$. When $S_{\mF, G}$ is
+  consists of finitely many solutions of multiplicty one, the
+  algorithm runs in time essentially linear in $E$, quadratic in
+  $\bdelta= \deg(g_1)\cdots \deg(g_s)\delta_{{\rm row}}(\mF)$.  This
+  latter quantity is the generic (and maximum) number of solutions
+  which somewhat reflects the optimality of our algorithm.
 
-  Variants of this algorithm are given when isolated points have
-  positive multiplicity (at the cost of an extra factor
-  ${{q}\choose{p}}$). 
-
-  Applying these results to polynomial optimization problems allows to
-  compute all local minimizers and maximizers in time polynomial in
-  their algebraic degree.
+  Variants of this algorithm handling the more general situations
+  where no assumption is made on the dimension of $S_{\mF, G}$ and the
+  multiplicities of its isolated points are given. Then, the extra
+  cost consists of an extra factor ${{q}\choose{p}}$ and a runtime
+  which is polynomial in $\bdelta$.
 \end{abstract}
 
 \section{Introduction}\label{sec:intro}
@@ -147,13 +148,13 @@ the following.
 We will represent the output of our algorithm using univariate
 polynomials. Let $V \subset \KKbar{}^n$ be a zero-dimensional algebraic
 set defined over $\KK$. A \emph{zero-dimensional parametrization}
-$\scrR = ((q,v_1, \ldots, v_n), \lambda)$ of $V$ consists in
-polynomials $(q,v_1, \ldots, v_n)$ such that $q \in \KK[X]$ is monic
+$\scrR = ((w,v_1, \ldots, v_n), \lambda)$ of $V$ consists in
+polynomials $(w,v_1, \ldots, v_n)$ such that $w \in \KK[X]$ is monic
 and squarefree, all $v_i \in \KK[X]$ and $\deg(v_i) < \deg(q)$, and
 $\lambda$ is a $\KK$-linear form in $n$ variables, such that
 \begin{itemize}
-\item $\lambda(v_1, \ldots, v_n) = Xq'$ mod $q$
-\item we have $V = Z(\scrR)$, with $$Z(\scrR)= \left\{\left(\frac{v_1(\tau)}{q'(\tau)}, \ldots, \frac{v_n(\tau)}{q'(\tau)}\right) \ | \ q(\tau) = 0\right\};$$
+\item $\lambda(v_1, \ldots, v_n) = Xw'$ mod $w$ with $w'=\frac{\partial w}{\partial X}$
+\item we have $V = Z(\scrR)$, with $$Z(\scrR)= \left\{\left(\frac{v_1(\tau)}{w'(\tau)}, \ldots, \frac{v_n(\tau)}{w'(\tau)}\right) \ | \ w(\tau) = 0\right\};$$
 \end{itemize}
 the constraint on $\lambda$ says that the root of $q$ are the values
 taken by $\lambda$ on $V$. This representation was introduced
@@ -200,9 +201,9 @@ following.
 \begin{theorem}\label{theo:1}
   Let $\mF$ be in $\KK[X_1,\dots,X_n]^{p \times q}$ and let
   $(g_1,\dots,g_s)$ be in $\KK[X_1,\dots,X_n]$, with $p \le q$ and
-  $n=q-p+s+1$. Then, sum of the multiplicities of the isolated points
-  of $I_p(\mF) + \langle g_1,\dots,g_s \rangle$ is at most $\deg(g_1)
-  \cdots \deg(g_s) \min(\delta_{\rm row}(\mF), \delta_{\rm
+  $n=q-p+s+1$. Then, the sum of the multiplicities of the isolated
+  points of $I_p(\mF) + \langle g_1,\dots,g_s \rangle$ is at most
+  $\deg(g_1) \cdots \deg(g_s) \min(\delta_{\rm row}(\mF), \delta_{\rm
     col}(\mF))$.
 \end{theorem}
 Previous work by Miller and Sturmfels~\cite[Chapter~15]{MiSt04} proved
@@ -226,9 +227,8 @@ From this, they deduce that the degree of the ideal $I_{\mF,G}$ is at
 most $\deg(g_1) \cdots \deg(g_s) \delta_{\rm row}(\mF)$, in the
 particular case when the matrix $\mF$ is the Jacobian matrix of $G$
 (together with one extra row, corresponding to the gradient of a
-function $q$\footnote{\`a changer car $q$ est utilis\'e dans les
-  param\'etrisations et le nombre de colonnes} that we want to
-optimize on $V(G)$), and assuming that this ideal has dimension zero.
+function $g$ that we want to optimize on $V(G)$), and assuming that
+this ideal has dimension zero.
 
 For generic (homogeneous) polynomials $G$, and $\mF$ as in the
 previous paragraph, Spaenlehauer gave in~\cite{Spa14} an explicit
@@ -240,16 +240,17 @@ zero-dimensional parametrization of the isolated solutions of
 $I_\mF$. Our algorithms take as input a \emph{straight-line program}
 (that is, a sequence of elementary operations $+, -, \times$) that
 computes the entries of $\mF$ from the input variables $\X$. The
-\emph{length $L$} of the input is the number of operations it
+\emph{length $E$} of the input is the number of operations it
 performs. This assumption is not restrictive, since any matrix $\mF$
 can be computed by a (trivial) straight-line program.
 
 \begin{theorem}
+  \todo{$G$ should be integrated ; we also need to define $\delta$.}
   Let $\mF$ be in $\KK[\X]^{p \times q}$, with $p \le q$, and assume
   that either~\eqref{eq:rowdeg} or~\eqref{eq:coldeg} holds. Then,
   there exists a randomized algorithm which computes a
   zero-dimensional parametrization for the isolated solutions of
-  $I_\mF$, using $({q \choose p} L \delta)^{O(1)}$.
+  $I_\mF$, using $({q \choose p} E \delta)^{O(1)}$.
 \end{theorem}
 The number ${q \choose p}$ is the number of elements in the
 determinantal system of $\mF$. In several cases, we can improve the
@@ -258,8 +259,8 @@ for instance, when all isolated solutions of $I_\mF$ are known
 to have multiplicity one.
 
 The main idea of our algorithms is to use the \emph{homotopy}
-\[\mH = (1-T)\cdot \mG + T \cdot \mF \in \KK[T, \X]^{p \times q}\]
-that connects a \emph{start matrix} $\mG$ to the target matrix $\mF$,
+\[\mU = (1-T)\cdot \mL + T \cdot \mF \in \KK[T, \X]^{p \times q}\footnote{Notations changed in order to match those in Sections 5 and 6.}\]
+that connects a \emph{start matrix} $\mL$ to the target matrix $\mF$,
 where $T$ is a new variable\footnote{\`a changer car $\mG$ est
   utilis\'e aussi comme une liste de polyn\^omes}. However, we need
 some properties on the start matrix such that we can compute the
@@ -284,10 +285,12 @@ This paper is organized as follows.
 
 \section{Preliminary: a local dimension test} \label{sec:isolated}
 
-Let $\bC=(c_1,\dots,c_m)$ be polynomials in $\KK[\bX]$, with
-$\bX=(X_1,\dots,X_n)$, for a field $\KK$. Given a point $\bx$ in
-$V(\bC)$, we discuss here how to decide whether $\bx$ is an isolated
-point in $V(\bC)$. We make the following assumption:
+Let $\LL$ be a field containing the field $\KK$ and $\LLbar$ be an
+algebraic closure of $\LL$.  Let $\bC=(c_1,\dots,c_m)$ be polynomials
+in $\KK[\bX]$, with $\bX=(X_1,\dots,X_n)$. Given a point $\bx$ with
+coordinates in $\LL^n$ in the zero-set $V(\bC)\subset \LLbar^n$, we
+discuss here how to decide whether $\bx$ is an isolated point in
+$V(\bC)$. We make the following assumption:
 \begin{description}[leftmargin=*]
 \item [$\assH.$] We are given as input an integer $\mu$ such that
  either $\bx$ belongs to a positive-dimensional component of $V(\bC)$,
@@ -299,20 +302,19 @@ point in $V(\bC)$. We make the following assumption:
   Suppose that $\bC$ is given by a straight-line program of length $E$.
   If assumption $\assH$ is satisfied, we can decide whether $\bx$ is an
   isolated root of $V(\bC)$ using 
-$$O(n^4 \mu^4 + n^2 m \mu^3 + n E \mu^4) \subset (\mu\,E\,m)^{O(1)}$$ operations in~$\KK$.
+$$O(n^4 \mu^4 + n^2 m \mu^3 + n E \mu^4) \subset (\mu\,E\,m)^{O(1)}$$ operations in~$\LL$.
 \end{proposition}
 Reference~\cite{BaHaPeSo09} gives an algorithm to compute the
-dimension of $V(\bC)$ at $\bx$, but its complexity is not known to us, as
-it relies on linear algebra with matrices of potentially large size
-(not necessarily polynomial in $\mu,E,m$).
-Instead, we use an adaptation of a prior result by
-Mourrain~\cite{Mourrain97}, which allows us to control the size of the
-matrices we handle. We only give detailed proofs for new ingredients
-that are specific to our context, a key difference being the cost
-analysis in the straight-line program model: Mourrain's original
-result depends on the number of monomials appearing when we expand
-$\bC$, which would be too high for the applications we will make of
-this result.
+dimension of $V(\bC)$ at $\bx$, but its complexity is not known to us,
+as it relies on linear algebra with matrices of potentially large size
+(not necessarily polynomial in $\mu,E,m$).  Instead, we use an
+adaptation of a prior result by Mourrain~\cite{Mourrain97}, which
+allows us to control the size of the matrices we handle. We only give
+detailed proofs for new ingredients that are specific to our context,
+a key difference being the cost analysis in the straight-line program
+model: Mourrain's original result depends on the number of monomials
+appearing when we expand $\bC$, which would be too high for the
+applications we will make of this result.
 
 Without loss of generality, we assume that $m\ge n$ (otherwise, $\bx$
 cannot be an isolated solution). We also assume that $\bx=0$; this is
@@ -321,10 +323,11 @@ complexity of evaluation $E'=E+n$.  The basis of our algorithm is the
 following remark.
 
 \begin{lemma}
-  Let $I$ be the zero-dimensional ideal $\langle \bC \rangle +
-  \m^{\mu+1}$, where $\m=\langle X_1,\dots,X_n\rangle$ is the maximal
-  ideal at the origin. Then, if $0$ is isolated in $V(\bC)$ if and only
-  if the multiplicity $\delta$ of $I$ at the origin is at most $\mu$.
+  Let $I$ be the zero-dimensional ideal
+  $\langle \bC \rangle + \m^{\mu+1}$, where
+  $\m=\langle X_1,\dots,X_n\rangle$ is the maximal ideal at the
+  origin. Then, $0$ is isolated in $V(\bC)$ if and only if the
+  multiplicity $\delta$ of $I$ at the origin is at most $\mu$.
 \end{lemma}
 \begin{proof}
   This follows from the following
@@ -334,7 +337,7 @@ following remark.
   ideal. Then, the reference above proves that the sequence
   $(\nu_k)_{k \ge 1}$ is non-decreasing, and that $0$ is isolated in
   $V(\bC)$ if and only if there exists $k\ge 1$ such that
-  $\nu_k=\nu_{k+1}$.
+  $\nu_k=\nu_{k+i}$ for any $i\geq 0$.
   \begin{itemize}
   \item If $0$ is isolated in $V(\bC)$, then by assumption $\assH$ 
     its multiplicity with respect to $\langle \bC\rangle$ is at most $\mu$,
@@ -350,46 +353,51 @@ following remark.
 Hence, we are left with deciding whether the multiplicity of the
 $\m$-primary ideal $I$ is at most $\mu$. We do this by following and
 slightly modifying Mourrain's algorithm for the computation of the
-orthogonal $I^{\perp}$, that is, the set of $\KK$-linear forms
-$\KK[\bX] \to \KK$ that vanish on $I$; this is a $\KK$-vector space
-naturally identified with the dual of $\KK[\bX]/I$, so it has dimension
+orthogonal $I^{\perp}$, that is, the set of $\LL$-linear forms
+$\LL[\bX] \to \LL$ that vanish on $I$; this is a $\LL$-vector space
+naturally identified with the dual of $\LL[\bX]/I$, so it has dimension
 $\delta$, the multiplicity of $I$ at the origin (note that $I$ is $\m$-primary).
 
 We do not need to give all details of the algorithm, let alone proof
 of correctness; we just mention the key ingredients for the cost
-analysis in our setting. A linear form $\beta: \KK[\bX] \to \KK$ that
+analysis in our setting. A linear form $\beta: \LL[\bX] \to \LL$ that
 vanishes on $I$ must vanish on all monomials, except a finite number
-(since all monomials, except a finite number, belong to $I$); a
-natural way to represent such a linear form would then be as the
-finite generating series $\sum_{\balpha \in \N^n}
-\beta(X_1^{\alpha_1}\cdots X_n^{\alpha_n}) d_1^{\alpha_1}\cdots
-d_n^{\alpha_n}$, for some new variables $d_1,\dots,d_n$; however the
-number of non-zero coefficients in such a sum cannot be bounded
-polynomially in terms of $n,\mu$.
+(since all monomials, except a finite number, belong to
+$I$)\footnote{I commented the sentence on the finite generating series
+  because we don't use it.}% ; a
+% natural way to represent such a linear form would then be as the
+% finite generating series $\sum_{\balpha \in \N^n}
+% \beta(X_1^{\alpha_1}\cdots X_n^{\alpha_n}) d_1^{\alpha_1}\cdots
+% d_n^{\alpha_n}$, for some new variables $d_1,\dots,d_n$; however the
+% number of non-zero coefficients in such a sum cannot be bounded
+% polynomially in terms of $n,\mu$
+.
 
 Hence, the algorithm uses another way to represent the elements in
 $I^{\perp}$, by means of {\em multiplication matrices}. An important
 feature of $I^{\perp}$ is that it admits the structure of a
-$\KK[\bX]$-module: for $k$ in $\{1,\dots,n\}$ and $\beta$ in
-$I^{\perp}$, the $\KK$-linear form $X_k \cdot \beta: f \mapsto
-\beta(X_k f)$ is easily seen to still be in $I^{\perp}$.  In
-particular, if $\bbeta=(\beta_1,\dots,\beta_m)$ is a $\KK$-basis of
-$I^{\perp}$, then for all $k$ as above, and all $i$ in
+$\LL[\bX]$-module: for $k$ in $\{1,\dots,n\}$ and $\beta$ in
+$I^{\perp}$, the $\LL$-linear form
+$X_k \cdot \beta: f \mapsto \beta(X_k f)$ is easily seen to still lie
+in $I^{\perp}$.  In particular, if
+$\bbeta=(\beta_1,\dots,\beta_d)$\footnote{\check je change $m$ en
+  $d$ car $m$ c'\'etait le nombre d'\'equations} is a $\LL$-basis
+of $I^{\perp}$, then for all $k$ as above, and all $i$ in
 $\{1,\dots,m\}$, $X_k \cdot \beta_i$ is a linear combination of
-$\beta_1,\dots,\beta_m$. Mourrain's algorithm computes a
-basis $\bbeta=(\beta_1,\dots,\beta_m)$ with the following features:
+$\beta_1,\dots,\beta_d$. Mourrain's algorithm computes a basis
+$\bbeta=(\beta_1,\dots,\beta_d)$ with the following features:
 \begin{itemize}
-\item for $i$ in $\{1,\dots,m\}$ and $k$ in $\{1,\dots,n\}$, we have
+\item for $i$ in $\{1,\dots,d\}$ and $k$ in $\{1,\dots,n\}$, we have
   $X_k \cdot \beta_i=\sum_{0 \le j < i} \lambda^{(k)}_{i,j} \beta_j$
   (hence $\lambda^{(k)}_{i,j}$ may be non-zero 
   only for $j<i$)
 \item $\beta_1$ is the evaluation at $0$, $f \mapsto f(0)$
-\item for $i$ in $\{2,\dots,m\}$, $\beta_i(1)=0$.
+\item for $i$ in $\{2,\dots,d\}$, $\beta_i(1)=0$.
 \end{itemize}
 The following lemma shows that the coefficients $(\lambda^{(k)}_{i,j})$
 are sufficient to evaluate  the linear forms $\beta_i$ at any $f$ in
-$\KK[\bX]$. More precisely, knowing only their values for $j < i \le s$,
-for any $s \le m$, allows us to evaluate $\beta_1,\dots,\beta_s$ at such an $f$.
+$\LL[\bX]$. More precisely, knowing only their values for $j < i \le s$,
+for any $s \le d$, allows us to evaluate $\beta_1,\dots,\beta_s$ at such an $f$.
 The following lemma follows~\cite{Mourrain97} in its description
 of the matrices $\bM_{k,s}$; the (rather straightforward) complexity analysis 
 in the straight-line program model is new.
@@ -397,12 +405,12 @@ in the straight-line program model is new.
    Let $s$ be in $1,\dots,\delta$, and suppose that the coefficients
   $\lambda^{(k)}_{i,j}$ are known for $i=1,\dots,s$, $j=0,\dots,i-1$
   and $k=1,\dots,n$. Given a straight-line program $\Gamma$ of length
-  $L$ that computes $\h=(h_1,\dots,h_R)$, one can compute
+  $\Lambda$ that computes $\h=(h_1,\dots,h_R)$, one can compute
   $\beta_i(h_r)$, for all $i=1,\dots,s$ and $r=1,\dots,R$, using
-  $O(s^3\,L)$ operations.
+  $O(s^3\,\Lambda)$ operations in $\LL$.
 \end{lemma}
 \begin{proof}
-  By definition, for $h$ in $\KK[\bX]$ and $k=1,\dots,n$, the following equality
+  By definition, for $h$ in $\LL[\bX]$ and $k=1,\dots,n$, the following equality
   holds:
 $$
   \begin{bmatrix}
@@ -423,7 +431,7 @@ $$
     \lambda^{(k)}_{1,s} & \cdots & \lambda^{(k)}_{s,s}
   \end{bmatrix}.
 $$ 
- Remark that the matrices $\bM_{k,s}$ all commute. Indeed, 
+ Remark that the matrices $\bM_{k,s}$ all commute with each other. Indeed, 
 for any $k,k'$ in $\{1,\dots,n\}$, and $h$ as above, the relation above implies
 that 
 $$
@@ -453,10 +461,10 @@ h(\bM_{1,s},\dots,\bM_{n,s})   \begin{bmatrix}
     \beta_s(1)
   \end{bmatrix} $$ On the other hand, our assumptions imply that the
   sequence $(\beta_1(1),\dots,\beta_s(1))$ is simply $(1,0,\dots,0)$.
-  To prove the proposition, it is then enough to note that the evaluations \sloppy
+  To prove the lemma, it is then enough to note that the evaluations \sloppy
   $h_1(\bM_{1,s},\dots,\bM_{n,s}),\dots,h_R(\bM_{1,s},\dots,\bM_{n,s})$
   can be computed using the straight-line program doing
-  $O(s^3\,L)$ operations.
+  $O(s^3\,\Lambda)$ operations.
 \end{proof}
 
 Mourrain's alorithm proceeds in an iterative manner, starting from
@@ -510,15 +518,18 @@ $\bbeta^{(1)},\dots,\bbeta^{(\ell)}$ vanish on all monomials of degree
 at least $\ell$.
 
 There remains the question of setting up the system $S_\ell$. For $k$
-in $\{1,\dots,n\}$ and a $\KK$-linear form $\beta$, we denote by
-$X_k^{-1} \cdot \beta$ the $\KK$-linear form defined as follows:
+in $\{1,\dots,n\}$ and a $\LL$-linear form $\beta$, we denote by
+$X_k^{-1} \cdot \beta$ the $\LL$-linear form defined as follows:
 \begin{itemize}
-\item $(X_k^{-1} \cdot \beta)(X_k f) = \beta(f)$ for all $f$ in $\KK[\bX]$,
-\item $(X_k^{-1} \cdot \beta)(f)=0$ if $f\in \KK[\bX]$ does not depend on $X_k$.
+\item $(X_k^{-1} \cdot \beta)(X_k f) = \beta(f)$ for any term $f$ in $\LL[\bX]$,
+\item $(X_k^{-1} \cdot \beta)(f)=0$ if $f\in \LL[\bX]$ is a term which does not depend on $X_k$.
 \end{itemize}
-In other words, $(X_k^{-1} \cdot \beta)(f)=\beta(\delta_k(f))$ holds
-for all $f$, where $\delta_k:\KK[\bX] \to \KK[\bX]$ is the $k$th divided
-difference operator
+Next, when $f$ is a polynomial in $\LL[\bX]$,
+$(X_k^{-1} \cdot \beta)(f)$ is defined as the sum of the image of its
+terms by $(X_k^{-1} \cdot \beta)$.  In other words,
+$(X_k^{-1} \cdot \beta)(f)=\beta(\delta_k(f))$ holds for all $f$,
+where $\delta_k:\KK[\bX] \to \KK[\bX]$ is the $k$th divided difference
+operator
 $$f\mapsto \frac
 {f(X_1,\dots,X_n)-f(X_1,\dots,X_{k-1},0,X_{k+1},\dots,X_n)}{X_k}.$$
 One verifies that, as the notation suggests, $X_k \cdot (X_k^{-1}
@@ -556,64 +567,66 @@ values
 $$(X_k^{-1} \cdot \beta_i)(c_j(X_1,\dots,X_k,0,\dots,0)),$$ for
 $k=1,\dots,n$, $i=1,\dots,e_\ell$ and $j=1,\dots,m$.  Fixing $k$, we
 let $\bC_k = (c_{j,k})_{1 \le j \le m}$, where $c_{j,k}$ is the
-polynomial $c_j(X_1,\dots,X_k,0,\dots,0)$; note that the system $\bC_k$
-can be computed by a straight-line program of length $E'=E+n$. Then,
-applying the following lemma with $s=e_\ell \le \mu$ and $\h = \bC_k$,
-we deduce that the values $(X_k^{-1} \cdot
-\beta_i)(c_j(X_1,\dots,X_k,0,\dots,0))$, for $k$ fixed, can be
-computed in time $O(\mu^3 (E+n))$.
+polynomial $c_j(X_1,\dots,X_k,0,\dots,0)$; note that the system
+$\bC_k$ can be computed by a straight-line program of length
+$E'\leq E+n$. Then, applying the following lemma with
+$s=e_\ell \le \mu$ and $\h = \bC_k$, we deduce that the values
+$(X_k^{-1} \cdot \beta_i)(c_j(X_1,\dots,X_k,0,\dots,0))$, for $k$
+fixed, can be computed in time $O(\mu^3 (E+n))$.
 
 
 \begin{lemma}
   Let $s$ be in $1,\dots,\delta$, and suppose that the coefficients
   $\lambda^{(k)}_{i,j}$ are known for $i=1,\dots,s$, $j=0,\dots,i-1$
   and $k=1,\dots,n$. Given a straight-line program $\Gamma$ of length
-  $L$ that computes $\h=(h_1,\dots,h_R)$ and given $k$ in
+  $\Lambda$ that computes $\h=(h_1,\dots,h_R)$ and given $k$ in
   $\{1,\dots,n\}$, one can compute $(X_k^{-1}\cdot \beta_i)(h_r)$, for
-  all $i=1,\dots,s$ and $r=1,\dots,R$, using $O(s^3 (L+n))$
+  all $i=1,\dots,s$ and $r=1,\dots,R$, using $O(s^3 (\Lambda+n))$
   operations in $\KK$.
 \end{lemma}
 \begin{proof}
   In view of the formula $(X_k^{-1} \cdot
   \beta)(f)=\beta(\delta_k(f))$, and of Lemma~\ref{lemma:evalbeta}, it is
   enough to prove the existence of a straight-line program of length
-  $O(L+n)$ that computes $(\delta_k(h_1),\dots,\delta_k(h_R))$.
+  $O(\Lambda+n)$ that computes $(\delta_k(h_1),\dots,\delta_k(h_R))$.
 
   To do this, we replace all polynomials
-  $\gamma_{-n+1},\dots,\gamma_L$ computed by $\Gamma$ by terms
-  $\lambda_{-n+1},\dots,\lambda_L$ and $\mu_{-n+1},\dots,\mu_L$, with
-  $\lambda_\ell=\gamma_\ell(X_1,\dots,X_{k-1},0,X_{k+1},\dots,X_n)$
-  and $\mu_\ell$ in $\KK[\bX]$ such that $\gamma_\ell= \lambda_\ell+X_k
-  \mu_\ell$ holds for all $\ell$, so that in particular
-  $\mu_\ell=\delta_k(\gamma_\ell)$.  To compute $\lambda_\ell$ and
-  $\mu_\ell$, assuming all previous $\lambda_{\ell'}$ and
-  $\mu_{\ell'}$ are known, we proceed as follows:
+  $\gamma_{-n+1},\dots,\gamma_\Lambda$ computed by $\Gamma$ by terms
+  $\eta_{-n+1},\dots,\eta_\Lambda$ and $\nu_{-n+1},\dots,\nu_\Lambda$,
+  with
+  $\eta_\ell=\gamma_\ell(X_1,\dots,X_{k-1},0,X_{k+1},\dots,X_n)$
+  and $\nu_\ell$ in $\KK[\bX]$ such that
+  $\gamma_\ell= \eta_\ell+X_k \nu_\ell$ holds for all $\ell$, so
+  that in particular $\nu_\ell=\delta_k(\gamma_\ell)$.  To compute
+  $\eta_\ell$ and $\nu_\ell$, assuming all previous
+  $\eta_{\ell'}$ and $\nu_{\ell'}$ are known, we proceed as
+  follows:
   \begin{itemize}
-  \item if $\gamma_\ell=X_k$, we set $\lambda_\ell=0$ and $\mu_\ell=1$;
-  \item if $\gamma_\ell=X_{k'}$, with $k' \ne k$, we set $\lambda_\ell=X_{k'}$ and $\mu_\ell=0$;
+  \item if $\gamma_\ell=X_k$, we set $\eta_\ell=0$ and $\nu_\ell=1$;
+  \item if $\gamma_\ell=X_{k'}$, with $k' \ne k$, we set $\eta_\ell=X_{k'}$ and $\nu_\ell=0$;
   \item if $\gamma_\ell =c_\ell$, with $c_\ell \in \KK$,
-    then we set $\lambda_\ell=c_\ell$ and  $\mu_\ell=0$;
+    then we set $\eta_\ell=c_\ell$ and  $\nu_\ell=0$;
   \item if $\gamma_\ell = \gamma_{a_\ell} \pm \gamma_{b_\ell}$,
     for some indices $a_\ell,b_\ell < \ell$, 
-    then we set $\lambda_\ell=\lambda_{a_\ell}\pm\lambda_{b_\ell}$
-    and $\mu_\ell=\mu_{a_\ell}\pm\mu_{b_\ell}$;
+    then we set $\eta_\ell=\eta_{a_\ell}\pm\eta_{b_\ell}$
+    and $\nu_\ell=\nu_{a_\ell}\pm\nu_{b_\ell}$;
 \item if $\gamma_\ell = \gamma_{a_\ell} \gamma_{b_\ell}$,
       for some indices $a_\ell,b_\ell < \ell$,
-    then we set $\lambda_\ell=\lambda_{a_\ell} \lambda_{b_\ell}$
-    and $$\mu_\ell=
-\lambda_{a_\ell} \mu_{b_\ell}
+    then we set $\eta_\ell=\eta_{a_\ell} \eta_{b_\ell}$
+    and $$\nu_\ell=
+\eta_{a_\ell} \nu_{b_\ell}
 +
-\mu_{a_\ell} \lambda_{b_\ell}
+\nu_{a_\ell} \eta_{b_\ell}
 +
-X_k\mu_{a_\ell} \mu_{b_\ell}.$$
+X_k\nu_{a_\ell} \nu_{b_\ell}.$$
 \end{itemize}
 One verifies that in all cases, the relation $\gamma_\ell=
-\lambda_\ell+X_k \mu_\ell$ still holds. Since the previous
-construction allows us to compute $\lambda_\ell$ and $\mu_\ell$ in
-$O(1)$ operations from the knowledge of all previous $\lambda_{\ell'}$
-and $\mu_{\ell'}$, we deduce that all $\lambda_\ell$ and $\mu_\ell$,
-for $\ell=-n+1,\dots,L$, can be computed by a straight-line program of
-length $O(L+n)$.
+\eta_\ell+X_k \nu_\ell$ still holds. Since the previous
+construction allows us to compute $\eta_\ell$ and $\nu_\ell$ in
+$O(1)$ operations from the knowledge of all previous $\eta_{\ell'}$
+and $\nu_{\ell'}$, we deduce that all $\eta_\ell$ and $\nu_\ell$,
+for $\ell=-n+1,\dots,\Lambda$, can be computed by a straight-line program of
+length $O(\Lambda+n)$.
 \end{proof}
 
 Taking all values of $k$ into account, we see that we can compute all
