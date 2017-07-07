@@ -1304,7 +1304,7 @@ $O(c)$. The runtime deduced from Proposition~\ref{prop:testisolated} is
 $$O(n^4 c^6 + n^2 m c^5 + n E c^6)$$ operations in~$\KK$. Adding all
 costs seen so far, we prove Proposition~\ref{prop:compute_isolated}.
 \begin{algorithm}
-\caption{$\mathsf{}$}
+\caption{$\mathsf{Homotopy}$}
 {\bf Input}:\begin{itemize}
 \item the targent system $\bC \in \KK[\bX]^{m}$, a start system $\bA \in \KK[\X]^m$
 \item $\scrR_0$ a zero-dimensional parametrization of the system $\bA$
@@ -1330,23 +1330,6 @@ $\mathsf{cost: O(n^4 c^6 + n^2 m c^5 + n E c^6)}$
 $\mathsf{Overall: }$
 \label{DetSys}
 \end{algorithm}
-%\begin{enumerate}
-%\item for any ${\bf x} \in V(\g)$: 
-%\begin{enumerate}
-%\item find a system $\h^{(\bf x)}$ in $\field[T,\mat{X}]^n$
-%\item compute $\mathscr{R}_{\bf x}$ zero-dimensional parametrization at precision $2d$. \\
-%$\mathsf{//* \ use \ algorithm \ in~\cite{GiLeSa01} \ }$
-%\end{enumerate}
-%\item combine $\{\mathscr{R}_{\bf x}\}_{{\bf x} \in V(\g)}$ into $\mathscr{R}$
-%\item compute $\mathscr{S}$ with coefficients in $\field(T)$ from  $\mathscr{R}$\\
-%$\mathsf{//* apply \ RationalReconstruction \ algorithm \ in~\cite{Schost03} \ to \ all \ coefficients \ of \ \mathscr{R} \ at \ degree} \ d$
-%\item clean denominators of $\mathscr{S}$
-%\item deduce $\mathscr{R}_{1}$ from $\mathscr{S}$
-%\item  $S \gets$ removing from $\mathscr{R}_{1}$ non-isolated points of $V(\f)$\\
-%$\mathsf{//* apply \ algorithm \ in~\cref{subsec:isolated}}$
-%\item return $S$
-%\end{enumerate}
-%\end{algorithm}
  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1834,6 +1817,35 @@ with $c=\gamma_1\cdots\gamma_s \delta_{\rm row}(\mF)$ and
 $e=(\gamma_1+1)\cdots(\gamma_s+1) \tilde\delta_{\rm row}(\mF)$.
 This is also  $\softO\left (c(e+c^5 )(E + c)\right).$
 
+\begin{algorithm}
+\caption{$\mathsf{Column-degreeHomotopy}$}
+{\bf Input}:\begin{itemize}
+\item a polynomial matrix $F \in \KK[X_1, \ldots, X_n]^{p \times q}$
+\item polynomials $G = (g_1, \ldots, g_s)$ in $\KK[X_1, \ldots, X_n]$ with $p \leq q$, $n = q-p+s+1$
+\end{itemize}
+{\bf Output}: the isolated points of
+$$\{\bx \in \KKbar{}^n \mid  \mathrm{rank}(\mF({\bx})) < p
+\text{~and~} g_1(\bx)=\cdots=g_s(\bx)=0\}$$
+\begin{enumerate}
+\item construct \begin{itemize}
+\item a polynomial matrix $L \in \KK[\bX]^{p \times q}$
+\item polynomials $M = (m_1, \ldots, m_s)$ in $\KK[\bX]$
+\end{itemize}
+\item buid 
+\begin{itemize}
+\item targent system $\bC \in \KK[\bX]^{m}$ from $G$ and $F$
+\item start system $\bA \in \KK[\bX]^{m}$ from $M$ and $L$
+\item homotopy system $\bB \in \KK[T,\bX]^{m}$ from $((1-T)m_i + Tg_i)_{1 \leq i \leq s}$ and $p$-minors of $(1-T)L + TF$
+\end{itemize} 
+%$\mathsf{cost:}$
+\item compute zero-dimensional parametrization $\scrR_0$ of $V(\bA)$\\
+$\mathsf{cost: O(c\,n^3)}$
+\item call $\mathsf{Homotopy}(\bC,\bA,\scrR_0,\bB)$\\
+$\mathsf{cost: \softO\left (c(e+c^5 n)(E + cn^{\textcolor{red}{4}}\right)}$
+\end{enumerate}
+$\mathsf{Overall: \softO\left (c(e+c^5 n)(E + cn^{\textcolor{red}{4}}\right)}$
+\label{DetSys}
+\end{algorithm}
 %% case discussion on e and c^5 n.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
