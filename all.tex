@@ -1844,7 +1844,7 @@ $\mathsf{cost: O(c\,n^3)}$
 $\mathsf{cost: \softO\left (c(e+c^5 n)(E + cn^{\textcolor{red}{4}}\right)}$
 \end{enumerate}
 $\mathsf{Overall: \softO\left (c(e+c^5 n)(E + cn^{\textcolor{red}{4}}\right)}$
-\label{DetSys}
+\label{ColHom}
 \end{algorithm}
 %% case discussion on e and c^5 n.
 
@@ -1971,6 +1971,29 @@ deduce the equality
 Assuming we are given a procedure to compute a zero-dimensional
 representation of the algebraic sets $V_\kappa(\mM_{\bi,\br})$, the
 following pseudo-code summarizes the discussion above.
+
+\begin{algorithm}
+\caption{$\mathsf{}$}
+{\bf Input}: 
+matrix $N \in \KK[X_1, \ldots, X_t]^{p \times q}$ with $p \leq q$, $t = q-p+1$\\
+{\bf Output}: a zero-dimensional parametrization $\scrR_0$ of $V(I_p(N))$
+\begin{enumerate}
+\item for any subsequence $\bi = (i_1, \ldots, i_\kappa)$ of $(1, \ldots, p)$ with $1 \leq \kappa \leq\min(t,p)$: 
+\begin{enumerate}
+\item[1.1] write $X_{t-\kappa+1}, \ldots, X_t$ in linear forms of $X_1, \ldots, X_{t-\kappa}$ from $(\lambda_j)_{j \in \bi}$%$(\lambda_{i_1,i_1}, \ldots, \lambda_{i_\kappa, i_\kappa})$
+\item[1.2] substitute $(X_i)_{t-\kappa+1 \leq i \leq t}$ into $N_{\bi,(p+1, \ldots, q)}$ obtain $M_{\bi} \in \KK[X_1, \ldots, X_{t-\kappa}]^{\kappa \times (t-1)}$
+\item[1.3] $p \gets \kappa$, $q \gets t-1$, $t \gets t-\kappa$
+\begin{enumerate}
+\item[1.3.1] if $p \leq q$ : $\scrR_{0,\bi}' \gets$ $\mathsf{Row-degreeHomotopy}(M_{\bi},\mathbf{0})$
+\item[1.3.2] else:  $\scrR_{0,\bi}' \gets$ $\mathsf{Column-degreeHomotopy}(M_{\bi},\mathbf{0})$
+\end{enumerate}
+\item[1.4] deduce $\scrR_{0,\bi}$ from $\scrR_{0,\bi}'$
+\end{enumerate}
+\item combine $(\scrR_0)_{{\bi} \subset (1, \ldots,p)^\kappa}$ to $\scrR_0$
+\end{enumerate}
+\label{Row}
+\end{algorithm}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -2295,8 +2318,6 @@ $$
 
 
 
-
-
 % estimate $c$,
 % note first that there are $\gamma_1\cdots \gamma_s$ choices of
 % $\bu$. For each choice of $\bu$, there are $\delta_{\rm
@@ -2331,10 +2352,6 @@ $$
 
 %% \begin{proof} Without of loss of generality, we prove this result for $(i_1, \ldots, i_k) = (1, \ldots, k)$. This means we have $g_{1}(\bx) = \cdots = g_{k}(\bx) = 0$ and $g_{j}(\bx) \ne 0$ for any $j \in \{k+1, \ldots, p\}$. Let $G_{1:p;*} \in \KK[\bX]^{p \times p}$ be the submatrix of $G$ consisting $p$ rows and the columns $k+1, \ldots, p, j_1, \ldots, j_k$ of $G$, where $p+1 \leq j_i \leq q$. Let $f_{1:p;*}$ is the determinant of $G_{1:p;*}$. Then, for any solution $\bx$ of $\g$, $f_{1:p;*}(\bx) = 0$. Moreover, $f_{1:p;*} = \det(G_{1:p;*}) = g_{k+1,k+1} \ldots g_{p,p} \det(G_{1:k;j_1:j_k})$. Therefore, $\det(G_{1:k;j_1:j_k})(\bx) = 0$. This holds for any $(j_1, \ldots, j_k) \in \{p+1, \ldots, q\}^{k}$. This implies that $\mathrm{rank}(G_{i_1:i_k\mathbf{;}p+1:q}({\bx})) \leq k-1$. 
 %% \end{proof}
-
-
-
-
 
 
 
