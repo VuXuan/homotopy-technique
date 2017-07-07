@@ -1536,14 +1536,15 @@ where all $\lambda_{j,k,\ell}$ are random elements in
 $\KK$. Then, for $j=1,\dots,q$, we define
 $$\lambda_j = \prod_{k=1}^{\delta_j}\lambda_{j,k},$$
 and we let  $\mL$ be the matrix
-\[\mL = 
+\begin{align}\label{eqdef:col}
+\mL = 
 \left( \begin{matrix}
 \lambda_1 & 2\lambda_2 & \cdots & q\lambda_{q}\\
 \lambda_1 & 2^2\lambda_2 & \cdots & q^2\lambda_q\\
 \vdots & \vdots &  & \vdots \\
 \lambda_1 & 2^p\lambda_2 & \cdots & q^p\lambda_q
 \end{matrix} \right) \in \KK[\bX]^{p\times q}.
-\]
+\end{align}
 For $i=1,\dots,s$ and $k=1,\dots,\gamma_i$, let us further define
 $$\mu_{i,k} =  \mu_{i,k,0} + \sum_{\ell = 1}^{n}\mu_{i,k,\ell}X_\ell,$$ where
 all $\mu_{i,k,\ell}$ are random elements in $\KK$; then, we let
@@ -1820,7 +1821,7 @@ This is also  $\softO\left (c(e+c^5 )(E + c)\right).$
 \begin{algorithm}
 \caption{$\mathsf{Column-degreeHomotopy}$}
 {\bf Input}:\begin{itemize}
-\item a polynomial matrix $F \in \KK[X_1, \ldots, X_n]^{p \times q}$
+\item a polynomial matrix $F \in \KK[X_1, \ldots, X_n]^{p \times q}$ with $\deg(f_{i,j}) \leq \delta_j$
 \item polynomials $G = (g_1, \ldots, g_s)$ in $\KK[X_1, \ldots, X_n]$ with $p \leq q$, $n = q-p+s+1$
 \end{itemize}
 {\bf Output}: the isolated points of
@@ -1828,7 +1829,7 @@ $$\{\bx \in \KKbar{}^n \mid  \mathrm{rank}(\mF({\bx})) < p
 \text{~and~} g_1(\bx)=\cdots=g_s(\bx)=0\}$$
 \begin{enumerate}
 \item construct \begin{itemize}
-\item a polynomial matrix $L \in \KK[\bX]^{p \times q}$
+\item a polynomial matrix $L \in \KK[\bX]^{p \times q}$ as in~\ref{eqdef:col}
 \item polynomials $M = (m_1, \ldots, m_s)$ in $\KK[\bX]$
 \end{itemize}
 \item buid 
@@ -1840,7 +1841,7 @@ $$\{\bx \in \KKbar{}^n \mid  \mathrm{rank}(\mF({\bx})) < p
 %$\mathsf{cost:}$
 \item compute zero-dimensional parametrization $\scrR_0$ of $V(\bA)$\\
 $\mathsf{cost: O(c\,n^3)}$
-\item call $\mathsf{Homotopy}(\bC,\bA,\scrR_0,\bB)$\\
+\item return $\mathsf{Homotopy}(\bC,\bA,\scrR_0,\bB)$\\
 $\mathsf{cost: \softO\left (c(e+c^5 n)(E + cn^{\textcolor{red}{4}}\right)}$
 \end{enumerate}
 $\mathsf{Overall: \softO\left (c(e+c^5 n)(E + cn^{\textcolor{red}{4}}\right)}$
@@ -1973,7 +1974,7 @@ representation of the algebraic sets $V_\kappa(\mM_{\bi,\br})$, the
 following pseudo-code summarizes the discussion above.
 
 \begin{algorithm}
-\caption{$\mathsf{}$}
+\caption{$\mathsf{StartRow}$}
 {\bf Input}: 
 matrix $N \in \KK[X_1, \ldots, X_t]^{p \times q}$ with $p \leq q$, $t = q-p+1$\\
 {\bf Output}: a zero-dimensional parametrization $\scrR_0$ of $V(I_p(N))$
@@ -2083,12 +2084,14 @@ could imagine a matrix with $i$th row of the form $[1^i
 variety has positive dimension). Instead, we use a deformation that
 cancels out many off-diagonal terms; following the 
 construction in the previous subsection, we define
-\[ \mL = \left( \begin{matrix}
+\begin{align}\label{eqdef:startrow}
+\mL = \left( \begin{matrix}
 \lambda_{1,1} & 0 & \cdots & 0 & \lambda_{1,p+1} & \cdots & \lambda_{1, q}\\
 0 & \lambda_{2,2} & \cdots & 0 & \lambda_{2,p+1} & \cdots & \lambda_{2, q}\\
 \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
 0 & 0 & \cdots & \lambda_{p,p} & \lambda_{p,p+1} & \cdots & \lambda_{p, q}
-\end{matrix} \right), \] 
+\end{matrix} \right), 
+\end{align} 
 where for all $i,$, $\lambda_{i,j}$ is a product of $\alpha_i$ linear forms with generic
 coefficients, of the form
 $$\lambda_{i,j}= \prod_{k=1}^{\alpha_i}\lambda_{i,j,k},
@@ -2354,8 +2357,34 @@ $$
 %% \end{proof}
 
 
-
-
+\begin{algorithm}
+\caption{$\mathsf{Row-degree Homotopy}$}
+{\bf Input}:\begin{itemize}
+\item a polynomial matrix $F \in \KK[X_1, \ldots, X_n]^{p \times q}$ with $\deg(f_{i,j}) \leq \delta_i$
+\item polynomials $G = (g_1, \ldots, g_s)$ in $\KK[X_1, \ldots, X_n]$ with $p \leq q$, $n = q-p+s+1$
+\end{itemize}
+{\bf Output}: the isolated points of
+$$\{\bx \in \KKbar{}^n \mid  \mathrm{rank}(\mF({\bx})) < p
+\text{~and~} g_1(\bx)=\cdots=g_s(\bx)=0\}$$
+\begin{enumerate}
+\item construct \begin{itemize}
+\item a polynomial matrix $L \in \KK[\bX]^{p \times q}$ as in~\ref{eqdef:startrow}
+\item polynomials $M = (m_1, \ldots, m_s)$ in $\KK[\bX]$
+\end{itemize}
+\item buid 
+\begin{itemize}
+\item targent system $\bC \in \KK[\bX]^{m}$ from $G$ and $F$
+\item start system $\bA \in \KK[\bX]^{m}$ from $M$ and $L$
+\item homotopy system $\bB \in \KK[T,\bX]^{m}$ from $((1-T)m_i + Tg_i)_{1 \leq i \leq s}$ and $p$-minors of $(1-T)L + TF$
+\end{itemize}
+\item write $X_{n-s+1}, \ldots, X_n$ in linear forms of $(X_i)_{1\leq i \leq n-s}$ from $M$
+\item substitute $(X_i)_{n-s+1 \leq i \leq n}$ into L to obtain $N\in \KK[X_1, \ldots, X_{n-s}]^{p \times q}$
+\item $\scrR_0 \gets \mathsf{StartRow}(N)$
+\item return $\mathsf{Homotopy}(\bC,\bA,\scrR_0,\bB)$
+\end{enumerate}
+\label{Row}
+\end{algorithm}
+\newpage
 \bibliographystyle{plain} \bibliography{roadmap}
 
 
