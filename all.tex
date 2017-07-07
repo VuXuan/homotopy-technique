@@ -1853,28 +1853,19 @@ $\mathsf{Overall: \softO\left (c(e+c^5 n)(E + cn^{\textcolor{red}{4}}\right)}$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{The row-degree homotopy}\label{sec:rowdegree}
+\section{Preliminaries for the row-degree homotopy}
+
 
 For any ring $R$ and any matrix $\mM \in R^{p\times q}$, if $S$ is a
 subsequence of $(1,\dots,p)$ and $T$ a subsequence of $(1,\dots,q)$,
-the $\mM_{S,T}$ is the submatrix obtained by keeping rows indexed by
-$S$ and columns indexed by $T$.
+$\mM_{S,T}$ is the submatrix obtained by keeping rows indexed by $S$
+and columns indexed by $T$. We also call this the $(S,T)$-submatrix of $\mM$.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Preliminaries}
-
-In this subsection, we work with two families of matrices in
-$\KK[X_0,\dots,X_t]^{p\times q}$, with $t=q-p+1$. These matrices are
-\begin{align}\label{eqdef:type1}
-\mN^H= \left( \begin{matrix}
-\lambda^H_{1,1} & 0 & \cdots & 0 & \lambda^H_{1,p+1} & \cdots & \lambda^H_{1, q}\\
-0 & \lambda^H_{2,2} & \cdots & 0 & \lambda^H_{2,p+1} & \cdots & \lambda^H_{2, q}\\
-\vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
-0 & 0 & \cdots & \lambda^H_{p,p} & \lambda^H_{p,p+1} & \cdots & \lambda^H_{p, q}
-\end{matrix} \right),
-\end{align}
-and matrices of a more general form such as
+In this section, we work with two families of matrices of size $p
+\times q$, with $p \le q$, and with entries that are polynomials in
+$n=q-p+1$ variables; we prove several properties that will be used 
+in our row-degree homotopy algorithm.
+These matrices are
 \begin{align}\label{eqdef:type2}
 \mM^H= \left( \begin{matrix}
 \lambda^H_{1,1} & \lambda^H_{1,2} & \cdots & \lambda^H_{1, q}\\
@@ -1883,95 +1874,662 @@ and matrices of a more general form such as
  \lambda^H_{p,1} &  \lambda^H_{p,2}& \cdots & \lambda^H_{p, q}
 \end{matrix} \right),
 \end{align}
+and matrices of a more specialized kind of the form
+\begin{align}\label{eqdef:type1}
+\mN^H= \left( \begin{matrix}
+\lambda^H_{1,1} & 0 & \cdots & 0 & \lambda^H_{1,p+1} & \cdots & \lambda^H_{1, q}\\
+0 & \lambda^H_{2,2} & \cdots & 0 & \lambda^H_{2,p+1} & \cdots & \lambda^H_{2, q}\\
+\vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
+0 & 0 & \cdots & \lambda^H_{p,p} & \lambda^H_{p,p+1} & \cdots & \lambda^H_{p, q}
+\end{matrix} \right),
+\end{align}
 where the ${}^H$ superscript indicates that all entries are
 homogenous.  In both cases, for all $i,j$, the entry $\lambda^H_{i,j}$
-is a product of $\alpha_i$ homogeneous linear forms in $t+1$ variables
-$X_0,\dots,X_t$ with generic coefficients (except when
+is a product of $\alpha_i$ homogeneous linear forms in $n+1$ variables
+$X_0,\dots,X_n$ with generic coefficients (except when
 $\lambda^H_{i,j}$ is explicitly set to zero in the first case), that
-is, $\lambda^H_{i,j}=\prod_{k=1}^{\alpha_i} \lambda^H_{i,j,k}$. 
+is, $\lambda^H_{i,j}=\prod_{k=1}^{\alpha_i} \lambda^H_{i,j,k}$.  
 
-We are interested in describing the projective algebraic set defined
-in $\P^t(\KKbar)$ by $I_p(\mN^H)$ and $I_p(\mM^H)$ (note that these
-minors are all homogeous). In appendix, we prove the following
-properties.
-\begin{lemma}\label{lemma:appendix}
+We are interested in describing the projective algebraic sets defined
+in $\P^n(\KKbar)$ by the $p$-minors of $\mN^H$ and $\mM^H$ (note that
+these minors are all homogeous). In the rest of this section, if $\mA$
+is a matrix with polynomial entries, all of whose $t$-minors are
+homogeneous in $X_0,\dots,X_n$, we use the notation $V_t(\mA)$ to
+denote the projective set defined by its $t$-minors in $\P^n(\KKbar)$
+(we use the same notation for affine algebraic sets if those cases 
+when the entries of $\mA$ are polynomials in $X_1,\dots,X_n$; 
+this should cause no confusion).
+
+\begin{proposition}\label{lemma:appendix}
   For generic choices of the coefficients of the linear forms
   $\lambda^H_{i,j,k}$, the following holds:
   \begin{itemize}
-  \item the projective algebraic sets defined in $\P^t(\KKbar)$ by
-    $I_p(\mN^H)$ and $I_p(\mM^H)$ have no solution at infinity (that is,
-    with $X_0=0$);
-  \item the Jacobian matrices of $I_p(\mN^H)$ and $I_p(\mM^H)$ with
-    respect to $(X_0,\dots,X_t)$ have rank $t$ at every point of the above
-    sets.
+  \item the projective algebraic sets defined in $\P^n(\KKbar)$ by
+    $I_p(\mM^H)$ and $I_p(\mN^H)$ have no solution at infinity (that
+    is, with $X_0=0$);
+  \item the Jacobian matrices of $I_p(\mM^H)$ and $I_p(\mN^H)$ with
+    respect to $(X_0,\dots,X_n)$ have rank $n$ at every point of the
+    above sets.
 \end{itemize}
+\end{proposition}
+
+%% Fix positive integers $p,q$, with $p \le q$, and let $n=q-p+1$. Let
+%% $\balpha=(\alpha_1,\dots,\alpha_p)$ be positive integers.
+
+The remainder of this section is devoted to prove this proposition.
+Our strategy is to work all along with linear forms with indeterminate
+coefficients, and establish the properties we want in this context.
+
+%%  One easily verifies that $\mN^H$ has rank less than $p$ at
+%% $\tilde \bx \in \P^t(\KKbar)$ if and only if there exists a
+%% subsequence $\bi=(i_1,\dots,i_\kappa)$ of $(1,\dots,p)$ of length
+%% $\kappa\in \{1,\dots,\min(t,p)\}$ such that
+%% $$ \lambda^H_{i_1,i_1}(\tilde\bx) =
+%% \cdots = \lambda^H_{i_\kappa,i_\kappa}(\tilde\bx) = 0
+%% \text{~and~}
+%% \rank(\mN^H_{\bi;(p+1,\dots,q)}(\tilde\bx)) < \kappa;$$
+%% indeed, for $\kappa > t$, a system of the 
+%% form $ \lambda^H_{i_1,i_1}(\tilde\bx) =
+%% \cdots = \lambda^H_{i_\kappa,i_\kappa}(\tilde\bx) = 0$ 
+%% has no solution for generic choices of the linear forms $\lambda^H_{i,j,k}$.
+
+%% In turn, $\lambda^H_{i_1,i_1},\dots,\lambda^H_{i_\kappa,i_\kappa}$
+%% vanish at $\tilde\bx$ if and only if there exist
+%% $\br=(r_1,\dots,r_\kappa)$, with $r_m$ in $\{1,\dots,\alpha_m\}$ 
+%% for all $m$, such that $\lambda^H_{i_m,i_m,r_m}(\tilde\bx)=0$ 
+%% for $m=1,\dots,\kappa$. For a generic choice of the coefficients 
+%% $\lambda_{i,j,k,\ell}$, the latter linear equations can be rewritten
+%% as 
+%% $$X_{t-\kappa+1}=f_{\bi,\br,t-\kappa+1}(X_0,\dots,X_{t-\kappa}),\dots,
+%% X_{t}=f_{\bi,\br,t}(X_0,\dots,X_{t-\kappa}),$$ for some homogeneous
+%% linear forms $f_{\bi,\br,t-\kappa+1},\dots,f_{\bi,\br,t}$ that depend
+%% on the choice of indices $\bi$ and $\br$. Applying these substitutions
+%% in the submatrix $\mN^H_{\bi;(p+1,\dots,q)}$ gives us a matrix
+%% $\mM^H_{\bi,\br}$ of size $\kappa \times (t-1)$ whose entries are
+%% products of homogeneous linear forms in $X_0,\dots,X_{t-\kappa}$, of
+%% respective degrees $\alpha_{i_1},\dots,\alpha_{i_\kappa}$ on rows
+%% $1,\dots,\kappa$.
+
+%% We deduce that the projective set defined by $I_p(\mN^H)$ is the union
+%% of the sets
+%% $$V_{\bi,\br}=\{
+%% (x_0,\dots,x_{t-\kappa},f_{\bi,\br,t-\kappa+1}(x_0,\dots,x_{t-\kappa}),\dots,
+%% f_{\bi,\br,t}(x_0,\dots,x_{t-\kappa})) \mid (x_0,\dots,x_{t-\kappa})
+%% \in V(I_\kappa(\mM^H_{\bi,\br})) \},$$ for all choices of $\bi$ and
+%% $\br$.  Remark that for generic choices of the coefficients of $N^H$, the union
+%% above is disjoint: indeed, for $\bi,\br$ as above, $V_{\bi,\br}$ being
+%% finite (by the previous lemma) implies that for a generic choice of
+%% the coefficients of $\lambda^H_{i,i,k}$, for $(i,k)$ not of the form
+%% $(i_m,r_m)$, $m=1,\dots,\kappa$, this linear form does not vanish on
+%% $V_{\bi,\br}$.
+
+%% Finally, let $\mN$ and $\mM$ be matrices obtained by setting $X_0=1$
+%% in respectively $\mN^H$ and $\mM_ {\bi,\br}^H$;
+%% explicitly, we have
+%% \begin{align}\label{eqdef:type1aff}
+%% \mN= \left( \begin{matrix}
+%% \lambda_{1,1} & 0 & \cdots & 0 & \lambda_{1,p+1} & \cdots & \lambda_{1, q}\\
+%% 0 & \lambda_{2,2} & \cdots & 0 & \lambda_{2,p+1} & \cdots & \lambda_{2, q}\\
+%% \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
+%% 0 & 0 & \cdots & \lambda_{p,p} & \lambda_{p,p+1} & \cdots & \lambda_{p, q}
+%% \end{matrix} \right),
+%% \end{align}
+%% and matrices of a more general form such as
+%% \begin{align}\label{eqdef:type2aff}
+%% \mM= \left( \begin{matrix}
+%% \lambda_{1,1} & \lambda_{1,2} & \cdots & \lambda_{1, q}\\
+%%  \lambda_{2,1} &  \lambda_{2,2} & \cdots & \lambda_{2, q}\\
+%%  \vdots & & & \vdots\\
+%%  \lambda_{p,1} &  \lambda_{p,2}& \cdots & \lambda_{p, q}
+%% \end{matrix} \right),
+%% \end{align}
+
+%% Using the first item in
+%% Lemma~\ref{lemma:appendix}, together with the previous discussion, we
+%% deduce the equality
+%% \begin{align}\label{eq:cardinality}
+%% |V_p(\mN)| = \sum_{\bi=(i_1,\dots,i_\kappa),\br=(r_1,\dots,r_\kappa)}  |V_\kappa(\mM_{\bi,\br})|.
+%% \end{align}
+
+%% Assuming we are given a procedure to compute a zero-dimensional
+%% representation of the algebraic sets $V_\kappa(\mM_{\bi,\br})$, the
+%% following pseudo-code summarizes the discussion above. \todo{write it}
+
+
+Let thus $A=q(n+1)(\alpha_1 + \cdots + \alpha_p)$; this is the number
+of coefficients needed to define homogeneous linear forms
+$\lambda^H_{i,j,k}$ in $X_0,\dots,X_n$, for $i=1,\dots,p$,
+$j=1,\dots,q$ and $k=1,\dots,\alpha_i$. If needed, we will write
+$A=A(\balpha,q)$ to make the dependency in $\balpha$ and $q$ explicit.
+Let then $\mathfrak{L}$ be the sequence of $A$ indeterminates
+$\mathfrak{L}=(\mathfrak{l}_{i,j,k,r})$, for $i,j,k$ as above and
+$r=0,\dots,n$, and define
+$$\mathfrak{l}^H_{i,j,k} = \mathfrak{l}_{i,j,k,0}X_0 + \mathfrak{l}_{i,j,k,1} X_1 +\cdots + \mathfrak{l}_{i,j,k,n} X_n,$$
+as well as 
+$$\mathfrak{l}^H_{i,j} = \mathfrak{l}^H_{i,j,1} \cdots \mathfrak{l}^H_{i,j,\alpha_i} \in \KK[\mathfrak{L}][\tilde\bX],$$
+with $\tilde\bX=(X_0,X_1,\dots,X_n)$. We can then define the
+matrix
+\begin{align}\label{eq:matM}
+\mathfrak{M}^H_{\balpha,q}=\left [\begin{matrix}
+\mathfrak{l}^H_{1,1} & \cdots & \mathfrak{l}^H_{1,q}\\
+ \vdots & & \vdots\\
+\mathfrak{l}^H_{p,1} & \cdots & \mathfrak{l}^H_{p,q}
+  \end{matrix}\right ]\in \KK[\mathfrak{L}][\tilde\bX]^{p\times q}.  
+\end{align}
+Remark that for all $i,j$, the $(i,j)$-th entry of
+$\mathfrak{M}^H_{\balpha,q}$ has degree $\alpha_i$ in $\tilde \bX$;
+this matrix is thus the ``generic'' model of the matrix $\mM^H$ seen previously.
+
+Given $\Lambda=(\lambda_{i,j,k,r})\in \KKbar{}^A$, for any polynomial
+$\mathfrak{F}$ in $\KK(\mathfrak{L})[\tilde \bX]$, we write
+$\mathfrak{F}(\Lambda,\tilde\bX)$ for the polynomial obtained by
+evaluating $\mathfrak{l}_{i,j,k,r}$ at $\lambda_{i,j,k,r}$, for all
+indices $i,j,k,r$ as above, as long as no denominator vanishes through
+this evaluation; the notation extends to polynomial matrices. More
+generally, for a field $\LL$ containing $\KK$, and $L$ in $\LL^A$, the
+notation $\mathfrak{F}(L,\tilde\bX)$ is defined similarly.
+
+Let next $A'=n(n+1)(\alpha_1+\cdots+\alpha_p)$; as above, when needed,
+we will write $A'=A'(\balpha,q)$ when needed. Let
+$\mathfrak{L}'\subset \mathfrak{L}$ be the sequence of $A'$
+indeterminates $\mathfrak{L}'=(\mathfrak{l}_{i,j,k,r})$, for indices
+$i,j,k,r$ as follows: $i$ is in $\{1,\dots,p\}$, $j$ is in
+$\{i,p+1,\dots,q\}$, and as previously, $k$ is in
+$\{1,\dots,\alpha_i\}$ and $r$ is in $\{0,\dots,n\}$. Remark that the
+polynomials $\mathfrak{l}^H_{i,j}$, for $i,j$ as above, are in
+$\KK[\mathfrak{L}'][\tilde\bX] \subset \KK[\mathfrak{L}][\tilde \bX]$,
+and allow us to define
+\begin{align}\label{eq:matMprime}
+\mathfrak{N}^H_{\balpha,q}=\left [\begin{matrix} \mathfrak{l}^H_{1,1} & 0 & 0
+    &\mathfrak{l}^H_{1,p+1} & \cdots & \mathfrak{l}^H_{1,q}\\ 0 & \ddots &
+    0 & \vdots & & \vdots\\ 0&0& \mathfrak{l}^H_{p,p}
+    &\mathfrak{l}^H_{p,p+1} & \cdots & \mathfrak{l}^H_{p,q}
+  \end{matrix}\right ]\in \KK[\mathfrak{L}'][\tilde\bX]^{p\times q}.
+\end{align}
+For $\Lambda' \in \KKbar{}^{A'}$ and $\mathfrak{F}$ in 
+$\KK(\mathfrak{L}')[\tilde\bX]$, the notation
+$\mathfrak{F}(\Lambda',\tilde\bX)$ is defined as in the case of
+polynomials over $\KK(\mathfrak{L})$ described previously.
+
+
+\paragraph{Setting up the recurrences.}
+The basic idea behind our proofs below is the following: to prove that
+a property holds for a matrix $\mathfrak{M}^H_{\balpha,q}$, we prove
+that it holds for a matrix of the form $\mathfrak{N}^H_{\balpha,q}$,
+and use an openness property. To prove the required property for the
+latter matrices, we proceed by induction, relying on the presence of
+the left-hand diagonal block. Indeed, of a matrix such as, say,
+$\mathfrak{N}^H_{\balpha,q}$ to be rank-deficient at $\tilde\bx \in
+\P^n(\KKGpbar)$, one of
+$\mathfrak{l}^H_{1,1},\dots,\mathfrak{l}^H_{p,p}$ must vanish at
+$\bx$.
+
+Suppose for instance that
+$\mathfrak{l}^H_{1,1}(\tilde\bx)=\mathfrak{l}^H_{2,2}(\tilde\bx)=0$,
+while all other terms are non-zero. Then, the
+$((1,2),(p+1,\dots,q))$-submatrix of
+${\mathfrak{N}^H_{\balpha,q}}(\tilde\bx)$ itself must be
+rank-deficient.  The constraints
+$\mathfrak{l}^H_{1,1}(\tilde\bx)=\mathfrak{l}^H_{2,2}(\tilde\bx)=0$
+give us two linear equations, which allow us to eliminate two
+coordinates of $\tilde\bx$, say $X_{n-1}$ and $X_n$. We can perform
+the corresponding substitution in the above submatrix, and we are left
+with a matrix of size $2 \times (n-1)$ that is of the form
+$\mathfrak{M}^H_{(\alpha_1,\alpha_2),n-1}(\mathfrak{H},(X_0,\dots,X_{n-2}))$,
+with entries depending on $X_0,\dots,X_{n-2}$, for some vector of
+coefficients $\mathfrak{H}$ obtained through the elimination of
+$X_{n-1}$ and $X_n$. We can then invoke our induction assumption on
+the latter matrix.
+
+To formalize this process, for a subsequence
+$\bi=(i_1,\dots,i_\kappa)$ of $(1,\dots,p)$, we call the
+$(\bi,(p+1,\dots,q))$-submatrix of $\mathfrak{N}^H_{\balpha,q}$ the submatrix of
+$\mathfrak{N}^H_{\balpha,q}$ {\em associated} to $\bi$; it consists of the rows of
+$\mathfrak{N}^H_{\balpha,q}$ indexed by $\bi$ and columns $p+1,\dots,q$.
+For such an $\bi$, we let $R_\bi$ be the set of
+all tuples $\br=(r_1,\dots,r_\kappa)$, with $r_1$ in
+$\{1,\dots,\alpha_{i_1}\}$, \dots, $r_\kappa$ in
+$\{1,\dots,\alpha_{i_\kappa}\}$; for any $k$ in $\{1,\dots,\kappa\}$,
+$r_k$ will be the index of the factor $\mathfrak{l}^H_{i_k,i_k,r_k}$
+of $\mathfrak{l}^H_{i_k,i_k}$ we cancel. For given $\bi$ and $\br$,
+we will let $\mathfrak{L}'_{\bi,\br} \subset \mathfrak{L}'$ be the
+indeterminates corresponding to the coefficients of
+$\mathfrak{l}^H_{i_1,i_1,r_1},\dots,\mathfrak{l}^H_{i_\kappa,i_\kappa,r_\kappa}$, and
+of all entries $\mathfrak{l}^H_{i_1,p+1},\dots,\mathfrak{l}^H_{i_\kappa,q}$
+of the submatrix associated to $\bi$ in $\mathfrak{N}^H_{\balpha,q}$.
+
+
+%% To formalize this process, for $1 \le m \le m' \le p$ we let
+%% $S_{m,m'}$ be the set of all subsequences $\bi=(i_1,\dots,i_\kappa)$
+%% of $(1,\dots,p)$ of cardinality $\kappa \in \{m,\dots,m'\}$. 
+
+By Gaussian elimination, we can rewrite the homogeneous linear
+equations
+$\mathfrak{l}^H_{i_1,i_1,r_1}=\dots=\mathfrak{l}^H_{i_\kappa,i_\kappa,r_\kappa}=0$ as
+\begin{align}\label{eq:f_sr}
+X_{n-\kappa+1}=\mathfrak{f}_{\bi,\br,n-\kappa+1}(X_0,\dots,X_{n-\kappa}),\dots,X_{n}=\mathfrak{f}_{\bi,\br,n}(X_0,\dots,X_{n-\kappa}),  
+\end{align}
+for some homogeneous linear forms
+$\mathfrak{f}_{\bi,\br,n-\kappa+1},\dots,\mathfrak{f}_{\bi,\br,n}$ of
+$(X_0,\dots,X_{n-t})$ with coefficients in
+$\KK(\mathfrak{L}'_{\bi,\br})$. Applying this substitution in the
+entries of the submatrix of ${\mathfrak{N}^H_{\balpha,q}}$ associated
+to $\bi$ gives us the $\kappa \times (n-1)$ matrix
+$\mathfrak{M}^H_{\balpha_\bi,n-1}(\mathfrak{H}_{\bi,\br},(X_0,\dots,X_{n-\kappa}))$,
+with $\balpha_\bi=(\alpha_{i_1},\dots,\alpha_{i_\kappa})$, whose
+entries are products of homogeneous linear forms in
+$(X_0,\dots,X_{n-\kappa})$, and where $\mathfrak{H}_{\bi,\br}$ is a
+vector of $A(\balpha_\bi,n-1)$ elements in $\KK(\mathfrak{L}'_{\bi,\br})$.
+
+The main result we will use in this section is the following lemma,
+which summarizes how the above process allows us to describe the
+projective zero-set of $t$-minors of $\mathfrak{N}^H_{\balpha,q}$, for
+any $t \le p$. This will be the basis of our recursion.
+\begin{lemma}\label{lemma:union}
+  For $t$ in $\{1,\dots,p\}$, $V_t(\mathfrak{N}^H_{\balpha,q})$ is the
+  union of the sets
+ \begin{align}\label{eq:union}
+ \left \{(\tilde\bx',\mathfrak{f}_{\bi,\br,n-\kappa+1}(\tilde\bx'),\dots,\mathfrak{f}_{\bi,\br,n}(\tilde\bx')) \mid \tilde\bx' \in
+  V_{\kappa-(p-t)}(\mathfrak{M}^H_{\balpha_\bi,n-1}(\mathfrak{H}_{\bi,\br})) \subset \P^{n-\kappa}(\KKGpbar)\right \},   
+ \end{align}
+ for $\bi=(i_1,\dots,i_\kappa)$ of length $\kappa \in \{p-t+1,\min(p,n-1)\}$ and $\br$ in $R_\bi$, together with
+ $$\left \{
+ (1,\mathfrak{f}_{\bi,\br,1}(1),\dots,\mathfrak{f}_{\bi,\br,n}(1))\right
+ \}$$ if $t=p$ and $n \le p$, with $\bi=(i_1,\dots,i_n)$ and $\br$ in $R_\bi$.
 \end{lemma}
- One easily verifies that $\mN^H$ has rank less than $p$ at
-$\tilde \bx \in \P^t(\KKbar)$ if and only if there exists a
-subsequence $\bi=(i_1,\dots,i_\kappa)$ of $(1,\dots,p)$ of length
-$\kappa\in \{1,\dots,\min(t,p)\}$ such that
-$$ \lambda^H_{i_1,i_1}(\tilde\bx) =
-\cdots = \lambda^H_{i_\kappa,i_\kappa}(\tilde\bx) = 0
-\text{~and~}
-\rank(\mN^H_{\bi;(p+1,\dots,q)}(\tilde\bx)) < \kappa.$$
-In turn, $\lambda^H_{i_1,i_1},\dots,\lambda^H_{i_\kappa,i_\kappa}$
-vanish at $\tilde\bx$ if and only if there exist
-$\br=(r_1,\dots,r_\kappa)$, with $r_j$ in $\{1,\dots,\alpha_j\}$ 
-for all $j$, such that $\lambda^H_{i_k,i_k,r_k}(\tilde\bx)=0$ 
-for $k=1,\dots,\kappa$. For a generic choice of the coefficients 
-$\lambda_{i,j,k,\ell}$, the latter linear equations can be rewritten
-as 
-$$X_{t-\kappa+1}=f_{\bi,\br,t-\kappa+1}(X_0,\dots,X_{t-\kappa}),\dots,
-X_{t}=f_{\bi,\br,t}(X_0,\dots,X_{t-\kappa}),$$ for some homogeneous
-linear forms $f_{\bi,\br,t-\kappa+1},\dots,f_{\bi,\br,t}$ that depend
-on the choice of indices $\bi$ and $\br$. Applying these
-substitutions in the submatrix $\mN^H_{\bi;(p+1,\dots,q)}$ gives us a
-matrix $\mM^H_{\bi,\br}$ of size $\kappa \times (t-1)$ whose entries
-are products of linear forms, of respective degrees
-$\alpha_{i_1},\dots,\alpha_{i_\kappa}$ on rows $1,\dots,\kappa$. We
-deduce that the projective set defined by $I_p(\mN^H)$ is the union of the sets
-$$V_{\bi,\br}=\{
-(x_0,\dots,x_{t-\kappa},f_{\bi,\br,t-\kappa+1}(x_0,\dots,_{t-\kappa}),\dots,
-f_{\bi,\br,t}(x_0,\dots,x_{t-\kappa})) \mid (x_0,\dots,x_{t-\kappa})
-\in V(I_\kappa(\mM^H_{\bi,\br})) \},$$ for all choices of $\bi$ and
-$\br$.  Remark that for generic choices of the coefficients of $N^H$, the union
-above is disjoint: indeed, for $\bi,\br$ as above, $V_{\bi,\br}$ being
-finite (by the previous lemma) implies that for a generic choice of
-the coefficients of $\lambda^H_{i,i,k}$, for $(i,k)$ not of the form
-$(i_k,r_k)$, $k=1,\dots,\kappa$, this linear form does not vanish on
-$V_{\bi,\br}$.
+\noindent We have to write a special case for $t=p$ and $n \le p$ in the last part of the lemma,
+since taking $\bi=(i_1,\dots,i_n)$ of length $\kappa=n$
+in~\eqref{eq:union} would lead to consider points in $\P^0(\KKGpbar)$.
+\begin{proof}
+  A point $\tilde\bx \in \P^n(\KKGpbar)$ belongs to
+  $V_t(\mathfrak{N}^H_{\balpha,q})$ if and only if some diagonal terms
+  of $\mathfrak{N}^H_{\balpha,q}$ vanish at $\tilde\bx$, say
+  $\mathfrak{l}^H_{i_k,i_k}(\tilde\bx)=0$ for $k=1,\dots,\kappa$ (all
+  other $\mathfrak{l}^H_{i,i}(\tilde\bx)$ being non-zero), and
+  if the submatrix of $\mathfrak{N}^H_{\balpha,q}$ associated to
+  $\bi=(i_1,\dots,i_\kappa)$ has rank less than $\kappa-(p-t)$ at $\tilde
+  \bx$.  In particular, we must have
+  $\kappa-(p-t) > 0$, that is, $\kappa \ge p-t+1$.
 
-Finally, let $\mN$ and $\mM$ be matrices obtained by setting $X_0=1$
-in respectively $\mN^H$ and $\mM_ {\bi,\br}^H$;
-explicitly, we have
-\begin{align}\label{eqdef:type1aff}
-\mN= \left( \begin{matrix}
-\lambda_{1,1} & 0 & \cdots & 0 & \lambda_{1,p+1} & \cdots & \lambda_{1, q}\\
-0 & \lambda_{2,2} & \cdots & 0 & \lambda_{2,p+1} & \cdots & \lambda_{2, q}\\
-\vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
-0 & 0 & \cdots & \lambda_{p,p} & \lambda_{p,p+1} & \cdots & \lambda_{p, q}
-\end{matrix} \right),
-\end{align}
-and matrices of a more general form such as
-\begin{align}\label{eqdef:type2aff}
-\mM= \left( \begin{matrix}
-\lambda_{1,1} & \lambda_{1,2} & \cdots & \lambda_{1, q}\\
- \lambda_{2,1} &  \lambda_{2,2} & \cdots & \lambda_{2, q}\\
- \vdots & & & \vdots\\
- \lambda_{p,1} &  \lambda_{p,2}& \cdots & \lambda_{p, q}
-\end{matrix} \right),
-\end{align}
+  For $k=1,\dots,\kappa$, $\mathfrak{l}^H_{i_k,i_k}(\tilde\bx)=0$ if
+  and only if there exists $r_k$ in $\{1,\dots,\alpha_{i_k}\}$ such
+  that $\mathfrak{l}^H_{i_k,i_k,r_k}(\tilde\bx)=0$. Thus, $\tilde\bx$
+  is in $V_t(\mathfrak{N}^H_{\balpha,q})$ if and only if there exists
+  $\bi=(i_1,\dots,i_\kappa)$ subsequence of $(1,\dots,p)$, with
+  $\kappa \ge p-t+1$, and $\br=(r_1,\dots,r_\kappa)$ in $R_\bi$ such that
+  $\mathfrak{l}^H_{i_1,i_1,r_1}(\tilde\bx)=\cdots=\mathfrak{l}^H_{i_\kappa,i_\kappa,r_\kappa}(\tilde\bx)=0$
+  and the submatrix of $\mathfrak{N}^H_{\balpha,q}$ associated to $\bi$
+  has rank less than $\kappa-(p-t)$ at $\tilde\bx$.  
 
- Using the first item in
-Lemma~\ref{lemma:appendix}, together with the previous discussion, we
-deduce the equality
-\begin{align}\label{eq:cardinality}
-|V_p(\mN)| = \sum_{\bi=(i_1,\dots,i_\kappa),\br=(r_1,\dots,r_\kappa)}  |V_\kappa(\mM_{\bi,\br})|.
-\end{align}
+  Applying~\eqref{eq:f_sr}, we deduce that the coordinates $(x_0,\dots,x_n)$ 
+  of $\tilde \bx$ satisfy
+  \begin{align*}
+    x_{n-\kappa+1}=\mathfrak{f}_{\bi,\br,n-\kappa+1}(\tilde\bx'),\dots,x_{n}=\mathfrak{f}_{\bi,\br,n}(\tilde\bx'),
+  \end{align*}
+  with $\tilde\bx'=(x_0,\dots,x_{n-\kappa})$.  In particular, $\kappa
+  \le n$, since otherwise this linear system would have no solution
+  (recall that the coefficients are algebraically independent
+  indeterminates). Remark also that $\tilde\bx'$ is a well-defined
+  element of $\P^{n-\kappa}(\KKGpbar)$, since otherwise $\tilde\bx$ would
+  vanish.
 
-Assuming we are given a procedure to compute a zero-dimensional
-representation of the algebraic sets $V_\kappa(\mM_{\bi,\br})$, the
-following pseudo-code summarizes the discussion above.
+  For $\bi=(i_1,\dots,i_\kappa)$ with $\kappa \le n-1$, applying the above
+  substitution in the submatrix of $\mathfrak{N}^H_{\balpha,q}$
+  associated to $\bi$ (which has size $\kappa \times (n-1)$), the rank
+  condition above becomes that
+  $\mathfrak{M}^H_{\balpha_\bi,n-1}(\mathfrak{H}_{\bi,\br},(X_0,\dots,X_{n-\kappa}))$
+  has rank less than $\kappa-(p-t)$ at $\tilde \bx'$, that is, $\tilde
+  \bx'$ is in
+  $V_{\kappa-(p-t)}(\mathfrak{M}^H_{\balpha_\bi,n-1}(\mathfrak{H}_{\bi,\br}))$.
+  In this case, we are done.
+
+  When $\kappa=n$, that is, $\bi=(i_1,\dots,i_n)$ (this can happen
+  only if $n \le p$), the linear equations above determine $\tilde\bx$
+  entirely; setting $x_0=1$, we obtain
+  $x_{1}=\mathfrak{f}_{\bi,\br,1}(1),\dots,x_{n}=\mathfrak{f}_{\bi,\br,n}(1).$
+  In this case, the submatrix of $\mathfrak{N}^H_{\balpha,q}$
+  associated to $\bi$ has size $n \times (n-1)$. Using the
+  specialization of the coefficients that sets the off-diagonal entry
+  to $0$ and the $i$th diagonal entries to $X_0^{\alpha_i}$,
+  $i=1,\dots,n-1$, we see that its evaluation at $\tilde\bx$ has rank
+  $n-1$; as a result $\mathfrak{N}^H_{\balpha,q}$ has rank $p-1$ at
+  $\tilde \bx$. Thus, we need to take $\kappa=n$ into account only if
+  $t=p$, that is, we are interested in the maximal minors; in this
+  case, we have to take into account the point $\left \{
+  (1,\mathfrak{f}_{\bi,\br,1}(1),\dots,\mathfrak{f}_{\bi,\br,n}(1))\right
+  \}$.
+\end{proof}
+
+
+\paragraph{Solutions with higher rank defect.} 
+We discuss here the case $t=p-1$.  We take parameters
+$\balpha=(\alpha_1,\dots,\alpha_p)$ and $q$, with $2 \le p \le q$, and
+we write $A=A(\balpha,q)$ and $A'=A'(\balpha,q)$; we will establish
+the following properties.
+\begin{description}[leftmargin=*]
+\item[$\assI_1(\balpha,q).$] The projective algebraic set
+  $V_{p-1}(\mathfrak{M}^H_{\balpha,q})\subset\P^n(\KKGbar)$ is empty.
+\item[$\assJ_1(\balpha,q).$] The projective algebraic set
+  $V_{p-1}(\mathfrak{N}^H_{\balpha,q})\subset\P^n(\KKGpbar)$ is empty.
+\end{description}
+The first step of the proof is to establish that for $\balpha$ and $q$ as above,
+$\assJ_1(\balpha,q)$ implies $\assI_1(\balpha,q)$. Let us thus fix $\balpha$
+and $q$.  Assumption $\assJ_1(\balpha,q)$ implies that
+$V_{p-1}(\mathfrak{N}_{\balpha,q}(G'))$ is empty for a generic $G'$
+in~$\KKbar{}^{N'}$.  We will prove that
+$V_{p-1}(\mathfrak{M}_{\balpha,q}(G))$ is empty for a generic $G$
+in~$\KKbar{}^N$, which in turn establishes $\assI_1(\balpha,q)$.
+
+Consider the ideal $I_{p-1}(\mathfrak{M}_{\balpha,q})$ in the polynomial
+ring $\KK[\mathfrak{G},\tilde\bX]$ in $N+n+1$ variables. This ideal
+defines an algebraic set $Z_{\balpha,q}$ in $\KKbar{}^N \times
+\P^n(\KKbar)$, and we let $\alpha_{\balpha,q} \subset \KKbar{}^N$ be its
+projection on the first factor: this is the set of all $G$ such that
+$V_{p-1}(\mathfrak{M}_{\balpha,q}(G))$ is not empty. Because the source is
+a projective space, $\alpha_{\balpha,q}$ is closed (so its complement is
+open), and we just have to verify that it is not equal to the whole
+$\KKbar{}^N$. This follows readily from property $\assJ_1(\balpha,q)$,
+which proves that generic matrices of the form
+$\mathfrak{N}_{\balpha,q}(G')$ do not belong to $\alpha_{p,q}$, so 
+$\assI_1(\balpha,q)$ holds.
+
+We finish the proof by induction. We first take $p=q$ and consider
+$\assJ_1(\balpha,q)$.  In this case, $n=1$ and $\mathfrak{N}_{\balpha,q}$ is
+a diagonal matrix, whose diagonal entries are products of linear forms
+in $(X_0,X_1)$ with indeterminate coefficients. Hence, no pair of
+entries $\mathfrak{N}_{\balpha,q}$ have any common solution in
+$\P^1(\KKGpbar)$, so the rank of $\mathfrak{N}_{\balpha,q}$ is at least
+$p-1$. Hence, $\assJ_1(\balpha,p)$ holds, and so does $\assI_1(\balpha,p)$, by the claim in the previous paragraph.
+
+Consider next a pair $(\balpha,q)$, with $\balpha=(\alpha_1,\dots,\alpha_p)$ and $2 \le
+p \le q$, and suppose that $\assI_1(\balpha',q')$ holds for all
+$(\balpha',q')$ with $\balpha'=(D'_1,\dots,D'_{p'})$, $2 \le p' \le q'$, $p'
+\le p$ and $q' < q$; we prove that $\assJ_1(\balpha,q)$ holds
+(as above, this will also imply $\assI_1(\balpha,q)$).
+
+Take $k=p-1$ in Lemma~\ref{lemma:union}. Then, the parameters
+$(t-(p-k),\balpha_s,n-1)$ used in each contribution to~\eqref{eq:union}
+are of the form $(t-1,\balpha_s,n-1)$, with $2 \le t \le \min(p,n-1)$.
+Since the entries of $\mathfrak{H}_{s,r}$ are algebraically
+independent, $\balpha_s$ has length $t\ge 2$, with also $t \le n-1$, $t
+\le p$ and $n-1 < q$, we can apply the induction hypothesis and deduce
+that all $V_{t-1}(\mathfrak{M}_{\balpha_s,n-1}(\mathfrak{H}_{s,r}))$
+appearing in Lemma~\ref{lemma:union} are empty. As a consequence,
+$V_{p-1}(\mathfrak{N}_{\balpha,q})$ is empty, as claimed.
+
+
+\paragraph{Solutions at infinity.} Next, we focus on the case $k=p$.
+We take parameters $\balpha=(\alpha_1,\dots,\alpha_p)$ and $q$, with $1 \le p \le
+q$, and we write $N=N(\balpha,q)$ and $N'=N'(\balpha,q)$; then, we prove the following properties.
+\begin{description}[leftmargin=*]
+\item[$\assI_2(\balpha,q).$] The projective algebraic set
+  $V_p(\mathfrak{M}_{\balpha,q}) \subset \P^n(\KKGbar)$ has no point with $X_0=0$.
+\item[$\assJ_2(\balpha,q).$] The projective algebraic set
+  $V_p(\mathfrak{N}_{\balpha,q}) \subset \P^n(\KKGpbar)$ has no point with $X_0=0$.
+\end{description}
+ In particular, this implies that these sets are finite. We will prove
+ these properties as we did in the previous paragraph; the first step
+ is thus to establish that for $\balpha$ and $q$ as above, $\assJ_2(\balpha,q)$
+ implies $\assI_2(\balpha,q)$.
+
+Let us thus fix $\balpha$ and $q$, and assume that $\assJ_2(\balpha,q)$
+holds. We prove that $V_p(\mathfrak{M}_{\balpha,q}(G))$ has no point at
+infinity for a generic $G$ in $\KKbar{}^N$; this will imply $\assI_2(\balpha,q)$. Consider the ideal generated by
+$I_{p}(\mathfrak{M}_{\balpha,q})$ and $X_0$ in the polynomial ring
+$\KK[\mathfrak{G},\tilde\bX]$ in $N+n+1$ variables. This ideal defines
+an algebraic set $Z'_{\balpha,q}$ in $\KKbar{}^N \times \P^n(\KKbar)$, and
+we let $\alpha'_{\balpha,q} \subset \KKbar{}^N$ be its projection on the
+first factor: this is thus the set of all $G$ in $\KKbar{}^N$ such
+that $V_p(\mathfrak{M}_{\balpha,q}(G))$ has a point at infinity. Because
+the source is a projective space, $\alpha'_{p,q}$ is closed (so its
+complement is open), and we just have to verify that it is not equal
+to the whole $\KKbar{}^N$. This follows from property $\assJ_2(\balpha,q)$, which implies that matrices of the form
+$\mathfrak{N}_{\balpha,q}(G')$, for generic $G'$ in $\KKbar{}^{N'}$, do
+not belong to $\alpha'_{\balpha,q}$.
+
+Again, we finish the proof by induction. We first take $p=q$, and we
+prove that $\assJ_2(\balpha,q)$ holds ($\assI_2(\balpha,q)$ will follow,
+by the previous paragraph). In this case, $n=1$ and
+$\mathfrak{N}_{\balpha,q}$ is a diagonal matrix, whose diagonal entries
+are products of linear forms in $(X_0,X_1)$ with indeterminate
+coefficients. Then, $\mathfrak{N}_{\balpha,q}$ has rank less than $p$ at
+$\tilde\bx\in\P^1(\KKGpbar)$ if and only if one of the linear factors
+of some diagonal term vanishes at $\tilde \bx$. None of this linear
+forms has a projective root at infinity, so we are done.
+
+Consider next a pair $(\balpha,q)$, with $\balpha=(\alpha_1,\dots,\alpha_p)$ and $1 \le p
+\le q$ and suppose that $\assI_2(\balpha',q')$ holds for all $(\balpha',q')$
+with $\balpha'=(D'_1,\dots,D'_{p'})$, $1 \le p' \le q'$, $p' \le p$ and $q' <
+q$; we prove that $\assJ_2(\balpha,q)$ holds; as above, this will imply
+ $\assI_2(\balpha,q)$.
+
+Take $k=p$ in Lemma~\ref{lemma:union}. We first deal with the last
+contribution, corresponding to $s=(s_1,\dots,s_n)$, and thus $t=n$: by
+design, the corresponding point is not at infinity. For the other
+contributions, the parameters $(t-(p-k),\balpha_s,n-1)$ used
+in~\eqref{eq:union} are of the form $(t,\balpha_s,n-1)$, with $\balpha_s$ of
+length $t \in \{1,\dots, \min(p,n-1)\}$; since all conditions $ 1 \le
+t \le n-1$, $t \le p$ and $n-1 < q$ are satisfied, we can invoke the
+induction assumption. Since the coefficients $\mathfrak{H}_{s,r}$ are
+algebraically independent, we deduce that none of the
+projective sets $V_t(\mathfrak{M}_{\balpha_s,n-1}(\mathfrak{H}_{s,r}))$
+appearing in Lemma~\ref{lemma:union} has any point with $X_0=0$. As a
+consequence, $V_p(\mathfrak{N}_{\balpha,q})$ has no point at infinity
+either, as claimed.
+
+
+\paragraph{Refining $\assI_1$.} The following  is a strengthening of 
+property $\assI_1$ above. Again, we consider $\balpha=(\alpha_1,\dots,\alpha_p)$
+and $q$, with $1 \le p \le q$, together with a matrix
+$\mathfrak{m}_{\balpha,q}$, built as $\mathfrak{M}_{\balpha,q}$ before, but
+using products of homogeneous linear forms in $n=q-p+1$ variables $X_0,\dots,X_{n-1}$, instead of
+$n+1$ variables $X_0,\dots,X_n$. Such a matrix takes the form
+\begin{align}\label{eq:matM2}
+\mathfrak{m}_{\balpha,q}=\left [\begin{matrix}
+\mathfrak{P}_{1,1} & \cdots & \mathfrak{P}_{1,q}\\
+ \vdots & & \vdots\\
+\mathfrak{P}_{p,1} & \cdots & \mathfrak{P}_{p,q}
+  \end{matrix}\right ]\in \KK[\mathfrak{C}][X_0,\dots,X_{n-1}]^{p\times q},
+\end{align}
+with 
+$$\mathfrak{p}_{i,j,k} = \frak{c}_{i,j,k,0}X_0 + \frak{c}_{i,j,k,1} X_1 +\cdots + \frak{c}_{i,j,k,n-1} X_{n-1},$$
+and
+$$\mathfrak{P}_{i,j} = \mathfrak{p}_{i,j,1} \cdots
+\mathfrak{p}_{i,j,\alpha_i} \in \KK[\mathfrak{C}][X_0,\dots,X_{n-1}],$$
+where $\mathfrak{C}=(\mathfrak{c}_{i,j,k,\ell})$ are indeterminates,
+for $i=1,\dots,p$, $j=1,\dots,q$, $k=1,\dots,\alpha_i$ and
+$\ell=0,\dots,n-1$; we let $M=q n (\alpha_1+\cdots +\alpha_p)$ be the total
+number of coefficients $\mathfrak{c}_{i,j,k,\ell}$ involved. In this context, the
+following property could be proved by induction as in the other cases,
+but a direct proof is available.
+
+\begin{description}[leftmargin=*]
+\item[$\assI_3(\balpha,q).$] The projective algebraic set
+  $V_p(\mathfrak{m}_{\balpha,q}) \subset \P^{n-1}(\KKCbar)$ is empty.
+\end{description}
+To prove this property, take $\balpha$ and $q$ as above. If $q=p$, we have
+$n=1$, so the $i,j$ entry of $\mathfrak{m}_{\balpha,q}$ has the form
+$\mathfrak{c}_{i,j,1,0}\cdots\mathfrak{c}_{i,j,1,\alpha_i} X_0^{\alpha_i}$; hence, its determinant is non-zero,
+and the claim follows.
+
+We can thus suppose $q > p$, so that $q-1 \ge p$.  Then, the
+$((1,\dots,p),(1,\dots,q-1))$-submatrix of $\mathfrak{m}_{\balpha,q}$ is
+of the form $\mathfrak{M}_{\balpha,q-1}$, with entries depending on
+$N(\balpha,q-1)$ parameters.  Let $(\alpha_i)_{i \in I}$ be the $p$-minors
+of $\mathfrak{m}_{\balpha,q}$ built by taking $p-1$ of the first $q-1$
+columns of $\mathfrak{m}_{\balpha,q}$, together with its last column.
+Any such minor can be expanded along the last column as $\alpha_i =
+\mathfrak{P}_{1,q} \alpha_{i,1} + \cdots + \mathfrak{P}_{p,q}
+\alpha_{i,p}$, where $\mathfrak{P}_{1,q},\dots,\mathfrak{P}_{p,q}$ are
+the entries of the last column, and $\alpha_{i,1},\dots,\alpha_{i,p}$
+are $(p-1)$-minors from $\mathfrak{M}_{\balpha,q-1}$. Remark that
+$(\alpha_{i,j})_{i \in I, 1 \le j \le p}$ are {\em all} $(p-1)$-minors
+of $\mathfrak{M}_{\balpha,q-1}$ (if $p=1$, we have $I=\{1\}$ and
+$\alpha_1=\mathfrak{P}_{1,q}$, with $\alpha_{1,1}=1$).
+
+By $\assI_2(\balpha,q-1)$, we deduce that $V_p(\mathfrak{M}_{\balpha,q-1})
+\subset \P^{n-1}(\KKCbar)$ is finite. For all other points $\tilde\bx$
+in $\P^{n-1}(\KKCbar)$, $\mathfrak{M}_{\balpha,q-1}$ has full rank $p$ at
+$\tilde\bx$, and thus so does $\mathfrak{m}_{\balpha,q}$. Hence, we can we
+can focus on the points in $V_p(\mathfrak{M}_{\balpha,q-1})$.  Consider a
+point $\tilde\bx$ in this set (in particular, by $\assI_2(\balpha,q-1)$,
+we can take it first coordinate $x_0$ equal to $1$). Using $\assI_1(\balpha,q-1)$, together with our remark on the minors of
+$\mathfrak{M}_{\balpha,q-1}$, we deduce that not all minors
+$(\alpha_{i,j})_{i \in I, 1 \le j \le p}$ vanish at
+$\tilde\bx$. Suppose thus that $\alpha_{i_0,j_0}(\tilde\bx) \ne 0$; we
+prove that $\alpha_{i_0}(\tilde\bx) \ne 0$.
+
+Let us split the $M$ indeterminates $\mathfrak{C}$ into
+$\mathfrak{C}_1$ and $\mathfrak{C}_2$, where $\mathfrak{C}_1$ has
+cardinality $M_1=N(\balpha,q-1)$ and corresponds to the coefficients used
+in the entries $\mathfrak{P}_{1,1},\dots,\mathfrak{P}_{p,q-1}$ in
+$\mathfrak{m}_{\balpha,q}$, and $\mathfrak{C}_2$ of cardinality
+$M_2=M-M_1$ stands for the coefficients of the entries
+$\mathfrak{P}_{1,q},\dots,\mathfrak{P}_{p,q}$ in the last column of
+$\mathfrak{m}_{\balpha,q}$.  Let us further write
+$\alpha_{i_0}(\tilde\bx)= \mathfrak{P}_{1,q}(\tilde\bx)
+\alpha_{i_0,1}(\tilde\bx) + \cdots + \mathfrak{P}_{p,q}(\tilde\bx)
+\alpha_{i_0,p}(\tilde\bx)$.  Since $x_0=1$, the
+polynomial $\mathfrak{P}_{i,q}(\tilde\bx)$ admits
+$\mathfrak{c}_{i,q,1,0}\cdots \mathfrak{c}_{i,q,\alpha_i,0}$ 
+as a specialization (setting all other coefficients to zero), so that
+$\alpha_{i_0}(\tilde\bx)$ admits 
+$$\mathfrak{c}_{1,q,1,0}\cdots \mathfrak{c}_{1,q,\alpha_i,0}
+\alpha_{i_0,1}(\tilde\bx) + \cdots + \mathfrak{c}_{p,q,1,0}\cdots
+\mathfrak{c}_{p,q,\alpha_i,0} \alpha_{i_0,p}(\tilde\bx)$$ as a
+specialization. The coefficients
+$\alpha_{i_0,j}(\tilde\bx)$ are not all zero, and since
+$V_p(\mathfrak{M}_{\balpha,q-1})$ is finite, algebraic over
+$\KK(\mathfrak{C}'_1)$. Since the entries of $\mathfrak{C}'_2$ are
+algebraically independent over $\KK(\mathfrak{C}'_1)$, the sum
+$\alpha_{i_0}(\tilde\bx)$ is non-zero, as claimed.
+
+\paragraph{Multiplicity of the solutions.} 
+Again, we take parameters $\balpha=(\alpha_1,\dots,\alpha_p)$ and $q$, with $1 \le p
+\le q$, and we write $N=N(\balpha,q)$ and $N'=N'(\balpha,q)$; we will prove
+consider the following properties.
+\begin{description}[leftmargin=*]
+\item[$\assI_4(\balpha,q).$] The Jacobian matrix of
+  $M_p(\mathfrak{M}_{\balpha,q})$ has rank $n$ at all points in
+  $V_p(\mathfrak{M}_{\balpha,q})$.
+\item[$\assJ_4(\balpha,q).$] The Jacobian matrix of
+  $M_p(\mathfrak{N}_{\balpha,q})$ has rank $n$ at all points in
+  $V_p(\mathfrak{N}_{\balpha,q})$.
+\end{description}
+As for other proofs involving both $\mathfrak{M}_{\balpha,q}$ and
+$\mathfrak{N}_{\balpha,q}$, we first show that $\assJ_4(\balpha,q)$ implies
+$\assI_4(\balpha,q)$.
+
+We fix $\balpha$ and $q$, and we assume that $\assJ_4(\balpha,q)$
+holds. Consider the ideal of the polynomial ring
+$\KK[\mathfrak{G},\tilde\bX]$ in $N+n+1$ variables generated by the
+$p$-minors of $\mathfrak{M}_{\balpha,q}$, together with the $n$-minors of
+the Jacobian matrix of these equations with respect to
+$X_0,\dots,X_n$. This ideal defines an algebraic set $Z''_{\balpha,q}$ in
+$\KKbar{}^N \times \P^n(\KKbar)$, and we let $\alpha''_{\balpha,q} \subset
+\KKbar{}^N$ be its projection on the first factor. By construction,
+for $G$ in $\KKbar{}^N-Z''_{\balpha,q}$, the Jacobian matrix of
+$M_p(\mathfrak{M}_{\balpha,q}(G))$ has rank $n$ at any $\bx$ in
+$V_p(\mathfrak{M}_{\balpha,q}(G))$. As before, because the source is a
+projective space, $\alpha''_{p,q}$ is closed (so its complement is
+open), and we just have to verify that it is not equal to the whole
+$\KKbar{}^N$. This follows from property $\assJ_4(\balpha,q)$, which
+proves that generic matrices of the form $\mathfrak{N}_{\balpha,q}$ do not
+belong to $\alpha''_{\balpha,q}$.
+
+Again, we finish the proof by induction. We first take $p=q$, and we
+prove that $\assJ_4(\balpha,q)$ holds ($\assI_4(\balpha,q)$ will follow,
+by the previous paragraph). In this case, $n=1$ and
+$\mathfrak{N}_{\balpha,q}$ is a diagonal matrix, whose diagonal entries
+are products of linear forms $\mathfrak{l}^H_{i,i}$ depending on
+$(X_0,X_1)$ and with indeterminate coefficients. For $G'$ in
+$\KKbar{}^N$, the ideal $I_p(\mathfrak{N}_{\balpha,q}(G'))$ is generated by
+the product of the terms $\mathfrak{l}^H_{i,i}(G')$; for generic $G'$, it
+admits no repeated factors, and the conclusion follows.
+
+Consider next a pair $(\balpha,q)$, with $\balpha=(\alpha_1,\dots,\alpha_p)$ and $1 \le p
+\le q$ and suppose that $\assI_4(\balpha',q')$ holds for all $(\balpha',q')$
+with $\balpha'=(D'_1,\dots,D'_{p'})$, $1 \le p' \le q'$, $p' \le p$ and $q' <
+q$; we prove that $\assJ_4(\balpha,q)$ holds; this will imply
+ $\assI_4(\balpha,q)$. 
+
+We take $k=p$ in the formula of the lemma, and we first deal with the
+terms in~\eqref{eq:union}.  Thus, we choose a subsequence
+$s=(s_1,\dots,s_t)$ of $(1,\dots,p)$, with $1 \le t\le \min(p,n-1)$,
+and indices $R=(r_1,\dots,r_t)$, with $ 1\le r_i \le \alpha_{s_i}$ for all
+$i$; for simplicity, we write the proof with $s=(1,\dots,t)$, so that
+we have $\balpha_s=(\alpha_1,\dots,\alpha_t)$. We take $\tilde\bx=(x_0,\dots,x_n)$
+in $\P^n(\KKGpbar)$ such that $\tilde \bx'=(x_0,\dots,x_{n-t})$
+is in $V_t(\mathfrak{M}_{\balpha_s,n-1}(\mathfrak{H}_{s,r})) \subset
+\P^{n-t}(\KKGpbar)$, and such that 
+\begin{align}\label{eq:subsX}
+  x_{n-t+1}=\mathfrak{f}_{s,r,n-t+1}(x_0,\dots,x_{n-t}),\dots,x_{n}=\mathfrak{f}_{s,r,n}(x_0,\dots,x_{n-t});
+\end{align}
+we then prove that the Jacobian matrix of $M_p(\mathfrak{N}_{\balpha,q})$
+with respect to $X_0,\dots,X_n$ has rank $n$ at $\tilde\bx$.  By
+Lemma~\ref{lemma:union}, taking all such $\tilde\bx$ into account, for
+all $s$ and $r$, will cover all points in $V_p(\mathfrak{N}_{\balpha,q})$, up to the
+exception of those points obtained from $t=n$, which will admit a
+simpler treatment.
+
+We are going to exhibit some ``nice'' polynomials that belong to
+$I_p(\mathfrak{N}_{\balpha,q})$, for which we can control the rank of the
+Jacobian at $\tilde\bx$. First, we prove that for $i\in\{1,\dots,t\}$
+and $r \in \{1,\dots,\alpha_i\}-\{r_i\}$, as well as $i\in\{t+1,\dots,p\}$
+and $r \in \{1,\dots,\alpha_i\}$, $\mathfrak{l}_{i,i,r}(\tilde\bx)$ is
+non-zero.  We subdivide the coordinates $\mathfrak{G}'$ into
+$\mathfrak{G}'_1$ and $\mathfrak{G}'_2$, where $\mathfrak{G}'_1$
+corresponds to the coefficients involved in $\mathfrak{l}_{i,i,r_i}$,
+for $i=1,\dots,t$, and in the submatrix of $\mathfrak{N}_{\balpha,q}$
+associated to $s$, and $\mathfrak{G}'_2$ are the other coordinates.
+By $\assI_2(\balpha_s,n-1)$,  $V_t(\mathfrak{M}_{\balpha_s,n-1}(\mathfrak{H}_{s,r}))$ 
+is finite; as a result, all coordinates of $\tilde\bx$ are algebraic
+over $\KK(\mathfrak{G}'_1)$. For $i,r$ as described above, the coefficients of the equation
+$$\mathfrak{l}_{i,i,r} = \frak{g}_{i,i,r,0} X_0+ \frak{g}_{i,i,r,1}
+X_1 +\cdots + \frak{g}_{i,i,r,n} X_n$$ are thus algebraically independent
+over the field of definition of $\bx'$, so that $\mathfrak{l}_{i,i,r}(\tilde\bx)$
+is non-zero.
+
+Next, we take $i$ in $\{1,\dots,t\}$. We can then define
+$s^*=(1,\dots,i-1,i+1,\dots,t)$,
+$\balpha^*=(\alpha_1,\dots,\alpha_{i-1},\alpha_{i+1},\dots,\alpha_t)$, and we call
+$\mathfrak{N}_{\balpha,q}^*$ the submatrix of
+$\mathfrak{N}_{\balpha,q}$ associated to $s^*$. We prove that there exists a $(t-1)$-minor
+$\alpha_i$ of $\mathfrak{N}_{\balpha,q}^*$ such that $\alpha_i(\tilde\bx)\ne 0$.  Let indeed
+$\mathfrak{H}^*$ be the coefficients of the linear forms obtained by
+applying the substitution~\eqref{eq:subsX} in
+$\mathfrak{N}_{\balpha,q}^*$. Since the coefficients of $\mathfrak{H}^*$
+are algebraically independent over $\KK$, we can apply $\assI_3(\balpha^*,n-1)$ to $\mathfrak{N}_{\balpha,q}^*(\mathfrak{H}^*)$,
+and deduce that this matrix has full rank $t-1$ at $\tilde\bx'$.
+Thus, $\mathfrak{N}_{\balpha,q}^*$ has rank $t-1$ at $\tilde\bx$, 
+from which the existence of the minor $\alpha_i$ follows.
+
+We next show that these properties imply that for $i\in\{1,\dots,t\}$,
+there exists a polynomial of the form $B_{i} \mathfrak{l}_{i,i,r_i}$
+in the ideal $I_p(\mathfrak{N}_{\balpha,q})$, with $B_{i}(\tilde\bx)\ne
+0$. Indeed, we consider the $p$-minor of $\mathfrak{N}_{\balpha,q}$
+obtained by taking the columns $i$,$t+1,\dots,p$, and all $t-1$ columns
+in $\alpha_i$. Using the factorization
+$$\mathfrak{l}^H_{i,i} = b_i \mathfrak{l}_{i,i,r_i},\quad\text{with}\quad
+b_i=\mathfrak{l}_{i,i,1}\cdots \mathfrak{l}_{i,i,r_i-1}\mathfrak{l}_{i,i,r_i+1}\cdots \mathfrak{l}_{i,i,\alpha_i},$$
+that minor evaluates to 
+$$B_i \mathfrak{l}_{i,i,r_i}\quad\text{with}\quad B_i = b_i
+\mathfrak{l}^H_{t+1,t+1}\cdots \mathfrak{l}^H_{p,p}\alpha_i.$$ Hence, $B_i\,
+\mathfrak{l}_{i,i,r_i}$ belongs to $I_p(\mathfrak{N}_{\balpha,q})$, and by
+the discussion of the two previous paragraphs, $B_i(\tilde\bx)\ne 0$,
+as claimed.
+
+For the same reasons, for every $t$-minor $\eta$ of the submatrix of
+$\mathfrak{N}_{\balpha,q}$ associated to $s$, there exists a polynomial
+$C_\eta$ such that $C_\eta\, \eta$ belongs to
+$I_p(\mathfrak{N}_{\balpha,q})$, and $C_\eta(\tilde\bx)\ne 0$. 
+Using the
+fact that (up to the factors $B_i$) the equations
+$\mathfrak{l}_{i,i,r_i}$ are in $I_p(\mathfrak{N}_{\balpha,q})$, we deduce
+the existence of cofactors $\tilde C_\eta$ such that $C_\eta\, \eta(\mathfrak{H}_{s,r})$
+belongs to $I_p(\mathfrak{N}_{\balpha,q})$, and $C_\eta(\tilde\bx)\ne 0$.
+
+
 
 \begin{algorithm}
 \caption{$\mathsf{StartRow}$}
@@ -1996,9 +2554,12 @@ matrix $N \in \KK[X_1, \ldots, X_t]^{p \times q}$ with $p \leq q$, $t = q-p+1$\\
 \end{algorithm}
 
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{The main algorithm}
+\section{The row-degree homotopy}\label{sec:rowdegree}
 
 We now give an algorithm to solve Problem~\ref{problem2} whose runtime
 will depend on the row-degrees of the input matrix $\mF$. This
@@ -2294,7 +2855,7 @@ is to establish the value of $c$
   $\assG_1(1),\assG_2(1),\assG_3(1)$ hold as well: the degree property
   in $\assG_1(1)$ is proved as we did for $\assG_1(0)$, and
   $\assG_2(1),\assG_3(1)$ are restatements of
-  Lemma~\ref{lemma:appendix}. As a result, we can
+  Lemma~\ref{lemma:appendix}. As a result, we can apply
   Proposition~\ref{prop:degree_fiber} to the specializations of
   $(1-T)\mN + T\mM$ at $T=0$ and $T=1$, and conclude that $V_p(\mN)$
   and $V_p(\mM)$ have the same cardinality, for generic choices of
@@ -2303,20 +2864,31 @@ is to establish the value of $c$
   We finish the proof by induction. If $p=q$, $\mN$ is diagonal, and
   its determinant has degree $\alpha_1 + \cdots + \alpha_p =
   S_1(\alpha_1,\dots,\alpha_p)$, so our claim holds for $\mN$ (and
-  thus for $\mM$). Suppose now that the claim is true for all choices
-  of degrees $(\alpha_i)$, for all $p'\le p$ and all $q' < q$ with $p'
-  \le q'$. Equation~\eqref{eq:cardinality} shows that 
+  thus for $\mM$). Suppose now that the claim is true  for all $p'\le p$ and all $q' < q$ with $p'
+  \le q'$ and for all choices
+  of degrees $(\alpha_1,\dots,\alpha_{p'})$.
+ Equation~\eqref{eq:cardinality} shows that 
 $$
     |V_p(\mN)| = \sum_{\bi=(i_1,\dots,i_\kappa),\br=(r_1,\dots,r_\kappa)}  |V_\kappa(\mM_{\bi,\br})|,
 $$
-  for indices $\bi,\br$ and matrices $\mM_{\bi,\br}$ as defined  in the 
-  previous subsection. Any such matrix has $\kappa \le p$ rows,
-  $q-p < q$ columns, with $\kappa \le q-p$ \todo{say why}. As a result, we 
-  can apply our induction assumption, and deduce
- $$
-    |V_p(\mN)| = \sum_{\bi=(i_1,\dots,i_\kappa),\br=(r_1,\dots,r_\kappa)}  S_{q-p-\kappa}(\alpha_{i_1},\dots,\alpha_{i_\kappa}).
-$$
+  for 
+ all subsequences $\bi=(i_1,\dots,i_\kappa)$
+  of length $\kappa \in \{1,\dots,\min(t,p)\}$ and $\br=(r_1,\dots,r_\kappa)$,
+  with $r_m \in \{1,\dots,\alpha_m\}$ for all $m$. The matrix $\mM_{\bi,\br}$ has $\kappa \le p$ rows
+  and $q-p = t-1 < q$ columns. If $\kappa=t$, 
 
+
+, with $\kappa \le q-p$ \todo{say why}. As a result, we 
+  can apply our induction assumption, and deduce
+  $$
+  |V_p(\mN)| = \sum_{\bi=(i_1,\dots,i_\kappa),\br=(r_1,\dots,r_\kappa)}  S_{t-\kappa}(\alpha_{i_1},\dots,\alpha_{i_\kappa}).
+  $$
+  For any given $\bi=(i_1,\dots,i_\kappa)$, there are $\alpha_{i_1}\cdots \alpha_{i_\kappa}$ 
+  choices of indices $\br$, so that we have
+  $$
+  |V_p(\mN)| = \sum_{\bi=(i_1,\dots,i_\kappa)} \alpha_{i_1}\cdots \alpha_{i_\kappa} S_{t-\kappa}(\alpha_{i_1},\dots,\alpha_{i_\kappa}),
+  $$
+  where we recall that the sum is taken of
 \end{proof}
 
 
@@ -2386,518 +2958,5 @@ $$\{\bx \in \KKbar{}^n \mid  \mathrm{rank}(\mF({\bx})) < p
 \end{algorithm}
 \newpage
 \bibliographystyle{plain} \bibliography{roadmap}
-
-
-\section*{Append: proof of~\ref{xxx}}
-
-Fix positive integers $p,q$, with $p \le q$, and let $n=q-p+1$. Let
-$\bD=(\delta_1,\dots,\delta_p)$ be positive integers. Let $N=q(n+1)(\delta_1 + \cdots
-+ \delta_p)$; this is the number of coefficients needed to define affine
-linear forms in $X_1,\dots,X_n$ (or equivalently, homogeneous linear
-forms in $X_0,\dots,X_n$), for $i=1,\dots,p$, $j=1,\dots,q$ and
-$k=1,\dots,\delta_i$. If needed, we will write $N=N(\bD,q)$ to make the
-dependency explicit.
-
-
-Let then $\mathfrak{ G}$ be the sequence of $N$ indeterminates
-$\mathfrak{G}=(\mathfrak{ g}_{i,j,k,r})$, for $i,j,k$ as above and
-$r=0,\dots,n$, and define
-$$\mathfrak{l}_{i,j,k} = \frak{g}_{i,j,k,0}X_0 + \frak{g}_{i,j,k,1} X_1 +\cdots + \frak{g}_{i,j,k,n} X_n,$$
-as well as 
-$$\mathfrak{L}_{i,j} = \mathfrak{ l}_{i,j,1} \cdots \mathfrak{l}_{i,j,\delta_i} \in \KK[\mathfrak{G}][\tilde\bX],$$
-with $\tilde\bX=(X_0,X_1,\dots,X_n)$. We can then define the
-matrix
-\begin{align}\label{eq:matM}
-\mathfrak{M}_{\bD,q}=\left [\begin{matrix}
-\mathfrak{L}_{1,1} & \cdots & \mathfrak{L}_{1,q}\\
- \vdots & & \vdots\\
-\mathfrak{L}_{p,1} & \cdots & \mathfrak{L}_{p,q}
-  \end{matrix}\right ]\in \KK[\mathfrak{ G}][\tilde\bX]^{p\times q}.  
-\end{align}
-Remark that for all $i,j$, the $(i,j)$-th entry of
-$\mathfrak{M}_{\bD,q}$ has degree $\delta_i$ in $\tilde \bX$.
-
-Given $G=(g_{i,j,k,r})\in \KKbar{}^N$, for any polynomial
-$\mathfrak{F}$ in $\KK(\mathfrak{G})[\tilde \bX]$ with entries in
-$\KK(\mathfrak{ G})[\tilde \bX]$, we write $\mathfrak{F}(G)$ for the
-polynomial obtained by evaluating $\mathfrak{g}_{i,j,k,r}$ at
-$g_{i,j,k,r}$, for all indices $i,j,k,r$ as above, as long as no
-denominator vanishes through this evaluation; the notation extends to
-polynomial matrices. More generally, for a field $\mathfrak{L}$
-containing $\KK$, and $\mathfrak{H}$ in $\mathfrak{L}^N$, the notation
-$\mathfrak{F}(\mathfrak{H})$ is defined similarly.
-
-Let next $N'=n(n+1)(\delta_1+\cdots+\delta_p)$; as above, when needed, we will
-write $N'=N'(\bD,q)$. Let $\mathfrak{ G}'\subset \mathfrak{G}$ be
-the sequence of $N'$ indeterminates $\mathfrak{ G}'=(\mathfrak{
-  g}_{i,j,k,r})$, for indices $i,j,k,r$ as follows: $i$ is in
-$\{1,\dots,p\}$, $j$ is in $\{i,p+1,\dots,q\}$, and as previously, $k$
-is in $\{1,\dots,\delta_i\}$ and $r$ is in $\{0,\dots,n\}$. Remark that the
-polynomials $\mathfrak{L}_{i,j}$, for $i,j$ as above, are in
-$\KK[\mathfrak{G}'][\tilde\bX] \subset \KK[\mathfrak{G}][\tilde \bX]$, and allow
-us to define
-\begin{align}\label{eq:matMprime}
-\mathfrak{N}_{\bD,q}=\left [\begin{matrix} \mathfrak{L}_{1,1} & 0 & 0
-    &\mathfrak{L}_{1,p+1} & \cdots & \mathfrak{L}_{1,q}\\ 0 & \ddots &
-    0 & \vdots & & \vdots\\ 0&0& \mathfrak{L}_{p,p}
-    &\mathfrak{L}_{p,p+1} & \cdots & \mathfrak{L}_{p,q}
-  \end{matrix}\right ]\in \KK[\mathfrak{ G}'][\tilde\bX]^{p\times q}.
-\end{align}
-For $G' \in \KKbar{}^{N'}$, the notation $\mathfrak{F}(G')$ is defined
-as in the case of polynomials over $\KK(\mathfrak{G}')$ described
-previously.
-
-
-\paragraph{Setting up the recurrences.}
-The basic idea behind most proofs is the following: to prove that a
-property holds for a matrix $\mathfrak{M}_{\bD,q}$, we prove that it
-holds for a matrix of the form $\mathfrak{N}_{\bD,q}$, and use an
-openness property. To prove the required property for the latter
-matrices, we proceed by induction, relying on the presence of the
-left-hand diagonal block. Indeed, of a matrix such as, say,
-$\mathfrak{N}_{\bD,q}$ to be rank-deficient at $\bx \in \P^n(\KKGpbar)$,
-one of $\mathfrak{L}_{1,1},\dots,\mathfrak{L}_{p,p}$ must vanish at
-$\bx$.
-
-Suppose for instance that
-$\mathfrak{L}_{1,1}(\bx)=\mathfrak{L}_{2,2}(\bx)=0$, while all other
-terms are non-zero. Then, the $((1,2),(p+1,\dots,q))$-submatrix of
-${\mathfrak{M}_{\bD,q}'}(\bx)$ itself must be rank-deficient.  The
-constraints $\mathfrak{L}_{1,1}(\bx)=\mathfrak{L}_{2,2}(\bx)=0$ give
-us two linear equations, which allow us to eliminate two coordinates
-of $\bx$, say $X_{n-1}$ and $X_n$. We can perform the corresponding
-substitution in the above submatrix, and we are left with a matrix of
-size $2 \times (n-1)$ that is of the form
-$\mathfrak{M}_{(\delta_1,\delta_2),n-1}(\mathfrak{H})$, with entries depending
-on $X_1,\dots,X_{n-2}$, for some vector of coefficients $\mathfrak{H}$
-obtained through the elimination of $X_{n-1}$ and $X_n$. We can then
-invoke our induction assumption on the latter matrix.
-
-To formalize this process, for $1 \le m \le m' \le p$ we let
-$S_{m,m'}$ be the set of all subsequences of $(1,\dots,p)$ of
-cardinality in $\{m,\dots,m'\}$. For $s=(s_1,\dots,s_t)$ in
-$S_{m,m'}$, we let $R_s$ be the set of all tuples $r=(r_1,\dots,r_t)$,
-with $r_1$ in $\{1,\dots,\delta_{s_1}\}$, \dots, $r_t$ in
-$\{1,\dots,\delta_{s_t}\}$; $r_i$ will be the index of the factor
-$\mathfrak{l}_{s_i,s_i,r_i}$ of $\mathfrak{L}_{s_i,s_i}$ we
-cancel. For given $s=(s_1,\dots,s_t)$, with $t \le n$, and $r$, let
-$\mathfrak{G}'_{s,r} \subset \mathfrak{G}'$ be the indeterminates
-corresponding to the coefficients of
-$\mathfrak{l}_{s_1,s_1,r_1},\dots,\mathfrak{l}_{s_t,s_t,r_t}$, and of
-all entries $\mathfrak{L}_{s_1,p+1},\dots,\mathfrak{L}_{s_t,q}$ of the
-submatrix associated to $s$ in $\mathfrak{N}_{\bD,q}$.
-
-
-By Gaussian elimination, we can rewrite the homogeneous linear
-equations
-$\mathfrak{l}_{s_1,s_1,r_1}=\dots=\mathfrak{l}_{s_t,s_t,r_t}=0$ as
-\begin{align}\label{eq:f_sr}
-X_{n-t+1}=\mathfrak{f}_{s,r,n-t+1}(X_0,\dots,X_{n-t}),\dots,X_{n}=\mathfrak{f}_{s,r,n}(X_0,\dots,X_{n-t}),  
-\end{align}
-for some linear forms
-$\mathfrak{f}_{s,r,n-t+1},\dots,\mathfrak{f}_{s,r,n}$ of
-$(X_0,\dots,X_{n-t})$ with coefficients in
-$\KK(\mathfrak{G}'_{s,r})$. Applying this substitution in the entries
-of the submatrix of ${\mathfrak{N}_{\bD,q}}$ associated to $s$ gives
-us the $t \times (n-1)$ matrix
-$\mathfrak{M}_{\b\delta_s,n-1}(\mathfrak{H}_{s,r})$, with
-$\b\delta_s=(\delta_{s_1},\dots,\delta_{s_t})$, whose entries are products of linear
-forms, and where $\mathfrak{H}_{s,r}$ is a vector of $N$ elements in
-$\KK(\mathfrak{G}'_{s,r})$.  The main result we will use in this
-section is the following lemma.
-\begin{lemma}\label{lemma:union}
-  For $k$ in $\{1,\dots,p\}$, $V_p(\mathfrak{N}_{\bD,q})$ is the
-  union of the sets
- \begin{align}\label{eq:union}
- \left \{(\tilde\bx',\mathfrak{f}_{s,r,n-t+1}(\tilde\bx'),\dots,\mathfrak{f}_{s,r,n}(\tilde\bx')) \mid \tilde\bx' \in
-  V_{t-(p-k)}(\mathfrak{M}_{\b\delta_s,n-1}(\mathfrak{H}_{s,r})) \subset \P^{n-t}(\KKGpbar)\right \},   
- \end{align}
- for $s=(s_1,\dots,s_t)$ in $S_{p-k+1,\min(p,n-1)}$ and $r$ in $R_s$, together with
- $\left \{
- (1,\mathfrak{f}_{s,r,1}(1),\dots,\mathfrak{f}_{s,r,n}(1))\right
- \},$ if $k=p$, with $s=(s_1,\dots,s_n)$ and $r$ in $R_s$.
-\end{lemma}
-\begin{proof}
-  A point $\tilde\bx \in \P^n(\KKGpbar)$ belongs to
-  $V_k(\mathfrak{N}_{\bD,q})$ if and only if some diagonal terms of
-  $\mathfrak{N}_{\bD,q}$ vanish at $\tilde\bx$, say
-  $\mathfrak{L}_{s_i,s_i}$ for $i=1,\dots,t$, and if the
- submatrix of $\mathfrak{N}_{\bD,q}$ associated to $s$ has rank
-  less than $t-(p-k)$ at $\tilde \bx$, with $s=(s_1,\dots,s_t)$.  In
-  particular, we must have $t-(p-k) > 0$, that is, $t \ge p-k+1$.
-
-  For $i=1,\dots, t$, $\mathfrak{L}_{s_i,s_i}(\tilde\bx)=0$ if and
-  only if there exists $r_i$ in $\{1,\dots,\delta_{s_i}\}$ such that
-  $\mathfrak{l}_{s_i,s_i,r_i}(\tilde\bx)=0$. Thus, $\tilde\bx=(x_0,\dots,x_n)$ is in
-  $V_k(\mathfrak{N}_{\bD,q})$ if and only if there exists
-  $s=(s_1,\dots,s_t)$ in $S_{p-k+1,p}$ and $r$ in $R_s$ such that
-  $\mathfrak{l}_{s_1,s_1,r_1}(\tilde\bx)=\cdots=\mathfrak{l}_{s_t,s_t,r_t}(\tilde\bx)=0$
-  and the submatrix of
-  $\mathfrak{N}_{\bD,q}$ associated to $s$ has rank less than $t-(p-k)$ at $\tilde\bx$.  Applying Gaussian
-  elimination to the equations
-  $\mathfrak{l}_{s_1,s_1,r_1},\dots,\mathfrak{l}_{s_t,s_t,r_t}$  allows us to rewrite them as
-  \begin{align*}
-    x_{n-t+1}=\mathfrak{f}_{s,r,n-t+1}(\tilde\bx'),\dots,x_{n}=\mathfrak{f}_{s,r,n}(\tilde\bx'),
-  \end{align*}
-  with $\tilde\bx'=(x_0,\dots,x_{n-t})$.  In particular, $t \le n$,
-  since otherwise this linear system would have no solution (recall that 
-  the coefficients are algebraically independent indeterminates); hence,
-  $s$ is in $S_{p-k+1,\min(n,p)}$. Remark also that $\tilde\bx'$ is a
-  well-defined element of $\P^{n-t}(\KKGpbar)$; otherwise, $\tilde\bx$
-  would vanish.
-
-  For $s=(s_1,\dots,s_t)$ with $t < n$, applying the above
-  substitution in the submatrix of $\mathfrak{N}_{\bD,q}$ associated
-  to $s$ (which has size $t \times (n-1)$), the rank condition above
-  becomes that $\mathfrak{M}_{\b\delta_s,n-1}(\mathfrak{H}_{s,r})$ has rank
-  less than $t-(p-k)$ at $\tilde \bx'$, that is, $\tilde \bx'$ is in
-  $V_{t-(p-k)}(\mathfrak{M}_{\b\delta_s,n-1}(\mathfrak{H}_{s,r}))$.  
-
-  When $t=n$, that is, $s=(s_1,\dots,s_n)$, the linear equations above
-  determine $\tilde\bx$ entirely; setting $x_0=1$, we obtain
-  $x_{1}=\mathfrak{f}_{s,r,1}(1),\dots,x_{n}=\mathfrak{f}_{s,r,n}(1).$
-  In this case, the submatrix of $\mathfrak{N}_{\bD,q}$ associated to
-  $s$ has size $n \times (n-1)$. Using the specialization of the
-  coefficients that sets the off-diagonal entry to $0$ and the $i$th
-  diagonal entries to $X_0^{\delta_i}$, $i=1,\dots,n-1$, we see that its
-  evaluation at $\tilde\bx$ has rank $n-1$; as a result
-  $\mathfrak{N}_{\bD,q}$ has rank $p-1$ at $\tilde \bx$. Thus, we need
-  to take $t=n$ into account only if $k=p$; in this case, we add the
-  point $\left \{
-  (1,\mathfrak{f}_{s,r,1}(1),\dots,\mathfrak{f}_{s,r,n}(1))\right \}$
-  to our list.
-\end{proof}
-
-
-\paragraph{Solutions with higher rank defect.} 
-First, we discuss the case $k=p-1$.  We take parameters
-$\bD=(\delta_1,\dots,\delta_p)$ and $q$, with $2 \le p \le q$, and we write
-$N=N(\bD,q)$ and $N'=N'(\bD,q)$; we will establish the following
-properties.
-\begin{description}[leftmargin=*]
-\item[$\assI_1(\bD,q).$] The projective algebraic set  $V_{p-1}(\mathfrak{M}_{\bD,q})\subset\P^n(\KKGbar)$
-  is empty.
-\item[$\assJ_1(\bD,q).$] The projective algebraic set 
- $V_{p-1}(\mathfrak{N}_{\bD,q})\subset\P^n(\KKGpbar)$ is empty.
-\end{description}
-The first step of the proof is to establish that for $\bD$ and $q$ as above,
-$\assJ_1(\bD,q)$ implies $\assI_1(\bD,q)$. Let us thus fix $\bD$
-and $q$.  Assumption $\assJ_1(\bD,q)$ implies that
-$V_{p-1}(\mathfrak{N}_{\bD,q}(G'))$ is empty for a generic $G'$
-in~$\KKbar{}^{N'}$.  We will prove that
-$V_{p-1}(\mathfrak{M}_{\bD,q}(G))$ is empty for a generic $G$
-in~$\KKbar{}^N$, which in turn establishes $\assI_1(\bD,q)$.
-
-Consider the ideal $I_{p-1}(\mathfrak{M}_{\bD,q})$ in the polynomial
-ring $\KK[\mathfrak{G},\tilde\bX]$ in $N+n+1$ variables. This ideal
-defines an algebraic set $Z_{\bD,q}$ in $\KKbar{}^N \times
-\P^n(\KKbar)$, and we let $\Delta_{\bD,q} \subset \KKbar{}^N$ be its
-projection on the first factor: this is the set of all $G$ such that
-$V_{p-1}(\mathfrak{M}_{\bD,q}(G))$ is not empty. Because the source is
-a projective space, $\Delta_{\bD,q}$ is closed (so its complement is
-open), and we just have to verify that it is not equal to the whole
-$\KKbar{}^N$. This follows readily from property $\assJ_1(\bD,q)$,
-which proves that generic matrices of the form
-$\mathfrak{N}_{\bD,q}(G')$ do not belong to $\Delta_{p,q}$, so 
-$\assI_1(\bD,q)$ holds.
-
-We finish the proof by induction. We first take $p=q$ and consider
-$\assJ_1(\bD,q)$.  In this case, $n=1$ and $\mathfrak{N}_{\bD,q}$ is
-a diagonal matrix, whose diagonal entries are products of linear forms
-in $(X_0,X_1)$ with indeterminate coefficients. Hence, no pair of
-entries $\mathfrak{N}_{\bD,q}$ have any common solution in
-$\P^1(\KKGpbar)$, so the rank of $\mathfrak{N}_{\bD,q}$ is at least
-$p-1$. Hence, $\assJ_1(\bD,p)$ holds, and so does $\assI_1(\bD,p)$, by the claim in the previous paragraph.
-
-Consider next a pair $(\bD,q)$, with $\bD=(\delta_1,\dots,\delta_p)$ and $2 \le
-p \le q$, and suppose that $\assI_1(\bD',q')$ holds for all
-$(\bD',q')$ with $\bD'=(D'_1,\dots,D'_{p'})$, $2 \le p' \le q'$, $p'
-\le p$ and $q' < q$; we prove that $\assJ_1(\bD,q)$ holds
-(as above, this will also imply $\assI_1(\bD,q)$).
-
-Take $k=p-1$ in Lemma~\ref{lemma:union}. Then, the parameters
-$(t-(p-k),\b\delta_s,n-1)$ used in each contribution to~\eqref{eq:union}
-are of the form $(t-1,\b\delta_s,n-1)$, with $2 \le t \le \min(p,n-1)$.
-Since the entries of $\mathfrak{H}_{s,r}$ are algebraically
-independent, $\b\delta_s$ has length $t\ge 2$, with also $t \le n-1$, $t
-\le p$ and $n-1 < q$, we can apply the induction hypothesis and deduce
-that all $V_{t-1}(\mathfrak{M}_{\b\delta_s,n-1}(\mathfrak{H}_{s,r}))$
-appearing in Lemma~\ref{lemma:union} are empty. As a consequence,
-$V_{p-1}(\mathfrak{N}_{\bD,q})$ is empty, as claimed.
-
-
-\paragraph{Solutions at infinity.} Next, we focus on the case $k=p$.
-We take parameters $\bD=(\delta_1,\dots,\delta_p)$ and $q$, with $1 \le p \le
-q$, and we write $N=N(\bD,q)$ and $N'=N'(\bD,q)$; then, we prove the following properties.
-\begin{description}[leftmargin=*]
-\item[$\assI_2(\bD,q).$] The projective algebraic set
-  $V_p(\mathfrak{M}_{\bD,q}) \subset \P^n(\KKGbar)$ has no point with $X_0=0$.
-\item[$\assJ_2(\bD,q).$] The projective algebraic set
-  $V_p(\mathfrak{N}_{\bD,q}) \subset \P^n(\KKGpbar)$ has no point with $X_0=0$.
-\end{description}
- In particular, this implies that these sets are finite. We will prove
- these properties as we did in the previous paragraph; the first step
- is thus to establish that for $\bD$ and $q$ as above, $\assJ_2(\bD,q)$
- implies $\assI_2(\bD,q)$.
-
-Let us thus fix $\bD$ and $q$, and assume that $\assJ_2(\bD,q)$
-holds. We prove that $V_p(\mathfrak{M}_{\bD,q}(G))$ has no point at
-infinity for a generic $G$ in $\KKbar{}^N$; this will imply $\assI_2(\bD,q)$. Consider the ideal generated by
-$I_{p}(\mathfrak{M}_{\bD,q})$ and $X_0$ in the polynomial ring
-$\KK[\mathfrak{G},\tilde\bX]$ in $N+n+1$ variables. This ideal defines
-an algebraic set $Z'_{\bD,q}$ in $\KKbar{}^N \times \P^n(\KKbar)$, and
-we let $\Delta'_{\bD,q} \subset \KKbar{}^N$ be its projection on the
-first factor: this is thus the set of all $G$ in $\KKbar{}^N$ such
-that $V_p(\mathfrak{M}_{\bD,q}(G))$ has a point at infinity. Because
-the source is a projective space, $\Delta'_{p,q}$ is closed (so its
-complement is open), and we just have to verify that it is not equal
-to the whole $\KKbar{}^N$. This follows from property $\assJ_2(\bD,q)$, which implies that matrices of the form
-$\mathfrak{N}_{\bD,q}(G')$, for generic $G'$ in $\KKbar{}^{N'}$, do
-not belong to $\Delta'_{\bD,q}$.
-
-Again, we finish the proof by induction. We first take $p=q$, and we
-prove that $\assJ_2(\bD,q)$ holds ($\assI_2(\bD,q)$ will follow,
-by the previous paragraph). In this case, $n=1$ and
-$\mathfrak{N}_{\bD,q}$ is a diagonal matrix, whose diagonal entries
-are products of linear forms in $(X_0,X_1)$ with indeterminate
-coefficients. Then, $\mathfrak{N}_{\bD,q}$ has rank less than $p$ at
-$\tilde\bx\in\P^1(\KKGpbar)$ if and only if one of the linear factors
-of some diagonal term vanishes at $\tilde \bx$. None of this linear
-forms has a projective root at infinity, so we are done.
-
-Consider next a pair $(\bD,q)$, with $\bD=(\delta_1,\dots,\delta_p)$ and $1 \le p
-\le q$ and suppose that $\assI_2(\bD',q')$ holds for all $(\bD',q')$
-with $\bD'=(D'_1,\dots,D'_{p'})$, $1 \le p' \le q'$, $p' \le p$ and $q' <
-q$; we prove that $\assJ_2(\bD,q)$ holds; as above, this will imply
- $\assI_2(\bD,q)$.
-
-Take $k=p$ in Lemma~\ref{lemma:union}. We first deal with the last
-contribution, corresponding to $s=(s_1,\dots,s_n)$, and thus $t=n$: by
-design, the corresponding point is not at infinity. For the other
-contributions, the parameters $(t-(p-k),\b\delta_s,n-1)$ used
-in~\eqref{eq:union} are of the form $(t,\b\delta_s,n-1)$, with $\b\delta_s$ of
-length $t \in \{1,\dots, \min(p,n-1)\}$; since all conditions $ 1 \le
-t \le n-1$, $t \le p$ and $n-1 < q$ are satisfied, we can invoke the
-induction assumption. Since the coefficients $\mathfrak{H}_{s,r}$ are
-algebraically independent, we deduce that none of the
-projective sets $V_t(\mathfrak{M}_{\b\delta_s,n-1}(\mathfrak{H}_{s,r}))$
-appearing in Lemma~\ref{lemma:union} has any point with $X_0=0$. As a
-consequence, $V_p(\mathfrak{N}_{\bD,q})$ has no point at infinity
-either, as claimed.
-
-
-\paragraph{Refining $\assI_1$.} The following  is a strengthening of 
-property $\assI_1$ above. Again, we consider $\bD=(\delta_1,\dots,\delta_p)$
-and $q$, with $1 \le p \le q$, together with a matrix
-$\mathfrak{m}_{\bD,q}$, built as $\mathfrak{M}_{\bD,q}$ before, but
-using products of homogeneous linear forms in $n=q-p+1$ variables $X_0,\dots,X_{n-1}$, instead of
-$n+1$ variables $X_0,\dots,X_n$. Such a matrix takes the form
-\begin{align}\label{eq:matM2}
-\mathfrak{m}_{\bD,q}=\left [\begin{matrix}
-\mathfrak{P}_{1,1} & \cdots & \mathfrak{P}_{1,q}\\
- \vdots & & \vdots\\
-\mathfrak{P}_{p,1} & \cdots & \mathfrak{P}_{p,q}
-  \end{matrix}\right ]\in \KK[\mathfrak{C}][X_0,\dots,X_{n-1}]^{p\times q},
-\end{align}
-with 
-$$\mathfrak{p}_{i,j,k} = \frak{c}_{i,j,k,0}X_0 + \frak{c}_{i,j,k,1} X_1 +\cdots + \frak{c}_{i,j,k,n-1} X_{n-1},$$
-and
-$$\mathfrak{P}_{i,j} = \mathfrak{p}_{i,j,1} \cdots
-\mathfrak{p}_{i,j,\delta_i} \in \KK[\mathfrak{C}][X_0,\dots,X_{n-1}],$$
-where $\mathfrak{C}=(\mathfrak{c}_{i,j,k,\ell})$ are indeterminates,
-for $i=1,\dots,p$, $j=1,\dots,q$, $k=1,\dots,\delta_i$ and
-$\ell=0,\dots,n-1$; we let $M=q n (\delta_1+\cdots +\delta_p)$ be the total
-number of coefficients $\mathfrak{c}_{i,j,k,\ell}$ involved. In this context, the
-following property could be proved by induction as in the other cases,
-but a direct proof is available.
-
-\begin{description}[leftmargin=*]
-\item[$\assI_3(\bD,q).$] The projective algebraic set
-  $V_p(\mathfrak{m}_{\bD,q}) \subset \P^{n-1}(\KKCbar)$ is empty.
-\end{description}
-To prove this property, take $\bD$ and $q$ as above. If $q=p$, we have
-$n=1$, so the $i,j$ entry of $\mathfrak{m}_{\bD,q}$ has the form
-$\mathfrak{c}_{i,j,1,0}\cdots\mathfrak{c}_{i,j,1,\delta_i} X_0^{\delta_i}$; hence, its determinant is non-zero,
-and the claim follows.
-
-We can thus suppose $q > p$, so that $q-1 \ge p$.  Then, the
-$((1,\dots,p),(1,\dots,q-1))$-submatrix of $\mathfrak{m}_{\bD,q}$ is
-of the form $\mathfrak{M}_{\bD,q-1}$, with entries depending on
-$N(\bD,q-1)$ parameters.  Let $(\Delta_i)_{i \in I}$ be the $p$-minors
-of $\mathfrak{m}_{\bD,q}$ built by taking $p-1$ of the first $q-1$
-columns of $\mathfrak{m}_{\bD,q}$, together with its last column.
-Any such minor can be expanded along the last column as $\Delta_i =
-\mathfrak{P}_{1,q} \delta_{i,1} + \cdots + \mathfrak{P}_{p,q}
-\delta_{i,p}$, where $\mathfrak{P}_{1,q},\dots,\mathfrak{P}_{p,q}$ are
-the entries of the last column, and $\delta_{i,1},\dots,\delta_{i,p}$
-are $(p-1)$-minors from $\mathfrak{M}_{\bD,q-1}$. Remark that
-$(\delta_{i,j})_{i \in I, 1 \le j \le p}$ are {\em all} $(p-1)$-minors
-of $\mathfrak{M}_{\bD,q-1}$ (if $p=1$, we have $I=\{1\}$ and
-$\Delta_1=\mathfrak{P}_{1,q}$, with $\delta_{1,1}=1$).
-
-By $\assI_2(\bD,q-1)$, we deduce that $V_p(\mathfrak{M}_{\bD,q-1})
-\subset \P^{n-1}(\KKCbar)$ is finite. For all other points $\tilde\bx$
-in $\P^{n-1}(\KKCbar)$, $\mathfrak{M}_{\bD,q-1}$ has full rank $p$ at
-$\tilde\bx$, and thus so does $\mathfrak{m}_{\bD,q}$. Hence, we can we
-can focus on the points in $V_p(\mathfrak{M}_{\bD,q-1})$.  Consider a
-point $\tilde\bx$ in this set (in particular, by $\assI_2(\bD,q-1)$,
-we can take it first coordinate $x_0$ equal to $1$). Using $\assI_1(\bD,q-1)$, together with our remark on the minors of
-$\mathfrak{M}_{\bD,q-1}$, we deduce that not all minors
-$(\delta_{i,j})_{i \in I, 1 \le j \le p}$ vanish at
-$\tilde\bx$. Suppose thus that $\delta_{i_0,j_0}(\tilde\bx) \ne 0$; we
-prove that $\Delta_{i_0}(\tilde\bx) \ne 0$.
-
-Let us split the $M$ indeterminates $\mathfrak{C}$ into
-$\mathfrak{C}_1$ and $\mathfrak{C}_2$, where $\mathfrak{C}_1$ has
-cardinality $M_1=N(\bD,q-1)$ and corresponds to the coefficients used
-in the entries $\mathfrak{P}_{1,1},\dots,\mathfrak{P}_{p,q-1}$ in
-$\mathfrak{m}_{\bD,q}$, and $\mathfrak{C}_2$ of cardinality
-$M_2=M-M_1$ stands for the coefficients of the entries
-$\mathfrak{P}_{1,q},\dots,\mathfrak{P}_{p,q}$ in the last column of
-$\mathfrak{m}_{\bD,q}$.  Let us further write
-$\Delta_{i_0}(\tilde\bx)= \mathfrak{P}_{1,q}(\tilde\bx)
-\delta_{i_0,1}(\tilde\bx) + \cdots + \mathfrak{P}_{p,q}(\tilde\bx)
-\delta_{i_0,p}(\tilde\bx)$.  Since $x_0=1$, the
-polynomial $\mathfrak{P}_{i,q}(\tilde\bx)$ admits
-$\mathfrak{c}_{i,q,1,0}\cdots \mathfrak{c}_{i,q,\delta_i,0}$ 
-as a specialization (setting all other coefficients to zero), so that
-$\Delta_{i_0}(\tilde\bx)$ admits 
-$$\mathfrak{c}_{1,q,1,0}\cdots \mathfrak{c}_{1,q,\delta_i,0}
-\delta_{i_0,1}(\tilde\bx) + \cdots + \mathfrak{c}_{p,q,1,0}\cdots
-\mathfrak{c}_{p,q,\delta_i,0} \delta_{i_0,p}(\tilde\bx)$$ as a
-specialization. The coefficients
-$\delta_{i_0,j}(\tilde\bx)$ are not all zero, and since
-$V_p(\mathfrak{M}_{\bD,q-1})$ is finite, algebraic over
-$\KK(\mathfrak{C}'_1)$. Since the entries of $\mathfrak{C}'_2$ are
-algebraically independent over $\KK(\mathfrak{C}'_1)$, the sum
-$\Delta_{i_0}(\tilde\bx)$ is non-zero, as claimed.
-
-\paragraph{Multiplicity of the solutions.} 
-Again, we take parameters $\bD=(\delta_1,\dots,\delta_p)$ and $q$, with $1 \le p
-\le q$, and we write $N=N(\bD,q)$ and $N'=N'(\bD,q)$; we will prove
-consider the following properties.
-\begin{description}[leftmargin=*]
-\item[$\assI_4(\bD,q).$] The Jacobian matrix of
-  $M_p(\mathfrak{M}_{\bD,q})$ has rank $n$ at all points in
-  $V_p(\mathfrak{M}_{\bD,q})$.
-\item[$\assJ_4(\bD,q).$] The Jacobian matrix of
-  $M_p(\mathfrak{N}_{\bD,q})$ has rank $n$ at all points in
-  $V_p(\mathfrak{N}_{\bD,q})$.
-\end{description}
-As for other proofs involving both $\mathfrak{M}_{\bD,q}$ and
-$\mathfrak{N}_{\bD,q}$, we first show that $\assJ_4(\bD,q)$ implies
-$\assI_4(\bD,q)$.
-
-We fix $\bD$ and $q$, and we assume that $\assJ_4(\bD,q)$
-holds. Consider the ideal of the polynomial ring
-$\KK[\mathfrak{G},\tilde\bX]$ in $N+n+1$ variables generated by the
-$p$-minors of $\mathfrak{M}_{\bD,q}$, together with the $n$-minors of
-the Jacobian matrix of these equations with respect to
-$X_0,\dots,X_n$. This ideal defines an algebraic set $Z''_{\bD,q}$ in
-$\KKbar{}^N \times \P^n(\KKbar)$, and we let $\Delta''_{\bD,q} \subset
-\KKbar{}^N$ be its projection on the first factor. By construction,
-for $G$ in $\KKbar{}^N-Z''_{\bD,q}$, the Jacobian matrix of
-$M_p(\mathfrak{M}_{\bD,q}(G))$ has rank $n$ at any $\bx$ in
-$V_p(\mathfrak{M}_{\bD,q}(G))$. As before, because the source is a
-projective space, $\Delta''_{p,q}$ is closed (so its complement is
-open), and we just have to verify that it is not equal to the whole
-$\KKbar{}^N$. This follows from property $\assJ_4(\bD,q)$, which
-proves that generic matrices of the form $\mathfrak{N}_{\bD,q}$ do not
-belong to $\Delta''_{\bD,q}$.
-
-Again, we finish the proof by induction. We first take $p=q$, and we
-prove that $\assJ_4(\bD,q)$ holds ($\assI_4(\bD,q)$ will follow,
-by the previous paragraph). In this case, $n=1$ and
-$\mathfrak{N}_{\bD,q}$ is a diagonal matrix, whose diagonal entries
-are products of linear forms $\mathfrak{L}_{i,i}$ depending on
-$(X_0,X_1)$ and with indeterminate coefficients. For $G'$ in
-$\KKbar{}^N$, the ideal $I_p(\mathfrak{N}_{\bD,q}(G'))$ is generated by
-the product of the terms $\mathfrak{L}_{i,i}(G')$; for generic $G'$, it
-admits no repeated factors, and the conclusion follows.
-
-Consider next a pair $(\bD,q)$, with $\bD=(\delta_1,\dots,\delta_p)$ and $1 \le p
-\le q$ and suppose that $\assI_4(\bD',q')$ holds for all $(\bD',q')$
-with $\bD'=(D'_1,\dots,D'_{p'})$, $1 \le p' \le q'$, $p' \le p$ and $q' <
-q$; we prove that $\assJ_4(\bD,q)$ holds; this will imply
- $\assI_4(\bD,q)$. 
-
-We take $k=p$ in the formula of the lemma, and we first deal with the
-terms in~\eqref{eq:union}.  Thus, we choose a subsequence
-$s=(s_1,\dots,s_t)$ of $(1,\dots,p)$, with $1 \le t\le \min(p,n-1)$,
-and indices $R=(r_1,\dots,r_t)$, with $ 1\le r_i \le \delta_{s_i}$ for all
-$i$; for simplicity, we write the proof with $s=(1,\dots,t)$, so that
-we have $\b\delta_s=(\delta_1,\dots,\delta_t)$. We take $\tilde\bx=(x_0,\dots,x_n)$
-in $\P^n(\KKGpbar)$ such that $\tilde \bx'=(x_0,\dots,x_{n-t})$
-is in $V_t(\mathfrak{M}_{\b\delta_s,n-1}(\mathfrak{H}_{s,r})) \subset
-\P^{n-t}(\KKGpbar)$, and such that 
-\begin{align}\label{eq:subsX}
-  x_{n-t+1}=\mathfrak{f}_{s,r,n-t+1}(x_0,\dots,x_{n-t}),\dots,x_{n}=\mathfrak{f}_{s,r,n}(x_0,\dots,x_{n-t});
-\end{align}
-we then prove that the Jacobian matrix of $M_p(\mathfrak{N}_{\bD,q})$
-with respect to $X_0,\dots,X_n$ has rank $n$ at $\tilde\bx$.  By
-Lemma~\ref{lemma:union}, taking all such $\tilde\bx$ into account, for
-all $s$ and $r$, will cover all points in $V_p(\mathfrak{N}_{\bD,q})$, up to the
-exception of those points obtained from $t=n$, which will admit a
-simpler treatment.
-
-We are going to exhibit some ``nice'' polynomials that belong to
-$I_p(\mathfrak{N}_{\bD,q})$, for which we can control the rank of the
-Jacobian at $\tilde\bx$. First, we prove that for $i\in\{1,\dots,t\}$
-and $r \in \{1,\dots,\delta_i\}-\{r_i\}$, as well as $i\in\{t+1,\dots,p\}$
-and $r \in \{1,\dots,\delta_i\}$, $\mathfrak{l}_{i,i,r}(\tilde\bx)$ is
-non-zero.  We subdivide the coordinates $\mathfrak{G}'$ into
-$\mathfrak{G}'_1$ and $\mathfrak{G}'_2$, where $\mathfrak{G}'_1$
-corresponds to the coefficients involved in $\mathfrak{l}_{i,i,r_i}$,
-for $i=1,\dots,t$, and in the submatrix of $\mathfrak{N}_{\bD,q}$
-associated to $s$, and $\mathfrak{G}'_2$ are the other coordinates.
-By $\assI_2(\b\delta_s,n-1)$,  $V_t(\mathfrak{M}_{\b\delta_s,n-1}(\mathfrak{H}_{s,r}))$ 
-is finite; as a result, all coordinates of $\tilde\bx$ are algebraic
-over $\KK(\mathfrak{G}'_1)$. For $i,r$ as described above, the coefficients of the equation
-$$\mathfrak{l}_{i,i,r} = \frak{g}_{i,i,r,0} X_0+ \frak{g}_{i,i,r,1}
-X_1 +\cdots + \frak{g}_{i,i,r,n} X_n$$ are thus algebraically independent
-over the field of definition of $\bx'$, so that $\mathfrak{l}_{i,i,r}(\tilde\bx)$
-is non-zero.
-
-Next, we take $i$ in $\{1,\dots,t\}$. We can then define
-$s^*=(1,\dots,i-1,i+1,\dots,t)$,
-$\bD^*=(\delta_1,\dots,\delta_{i-1},\delta_{i+1},\dots,\delta_t)$, and we call
-$\mathfrak{N}_{\bD,q}^*$ the submatrix of
-$\mathfrak{N}_{\bD,q}$ associated to $s^*$. We prove that there exists a $(t-1)$-minor
-$\delta_i$ of $\mathfrak{N}_{\bD,q}^*$ such that $\delta_i(\tilde\bx)\ne 0$.  Let indeed
-$\mathfrak{H}^*$ be the coefficients of the linear forms obtained by
-applying the substitution~\eqref{eq:subsX} in
-$\mathfrak{N}_{\bD,q}^*$. Since the coefficients of $\mathfrak{H}^*$
-are algebraically independent over $\KK$, we can apply $\assI_3(\bD^*,n-1)$ to $\mathfrak{N}_{\bD,q}^*(\mathfrak{H}^*)$,
-and deduce that this matrix has full rank $t-1$ at $\tilde\bx'$.
-Thus, $\mathfrak{N}_{\bD,q}^*$ has rank $t-1$ at $\tilde\bx$, 
-from which the existence of the minor $\delta_i$ follows.
-
-We next show that these properties imply that for $i\in\{1,\dots,t\}$,
-there exists a polynomial of the form $B_{i} \mathfrak{l}_{i,i,r_i}$
-in the ideal $I_p(\mathfrak{N}_{\bD,q})$, with $B_{i}(\tilde\bx)\ne
-0$. Indeed, we consider the $p$-minor of $\mathfrak{N}_{\bD,q}$
-obtained by taking the columns $i$,$t+1,\dots,p$, and all $t-1$ columns
-in $\delta_i$. Using the factorization
-$$\mathfrak{L}_{i,i} = b_i \mathfrak{l}_{i,i,r_i},\quad\text{with}\quad
-b_i=\mathfrak{l}_{i,i,1}\cdots \mathfrak{l}_{i,i,r_i-1}\mathfrak{l}_{i,i,r_i+1}\cdots \mathfrak{l}_{i,i,\delta_i},$$
-that minor evaluates to 
-$$B_i \mathfrak{l}_{i,i,r_i}\quad\text{with}\quad B_i = b_i
-\mathfrak{L}_{t+1,t+1}\cdots \mathfrak{L}_{p,p}\delta_i.$$ Hence, $B_i\,
-\mathfrak{l}_{i,i,r_i}$ belongs to $I_p(\mathfrak{N}_{\bD,q})$, and by
-the discussion of the two previous paragraphs, $B_i(\tilde\bx)\ne 0$,
-as claimed.
-
-For the same reasons, for every $t$-minor $\eta$ of the submatrix of
-$\mathfrak{N}_{\bD,q}$ associated to $s$, there exists a polynomial
-$C_\eta$ such that $C_\eta\, \eta$ belongs to
-$I_p(\mathfrak{N}_{\bD,q})$, and $C_\eta(\tilde\bx)\ne 0$. 
-Using the
-fact that (up to the factors $B_i$) the equations
-$\mathfrak{l}_{i,i,r_i}$ are in $I_p(\mathfrak{N}_{\bD,q})$, we deduce
-the existence of cofactors $\tilde C_\eta$ such that $C_\eta\, \eta(\mathfrak{H}_{s,r})$
-belongs to $I_p(\mathfrak{N}_{\bD,q})$, and $C_\eta(\tilde\bx)\ne 0$.
-
-
-
 
 \end{document}
