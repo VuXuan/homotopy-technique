@@ -317,7 +317,8 @@ $S_{\mF, G}$: some of them can actually lie in positive dimensional
 components of $S_{\mF, G}$.  Hence, we need an algorithm which takes
 as input a polynomial sequence $\bC$ and a point $\bx$ in the zero-set
 of $\bC$ and which decides whether $\bx$ is an isolated solution to
-$\bC$.
+$\bC$ (typically, for us, $\bC$ will be a system consisting of the
+entries of $G$ and the maximal minors of $\mF$).
 
 That decision problem is difficult to solve in a well-controlled
 runtime. However, when a bound $\mu$ is known on the multiplicity of
@@ -328,13 +329,31 @@ $\mu$. This is explained in Section~\ref{sec:isolated} where we
 revisit an algorithm and its complexity analysis for getting such a
 runtime.
 
-In Section~\ref{sec:homotopy}, 
+In Section~\ref{sec:homotopy}, we give an algorithm which takes as
+input a polynomial sequence and computes a zero-dimensional
+parametrization of the isolated points of $V(\bC)$ assuming the
+existence of a suitable homotopy deformation. The obtained complexity
+depends linearly on the complexity of evaluating $\bC$ and
+polynomially on a bound on the sum of the multiplicites of the
+isolated points of $V(\bC)$ and the degree of the homotopy curve.
 
+To apply these results to the case we are interested in, we need to
+investigate properties of determinantal systems. This is done in
+Section \ref{sec:check} where we essentially prove that the
+assumptions needed to ensure the existence of a suitable homotopy
+deformation for our systems are satisfied. 
 
+Next, the final step consists in bounding a priori the sum of the
+multiplicities of the isolated points in $S_{\mF, G}$ as well as the
+degree of the homotopy curve. Doing that when considering degrees
+according to columns (column-degree case) or rows (row-degree case)
+requires different arguments ; this is reflected by the different
+definitions of $\delta_{\rm col}$ and $\delta_{\rm row}$ given
+above. The column-degree case is treated in
+Section~\ref{sec:columndegree}. The row-degree case is treated in
+Section~\ref{sec:rowdegree}. 
 
-This paper is organized as follows.
-
-\todo{Some background on polynomial systems and stuff}
+%\todo{Some background on polynomial systems and stuff}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1489,7 +1508,7 @@ primary decomposition of $K_\m$, and $K_\m$ is unmixed.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{The column-degree homotopy}
+\section{The column-degree homotopy}\label{sec:columndegree}
 
 Consider an input to Problem~\ref{problem2}: we are given a matrix
 $\mF =[f_{i,j}]\in \KK[X_1,\dots,X_n]^{p \times q}$ and polynomials
@@ -1818,7 +1837,7 @@ This is also  $\softO\left (c(e+c^5 )(E + c)\right).$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{The row-degree homotopy}
+\section{The row-degree homotopy}\label{sec:rowdegree}
 
 For any ring $R$ and any matrix $\mM \in R^{p\times q}$, if $S$ is a
 subsequence of $(1,\dots,p)$ and $T$ a subsequence of $(1,\dots,q)$,
