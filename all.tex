@@ -103,6 +103,11 @@ is defined by the vanishing of all maximal minors of $\mF$.  In the
 particular case $p=1$, this simply means finding all common solutions
 of $f_{1,1},\dots,f_{1,q}$. 
 
+As $S_\mF$ is an algebraic set, it can be defined as the finite union
+of its \emph{irreducible components}: these are the algebraic sets
+contained in $S_{\mF}$ which are not the union of two proper algebraic
+sets defined over $\KK$ \cite[xxx]{Shafarevich77}.
+
 We restrict ourselves to the case where $n = q-p+1$.  Indeed, in this
 case, $S_\mF$ is expected to be finite: for arbitrary $n$, results due
 to Macaulay~\cite{Macaulay16} and Eagon and Northcott~\cite{EN62}
@@ -114,11 +119,13 @@ sections). However, beyond the equality $n = q-p+1$, we make no
 assumption on the input matrix $\mF$.
 
 Because $S_\mF$ is an algebraic set, its {\em isolated points} form a
-finite subset of $\KKbar{}^n$, defined over $\KK$; this notion makes
-sense for any field $\KK$; when $\KK=\mathbb{R}$, these points are
-indeed isolated for the metric topology. The next section recalls the
-basic facts we need regarding polynomial systems and algebraic
-varieties.  Then, our first question is the following.
+finite subset of $\KKbar{}^n$, defined over $\KK$: these are the
+points in the irreducible components of $S_\mF$ which have dimension
+$0$. This notion makes sense for any field $\KK$; when
+$\KK=\mathbb{R}$, these points are indeed isolated for the metric
+topology. The next section recalls the basic facts we need regarding
+polynomial systems and algebraic varieties.  Then, our first question
+is the following.
 
 
 \begin{pbm} \label{problem} 
@@ -258,30 +265,68 @@ algorithm and replace this by the number $q$ of columns of $\mF$,
 for instance, when all isolated solutions of $I_\mF$ are known
 to have multiplicity one.
 
-The main idea of our algorithms is to use the \emph{homotopy}
+Let be $T$ is a new variable. The main idea of our algorithms is to
+use the \emph{homotopy}
 \[\mU = (1-T)\cdot \mL + T \cdot \mF \in \KK[T, \X]^{p \times q}\footnote{Notations changed in order to match those in Sections 5 and 6.}\]
 that connects a \emph{start matrix} $\mL$ to the target matrix $\mF$,
-together with a more standard homotopy 
+together with a more standard homotopy\footnote{MS: Is it
+  understandable? I wonder}
 \[V = (1-T) \cdot K + T \cdot G\]
-where $T$ is a new variable. However, we need some properties on the
-start matrix such that we can compute the isolated points of
-$S_{\mF, G}$. Assume that we know the solutions for the determinantal
-system of $\mL$, by using the Newton iteration to the determinantal
-system of $\mU$, we can lift into the isolated solutions for that of
-$\mF$. Therefore, we need to create a start matrix $\mG$ such that
+connecting a start system $K$ to the target system $G$. However, we
+need some properties on the start matrix such that we can compute the
+isolated points of $S_{\mF, G}$. Assume that we know the solutions for
+$K$ together with the determinantal system of $\mL$. By using the
+Newton iteration to $V$ with the determinantal system of $\mU$, we can
+lift into the isolated solutions for that of $G$ together with the
+determinantal system of $\mF$. Therefore, we need to create a start
+system $K$ and a start matrix $\mL$ such that
 \begin{itemize}
-\item its solutions of the determinantal system can be found effectively,
+\item the solutions of $K$ and the determinantal system of $\mL$ can
+  be found effectively,
 \item we can extract a square subsystem with full-rank Jacobian,
-\item there is no solution of its determinantal system at infinity. 
+\item there is no solution of its determinantal system ``at
+  infinity'', i.e. when $T$ goes from $0$ to $1$, the corresponding
+  solutions do not diverge.
 \end{itemize}
 
+
+
+One difficulty raised by the above homotopy process is that the final
+solutions obtained for $T=1$ are not necessarily isolated points of
+$S_{\mF, G}$: some of them can actually lie in positive dimensional
+components of $S_{\mF, G}$.  Hence, we need an algorithm which takes
+as input a polynomial sequence $\bC$ and a point $\bx$ in the zero-set
+of $\bC$ and which decides whether $\bx$ is an isolated solution to
+$\bC$.
+
+That decision problem is difficult to solve in a well-controlled
+runtime. One crucial information that can be exploited is the
+\emph{multiplicity} of $\bx$ as a root of $\bC$. To explain what it
+is, we need to introduce some material on algbera and polynomial
+systems.
+
+
+
+
+However, when knowing a bound $\mu$ on the \emph{multiplicity} of
+$\bx$ yields allows to do better. In Section~\ref{sec:isolated}, we
+revisit an algorithm and its complexity analysis which, decides given
+a polynomial system $\bC$ and a point $\bx$
+
+
+
+
+and an integer $\mu$ such and decides if the point
+$\bx$ is an isolated solution 
+
+In the sequel, we denote by $V(\bC)$ the zero-set of $\bC$ and by
+$\langle \bC\rangle$ the ideal it generated. For any prime ideal $P$,
+$\langle \bC\rangle_P$ denotes the localized ideal. 
+
+
+
+
 This paper is organized as follows.
-
-
-One difficulty raised by the above homotopy process is  
-In Section~\ref{sec:isolated}, we revisit an algorithm and its
-complexity analysis which, given a polynomial system $\bC$ and a point
-$\bx$
 
 \todo{Some background on polynomial systems and stuff}
 
