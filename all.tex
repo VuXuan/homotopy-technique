@@ -816,7 +816,7 @@ the proposition, although the statement given in the proposition will
 actually be enough for our further purposes. {\em In all the rest of
   this subsection, we assume that $\assA_1$ and $\assA_2$ hold.}
 
-Consider an irredundant primary decomposition of $J$ in
+Consider an irredundant primary decomposition of the ideal $J=\langle \bB\rangle$ in
 $\KKbar[T,\bX]$, of the form $J=Q_1 \cap \cdots
 \cap Q_r$, and let $P_1,\dots,P_r$ be the associated primes, that is,
 the respective radicals of $Q_1,\dots,Q_r$. We assume that
@@ -948,37 +948,37 @@ in Proposition~\ref{prop:degree_fiber}.
   $(\tau,\bx)$ is a root of $J'_\tau$, though the converse may not be
   true).
   
-  Let $m_1,\dots,m_\mu$ be monomials that form a $\KKbar$-basis of
+  Let $m_1,\dots,m_k$ be monomials that form a $\KKbar$-basis of
   $\KKbar[T,\bX]/J'_\tau$; since $T-\tau$ is in $J'_\tau$, these
   monomials can be assumed not to involve $T$.  We will prove that
   they are still $\KKbar(T)$-linearly independent in
-  $\KKbar(T)[\bX]/{\frak J}'$; this will imply that $\mu \le c$,
+  $\KKbar(T)[\bX]/{\frak J}'$; this will imply that $k \le c$,
   and finish the proof of the first statement.
   
   Suppose that there exists a linear combination $A_1 m_1 + \cdots +
-  A_\mu m_\mu$ in ${\frak J}'$, with all $A_i$'s in $\KKbar(T)$, not
+  A_k m_k$ in ${\frak J}'$, with all $A_i$'s in $\KKbar(T)$, not
   all of them zero. Thus, we have an equality $a_1/d_1\, m_1 + \cdots
-  + a_\mu/d_\mu\, m_\mu = a/d$, with $a_1,\dots,a_\mu$ and
-  $d,d_1,\dots,d_\mu$ in $\KKbar[T]$ and $a$ in the ideal
+  + a_k/d_k\, m_k = a/d$, with $a_1,\dots,a_k$ and
+  $d,d_1,\dots,d_k$ in $\KKbar[T]$ and $a$ in the ideal
   $J'$. Clearing denominators, we obtain a relation of the form $b_1
-  m_1 +\cdots+ b_\mu m_\mu \in J'$, with not all $b_i$'s zero. Let
-  $(T-\tau)^e$ be the highest power of $T-\tau$ that divides all
+  m_1 +\cdots+ b_k m_k \in J'$, with not all $b_i$'s zero. Let
+  $(T-\tau)^r$ be the highest power of $T-\tau$ that divides all
   $b_i$'s (this is well-defined, since not all $b_i$'s vanish) so that
-  we can rewrite the above as $(T-\tau)^e (c_1 m_1 +\cdots+ c_\mu
-  m_\mu) \in J'$, with $c_i=b_i/(T-\tau)^e \in \KKbar[T]$ for all $i$.
+  we can rewrite the above as $(T-\tau)^r (c_1 m_1 +\cdots+ c_k
+  m_k) \in J'$, with $c_i=b_i/(T-\tau)^r \in \KKbar[T]$ for all $i$.
   In particular, our definition of $e$ implies that the values
   $c_i(\tau)$ are not all zero.
 
   Recall that the ideal $J'$ has the form $J'=Q_1 \cap \cdots \cap
   Q_t$. For $i=1,\dots,t$, since $Q_i$ is primary, the membership
-  equality $(T-\tau)^e (c_1 m_1 +\cdots +c_\mu m_\mu) \in J'$ implies
-  that either $c_1 m_1 +\cdots +c_\mu m_\mu$ or some power
-  $(T-\tau)^{ef}$, for some $f > 0$, is in $Q_i$. Since $Q_i$ does not
-  contain non-zero polynomials in $\KKbar[T]$, $c_1 m_1 +\cdots+ c_\mu
-  m_\mu$ belongs to all $Q_i$'s, that is, to $J'$. We can then
+  equality $(T-\tau)^r (c_1 m_1 +\cdots +c_k m_k) \in J'$ implies
+  that either $c_1 m_1 +\cdots +c_k m_k$ or some power
+  $(T-\tau)^{rs}$, for some $s > 0$, is in $Q_i$. Since $Q_i$ does not
+  contain non-zero polynomials in $\KKbar[T]$, $c_1 m_1 +\cdots+ c_k
+  m_k$ belongs to all $Q_i$'s, that is, to $J'$. We can then
   evaluate this relation at $T=\tau$. We saw that the values
   $c_i(\tau)$ do not all vanish on the left, which is a contradiction
-  with the independence of the monomials $m_1,\dots,m_\mu$ modulo
+  with the independence of the monomials $m_1,\dots,m_k$ modulo
   $J'_\tau$.
 \end{proof}
 
@@ -1018,7 +1018,7 @@ $i=1,\dots,\kappa$.
   $\KK[T,\bX]$, so that these polynomials also generate
   $\mathfrak{J}$ in $\KK(T)[\bX]$; then, the polynomials
   $s_i=S_i(0,\bX) \in \KK[\bX]$, for $i=1,\dots,R$, are such that
-  $J+\langle T\rangle = \langle T,S_1,\dots,S_R \rangle$.  Consider
+  $J+\langle T\rangle = \langle T,s_1,\dots,s_R \rangle$.  Consider
   $i \le \kappa$, and the corresponding vector of Puiseux series
   $\Phi_i$. We know that for $j=1,\dots,R$, we have $S_j(\Phi_i)=0$.
   Since all elements involved have non-negative valuation, we can take
