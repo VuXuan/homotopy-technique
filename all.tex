@@ -792,15 +792,16 @@ of the algorithm, we introduce the following assumptions.
   Subsection~\ref{proof:prop2}.
 \item[${\assD}_2$.] We know an integer $e$ such that the union of the
   one-dimensional components of $V(J)$ in $\KKbar{}^{n+1}$ has degree
-  at most $e$ (note that $e \ge c$, by Lemma~\ref{lemma:vPi}).
+  at most $e$ (further, we prove that $e \ge c$, see Lemma~\ref{lemma:c_versus_e}).
 \item[${\assD}_3$.] We can compute $\bB$ using a straight-line program
   of length $E$.
 \end{description}
 Then, the second main result in this section is the following.
 \begin{proposition}\label{prop:compute_isolated}
-  Under the previous assumptions, we can compute a zero-dimensional
-  parametrization of the isolated points of 
- of $V(\bC)$ using
+  Under the previous assumptions and letting $c$ be as in
+  Proposition~\ref{prop:degree_fiber}, we can compute a
+  zero-dimensional parametrization of the isolated points of $V(\bC)$
+  using
 $$\softO(c^5 m n^2  + c(e+c^5 n)(E + n^3)) \subset (e\,E\,m)^{O(1)}$$ operations in~$\KK$.
 \end{proposition}
 
