@@ -1217,12 +1217,13 @@ When $w_0$ is not invertible, $\LL=\KK[Y]/\langle w_0 \rangle$ is a
 product of fields. We can still apply the same process as in the
 irreducible case; if the algorithm goes through, we have obtained our
 answer. In general, one workaround would be to factor $w_0$, but we do
-not want our runtime to depend on the cost of factoring
-polynomials. Hence, we will use {\em dynamic evaluation techniques},
-as in~\cite{D5}. Indeed, the only issue that may arise is that we
-attempt to invert a zero-divisor. If this is the case, it means we
-have found a non-trivial factor $r_0$ of $w_0$: we can then replace
-$\scrR_0$ by two new zero-dimensional parametrizations,
+not want our runtime to depend on the cost of factoring polynomials
+(else our analysis would depend on the bit size of the data when
+$\KK=\mathbb{Q}$). Hence, we will use {\em dynamic evaluation
+  techniques}, as in~\cite{D5}. Indeed, the only issue that may arise
+is that we attempt to invert a zero-divisor. If this is the case, it
+means we have found a non-trivial factor $r_0$ of $w_0$: we can then
+replace $\scrR_0$ by two new zero-dimensional parametrizations,
 $\scrR'_0=((r_0,(v_{0,1}/s_0) \bmod r_0,\dots,(v_{0,n}/s_0)\bmod
 r_0),\lambda)$
 and
@@ -1243,8 +1244,8 @@ $(b_i)_{i \in \bi_j}$ to lift
 $\scrR_{0,j}=((w_{0,j},v_{0,j,1},\dots,v_{0,j,n}),\lambda)$ into a
 zero-dimensional parametrization
 $\scrR_{j}=((w_{j},v_{j,1},\dots,v_{j,n}),\lambda)$ with coefficients
-in $\KK[[T]]/\langle T^{2e}\rangle$, for $e$ as in ${\assD}_2$.
-(Note that Lemma~\ref{lemma:vPi} implies that $c \le e$).
+in $\KK[[T]]/\langle T^{2e}\rangle$, for $e$ as in ${\assD}_2$.  (Note
+that Lemma~\ref{lemma:c_versus_e} implies that $c \le e$).
 
 As explained in~\cite[Section~2.2]{SaSc16}, using the algorithm
 of~\cite{GiLeSa01}, this can be done using $\softO(c\,e (E+n^2)n)$
