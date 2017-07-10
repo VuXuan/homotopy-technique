@@ -50,6 +50,7 @@
 \newtheorem{corollary}[definition]{Corollary}
 \newtheorem{proposition}[definition]{Proposition}
 \newtheorem{lemma}[definition]{Lemma}
+\newtheorem{remark}[definition]{Remark}
 
 \begin{document}
 
@@ -1891,7 +1892,7 @@ and matrices of a more specialized kind of the form
 where the ${}^H$ superscript indicates that all entries are
 homogenous.  In both cases, for all $i,j$, the entry $\lambda^H_{i,j}$
 is a product of $\alpha_i$ homogeneous linear forms in $n+1$ variables
-$X_0,\dots,X_n$ with generic coefficients (except when
+$X_0,\dots,X_n$ with coefficients in $\KK$ (except when
 $\lambda^H_{i,j}$ is explicitly set to zero in the first case), that
 is, $\lambda^H_{i,j}=\prod_{k=1}^{\alpha_i} \lambda^H_{i,j,k}$.  
 
@@ -1973,28 +1974,6 @@ $(S,T)$-submatrix of $\mM$.
 %% the coefficients of $\lambda^H_{i,i,k}$, for $(i,k)$ not of the form
 %% $(i_m,r_m)$, $m=1,\dots,\kappa$, this linear form does not vanish on
 %% $V_{\bi,\br}$.
-
-%% Finally, let $\mN$ and $\mM$ be matrices obtained by setting $X_0=1$
-%% in respectively $\mN^H$ and $\mM_ {\bi,\br}^H$;
-%% explicitly, we have
-%% \begin{align}\label{eqdef:type1aff}
-%% \mN= \left( \begin{matrix}
-%% \lambda_{1,1} & 0 & \cdots & 0 & \lambda_{1,p+1} & \cdots & \lambda_{1, q}\\
-%% 0 & \lambda_{2,2} & \cdots & 0 & \lambda_{2,p+1} & \cdots & \lambda_{2, q}\\
-%% \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
-%% 0 & 0 & \cdots & \lambda_{p,p} & \lambda_{p,p+1} & \cdots & \lambda_{p, q}
-%% \end{matrix} \right),
-%% \end{align}
-%% and matrices of a more general form such as
-%% \begin{align}\label{eqdef:type2aff}
-%% \mM= \left( \begin{matrix}
-%% \lambda_{1,1} & \lambda_{1,2} & \cdots & \lambda_{1, q}\\
-%%  \lambda_{2,1} &  \lambda_{2,2} & \cdots & \lambda_{2, q}\\
-%%  \vdots & & & \vdots\\
-%%  \lambda_{p,1} &  \lambda_{p,2}& \cdots & \lambda_{p, q}
-%% \end{matrix} \right),
-%% \end{align}
-
 %% Using the first item in
 %% Lemma~\ref{lemma:appendix}, together with the previous discussion, we
 %% deduce the equality
@@ -2495,11 +2474,12 @@ coefficients. The ideal $I_p(\mathfrak{N}^H_{\balpha,q})$ is generated
 by the product of the terms $\mathfrak{l}^H_{i,i}$, which admits no
 repeated factors; the conclusion follows.
 
-Consider next a pair $(\balpha,q)$, with $\balpha=(\alpha_1,\dots,\alpha_p)$ and $1 \le p
-\le q$ and suppose that $\assI_4(\balpha',q')$ holds for all $(\balpha',q')$
-with $\balpha'=(\alpha'_1,\dots,\alpha'_{p'})$, $1 \le p' \le q'$, $p' \le p$ and $q' <
-q$; we prove that $\assJ_4(\balpha,q)$ holds; this will imply
- $\assI_4(\balpha,q)$. 
+Consider next a pair $(\balpha,q)$, with
+$\balpha=(\alpha_1,\dots,\alpha_p)$ and $1 \le p \le q$ and suppose
+that $\assI_4(\balpha',q')$ holds for all $(\balpha',q')$ with
+$\balpha'=(\alpha'_1,\dots,\alpha'_{p'})$, $1 \le p' \le q'$, $p' \le
+p$ and $q' < q$; we prove that $\assJ_4(\balpha,q)$ holds; this will
+imply $\assI_4(\balpha,q)$.
 
 We take $t=p$ in the formula of Lemma~\ref{lemma:union}, and we first
 deal with the terms in~\eqref{eq:union}.  Thus, we choose a
@@ -2541,6 +2521,10 @@ $$\mathfrak{l}^H_{i,i,r} = \frak{l}_{i,i,r,0} X_0+ \frak{l}_{i,i,r,1}
 X_1 +\cdots + \frak{l}_{i,i,r,n} X_n$$ are thus algebraically independent
 over the field of definition of $\tilde\bx'$, so that $\mathfrak{l}^H_{i,i,r}(\tilde\bx)$
 is non-zero.
+
+\begin{remark}
+  In particular, the union in Lemma~\ref{lemma:union} is disjoint.
+\end{remark}
 
 In the following two paragraphs, assume $\kappa \ge 2$
 and take $i$ in $\{1,\dots,\kappa\}$. We can then define
@@ -2592,7 +2576,7 @@ deduce
 $$
 b(X_{n-\kappa+1}-\mathfrak{f}_{\bi,\br,n-\kappa+1}(\tilde\bX')),\dots,b(X_{n}-\mathfrak{f}_{\bi,\br,n}(\tilde\bX'))
 $$ are in $I_p(\mathfrak{N}^H_{\balpha,q})$ as well. This in turn
-implies the existence of $\tilde b_\eta$, multiple of $b$, such that $\tilde
+implies the existence of a polynomial $\tilde b_\eta$, multiple of $b$, such that $\tilde
 b_\eta\,
 \eta(\tilde\bX',\mathfrak{f}_{\bi,\br,n-\kappa+1}(\tilde\bX'),\dots,\mathfrak{f}_{\bi,\br,n}(\tilde\bX'))$
 belongs to $I_p(\mathfrak{N}^H_{\balpha,q})$, and $\tilde
@@ -2621,7 +2605,7 @@ the larger Jacobian matrix of all equations above
 has rank $n$ at $\tilde\bx$, as claimed.
 
 It remains to deal with the case $\kappa=n$, for $n \le p$; as above,
-we may simplify the discussion by assuming that $\bi=(i,\dots,n)$. In
+we may simplify the discussion by assuming that $\bi=(1,\dots,n)$. In
 this case, the discussion is simpler: proceeding as above, but dealing
 only with the polynomials
 $\mathfrak{l}^H_{1,1},\dots,\mathfrak{l}^H_{n,n}$, we obtain the fact
@@ -2630,24 +2614,64 @@ that equations of the form $a \mathfrak{l}^H_{1,1,r_1},\dots,a
 with $a(\tilde\bx) \ne 0$. The conclusion follows directly.
 
 
-\begin{algorithm}
-\caption{$\mathsf{StartRow}$}
+\medskip
+
+We conclude this section with an algorithm that applies the process
+in Lemma~\ref{lemma:union}, in the case $t=p$, to non-homogeneous 
+matrices. Indeed, while homogeneity is used at several steps in 
+the proof (and will be needed again when we apply this result), our 
+main algorithm deals with matrices without a homogeneous structure.
+Thus we will consider a matrix $\mN$ as in~\eqref{eqdef:type1},
+with but $X_0=1$. Explicitly, we have
+\begin{align}\label{eqdef:type1aff}
+\mN= \left( \begin{matrix}
+\lambda_{1,1} & 0 & \cdots & 0 & \lambda_{1,p+1} & \cdots & \lambda_{1, q}\\
+0 & \lambda_{2,2} & \cdots & 0 & \lambda_{2,p+1} & \cdots & \lambda_{2, q}\\
+\vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
+0 & 0 & \cdots & \lambda_{p,p} & \lambda_{p,p+1} & \cdots & \lambda_{p, q}
+\end{matrix} \right),
+\end{align}
+where $\lambda_{i,j}$ is products of $\alpha_i$ linear forms $\lambda_{i,j,k}$ with coefficients in $\KK$.
+By Proposition~\ref{lemma:appendix}, we deduce that for a generic
+choice of the coefficients of these linear forms,
+$I_p(\mN) \subset \KKbar{}^n$ is a finite set, whose structure is 
+given by Lemma~\ref{lemma:union}.
+
+In the following algorithm, we assume the existence of a subroutine
+$\mathsf{RowDegree}(\mF,G)$ which takes as input a polynomial matrix
+$\mF$ a system of equations $G$, and solve Problem~\ref{problem2} for
+this input using a row-degree homotopy. We give such an algorithm in 
+the next section. In our case, we do not need the extra set of equations
+ $G$.
+
+
+\begin{algorithm}[H]
+\caption{$\mathsf{RowDegreeDiagonal}$}
 {\bf Input}: 
-matrix $N \in \KK[X_1, \ldots, X_t]^{p \times q}$ with $p \leq q$, $t = q-p+1$\\
-{\bf Output}: a zero-dimensional parametrization $\scrR_0$ of $V(I_p(N))$
+matrix $\mN^H \in \KK[X_0, \ldots, X_n]^{p \times q}$ as in~\eqref{eqdef:type1aff}, with $p \leq q$ and $n = q-p+1$\\
+{\bf Output}: a zero-dimensional parametrization $\scrR$ of $V(I_p(\mN))$
 \begin{enumerate}
-\item for any subsequence $\bi = (i_1, \ldots, i_\kappa)$ of $(1, \ldots, p)$ with $1 \leq \kappa \leq\min(t,p)$: 
-\begin{enumerate}
-\item[1.1] write $X_{t-\kappa+1}, \ldots, X_t$ in linear forms of $X_1, \ldots, X_{t-\kappa}$ from $(\lambda_j)_{j \in \bi}$%$(\lambda_{i_1,i_1}, \ldots, \lambda_{i_\kappa, i_\kappa})$
-\item[1.2] substitute $(X_i)_{t-\kappa+1 \leq i \leq t}$ into $N_{\bi,(p+1, \ldots, q)}$ obtain $M_{\bi} \in \KK[X_1, \ldots, X_{t-\kappa}]^{\kappa \times (t-1)}$
-\item[1.3] $p \gets \kappa$, $q \gets t-1$, $t \gets t-\kappa$
-\begin{enumerate}
-\item[1.3.1] if $p \leq q$ : $\scrR_{0,\bi}' \gets$ $\mathsf{Row-degreeHomotopy}(M_{\bi},\mathbf{0})$
-\item[1.3.2] else:  $\scrR_{0,\bi}' \gets$ $\mathsf{Column-degreeHomotopy}(M_{\bi},\mathbf{0})$
+\item for any subsequence $\bi = (i_1, \ldots, i_\kappa)$ of $(1, \ldots, p)$ with $1 \leq \kappa \leq\min(n-1,p)$
+  \begin{enumerate}
+  \item for any sequence $\br = (r_1, \ldots, r_\kappa)$, with $r_k \in \{1,\dots,\alpha_k\}$ for all $k$
+    \begin{enumerate}
+    \item apply Gaussian elimination to the system $\lambda_{i_1,i_1,r_1}=\dots=\lambda_{i_\kappa,i_\kappa,r_\kappa}=0$
+      to rewrite $(X_{n-\kappa+1}, \ldots, X_n)$ as linear forms in $(X_1, \ldots, X_{n-\kappa})$.
+    \item substitute $(X_{n-\kappa+1}, \ldots, X_n)$ into $\mN_{\bi,(p+1, \ldots, q)}$ to obtain a matrix $\mM_{\bi,\br} \in \KK[X_1, \dots, X_{n-\kappa}]^{\kappa \times (n-1)}$
+    \item $\scrR_{\bi,\br}' \gets$ $\mathsf{RowDegree}(M_{\bi,\br},\{\})$  (points have coordinates $(X_1, \ldots, X_{n-\kappa})$)
+    \item deduce $\scrR_{\bi,\br}$ from $\scrR_{\bi,\br}'$ by adding the expressions for $(X_{n-\kappa+1}, \ldots, X_n)$
+  \end{enumerate}
+  \end{enumerate}
+
+\item if $n \le p$, for any subsequence $\bi = (i_1, \ldots, i_n)$ of $(1, \ldots, p)$
+  \begin{enumerate}
+  \item for any sequence $\br = (r_1, \ldots, r_n)$, with $r_k \in \{1,\dots,\alpha_k\}$ for all $k$
+    \begin{enumerate}
+    \item let $\bx_{\bi,\br}$ be the solution of the system $\lambda_{i_1,i_1,r_1}=\dots=\lambda_{i_n,i_n,r_n}=0$
+    \item create a zero-dimensional parametrization $\scrR_{\bi,\br}$ such that $Z(\scrR_{\bi,\br})=\{\bx_{\bi,\br}\}$
+  \end{enumerate}
 \end{enumerate}
-\item[1.4] deduce $\scrR_{0,\bi}$ from $\scrR_{0,\bi}'$
-\end{enumerate}
-\item combine $(\scrR_0)_{{\bi} \subset (1, \ldots,p)^\kappa}$ to $\scrR_0$
+\item combine all $(\scrR_{\bi,\br})_{\bi,\br}$ into the output $\scrR$
 \end{enumerate}
 \label{Row}
 \end{algorithm}
