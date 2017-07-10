@@ -913,7 +913,7 @@ $\bB_\tau$ at all its isolated roots, for any $\tau$ in $\KKbar$.  To
 achieve this, we introduce $\frak{J}$, the extension of $J$ in
 $\KKbar(T)[\bX]$, and similarly $\frak{J}'$ and ${\frak J}''$.
 
-\begin{lemma}
+\begin{lemma}\label{lemma:dimJprime}
   The ideal $\frak{J}'$ has dimension zero and $V(\frak{J}') \subset
   \overline{\KK(T)}{}^n$ is the set of isolated solutions of
   $V(\frak{J}) \subset \overline{\KK(T)}{}^n$.
@@ -1088,14 +1088,16 @@ we now assume that property $\assG(0)$ holds.
    $\Phi_1,\dots,\Phi_{c'}$ are bounded.
 \end{lemma}
 \begin{proof}
-  For $i=1,\dots,c'$, write $\Phi_i=1/T^{e_i}
-  (\Psi_{i,1},\dots,\Psi_{i,n})$, for a vector
-  $(\Psi_{i,1},\dots,\Psi_{i,n})$ of Puiseux series of valuation
-  zero, that is, such that all $\Psi_{i,j}$ are bounded and
+  Since we want to prove that $\Phi_1,\dots,\Phi_{c'}$ are bounded,
+  one can assume that they are not the origin.  
+
+  For $i=1,\dots,c'$, write
+  $\Phi_i=1/T^{e_i} (\Psi_{i,1},\dots,\Psi_{i,n})$, for a vector
+  $(\Psi_{i,1},\dots,\Psi_{i,n})$ of Puiseux series of valuation zero,
+  that is, such that all $\Psi_{i,j}$ are bounded and
   $(\psi_{i,1},\dots,\psi_{i,n})=\lim_0(\Psi_{i,1},\dots,\Psi_{i,n})$
-  is non-zero. Hence,
-  $e_i=-\nu(\Phi_i)$, and we have to prove that $e_i \le 0$.  By way
-  of contradiction, we assume that $e_i > 0$.
+  is non-zero. Hence, $e_i=-\nu(\Phi_i)$, and we have to prove that
+  $e_i \le 0$.  By way of contradiction, we assume that $e_i > 0$.
 
   The Puiseux series $\Phi_i$ cancels $b_1,\dots,b_m$. For
   $k=1,\dots,m$, let $b_k^H \in \KKbar[T][X_0,\bX]$ be the homogenization
@@ -1124,22 +1126,25 @@ we now assume that property $\assG(0)$ holds.
   The ideal $\frak{J}'$ is radical; equivalently, $c'=c$.
 \end{lemma}
 \begin{proof}
- We know that $\frak{J}'$ has dimension zero, so it is enough to prove
- that for $i=1,\dots,c'$, the localization of $\KKbar\langle\langle T
- \rangle\rangle[\bX]/\frak{J}'$ at the maximal ideal
- $\mathfrak{m}_{\Phi_i}$ is a field, or equivalently that the
- localization of $\KKbar\langle\langle T \rangle\rangle[\bX]/\frak{J}$
- at $\mathfrak{m}_{\Phi_i}$ is a field.  By the Jacobian
- criterion~\cite[Theorem~16.19.b]{Eisenbud95}, this is the case if and
- only if the Jacobian matrix of $\bB$ with respect to $\bX$ has full
- rank $n$ at $\Phi_i$. We know that $\varphi_i=\lim_0(\Phi_i)$ is a
- root of $\bB_0$, and the Jacobian criterion conversely implies that
- since the ideal $\langle \bB_0 \rangle$ is radical (by assumption
- $\assG_3(0)$) and zero-dimensional (by assumption $\assG_2(0)$),
- the Jacobian matrix of $\bB_0(\bX)=\bB(0,\bX)$ has full rank $n$. Since
- this matrix is the limit at zero of the Jacobian matrix of $\bB$ with
- respect to $\bX$, taken at $\Phi_i$, the latter must have full rank
- $n$, and our claim that $\frak{J}'$ is radical is proved.
+  We know that $\frak{J}'$ has dimension zero
+  (Lemma~\ref{lemma:dimJprime}), so it is enough to prove that for
+  $i=1,\dots,c'$, the localization of
+  $\KKbar\langle\langle T \rangle\rangle[\bX]/\frak{J}'$ at the
+  maximal ideal $\mathfrak{m}_{\Phi_i}$ is a field, or equivalently
+  that the localization of
+  $\KKbar\langle\langle T \rangle\rangle[\bX]/\frak{J}$ at
+  $\mathfrak{m}_{\Phi_i}$ is a field.  By the Jacobian
+  criterion~\cite[Theorem~16.19.b]{Eisenbud95}, this is the case if
+  and only if the Jacobian matrix of $\bB$ with respect to $\bX$ has
+  full rank $n$ at $\Phi_i$. We know that $\varphi_i=\lim_0(\Phi_i)$
+  is a root of $\bB_0$, and the Jacobian criterion conversely implies
+  that since the ideal $\langle \bB_0 \rangle$ is radical (by
+  assumption $\assG_3(0)$) and zero-dimensional (by assumption
+  $\assG_2(0)$), the Jacobian matrix of $\bB_0(\bX)=\bB(0,\bX)$ has
+  full rank $n$. Since this matrix is the limit at zero of the
+  Jacobian matrix of $\bB$ with respect to $\bX$, taken at $\Phi_i$,
+  the latter must have full rank $n$, and our claim that $\frak{J}'$
+  is radical is proved.
 \end{proof}
 
 To finish the proof of Proposition~\ref{prop:degree_fiber}, we have to
@@ -1155,12 +1160,16 @@ the Jacobian matrix of $\bB_0$ has full rank $n$ at $\varphi_i$; up to
 reindexing, we assume that rows $1,\dots,n$ correspond to a maximal
 non-zero minor. Let $\bB'=(b_1,\dots,b_n)$.
 
-Let $z=\nu(\Phi_i-\Phi_{i'})$; since  $\varphi_i = \varphi_{i'}$, we have
-$z > 0$. We can thus write $\Phi_i=f + T^z
-\delta_i$ and $\Phi_{i'}=f + T^z \delta_{i'}$, for some vectors of
-bounded Puiseux series $f, \delta_i, \delta_{i'}$ such that all terms
-in $f$ have valuation less than~$z$; in addition, $\lim_0(\delta_i)
-\ne \lim_0(\delta_{i'})$. Write the Taylor expansion of $\bB'$ at $f$ as
+Let $z=\nu(\Phi_i-\Phi_{i'})$; since $\varphi_i = \varphi_{i'}$, we
+have $z > 0$; it is finite else we would have $\Phi_i=\Phi_{i'}$ which
+contradicts $i\neq i'$. We can thus write $\Phi_i=f + T^z
+\delta_i$ and $\Phi_{i'}=f + T^z
+\delta_{i'}$, for some vectors of bounded Puiseux series $f, \delta_i,
+\delta_{i'}$ such that all terms in $f$ have valuation less
+than~$z$;
+in addition, $\lim_0(\delta_i)
+\ne \lim_0(\delta_{i'})$. Write the Taylor expansion of $\bB'$ at
+$f$ as
 $$\bB'(\Phi_i) = \bB'(f) + \jac_f(\bB',\bX) T^z \delta_i + T^{2z} r_i =0$$
 and
 $$\bB'(\Phi_{i'}) = \bB'(f) + \jac_f(\bB',\bX) T^z \delta_{i'} + T^{2z}
