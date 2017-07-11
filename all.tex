@@ -2522,7 +2522,7 @@ X_1 +\cdots + \frak{l}_{i,i,r,n} X_n$$ are thus algebraically independent
 over the field of definition of $\tilde\bx'$, so that $\mathfrak{l}^H_{i,i,r}(\tilde\bx)$
 is non-zero.
 
-\begin{remark}
+\begin{remark}\label{remark:disjoint}
   In particular, the union in Lemma~\ref{lemma:union} is disjoint.
 \end{remark}
 
@@ -2686,11 +2686,11 @@ matrix $\mN^H \in \KK[X_0, \ldots, X_n]^{p \times q}$ as in~\eqref{eqdef:type1af
 
 We now give an algorithm to solve Problem~\ref{problem2} whose runtime
 will depend on the row-degrees of the input matrix $\mF$. This
-algorithm is more complex than the one in the previous section, due to
-a recursive nature; this boils down to the fact that the start system
-we use for the homotopy must itself be solved by means of several
-homotopies of smaller size (along the lines of the discussion in the 
-previous subsection).
+algorithm is more complex than the one in the
+Section~\ref{sec:columndegree}, due to its recursive nature; this
+boils down to the fact that the start system we use for the homotopy
+must itself be solved by means of several homotopies of smaller size,
+along the lines of the discussion in the previous section.
 
 Again, we are given a matrix $\mF =[f_{i,j}]\in \KK[X_1,\dots,X_n]^{p
   \times q}$ and polynomials $G=(g_1,\dots,g_s)$ in
@@ -2700,8 +2700,8 @@ $$S_{\mF,G} = \{\bx \in \KKbar{}^n \mid \mathrm{rank}(\mF({\bx})) < p
 \text{~and~} g_1(\bx)=\cdots=g_s(\bx)=0\}.$$ We are now interested in
 designing an algorithm whose cost depends on the row degrees
 $\alpha_1=\rdeg(\mF,1),\dots,\alpha_p=\rdeg(\mF,p)$; with this
-notation, $\deg(f_{i,j}) \leq \alpha_i$ holds for all $i,j$. As in the
-previous section, we write
+notation, $\deg(f_{i,j}) \leq \alpha_i$ holds for all $i,j$. As in 
+Section~\ref{sec:columndegree}, we write
 $\gamma_1=\deg(g_1),\dots,\gamma_s=\deg(g_s)$.
 
 \begin{proposition}\label{prop:rowdegree}
@@ -2741,7 +2741,7 @@ $\gamma_1=\deg(g_1),\dots,\gamma_s=\deg(g_s)$.
 
 \paragraph{Setting up the homotopy.}
 To solve Problem~\ref{problem2}, we are again going to rely on the
-algorithm of Section~\ref{sec:homotopy}. As in the previous section,
+algorithm of Section~\ref{sec:homotopy}. As in Section~\ref{sec:columndegree},
 we let $\bC=(c_1,\dots,c_s,\dots,c_m)$ be such that
 $(c_1,\dots,c_s)=(g_1,\dots,g_s)$ and $(c_{s+1},\dots,c_m)$ are the
 $p$-minors of $\mF$. Our main concern is to design a sequence of
@@ -2750,8 +2750,7 @@ $\bC=\bB_1$, such that we can solve efficiently the system
 $\bA=\bB_0$, and such that $\bB$ has the same degree profile as our target system
 $\bC$.
 
-The polynomials $(b_1,\dots,b_s)$ are defined as in the previous
-section, letting $a_i$ be a product of $\gamma_i$ linear forms
+The polynomials $(b_1,\dots,b_s)$ are defined as in Section~\ref{sec:columndegree}, letting $a_i$ be a product of $\gamma_i$ linear forms
 $\mu_{i,k}$ with randomly chosen coefficients, of the form
 $$a_i=\prod_{k=1}^{\gamma_i} \mu_{i,k},\quad\text{with}\quad
 \mu_{i,k}=\mu_{i,k,0} + \sum_{\ell=1}^n \mu_{i,k,\ell}X_\ell$$ 
@@ -2761,13 +2760,13 @@ $\KK[\bX]^{p\times q}$, which will then allow us to define
 $\mU=(1-T)\,\mL + T\, \mF$, and finally the polynomials
 $(b_{s+1},\dots,b_m)$ as the $p$-minors of $\mU$.
 
-The construction of the matrix $\mL$ presented in the previous section
+The construction of the matrix $\mL$ presented in Section~\ref{sec:columndegree}
 does not carry over if we want to take row degrees into account (one
 could imagine a matrix with $i$th row of the form $[1^i
   \lambda_i~\cdots~q^i \lambda_i]$, but the corresponding determinantal
 variety has positive dimension). Instead, we use a deformation that
 cancels out many off-diagonal terms; following the 
-construction in the previous subsection, we define
+construction in the previous section, we define
 \begin{align}\label{eqdef:startrow}
 \mL = \left( \begin{matrix}
 \lambda_{1,1} & 0 & \cdots & 0 & \lambda_{1,p+1} & \cdots & \lambda_{1, q}\\
@@ -2776,8 +2775,8 @@ construction in the previous subsection, we define
 0 & 0 & \cdots & \lambda_{p,p} & \lambda_{p,p+1} & \cdots & \lambda_{p, q}
 \end{matrix} \right), 
 \end{align} 
-where for all $i,$, $\lambda_{i,j}$ is a product of $\alpha_i$ linear forms with generic
-coefficients, of the form
+where for all $i,$, $\lambda_{i,j}$ is a product of $\alpha_i$ linear forms with random
+coefficients in $\KK$, of the form
 $$\lambda_{i,j}= \prod_{k=1}^{\alpha_i}\lambda_{i,j,k},
 \quad\text{with}\quad
 \lambda_{i,j,k} =\lambda_{i,j,k,0} + \sum_{\ell=1}^n \lambda_{i,j,k,\ell}X_\ell.
@@ -2794,11 +2793,12 @@ of $a_1,\dots,a_s$ and $\mL$ are chosen generically.
 These follow from Proposition~\ref{prop:KH1H2}.
 
 \paragraph{Property $\assG_1(0)$.} We have to prove that for $i=1,\dots,m$,
-$\deg_\bX(b_i)=\deg_\bX(a_i)$. We already established it in the
-previous section for indices $i=1,\dots,s$. For $i=s+1,\dots,m$, we
-know that the degree of $b_i$ in $\bX$ is at most $\alpha_1 + \cdots +
-\alpha_p$, so it suffices to prove that the degree of all $p$-minors
-$(a_{s+1},\dots,a_m)$ of $\mL$ is $\alpha_1 + \cdots + \alpha_p$.
+$\deg_\bX(b_i)=\deg_\bX(a_i)$. We already established it in
+Section~\ref{sec:columndegree} for indices $i=1,\dots,s$. For
+$i=s+1,\dots,m$, we know that the degree of $b_i$ in $\bX$ is at most
+$\alpha_1 + \cdots + \alpha_p$, so it suffices to prove that the
+degree of all $p$-minors $(a_{s+1},\dots,a_m)$ of $\mL$ is $\alpha_1 +
+\cdots + \alpha_p$.
 
 Indeed, any $p$-minor of $\mL$ is of the form $\lambda_{i_1,i_1}
 \cdots \lambda_{i_\kappa,i_\kappa} \zeta$, for some sequence
@@ -2813,7 +2813,7 @@ $p$-minor of $\mL$ has degree $\alpha_1 + \cdots + \alpha_p$, as
 claimed.
 
 \paragraph{Property $\assG_2(0)$.} Next, we prove that the system $\bA=\bB_0$ has no solution 
-at infinity. As in the previous section, we introduce a homogenization
+at infinity. As in Section~\ref{sec:columndegree}, we introduce a homogenization
 variable $X_0$, and we consider the system $\bA^H=(a_1^H,\dots,a_s^H,\dots,a_m^H)$ obtained 
 by homogenizing all equations in $\bA$. Thus we have
 $$a_i^H=\prod_{k=1}^{\gamma_i} \mu^H_{i,k} \quad\text{with}\quad \mu^H_{i,k}=(\mu_{i,k,0}X_0 + \sum_{\ell = 1}^{n}\mu_{i,k,\ell}X_\ell)$$
@@ -2832,7 +2832,7 @@ coefficients of the linear forms $\lambda^H_{i,k}$; it is enough that
 each $p$-minor of $\mL$ have degree $\alpha_1 + \cdots + \alpha_p$.)
 
 The solutions of $\bA^H$ in $\P^n(\KKbar)$ are found by first solving
-the equations $(a^H_1,\dots,a^H_s)$. As in the previous section, all
+the equations $(a^H_1,\dots,a^H_s)$. As in Section~\ref{sec:columndegree}, all
 $a_i^H$ are products of linear forms, so any solution of
 $(a^H_1,\dots,a^H_s)$ is obtained by setting some of these linear forms
 to zero (at least one for each $i=1,\dots,s$). We choose indices $\bu=(u_1,\dots,u_s)$, with
@@ -2902,7 +2902,7 @@ $$\lambda_{i,j,\bu}=\prod_{k=1}^{\alpha_i}\lambda_{i,j,k,\bu},
 that the Jacobian matrix of $\bA$ with respect to $X_1,\dots,X_n$ has
 full rank at $\bx$.
 
-The first step is similar to what we did in the previous section.  For
+The first step is similar to what we did in Section~\ref{sec:columndegree}.  For
 $i=1,\dots,s$, $a_i$ is a product of linear forms of the form
 $a_i=\prod_{k=1}^{\gamma_i} \mu_{i,k}$, with $\mu_{i,u_i}(\bx)=0$.
 Since the coefficients $\mu_{i,k,\ell}$ are chosen generically, for
@@ -2938,7 +2938,7 @@ satisfies $\assA_1,\assA_2$ and $\bA=\bB_0$ satisfies
 $\assG_1,\assG_2,\assG_3$, we deduce that the sum of the
 multiplicities of the isolated solutions of $\bC=\bB_1$ is at most
 $c$, where $c$ is the number of solutions of $\bA$. Our next step
-is to establish the value of $c$
+is to establish the value of $c$.
 
 \begin{lemma}
   For a generic choice of coefficients $\mu_{i,k,\ell}$ and
@@ -2950,8 +2950,9 @@ is to establish the value of $c$
   For a sequence $\bu=(u_1,\dots,u_s)$ as above, let $V_\bu$ be the
   subset of $V(\bA)$ consisting of all those points $\bx$ such that
   $\mu_{i,u_i}(\bx)=0$ for all $i$. Remark first that the sets $V_\bu$
-  are (generically) pairwise disjoint: for $\bx$ in $V_\bu$, any index
-  $i$ and any $k \ne u_i$, $\mu_{i,k}(\bx)$ is non-zero.
+  are (generically) pairwise disjoint: we pointed out above that for
+  $\bx$ in $V_\bu$, any index $i$ and any $k \ne u_i$,
+  $\mu_{i,k}(\bx)$ is non-zero.
   
   We prove in the following paragraphs that for any $\bu$, $V_\bu$ has
   cardinality $S_{n-s}(\alpha_1,\dots,\alpha_p)$; in view of the
@@ -2959,14 +2960,25 @@ is to establish the value of $c$
 
   Let us thus fix $\bu=(u_1,\dots,u_s)$. The cardinality of $V_\bu$ is
   equal to the number of points in $V_p(\mL_\bu)$; this is a
-  polynomial matrix of the form introduced in the previous subsection,
-  of size $p \times q$, with entries that are products of linear forms
-  in $t=q-p+1$ variables and with row degrees
-  $\alpha_1,\dots,\alpha_p$.  We prove that for any such matrix $\mN$
-  or $\mN$ as in respectively~\eqref{eqdef:type1aff}
-  and~\eqref{eqdef:type2aff}, with entries that are generic choices of
-  the coefficients of these linear forms, $V_p(\mN)$ and have
-  $V_p(\mM)$ cardinality $S_{t}(\alpha_1,\dots,\alpha_p)$.
+  polynomial matrix of the form introduced in the previous section, of
+  size $p \times q$, with entries that are products of linear forms in
+  $t=n-s=q-p+1$ variables and with row degrees $\alpha_1,\dots,\alpha_p$.
+  We prove that for any matrix $\mN$ as in~\eqref{eqdef:type1aff},
+  and any matrix $\mM$ of 
+  the form
+  \begin{align}\label{eqdef:type2aff}
+    \mM= \left( \begin{matrix}
+      \lambda_{1,1} & \lambda_{1,2} & \cdots & \lambda_{1, q}\\
+      \lambda_{2,1} &  \lambda_{2,2} & \cdots & \lambda_{2, q}\\
+      \vdots & & & \vdots\\
+      \lambda_{p,1} &  \lambda_{p,2}& \cdots & \lambda_{p, q}
+    \end{matrix} \right),
+  \end{align}
+  where $\lambda_{i,j}$ is a product of $\alpha_i$ (non necessarily
+  homogeneous) linear forms
+  $\lambda_{i,j,1},\dots,\lambda_{i,j,\alpha_i}$ in $t$ variables, if
+  the coefficients of these linear forms are generic, $V_p(\mN)$ and
+  $V_p(\mM)$ have cardinality $S_{t}(\alpha_1,\dots,\alpha_p)$.
   
   First, let us show that if the claim holds for $\mN$ in size $p
   \times q$, it holds for $\mM$ as well. To this effect, we set up a
@@ -2989,67 +3001,37 @@ is to establish the value of $c$
   S_1(\alpha_1,\dots,\alpha_p)$, so our claim holds for $\mN$ (and
   thus for $\mM$). Suppose now that the claim is true  for all $p'\le p$ and all $q' < q$ with $p'
   \le q'$ and for all choices
-  of degrees $(\alpha_1,\dots,\alpha_{p'})$.
- Equation~\eqref{eq:cardinality} shows that 
-$$
-    |V_p(\mN)| = \sum_{\bi=(i_1,\dots,i_\kappa),\br=(r_1,\dots,r_\kappa)}  |V_\kappa(\mM_{\bi,\br})|,
-$$
-  for 
- all subsequences $\bi=(i_1,\dots,i_\kappa)$
-  of length $\kappa \in \{1,\dots,\min(t,p)\}$ and $\br=(r_1,\dots,r_\kappa)$,
-  with $r_m \in \{1,\dots,\alpha_m\}$ for all $m$. The matrix $\mM_{\bi,\br}$ has $\kappa \le p$ rows
-  and $q-p = t-1 < q$ columns. If $\kappa=t$, 
-
-
-, with $\kappa \le q-p$ \todo{say why}. As a result, we 
-  can apply our induction assumption, and deduce
+  of degrees $(\alpha_1,\dots,\alpha_{p'})$. Following Algorithm~{\sf RowDegreeDiagonal}
+  (which is essentially a restatement of Lemma~\ref{lemma:union}) and Remark~\ref{remark:disjoint} 
+  (which states that the corresponding union is disjoint), we obtain
   $$
-  |V_p(\mN)| = \sum_{\bi=(i_1,\dots,i_\kappa),\br=(r_1,\dots,r_\kappa)}  S_{t-\kappa}(\alpha_{i_1},\dots,\alpha_{i_\kappa}).
+  |V_p(\mN)| = \sum_{\bi=(i_1,\dots,i_\kappa),\br=(r_1,\dots,r_\kappa)}  |V_\kappa(\mM_{\bi,\br})|,
+  $$ for all subsequences $\bi=(i_1,\dots,i_\kappa)$ of length $\kappa
+  \in \{1,\dots,\min(t-1,p)\}$ and $\br=(r_1,\dots,r_\kappa)$, with $r_k
+  \in \{1,\dots,\alpha_k\}$ for all $k$, and where 
+  matrix $\mM_{\bi,\br}$
+  has $\kappa \le p$ rows and $t-1 < q$ columns, with row degrees $(\alpha_{i_1},\dots,\alpha_{i_p})$;
+  in particular, we can apply our induction assumption to such matrices.
+  In addition, if $t \le p$, we should take into account one extra point 
+  for each subsequence $(i_1,\dots,i_n)$ of $(1,\dots,p)$. Altogether, 
+  we obtain 
   $$
+  |V_p(\mN)| = \sum_{\bi=(i_1,\dots,i_\kappa),\br=(r_1,\dots,r_\kappa)}  S_{t-\kappa}(\alpha_{i_1},\dots,\alpha_{i_\kappa}),
+  $$
+  for $\kappa \in \{1,\dots,\min(t,p)\}$, since $S_0=1$.
   For any given $\bi=(i_1,\dots,i_\kappa)$, there are $\alpha_{i_1}\cdots \alpha_{i_\kappa}$ 
   choices of indices $\br$, so that we have
   $$
   |V_p(\mN)| = \sum_{\bi=(i_1,\dots,i_\kappa)} \alpha_{i_1}\cdots \alpha_{i_\kappa} S_{t-\kappa}(\alpha_{i_1},\dots,\alpha_{i_\kappa}),
   $$
-  where we recall that the sum is taken of
+  for $\bi=(i_1,\dots,i_\kappa)$ subsequence of $(1,\dots,p)$ with $\kappa \in \{1,\dots,\min(t,p)\}$.
+  The latter sum is precisely $S_t(\alpha_1,\dots,\alpha_p)$, so we are done.
 \end{proof}
 
 
 
-% estimate $c$,
-% note first that there are $\gamma_1\cdots \gamma_s$ choices of
-% $\bu$. For each choice of $\bu$, there are $\delta_{\rm
-%   col}(\mF)=E_{n-s}(\delta_1, \ldots, \delta_q)$ ways to choose $\bj$
-% and $\bv$, where $E_{n-s}$ denotes the elementary symmetric
-% polynomials of degree $n-s$. As a result, $c=\gamma_1\cdots \gamma_s
-% \delta_{\rm col}(\mF)$. We can now inspect assumptions
-% $\assD_1,\dots,\assD_4$ that are needed to apply the algorithm of
-% Proposition~\ref{prop:compute_isolated}.
-% To summarize, we have found that the linear equations
-% $(\mu_{1,u_1},\dots,\mu_{s,u_s})$ and
-% $(\lambda_{j_1,v_1},\dots,\lambda_{j_{n-1},v_{n-s}})$ belong to the
-% ideal $\langle \bA \rangle_\m$, where $\m$ is the maximal ideal at
-% $\bx$. As a result, the Jacobian matrix of $\mA$ must be invertible
-% at $\bx$, and $\assG_3(0)$ holds.
 
 
-
-
-
-
-%% Then,
-%% $\bx=(x_0,\dots,x_n)$ cancels $a^H_{s+1},\dots,a^H_m$ if and only if
-%% $\bx'=(x_0,\dots,x_{n-1})$ cancels the product
-%% $\lambda^H_{j_1,\bu}\cdots \lambda^H_{j_p,\bu},$ for any choice of columns
-%% $\bj=(j_1,\dots,j_p)$.
-
-
-%% \paragraph{Property $\assG_3(0)$.}
-
-
-
-%% \begin{proof} Without of loss of generality, we prove this result for $(i_1, \ldots, i_k) = (1, \ldots, k)$. This means we have $g_{1}(\bx) = \cdots = g_{k}(\bx) = 0$ and $g_{j}(\bx) \ne 0$ for any $j \in \{k+1, \ldots, p\}$. Let $G_{1:p;*} \in \KK[\bX]^{p \times p}$ be the submatrix of $G$ consisting $p$ rows and the columns $k+1, \ldots, p, j_1, \ldots, j_k$ of $G$, where $p+1 \leq j_i \leq q$. Let $f_{1:p;*}$ is the determinant of $G_{1:p;*}$. Then, for any solution $\bx$ of $\g$, $f_{1:p;*}(\bx) = 0$. Moreover, $f_{1:p;*} = \det(G_{1:p;*}) = g_{k+1,k+1} \ldots g_{p,p} \det(G_{1:k;j_1:j_k})$. Therefore, $\det(G_{1:k;j_1:j_k})(\bx) = 0$. This holds for any $(j_1, \ldots, j_k) \in \{p+1, \ldots, q\}^{k}$. This implies that $\mathrm{rank}(G_{i_1:i_k\mathbf{;}p+1:q}({\bx})) \leq k-1$. 
-%% \end{proof}
 
 
 \begin{algorithm}
