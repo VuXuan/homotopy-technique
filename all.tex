@@ -1747,8 +1747,8 @@ symmetric polynomials of degree $n-s$. As a result, $c=\gamma_1\cdots
 $\assD_1,\dots,\assD_4$ that are needed to apply 
 the algorithm of Proposition~\ref{prop:compute_isolated}.
 
-\paragraph{Property $\assD_1$.} We know that $\assG_1(0),\assG_2(0),\assG_3(0)$,
-so we are going to compute a zero-dimensional parametrization of
+\paragraph{Property $\assD_1$.} We know that $\assG_1(0),\assG_2(0),\assG_3(0)$
+hold, so we are going to compute a zero-dimensional parametrization of
 $V(\bA)$.  We do this by following the description of the solutions of
 $\bA$ given in the previous paragraph: for any choice of indices
 $\bu$, $\bj$ and $\bv$ as above, the corresponding point $\bx \in
@@ -1918,9 +1918,6 @@ this should cause no confusion).
 \end{itemize}
 \end{proposition}
 
-%% Fix positive integers $p,q$, with $p \le q$, and let $n=q-p+1$. Let
-%% $\balpha=(\alpha_1,\dots,\alpha_p)$ be positive integers.
-
 The remainder of this section is devoted to prove this proposition.
 Our strategy is to work all along with linear forms with indeterminate
 coefficients, and establish the properties we want in this context.
@@ -1932,58 +1929,6 @@ of $(1,\dots,q)$, $\mM_{S,T}$ is the submatrix obtained by keeping
 rows indexed by $S$ and columns indexed by $T$. We also call this the
 $(S,T)$-submatrix of $\mM$.
 
-%%  One easily verifies that $\mN^H$ has rank less than $p$ at
-%% $\tilde \bx \in \P^t(\KKbar)$ if and only if there exists a
-%% subsequence $\bi=(i_1,\dots,i_\kappa)$ of $(1,\dots,p)$ of length
-%% $\kappa\in \{1,\dots,\min(t,p)\}$ such that
-%% $$ \lambda^H_{i_1,i_1}(\tilde\bx) =
-%% \cdots = \lambda^H_{i_\kappa,i_\kappa}(\tilde\bx) = 0
-%% \text{~and~}
-%% \rank(\mN^H_{\bi;(p+1,\dots,q)}(\tilde\bx)) < \kappa;$$
-%% indeed, for $\kappa > t$, a system of the 
-%% form $ \lambda^H_{i_1,i_1}(\tilde\bx) =
-%% \cdots = \lambda^H_{i_\kappa,i_\kappa}(\tilde\bx) = 0$ 
-%% has no solution for generic choices of the linear forms $\lambda^H_{i,j,k}$.
-
-%% In turn, $\lambda^H_{i_1,i_1},\dots,\lambda^H_{i_\kappa,i_\kappa}$
-%% vanish at $\tilde\bx$ if and only if there exist
-%% $\br=(r_1,\dots,r_\kappa)$, with $r_m$ in $\{1,\dots,\alpha_m\}$ 
-%% for all $m$, such that $\lambda^H_{i_m,i_m,r_m}(\tilde\bx)=0$ 
-%% for $m=1,\dots,\kappa$. For a generic choice of the coefficients 
-%% $\lambda_{i,j,k,\ell}$, the latter linear equations can be rewritten
-%% as 
-%% $$X_{t-\kappa+1}=f_{\bi,\br,t-\kappa+1}(X_0,\dots,X_{t-\kappa}),\dots,
-%% X_{t}=f_{\bi,\br,t}(X_0,\dots,X_{t-\kappa}),$$ for some homogeneous
-%% linear forms $f_{\bi,\br,t-\kappa+1},\dots,f_{\bi,\br,t}$ that depend
-%% on the choice of indices $\bi$ and $\br$. Applying these substitutions
-%% in the submatrix $\mN^H_{\bi;(p+1,\dots,q)}$ gives us a matrix
-%% $\mM^H_{\bi,\br}$ of size $\kappa \times (t-1)$ whose entries are
-%% products of homogeneous linear forms in $X_0,\dots,X_{t-\kappa}$, of
-%% respective degrees $\alpha_{i_1},\dots,\alpha_{i_\kappa}$ on rows
-%% $1,\dots,\kappa$.
-
-%% We deduce that the projective set defined by $I_p(\mN^H)$ is the union
-%% of the sets
-%% $$V_{\bi,\br}=\{
-%% (x_0,\dots,x_{t-\kappa},f_{\bi,\br,t-\kappa+1}(x_0,\dots,x_{t-\kappa}),\dots,
-%% f_{\bi,\br,t}(x_0,\dots,x_{t-\kappa})) \mid (x_0,\dots,x_{t-\kappa})
-%% \in V(I_\kappa(\mM^H_{\bi,\br})) \},$$ for all choices of $\bi$ and
-%% $\br$.  Remark that for generic choices of the coefficients of $N^H$, the union
-%% above is disjoint: indeed, for $\bi,\br$ as above, $V_{\bi,\br}$ being
-%% finite (by the previous lemma) implies that for a generic choice of
-%% the coefficients of $\lambda^H_{i,i,k}$, for $(i,k)$ not of the form
-%% $(i_m,r_m)$, $m=1,\dots,\kappa$, this linear form does not vanish on
-%% $V_{\bi,\br}$.
-%% Using the first item in
-%% Lemma~\ref{lemma:appendix}, together with the previous discussion, we
-%% deduce the equality
-%% \begin{align}\label{eq:cardinality}
-%% |V_p(\mN)| = \sum_{\bi=(i_1,\dots,i_\kappa),\br=(r_1,\dots,r_\kappa)}  |V_\kappa(\mM_{\bi,\br})|.
-%% \end{align}
-
-%% Assuming we are given a procedure to compute a zero-dimensional
-%% representation of the algebraic sets $V_\kappa(\mM_{\bi,\br})$, the
-%% following pseudo-code summarizes the discussion above. \todo{write it}
 
 
 Let thus $A=q(n+1)(\alpha_1 + \cdots + \alpha_p)$; this is the number
@@ -2715,29 +2660,6 @@ $\gamma_1=\deg(g_1),\dots,\gamma_s=\deg(g_s)$.
 %% $\softO\left (c^6 (E + c)\right)$.
 
 
-% \begin{proof}
-%   If $\mN(\by)$ has rank less than~$p$, then some diagonal terms must
-%   vanish at $\by$; thus, say
-%   $\lambda^H_{i_1,i_1},\dots,\lambda^H_{i_\kappa,i_\kappa}$, , all
-%   other ones being non-zero. Thus, we must have $\kappa \ge 1$; on the
-%   other hand, since the coefficients of the linear forms making up the
-%   polynomials $\lambda^H_{i,i,\bu}$ are random, any system made of
-%   more than $n-s$ of these polynomials has no solution. Hence,
-%   $\kappa$ is in $\{1,\dots,\min(n-s,p)\}$.
-
-%   Let us write $\bi'=(i'_1,\dots,i'_{p-\kappa})$ for the complement of
-%   $\bi$ in $(1,\dots,p)$. Then, for any $\kappa$-minor $\zeta$ of $\mL^H_{\bi;(p+1,\dots,q)}$,
-%   the polynomial
-%   $\lambda^H_{i'_1,i'_1,\bu}\cdots\lambda^H_{i'_{p-\kappa},i'_{p-\kappa},\bu}\zeta$
-%   is a $p$-minor of $\mL^H_\bu$, so that $\zeta(\bx')$ must vanish.
-%   As a result, $\mL^H_{\bi;(p+1,\dots,q)}$ has rank less thank $\kappa$.
-
-%   Conversely, if $\lambda^H_{i_1,i_1}(\bx') = \cdots =
-%   \lambda^H_{i_\kappa,i_\kappa}(\bx') = 0$ and
-%   $\mL^H_{\bi;(p+1,\dots,q)}(\bx')$, the $(\kappa \times q)$-submatrix ${\mL^H_\bu}{}_{\bi;(1,\dots,q)}$ 
-%   has rank less than $\kappa$ and $\mL^H_\bu$ has rank less than $p$.
-% \end{proof}
-
 
 \paragraph{Setting up the homotopy.}
 To solve Problem~\ref{problem2}, we are again going to rely on the
@@ -3028,9 +2950,53 @@ is to establish the value of $c$.
   The latter sum is precisely $S_t(\alpha_1,\dots,\alpha_p)$, so we are done.
 \end{proof}
 
+Since $\assG_1(0),\assG_2(0),\assG_3(0)$ hold, we are going to apply
+Proposition~\ref{prop:compute_isolated} to compute the isolated points
+in $S_{\mF,G}$. In the following paragraphs, we discuss properties
+$\assD_1,\assD_2,\assD_3$ in this context.
 
+\paragraph{Property $\assD_1$.} To obtain a zero-dimensional parametrization of
+$V(\bA)$, we use Algorithm {\sf RowDegreeDiagonal} given in the 
+previous section.
 
+%% .  We do this by following the description of the solutions of
+%% $\bA$ given in the previous paragraph: for any choice of indices
+%% $\bu$, $\bj$ and $\bv$ as above, the corresponding point $\bx \in
+%% \KKbar{}^n$ in $V(\bA)$ can be found by solving a linear system of
+%% size $n$, so in time $O(n^3)$. We repeat this procedure
+%% $c=\gamma_1\cdots \gamma_s \delta_{\rm col}(\mF)$ times, using a total
+%% of $O(c n^3)$ operations in $\KK$.
 
+\paragraph{Property $\assD_2$.} Next, we need to determine an upper bound 
+$e$ on the degree of the curve $V(J')$, where $J'$ is the union of the
+one-dimensional irreducible components of $V(\bB) \subset
+\KKbar{}^{n+1}$ whose projection on the $T$-axis is dense. Proceeding
+exactly as in Section~\ref{sec:columndegree}, we can take for $e$ the
+integer $(\gamma_1+1)\cdots(\gamma_s+1) \tilde\delta_{\rm row}(\mF)$,
+with $\tilde\delta_{\rm row}(\mF)=S_{n-s}(\alpha_1 +1,\cdots,\alpha_p+1)$.
+
+\paragraph{Property $\assD_3$.} Finally, we need to give an estimate on
+the size of a straight-line program that computes the polynomials
+$\bB=(b_1,\dots,b_m)$, assuming that we are given a straight-line
+program of size $E$ that computes polynomials $G=(g_1,\dots,g_s)$ and
+the entries of $\mF$.
+
+%% First, we estimate the complexity of computing the polynomials
+%% $(b_1,\dots,b_s)$. For $i \le s$, the $i$th polynomial $b_i$ is equal
+%% to $(1-T)a_i + T g_i$, where $a_i$ is a product of $\gamma_i$ linear
+%% forms in $n$ variables. This polynomial can be computed in $O(n
+%% \gamma_i)$ operations in $\KK$, hence for a total of $O(n \sum_i
+%% \gamma_i)$ operations for $(a_1,\dots,a_s)$, and $O(E+n \sum_i
+%% \gamma_i)$ for $(b_1,\dots,b_s)$. The polynomials
+%% $(b_{s+1},\dots,b_m)$ are the $p$-minors of $\mU=(1-T)\mL+T\mF$.
+
+%% The polynomials $\lambda_1,\dots,\lambda_q$ can be computed in $O(n \sum_j
+%% \delta_j)$ operations, so that the entries of $\mU$ can be computed in
+%% $O(n^2 + E + n \sum_j \delta_j)$ operations. From that, all $p$-minors
+%% of $\mU$ can be deduced in $O({q \choose p} n^3)$ further steps.
+%% To summarize, all polynomials in $\bB$ can be computed by a straight-line
+%% program of size
+%% $E'=O(E + {q \choose p} n^3 +n \sum_i \gamma_i + n \sum_j \delta_j)$.
 
 
 
