@@ -1524,6 +1524,12 @@ particular that with this notation, $\deg(f_{i,j}) \leq \delta_j$
 holds for all $i,j$.  We will also write
 $\gamma_1=\deg(g_1),\dots,\gamma_s=\deg(g_s)$.
 
+We defined in the introduction 
+$$\delta_{\rm col}(\mF) = E_{q-p+1}(\delta_1, \ldots, \delta_q)$$
+where $E_k(\delta_1,\dots,\delta_q)$ is the elementary symmetric
+polynomial of degree $k$ in $\delta_1, \ldots, \delta_q$. Further, we
+define $\tilde\delta_{\rm col}(\mF)$ as
+$E_{q-p+1}(\delta_1+1, \ldots, \delta_q+1)$.
 \begin{proposition}
   There exists a randomized algorithm that computes the isolated
   points of $S_{\mF,G}$ using
@@ -1743,14 +1749,23 @@ Proposition~\ref{prop:degree_fiber}. Since $\bB$ satisfies
 $\assA_1,\assA_2$ and $\bA=\bB_0$ satisfies $\assG_1,\assG_2,\assG_3$,
 we deduce that the sum of the multiplicities of the isolated solutions
 of $\bC=\bB_1$ is at most $c$, where $c$ is the number of solutions of
-$\bA$. To estimate $c$, note first that there are $\gamma_1\cdots
+$\bA$. 
+
+\begin{lemma}\label{lemma:column:c_estimate}
+  Under the above assumptions and notations, $c=\gamma_1\cdots
+\gamma_s \delta_{\rm col}(\mF)$. 
+\end{lemma}
+
+\begin{proof}
+To estimate $c$, note first that there are $\gamma_1\cdots
 \gamma_s$ choices of $\bu$. For each choice of $\bu$, there are
 $\delta_{\rm col}(\mF)=E_{n-s}(\delta_1, \ldots, \delta_q)$ ways to
 choose $\bj$ and $\bv$, where $E_{n-s}$ denotes the elementary
 symmetric polynomials of degree $n-s$. As a result, $c=\gamma_1\cdots
-\gamma_s \delta_{\rm col}(\mF)$. We can now inspect assumptions
-$\assD_1,\dots,\assD_4$ that are needed to apply 
-the algorithm of Proposition~\ref{prop:compute_isolated}.
+\gamma_s \delta_{\rm col}(\mF)$.   
+\end{proof}
+We can now inspect assumptions $\assD_1,\dots,\assD_4$ that are needed
+to apply the algorithm of Proposition~\ref{prop:compute_isolated}.
 
 \paragraph{Property $\assD_1$.} We know that $\assG_1(0),\assG_2(0),\assG_3(0)$
 hold, so we are going to compute a zero-dimensional parametrization of
@@ -1774,6 +1789,12 @@ $e$ on the degree of the curve $V(J')$, where $J'$ is the union of the
 one-dimensional irreducible components of $V(\bB) \subset
 \KKbar{}^{n+1}$ whose projection on the $T$-axis is dense.
 
+\begin{lemma}\label{lemma:columndegree:e_estimate}
+  Under the above assumptions and notation, $e$ is bounded above by
+  $(\gamma_1+1)\cdots(\gamma_s+1) \tilde\delta_{\rm col}(\mF)$.
+\end{lemma}
+
+\begin{proof}
 Let us write $V(\bB)=V(J') \cup V' \cup V''$, where $V''$ is the union
 of the other components of dimension one of $V(\bB)$ and $V''$ is the
 union of the components of higher dimension (by $\assA_1$, $V(\bB)$
@@ -1801,7 +1822,8 @@ are $\delta_1+1,\dots,\delta_q+1$.
 
 We can then apply Proposition~\ref{prop:degree_fiber}, which shows we
 can take for $e$ the integer $(\gamma_1+1)\cdots(\gamma_s+1)
-\tilde\delta_{\rm row}(\mF)$.
+\tilde\delta_{\rm col}(\mF)$.  
+\end{proof}
 
 \paragraph{Property $\assD_3$.} Finally, we need to give an estimate on
 the size of a straight-line program that computes the polynomials
@@ -1832,11 +1854,15 @@ We can then finally apply Proposition~\ref{prop:compute_isolated},
 whose runtime is $\softO(c^5 m n^2 + c(e+c^5 n)(E' + n^3))$ operations
 in~$\KK$; since $m \le n + {q \choose p}$, this can be simplified as
 $$\softO\left (c(e+c^5 n)\left(E + {q \choose p} n^3 +n \sum_i
-\gamma_i + n \sum_j \delta_j\right)\right).$$ Since all of $ {q
-  \choose p}, \sum_i \gamma_i$ and $\sum_j \delta_j$ are at most $cn$, this becomes $\softO\left (c(e+c^5 n)(E + cn^4)\right),$
-with $c=\gamma_1\cdots\gamma_s \delta_{\rm row}(\mF)$ and
-$e=(\gamma_1+1)\cdots(\gamma_s+1) \tilde\delta_{\rm row}(\mF)$.
-This is also  $\softO\left (c(e+c^5 )(E + cn^4)\right).$
+    \gamma_i + n \sum_j \delta_j\right)\right).$$
+Since all of $ {q \choose p}, \sum_i \gamma_i$ and $\sum_j \delta_j$
+are at most $cn$, this becomes
+$\softO\left (c(e+c^5 n)(E + cn^4)\right),$ with
+$c=\gamma_1\cdots\gamma_s \delta_{\rm col}(\mF)$ (see
+Lemma~\ref{lemma:column:c_estimate}) and
+$e=(\gamma_1+1)\cdots(\gamma_s+1) \tilde\delta_{\rm col}(\mF)$ (see
+Lemma~\ref{lemma:columndegree:e_estimate}).  This is also
+$\softO\left (c(e+c^5 )(E + cn^4)\right).$
 
 \begin{algorithm}
 \caption{$\mathsf{Column-degreeHomotopy}$}
