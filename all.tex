@@ -1316,30 +1316,28 @@ $O(c)$. The runtime deduced from Proposition~\ref{prop:testisolated} is
 $$O(n^4 c^6 + n^2 m c^5 + n E c^6)$$ operations in~$\KK$. Adding all
 costs seen so far, we prove Proposition~\ref{prop:compute_isolated}.
 \begin{algorithm}
-\caption{$\mathsf{Homotopy}$}
-{\bf Input}:\begin{itemize}
-\item the target system $\bC \in \KK[\bX]^{m}$, a start system $\bA \in \KK[\X]^m$
-\item $\scrR_0$ a zero-dimensional parametrization of the system $\bA$
-\item a homotopy system $\bB \in \KK[T,\bX]^m$ such that $\bB_{0} = \bA$ and $\bB_1 = \bC$
-\end{itemize}
-{\bf Output}: a zero-dimensional parametrization of the isolated points of $V(\bC)$
+\caption{$\mathsf{Homotopy}(\Gamma,\scrR)$}
+{\bf Input}: a straight-line program $\Gamma$ of length $E$ that computes $\bB \in \KK[T,\bX]^m$\\
+\textcolor{white}{{\bf Input}:} a zero-dimensional parametrization $\scrR$ of the system $\bB_0$\\
+{\bf Output}: a zero-dimensional parametrization of the isolated points of $V(\bC)$, with $\bC=\bB_1$
 \begin{enumerate}
-\item decompose $\scrR_0$ into finitely zero-dimensional parametrizations $(\scrR_{0,j})_{1 \leq j \leq t}$\\
+  \setlength\itemsep{0em}
+\item decompose $\scrR_0$ into $(\scrR_{0,j})_{1 \leq j \leq t}$\\
 $\mathsf{cost: \softO((mn^2 + nE) c^2)}$
-\item lift $(\scrR_{0,j})_{1 \leq j \leq t}$ into zero-dimensional parametrizations $(\scrR_j)_{1\leq j \leq t}$ at precision $2e$\\
+\item lift $(\scrR_{0,j})_{1 \leq j \leq t}$ to $(\scrR_j)_{1\leq j \leq t}$ with 
+  coefficients in $\KK[[T]]/\langle T^{2e}\rangle$\\
 $\mathsf{cost: \softO(c\,e (E+n^2)n)}$
-\item combine $(\scrR_j)_{1 \leq j \leq t}$ into a zero-dimensional parametrization $\scrR$ with coefficients in $\KK[[T]]/\langle T^{2e}\rangle$\\
+\item combine $(\scrR_j)_{1 \leq j \leq t}$ into  $\scrR$ with coefficients in $\KK[[T]]/\langle T^{2e}\rangle$\\
 $\mathsf{cost: \softO(c\,e\,n)}$
 \item compute a zero-dimensional parametrization $\scrS$ with coefficients in $\KK(T)$ from $\scrR$\\
 $\mathsf{cost: \softO(c\,e\,n)}$
-\item clean denominators of $\scrS$\\
-$\mathsf{cost: \softO(c\,e\,n)}$
+%% \item clean denominators of $\scrS$\\
+%% $\mathsf{cost: \softO(c\,e\,n)}$
 \item deduce a zero-dimensional parametrization $\scrR_1$ with coefficients in $\KK$ from $\scrS$\\
 $\mathsf{cost: \softO(c\,e\,n)}$
-\item test isolated solutions \\
+\item remove from $Z(\scrR_1)$ points that are not isolated in $V(\bC)$ \\
 $\mathsf{cost: O(n^4 c^6 + n^2 m c^5 + n E c^6)}$
 \end{enumerate}
-$\mathsf{Overall: }$
 \label{DetSys}
 \end{algorithm}
  
@@ -1779,7 +1777,7 @@ of $O(c n^3)$ operations in $\KK$.
 
 Knowing all the points in $V(\bA)$, we can reconstruct a zero-dimensional
 parametrization $\scrR_0$ such that $Z(\scrR_0)=V(\bA)$ in time
-$O\tilde{~}(n c)$ by means of fast interpolation~\cite[Chapter~10]{GaGe03}.
+$O\tilde{~}(cn)$ by means of fast interpolation~\cite[Chapter~10]{GaGe03}.
 (Note that for practical purposes, we may modify the algorithm
 of Proposition~\ref{prop:compute_isolated} to take into account the
 fact that all points in $V(\bA)$ are in $\KK^n$.)
@@ -1828,7 +1826,7 @@ can take for $e$ the integer $(\gamma_1+1)\cdots(\gamma_s+1)
 \paragraph{Property $\assD_3$.} Finally, we need to give an estimate on
 the size of a straight-line program that computes the polynomials
 $\bB=(b_1,\dots,b_m)$, assuming that we are given a straight-line
-program of size $E$ that computes polynomials $G=(g_1,\dots,g_s)$ and
+program $\Gamma$ of size $E$ that computes polynomials $G=(g_1,\dots,g_s)$ and
 the entries of $\mF$.
 
 First, we estimate the complexity of computing the polynomials
@@ -1845,7 +1843,7 @@ The polynomials $\lambda_1,\dots,\lambda_q$ can be computed in $O(n \sum_j
 $O(n^2 + E + n \sum_j \delta_j)$ operations. From that, all $p$-minors
 of $\mU$ can be deduced in $O({q \choose p} n^3)$ further steps.
 To summarize, all polynomials in $\bB$ can be computed by a straight-line
-program of size
+program $\Gamma'$ of size
 $E'=O(E + {q \choose p} n^3 +n \sum_i \gamma_i + n \sum_j \delta_j)$.
 
 \medskip
@@ -1865,34 +1863,35 @@ Lemma~\ref{lemma:columndegree:e_estimate}).  This is also
 $\softO\left (c(e+c^5 )(E + cn^4)\right).$
 
 \begin{algorithm}
-\caption{$\mathsf{Column-degreeHomotopy}$}
-{\bf Input}:\begin{itemize}
-\item a polynomial matrix $F \in \KK[X_1, \ldots, X_n]^{p \times q}$ with $\deg(f_{i,j}) \leq \delta_j$
-\item polynomials $G = (g_1, \ldots, g_s)$ in $\KK[X_1, \ldots, X_n]$ with $p \leq q$, $n = q-p+s+1$
+\caption{$\mathsf{ColumnDegree}(\Gamma)$}
+{\bf Input}: a straight-line program $\Gamma$ that computes 
+\begin{itemize}  
+\setlength\itemsep{0em}
+\item $F \in \KK[X_1, \ldots, X_n]^{p \times q}$ with $\deg(f_{i,j}) \leq \delta_j$ for all $j$ and $p \le q$
+\item polynomials $G = (g_1, \ldots, g_s)$ in $\KK[X_1, \ldots, X_n]$, with $n=q-p+s+1$
 \end{itemize}
-{\bf Output}: the isolated points of
-$$\{\bx \in \KKbar{}^n \mid  \mathrm{rank}(\mF({\bx})) < p
-\text{~and~} g_1(\bx)=\cdots=g_s(\bx)=0\}$$
-\begin{enumerate}
-\item construct \begin{itemize}
-\item a polynomial matrix $L \in \KK[\bX]^{p \times q}$ as in~\ref{eqdef:col}
-\item polynomials $M = (m_1, \ldots, m_s)$ in $\KK[\bX]$
-\end{itemize}
-\item buid 
-\begin{itemize}
-\item targent system $\bC \in \KK[\bX]^{m}$ from $G$ and $F$
-\item start system $\bA \in \KK[\bX]^{m}$ from $M$ and $L$
-\item homotopy system $\bB \in \KK[T,\bX]^{m}$ from $((1-T)m_i + Tg_i)_{1 \leq i \leq s}$ and $p$-minors of $(1-T)L + TF$
-\end{itemize} 
-%$\mathsf{cost:}$
-\item compute zero-dimensional parametrization $\scrR_0$ of $V(\bA)$\\
-$\mathsf{cost: O(c\,n^3)}$
-\item return $\mathsf{Homotopy}(\bC,\bA,\scrR_0,\bB)$\\
-$\mathsf{cost: \softO\left (c(e+c^5 n)(E + cn^{\textcolor{red}{4}}\right)}$
+{\bf Output}: a zero-dimensional parametrization of the isolated points of $S_{\mF,G}$
+\begin{enumerate}\setlength\itemsep{0em}
+\item for any sequence $\bu=(u_1,\dots,u_s)$, with $u_j \in \{1,\dots,\gamma_j\}$ for all $j$
+\begin{enumerate}\setlength\itemsep{0em}
+\item for any subsequence $\bj=(j_1,\dots,j_{n-s})$ of $(1,\dots,q)$
+\begin{enumerate}\setlength\itemsep{0em}
+\item for any sequence $\bv=(v_1,\dots,v_{n-s})$, with $v_k$ in $\{1,\dots,\delta_k\}$ for all $k$
+\begin{enumerate}\setlength\itemsep{0em}
+ \item let $\scrR_{\bi,\bj,\bv}$ a zero-dimensional parametrization of the solution of the system 
+$$\mu_{1,u_1}=\cdots=\mu_{s,u_s}=\lambda_{j_1,v_1}=\cdots=\lambda_{j_{n-s},v_{n-s}}=0$$
+$\mathsf{cost: O(cn^3)}$, with $c=\gamma_1\cdots\gamma_s \delta_{\rm col}(\mF)$
 \end{enumerate}
-$\mathsf{Overall: \softO\left (c(e+c^5 n)(E + cn^{\textcolor{red}{4}}\right)}$
+\end{enumerate}
+\end{enumerate}
+\item combine all $(\scrR_{\bu,\bj,\bv})_{\bu,\bj,\bv}$ into $\scrR$\\
+$\mathsf{cost: \softO(cn)}$
+\item return $\mathsf{Homotopy}(\Gamma',\scrR)$ ($\Gamma'$ as in the previous paragraph)\\
+$\mathsf{cost: \softO\left (c(e+c^5 )(E + cn^4)\right)}$
+\end{enumerate}
 \label{ColHom}
 \end{algorithm}
+
 %% case discussion on e and c^5 n.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2619,26 +2618,37 @@ given by Lemma~\ref{lemma:union}.
 In the following algorithm, we assume the existence of a subroutine
 $\mathsf{RowDegree}(\mF,G)$ which takes as input a polynomial matrix
 $\mF$ a system of equations $G$, and solve Problem~\ref{problem2} for
-this input using a row-degree homotopy. We give such an algorithm in 
-the next section. In our case, we do not need the extra set of equations
- $G$.
+this input using a row-degree homotopy. We give such an algorithm in
+the next section. In our case, we do not need the extra set of
+equations $G$. 
+
+The cost reported at each step is the total amount of time spent
+there, over all iterations. We denote by $T_{\rm
+  row}(\bgamma,\balpha,q)$ the time spent by $\mathsf{RowDegree}(\mF,G)$
+on input $\mF$ with row degrees $\balpha=(\alpha_1,\dots,\alpha_p)$
+and $q$ columns, and $G$ of degrees $\gamma=(\gamma_1,\dots,\gamma_s)$.
 
 
 \begin{algorithm}[H]
-\caption{$\mathsf{RowDegreeDiagonal}$}
-{\bf Input}: 
-matrix $\mN^H \in \KK[X_0, \ldots, X_n]^{p \times q}$ as in~\eqref{eqdef:type1aff}, with $p \leq q$ and $n = q-p+1$\\
-{\bf Output}: a zero-dimensional parametrization $\scrR$ of $V(I_p(\mN))$
+\caption{$\mathsf{RowDegreeDiagonal}(\Gamma)$}
+{\bf Input}: a straight-line program $\Gamma$ of length $E$ that computes
+ $\mN \in \KK[X_0, \ldots, X_n]^{p \times q}$ as in~\eqref{eqdef:type1aff}, with $p \leq q$ and $n = q-p+1$\\
+{\bf Output}: a zero-dimensional parametrization $\scrR$ of $V_p(\mN)$
 \begin{enumerate}
 \item for any subsequence $\bi = (i_1, \ldots, i_\kappa)$ of $(1, \ldots, p)$ with $1 \leq \kappa \leq\min(n-1,p)$
   \begin{enumerate}
   \item for any sequence $\br = (r_1, \ldots, r_\kappa)$, with $r_k \in \{1,\dots,\alpha_k\}$ for all $k$
     \begin{enumerate}
     \item apply Gaussian elimination to the system $\lambda_{i_1,i_1,r_1}=\dots=\lambda_{i_\kappa,i_\kappa,r_\kappa}=0$
-      to rewrite $(X_{n-\kappa+1}, \ldots, X_n)$ as linear forms in $(X_1, \ldots, X_{n-\kappa})$.
-    \item substitute $(X_{n-\kappa+1}, \ldots, X_n)$ into $\mN_{\bi,(p+1, \ldots, q)}$ to obtain a matrix $\mM_{\bi,\br} \in \KK[X_1, \dots, X_{n-\kappa}]^{\kappa \times (n-1)}$
-    \item $\scrR_{\bi,\br}' \gets$ $\mathsf{RowDegree}(M_{\bi,\br},\{\})$  (points have coordinates $(X_1, \ldots, X_{n-\kappa})$)
-    \item deduce $\scrR_{\bi,\br}$ from $\scrR_{\bi,\br}'$ by adding the expressions for $(X_{n-\kappa+1}, \ldots, X_n)$
+      to rewrite $(X_{n-\kappa+1}, \ldots, X_n)$ as linear forms in $(X_1, \ldots, X_{n-\kappa})$. \\
+$\text{\sf{cost:~}} O(n^3 S_n(\alpha_1,\dots,\alpha_p))$
+      
+    \item substitute $(X_{n-\kappa+1}, \ldots, X_n)$ into $\mN_{\bi,(p+1, \ldots, q)}$ to obtain a matrix $\mM_{\bi,\br} \in \KK[X_1, \dots, X_{n-\kappa}]^{\kappa \times (n-1)}$\\
+$\text{\sf{cost:~}} \softO(\cdots)$
+    \item $\scrR_{\bi,\br}' \gets$ $\mathsf{RowDegree}(M_{\bi,\br},\{\})$  (points have coordinates $(X_1, \ldots, X_{n-\kappa})$)\\
+$\text{\sf{cost:~}} \softO(\cdots)$
+    \item deduce $\scrR_{\bi,\br}$ from $\scrR_{\bi,\br}'$ by adding the expressions for $(X_{n-\kappa+1}, \ldots, X_n)$\\
+$\text{\sf{cost:~}} \softO(\cdots)$
   \end{enumerate}
   \end{enumerate}
 
@@ -2646,11 +2656,14 @@ matrix $\mN^H \in \KK[X_0, \ldots, X_n]^{p \times q}$ as in~\eqref{eqdef:type1af
   \begin{enumerate}
   \item for any sequence $\br = (r_1, \ldots, r_n)$, with $r_k \in \{1,\dots,\alpha_k\}$ for all $k$
     \begin{enumerate}
-    \item let $\bx_{\bi,\br}$ be the solution of the system $\lambda_{i_1,i_1,r_1}=\dots=\lambda_{i_n,i_n,r_n}=0$
-    \item create a zero-dimensional parametrization $\scrR_{\bi,\br}$ such that $Z(\scrR_{\bi,\br})=\{\bx_{\bi,\br}\}$
+    \item let $\bx_{\bi,\br}$ be the solution of the system $\lambda_{i_1,i_1,r_1}=\dots=\lambda_{i_n,i_n,r_n}=0$\\
+      $\text{\sf{cost:~}} \softO(\cdots)$
+    \item create a zero-dimensional parametrization $\scrR_{\bi,\br}$ such that $Z(\scrR_{\bi,\br})=\{\bx_{\bi,\br}\}$\\
+      $\text{\sf{cost:~}} \softO(\cdots)$
   \end{enumerate}
 \end{enumerate}
-\item combine all $(\scrR_{\bi,\br})_{\bi,\br}$ into the output $\scrR$
+\item combine all $(\scrR_{\bi,\br})_{\bi,\br}$ into the output $\scrR$\\
+  $\text{\sf{cost:~}} \softO(\cdots)$
 \end{enumerate}
 \label{Row}
 \end{algorithm}
@@ -2708,8 +2721,10 @@ $\bC$.
 
 The polynomials $(b_1,\dots,b_s)$ are defined as in Section~\ref{sec:columndegree}, letting $a_i$ be a product of $\gamma_i$ linear forms
 $\mu_{i,k}$ with randomly chosen coefficients, of the form
-$$a_i=\prod_{k=1}^{\gamma_i} \mu_{i,k},\quad\text{with}\quad
-\mu_{i,k}=\mu_{i,k,0} + \sum_{\ell=1}^n \mu_{i,k,\ell}X_\ell$$ 
+\begin{align}\label{eqdef:ai}
+a_i=\prod_{k=1}^{\gamma_i} \mu_{i,k},\quad\text{with}\quad
+\mu_{i,k}=\mu_{i,k,0} + \sum_{\ell=1}^n \mu_{i,k,\ell}X_\ell
+\end{align}
 and writing $b_i=(1-T)a_i + T g_i$ for $i=1,\dots,s$. The
 difference will lie in the construction of the matrix $\mL$ in
 $\KK[\bX]^{p\times q}$, which will then allow us to define
@@ -3035,33 +3050,32 @@ the entries of $\mF$.
 
 
 \begin{algorithm}
-\caption{$\mathsf{Row-degree Homotopy}$}
-{\bf Input}:\begin{itemize}
-\item a polynomial matrix $F \in \KK[X_1, \ldots, X_n]^{p \times q}$ with $\deg(f_{i,j}) \leq \delta_i$
-\item polynomials $G = (g_1, \ldots, g_s)$ in $\KK[X_1, \ldots, X_n]$ with $p \leq q$, $n = q-p+s+1$
-\end{itemize}
-{\bf Output}: the isolated points of
-$$\{\bx \in \KKbar{}^n \mid  \mathrm{rank}(\mF({\bx})) < p
-\text{~and~} g_1(\bx)=\cdots=g_s(\bx)=0\}$$
+\caption{$\mathsf{RowDegree}$}
+{\bf Input}:  matrix $F \in \KK[X_1, \ldots, X_n]^{p \times q}$ with $\deg(f_{i,j}) \leq \delta_i$\\
+\textcolor{white}{{\bf Input}:} polynomials $G = (g_1, \ldots, g_s)$ in $\KK[X_1, \ldots, X_n]$ with $p \leq q$, $n = q-p+s+1$\\
+{\bf Output}: a zero-dimensional parametrization of the isolated points of $S_{\mF,G}$
 \begin{enumerate}
-\item construct \begin{itemize}
-\item a polynomial matrix $L \in \KK[\bX]^{p \times q}$ as in~\ref{eqdef:startrow}
-\item polynomials $M = (m_1, \ldots, m_s)$ in $\KK[\bX]$
-\end{itemize}
-\item buid 
-\begin{itemize}
-\item targent system $\bC \in \KK[\bX]^{m}$ from $G$ and $F$
-\item start system $\bA \in \KK[\bX]^{m}$ from $M$ and $L$
-\item homotopy system $\bB \in \KK[T,\bX]^{m}$ from $((1-T)m_i + Tg_i)_{1 \leq i \leq s}$ and $p$-minors of $(1-T)L + TF$
-\end{itemize}
-\item write $X_{n-s+1}, \ldots, X_n$ in linear forms of $(X_i)_{1\leq i \leq n-s}$ from $M$
-\item substitute $(X_i)_{n-s+1 \leq i \leq n}$ into L to obtain $N\in \KK[X_1, \ldots, X_{n-s}]^{p \times q}$
-\item $\scrR_0 \gets \mathsf{StartRow}(N)$
-\item return $\mathsf{Homotopy}(\bC,\bA,\scrR_0,\bB)$
+\item construct 
+ matrix $\mL \in \KK[\bX]^{p \times q}$ as in~\eqref{eqdef:startrow}
+and $(a_1, \ldots, a_s)$ in $\KK[\bX]$ as in~\eqref{eqdef:ai}
+\item for any sequence $\bu=(u_1,\dots,u_s)$, with $u_j \in \{1,\dots,\gamma_j\}$ for all $j$
+\begin{enumerate}
+%% \item targent system $\bC \in \KK[\bX]^{m}$ from $G$ and $F$
+%% \item start system $\bA \in \KK[\bX]^{m}$ from $M$ and $L$
+%% \item homotopy system $\bB \in \KK[T,\bX]^{m}$ from $((1-T)m_i + Tg_i)_{1 \leq i \leq s}$ and $p$-minors of $(1-T)L + TF$
+\item apply Gaussian elimination to the system $\mu_{1,u_1}=\cdots=\mu_{s,u_s}=0$
+to rewrite $(X_{n-s+1}, \ldots, X_n)$ as linear forms in $(X_1,\dots,X_{n-s})$
+\item substitute $(X_i)_{n-s+1 \leq i \leq n}$ into $\mL$ to obtain $\mL_\bu\in \KK[X_1, \ldots, X_{n-s}]^{p \times q}$
+\item $\scrR'_\bu \gets \mathsf{RowDegreeDiagonal}(\mL_\bu)$ (points have coordinates $(X_1,\dots,X_{n-s})$
+\item deduce $\scrR_\bu$ from $\scrR'_\bu$ by adding the expressions for $(X_{n-s+1},\dots,X_n)$ 
+\end{enumerate}
+\item combine all $\scrR_\bu$ into $\scrR$
+\item return $\mathsf{Homotopy}(\bB,\scrR)$ ($\bB$ as in the previous paragraphs)
 \end{enumerate}
 \label{Row}
 \end{algorithm}
-\newpage
+
+
 \bibliographystyle{plain} \bibliography{roadmap}
 
 \end{document}
