@@ -1889,7 +1889,12 @@ $\mathsf{cost: O(cn^3)}$, with $c=\gamma_1\cdots\gamma_s \delta_{\rm col}(\mF)$
 \end{enumerate}
 \item combine all $(\scrR_{\bu,\bj,\bv})_{\bu,\bj,\bv}$ into $\scrR$\\
 $\mathsf{cost: \softO(cn)}$
-\item return $\mathsf{Homotopy}(\Gamma',\scrR)$ ($\Gamma'$ as in the previous paragraph)\\
+
+\item construct a straight-line program $\Gamma'$ that computes all polynomials $\bB$\\
+  length of $\Gamma'$ is $E'=O(E + {q \choose p} n^3 + n
+(\alpha_1+\cdots+\alpha_p) + n(\gamma_1 + \cdots + \gamma_s))$
+
+\item return $\mathsf{Homotopy}(\Gamma',\scrR)$ 
 $\mathsf{cost: \softO\left (c(e+c^5 )(E + cn^4)\right)}$
 \end{enumerate}
 \label{ColHom}
@@ -2635,7 +2640,7 @@ we let $T_{\rm row}(E,\bgamma,\balpha,q)=1$.
   The total cost of $\mathsf{RowDegreeDiagonal}(\Gamma)$
   is $$\softO\left (n^3(c + S_n(\alpha_1,\dots,\alpha_p))
  + \sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(n,p)}}
-\alpha_{i_1} \cdots \alpha_{i_\kappa} T_{\rm row}(E+O(n^2), (), (\alpha_{i_1},\dots,\alpha_{i_\kappa}), q)\right),$$
+\alpha_{i_1} \cdots \alpha_{i_\kappa} T_{\rm row}(E+O(n^2), (), (\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-1)\right),$$
   where $c$ is the cardinality of $V_p(\mN)$.
 \end{lemma}
 \begin{proof}
@@ -2659,11 +2664,11 @@ we let $T_{\rm row}(E,\bgamma,\balpha,q)=1$.
   in quasi-linear time $\softO(\sum_{\bi,\br} n c_{\bi,\br})$,
   which is $\softO(n c)$. Thus, the total runtime is 
   $$\softO\left (n^2 c + \sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \br=(r_1,\dots,r_\kappa)\\\kappa\le\min(n,p)}}
-  n^3 + T_{\rm row}(E+O(n^2), (), (\alpha_{i_1},\dots,\alpha_{i_\kappa}), q)\right).$$
+  n^3 + T_{\rm row}(E+O(n^2), (), (\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-1)\right).$$
   The cost reported in the summand does not depend on $\br$, so that 
   the sum can be rewritten as 
   $$\sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(n,p)}}
-  \alpha_{i_1} \cdots \alpha_{i_\kappa}( n^3 + T_{\rm row}(E+O(n^2), (), (\alpha_{i_1},\dots,\alpha_{i_\kappa}), q)).$$
+  \alpha_{i_1} \cdots \alpha_{i_\kappa}( n^3 + T_{\rm row}(E+O(n^2), (), (\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-1)).$$
   The final simplification comes from noting that $\sum_{\bi} \alpha_{i_1} \cdots \alpha_{i_\kappa}$,
   for $\bi$ a subsequence of $(1,\dots,p)$ of length $\kappa\le\min(n,p)$, 
   is bounded from above by $S_n(\alpha_1,\dots,\alpha_p)$.
@@ -2686,7 +2691,7 @@ $\text{\sf{cost:~}} O(\sum_{\bi,\br} n^3)$
       by substituting $(f_{\bi,\br,j})_{n-\kappa+1 \le j \le n}$ into $\mN_{\bi,(p+1, \ldots, q)}$ \\
 length of $\Gamma_{\bi,\br}$ is $E+O(n^2)$
     \item $\scrR_{\bi,\br}' \gets$ $\mathsf{RowDegree}(\Gamma_{\bi,\br})$  (points have coordinates $(X_1, \ldots, X_{n-\kappa})$)\\
-$\text{\sf{cost:~}} \sum_{\bi,\br} T_{\rm row}(E+O(n^2), (), (\alpha_{i_1},\dots,\alpha_{i_\kappa}), q)$
+$\text{\sf{cost:~}} \sum_{\bi,\br} T_{\rm row}(E+O(n^2), (), (\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-1)$
     \item\label{step:substdiag} deduce $\scrR_{\bi,\br}$ from $\scrR_{\bi,\br}'$ by adding the expressions for $(X_{n-\kappa+1}, \ldots, X_n)$\\
       $\text{\sf{cost:~}} O(\sum_{\bi,\br} n^2 c_{\bi,\br})$
   \end{enumerate}
@@ -3016,7 +3021,7 @@ is to establish the value of $c$.
   The latter sum is precisely $S_t(\alpha_1,\dots,\alpha_p)$, so we are done.
 \end{proof}
 
-\begin{corollary}
+\begin{corollary}\label{coro:complete}
   For a generic choice of coefficients $\mu_{i,k,\ell}$ and
   $\lambda_{i,j,k,\ell}$, the cardinality $c$ of the algebraic set
   $V(\bA)$ is $\gamma_1 \cdots \gamma_s S_{n-s}(\alpha_1,\dots,\alpha_p)$.
@@ -3051,21 +3056,21 @@ we assume that we are given a straight-line program $\Gamma$ of length
 $E$ that computes the input matrix $\mF$ and the input equations $G$.
 
 \paragraph{Property $\assD_1$.} To perform the homotopy, we need a zero-dimensional parametrization of
-$V(\bA)$. This is done by using Algorithm {\sf RowDegreeDiagonal}
-given in the previous section. 
+$V(\bA)$. We now describe this process, which is based on Algorithm
+          {\sf RowDegreeDiagonal} given in the previous section.
 
 As a preliminary, we construct a straight-line program $\Delta$ that
 computes the entries of $\mN$: for all $i,j$, we compute and multiply
 the values of the $\alpha_i$ linear forms involved in $\lambda_{i,j}$
-in time $O(n \alpha_i)$, for a total of $L=O(n^2 \sum_i \alpha_i)$
-operations in $\K$
+in time $O(n \alpha_i)$, for a total of $L=O(n^2 (\alpha_1+\cdots+\alpha_p))$
+operations in $\KK$.
 
 Then, for any sequence $\bu=(u_1,\dots,u_s)$, with $u_j$ in
 $\{1,\dots,\gamma_j\}$ for all $j$, we start by solving the equation
 $\mu_{1,u_1} = \cdots = \mu_{s,u_s}=0$, to express
 $(X_{n-s+1},\dots,X_n)$ as linear forms
 $(\phi_{\bu,n-s+1},\dots,\phi_{\bu,n})$ in $(X_1,\dots,X_{n-s})$; this
-takes $O(\gamma_1 \cdots \gamma_s n^3)$ operations in $\KK$.
+takes a total of $O(\gamma_1 \cdots \gamma_s n^3)$ operations in $\KK$.
 
 From this, we deduce a straight-line program $\Delta_\bu$ that
 computes the entries of matrix $\mN_\bu$ from~\eqref{eqdef:Lu}: it
@@ -3073,12 +3078,32 @@ simply consists in $\Delta$, to which we add $O(n^2)$ operations that
 evaluate $(\phi_{\bu,n-s+1},\dots,\phi_{\bu,n})$. Given $\Delta_\bu$, we 
 can then apply Algorithm {\sf RowDegreeDiagonal} to compute 
 a zero-dimensional parametrization $\scrR'_\bu$ of $V_p(\mN_\bu)$.
-The number of points $c$ in the output is $S_{n-s}(\alpha_1,\dots,\alpha_p)$,
-so by Lemma~\ref{lemma:rowdegreediagonal}, this takes time
-$$\softO\left (n^3 c  + \sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(n,p)}}
-\alpha_{i_1} \cdots \alpha_{i_\kappa} T_{\rm row}(E+O(n^2), (), (\alpha_{i_1},\dots,\alpha_{i_\kappa}), q)\right).$$
-The total cost is obtained by multiplying this 
-value by the number $\gamma_1 \cdots \gamma_s$ of choices of $\bu$.
+The number of points $c$ in the output is $S_{n-s}(\alpha_1,\dots,\alpha_p)$
+(Corollary~\ref{coro:complete}),
+so by Lemma~\ref{lemma:rowdegreediagonal}, Algorithm {\sf RowDegreeDiagonal} takes time $\softO(T)$, 
+with
+\begin{eqnarray}\label{eqdef:T}
+T&=&n^3 S_{n-s}(\alpha_1,\dots,\alpha_p) \nonumber \\[1mm]
+ & &+ \sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(n-s,p)}}
+\alpha_{i_1} \cdots \alpha_{i_\kappa} T_{\rm row}(n^2(\alpha_1 + \cdots + \alpha_p), (), (\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-s-1).  
+\end{eqnarray}
+Since there are  $\gamma_1 \cdots \gamma_s$ choices of $\bu$,
+the total cost is $\softO(\gamma_1 \cdots \gamma_s T)$.
+
+The next stage consists in adding to each $\scrR'_\bu$, which involves
+only variables $(X_1,\dots,X_{n-s})$, the expressions of
+$(X_{n-s+1},\dots,X_n)$ obtained from
+$(\phi_{\bu,n-s+1},\dots,\phi_{\bu,n})$. As in the analysis of
+Algorithm {\sf RowDegreeDiagonal}, the total runtime is $O(\gamma_1
+\cdots \gamma_s n^2 S_{n-s}(\alpha_1,\dots,\alpha_p))$. Finally, we
+combine the resulting parametrizations $(\scrR_\bu)_\bu$ into a single
+parametrization $\scrR$ using Chinese Remaindering, in time
+$\softO(\gamma_1 \cdots \gamma_s n S_{n-s}(\alpha_1,\dots,\alpha_p))$.
+
+Altogether, the overall time spent in computing the zero-dimensional
+parametrization $\scrR$ of $V(\bA)$ is $\softO(\gamma_1 \cdots
+\gamma_s T)$.
+
 
 \paragraph{Property $\assD_2$.} Next, we need to determine an upper bound 
 $e$ on the degree of the curve $V(J')$, where $J'$ is the union of the
@@ -3091,25 +3116,55 @@ with $\tilde\delta_{\rm row}(\mF)=S_{n-s}(\alpha_1 +1,\cdots,\alpha_p+1)$.
 \paragraph{Property $\assD_3$.} Finally, we need to give an estimate on
 the size of a straight-line program that computes the polynomials
 $\bB=(b_1,\dots,b_m)$, assuming that we are given a straight-line
-program of size $E$ that computes polynomials $G=(g_1,\dots,g_s)$ and
-the entries of $\mF$.
+$\Gamma$ program of size $E$ that computes polynomials
+$G=(g_1,\dots,g_s)$ and the entries of $\mF$. We already defined a
+straight-line program $\Delta$ that computes all entries of $\mN$; for
+an extra $O({q \choose p} n^3)$ operations, we can compute all entries
+of $\mU=(1-T)\mN+T\mF$ and all $p$-minors $(b_{s+1},\dots,b_m)$ of
+this matrix.  Adding an extra $O(n(\gamma_1 + \cdots + \gamma_s))$
+operations, we can also compute all polynomials $(a_1,\dots,a_s)$, and
+thus $(b_1,\dots,b_s)$.
 
-%% First, we estimate the complexity of computing the polynomials
-%% $(b_1,\dots,b_s)$. For $i \le s$, the $i$th polynomial $b_i$ is equal
-%% to $(1-T)a_i + T g_i$, where $a_i$ is a product of $\gamma_i$ linear
-%% forms in $n$ variables. This polynomial can be computed in $O(n
-%% \gamma_i)$ operations in $\KK$, hence for a total of $O(n \sum_i
-%% \gamma_i)$ operations for $(a_1,\dots,a_s)$, and $O(E+n \sum_i
-%% \gamma_i)$ for $(b_1,\dots,b_s)$. The polynomials
-%% $(b_{s+1},\dots,b_m)$ are the $p$-minors of $\mU=(1-T)\mN+T\mF$.
+Altogether, we have obtained a straight-line program $\Gamma'$ that
+computes $\bB=(b_1,\dots,b_m)$ using $E'=O(E + {q \choose p} n^3 + n^2
+(\alpha_1+\cdots+\alpha_p) + n(\gamma_1 + \cdots + \gamma_s))$ operations.
 
-%% The polynomials $\lambda_1,\dots,\lambda_q$ can be computed in $O(n \sum_j
-%% \delta_j)$ operations, so that the entries of $\mU$ can be computed in
-%% $O(n^2 + E + n \sum_j \delta_j)$ operations. From that, all $p$-minors
-%% of $\mU$ can be deduced in $O({q \choose p} n^3)$ further steps.
-%% To summarize, all polynomials in $\bB$ can be computed by a straight-line
-%% program of size
-%% $E'=O(E + {q \choose p} n^3 +n \sum_i \gamma_i + n \sum_j \delta_j)$.
+\paragraph{Completing the cost analysis.} We finally apply Proposition~\ref{prop:compute_isolated},
+which gives a runtime of $\softO(c^5 m n^2 + c(e+c^5 n)(E' + n^3))$
+operations in~$\KK$ for the cost of calling the homotopy
+subroutine. Since $m \le n + {q \choose p}$, this can be simplified as
+$$\softO\left (c(e+c^5 n)\left(E + {q \choose p} n^3 +n \sum_i
+    \gamma_i + n^2 \sum_j \alpha_j\right)\right).$$
+Since all of $ {q \choose p}, \sum_i \gamma_i$ and $\sum_j \delta_j$
+are at most $cn$, this becomes
+$\softO\left (c(e+c^5 n)(E + cn^4)\right),$ with
+$c=\gamma_1\cdots\gamma_s \delta_{\rm row}(\mF)$  and
+$e=(\gamma_1+1)\cdots(\gamma_s+1) \tilde\delta_{\rm row}(\mF)$.  This is also
+$\softO\left (c(e+c^5 )(E + cn^4)\right).$ To conclude, the 
+total cost of the algorithm is
+$$T_{\rm row}(E,\bgamma,\balpha,q)= \softO(\gamma_1 \cdots\gamma_s T + c(e+c^5 )(E + cn^4)),$$
+with $T$ as in~\eqref{eqdef:T}.
+
+This relation will now allow us to write a recurrence relation 
+on $T_{\rm row}$.
+
+
+
+%% $$\softO(c^5 m n^2  + c(e+c^5 n)(E + n^3))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3120,19 +3175,36 @@ the entries of $\mF$.
 and $G = (g_1, \ldots, g_s)$ in $\KK[X_1, \ldots, X_n]$ with $p \leq q$, $n = q-p+s+1$\\
 {\bf Output}: a zero-dimensional parametrization of the isolated points of $S_{\mF,G}$
 \begin{enumerate}
-\item construct 
- matrix $\mN \in \KK[\bX]^{p \times q}$ as in~\eqref{eqdef:type1aff}
-and $(a_1, \ldots, a_s)$ in $\KK[\bX]$ as in~\eqref{eqdef:ai}
+\item construct a straight-line program $\Delta$ that computes $\mN \in \KK[X_1,\dots,X_n]^{p \times q}$ as in~\eqref{eqdef:type1aff}\\
+length of $\Delta$ is $O(n^2(\alpha_1+\cdots+\alpha_p))$
 \item for any sequence $\bu=(u_1,\dots,u_s)$, with $u_j \in \{1,\dots,\gamma_j\}$ for all $j$
 \begin{enumerate}
 \item apply Gaussian elimination to the system $\mu_{1,u_1}=\cdots=\mu_{s,u_s}=0$
-to rewrite $(X_{n-s+1}, \ldots, X_n)$ as linear forms in $(X_1,\dots,X_{n-s})$
-\item substitute $(X_i)_{n-s+1 \leq i \leq n}$ into $\mN$ to obtain $\mN_\bu\in \KK[X_1, \ldots, X_{n-s}]^{p \times q}$
-\item $\scrR'_\bu \gets \mathsf{RowDegreeDiagonal}(\Gamma_\bu)$ (points have coordinates $(X_1,\dots,X_{n-s})$
+  to rewrite $(X_{n-s+1}, \ldots, X_n)$ as linear forms $(\phi_{\bu,k})_{n-s+1 \le k \le n}$ in $(X_1,\dots,X_{n-s})$\\
+  $\text{\sf{cost:~}} O(\gamma_1 \cdots \gamma_s n^3)$
+
+\item construct a straight-line program $\Delta_{\bu}$ that computes the matrix 
+  $\mN_\bu  \in \KK[X_1, \dots, X_{n-s}]^{p \times q}$ obtained
+  by substituting $(\phi_{\bu,k})_{n-s+1 \le k \le n}$ into $\mN$ \\
+  length of $\Delta_{\bu}$ is $O(n^2(\alpha_1+\cdots+\alpha_p))$
+
+\item $\scrR'_\bu \gets \mathsf{RowDegreeDiagonal}(\Gamma_\bu)$ (points have coordinates $(X_1,\dots,X_{n-s})$\\
+  $\text{\sf{cost:~}} \softO(\gamma_1 \cdots \gamma_s T)$, for $T$ as in~\eqref{eqdef:T}
+
 \item deduce $\scrR_\bu$ from $\scrR'_\bu$ by adding the expressions for $(X_{n-s+1},\dots,X_n)$ 
+  $\text{\sf{cost:~}} O(\gamma_1 \cdots \gamma_s n^2 S_{n-s}(\alpha_1,\dots,\alpha_p))$
+
+
 \end{enumerate}
-\item combine all $\scrR_\bu$ into $\scrR$
-\item return $\mathsf{Homotopy}(\bB,\scrR)$ ($\bB$ as in the previous paragraphs)
+\item combine all $\scrR_\bu$ into $\scrR$\\
+  $\text{\sf{cost:~}} \softO(\gamma_1 \cdots \gamma_s n S_{n-s}(\alpha_1,\dots,\alpha_p))$
+
+\item construct a straight-line program $\Gamma'$ that computes all polynomials $\bB$\\
+  length of $\Gamma'$ is $E'=O(E + {q \choose p} n^3 + n^2
+(\alpha_1+\cdots+\alpha_p) + n(\gamma_1 + \cdots + \gamma_s))$
+
+\item return $\mathsf{Homotopy}(\Gamma',\scrR)$\\
+ $\text{\sf{cost:~}} \softO( c(e+c^5 )(E + cn^4) )$
 \end{enumerate}
 \label{Row}
 \end{algorithm}
