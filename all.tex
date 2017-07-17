@@ -2628,13 +2628,36 @@ $\mathsf{RowDegree}(\Gamma)$ which takes as input a straight-line
 program $\Gamma$ that computes a polynomial matrix $\mF$ and a system
 of equations $G$, and solve Problem~\ref{problem2} for this input
 using a row-degree homotopy. We give such an algorithm in the next
-section (in our case, we do not need the extra set of equations $G$).
-We denote by $T_{\rm row}(E,\bgamma,\balpha,q)$ the time spent by
+section. We denote by $T_{\rm row}(E,\bgamma,\balpha,q)$ the time spent by
 $\mathsf{RowDegree}(\Gamma)$ on input a straight-line program of
 length $E$ that computes $\mF$ with row degrees
 $\balpha=(\alpha_1,\dots,\alpha_p)$ and $q$ columns, and $G$ of
-degrees $\gamma=(\gamma_1,\dots,\gamma_s)$; for convenience, if $p \ge q$,
-we let $T_{\rm row}(E,\bgamma,\balpha,q)=1$.
+degrees $\gamma=(\gamma_1,\dots,\gamma_s)$. 
+
+We will be interested in the particular case where the input matrix
+has the form
+\begin{align}\label{eqdef:type2aff}
+  \mM= \left( \begin{matrix}
+    \lambda_{1,1} & \lambda_{1,2} & \cdots & \lambda_{1, q}\\
+    \lambda_{2,1} &  \lambda_{2,2} & \cdots & \lambda_{2, q}\\
+    \vdots & & & \vdots\\
+    \lambda_{p,1} &  \lambda_{p,2}& \cdots & \lambda_{p, q}
+  \end{matrix} \right),
+\end{align}
+where for all $i,j$, $\lambda_{i,j}$ is a product of $\alpha_i$ (non
+necessarily homogeneous) linear forms
+$\lambda_{i,j,1},\dots,\lambda_{i,j,\alpha_i}$ in $n$ variables
+$X_1,\dots,X_n$. In this case, each entry $\lambda_{i,j}$ can be
+computed in $O(n \alpha_i)$ operations in $\KK$, so that the whole
+matrix $\mM$ can be computed by a straight-line program of length
+$O(nq(\alpha_1+\cdots+\alpha_p))$. In this case there are no
+additional equations $G$, so we denote the cost of Algorithm {\sf
+  RowDegree} for such input 
+\begin{align}
+T_{M,{\rm row}}(\balpha,q)=T_{\rm row}(nq(\alpha_1+\cdots+\alpha_p),(),\balpha,q).
+\end{align}
+For convenience, if $p \ge q$,
+we write$T_{M,{\rm row}}(\balpha,q)=1$.
 
 \begin{lemma}\label{lemma:rowdegreediagonal}
   The total cost of $\mathsf{RowDegreeDiagonal}(\Gamma)$
@@ -2955,21 +2978,10 @@ is to establish the value of $c$.
 \begin{lemma}
   Let $\balpha=(\alpha_1,\dots,\alpha_p)$ be positive integers.  and
   let $S_{t}(\alpha_1,\dots,\alpha_p)$ be the complete symmetric
-  function of degree $t$ in $\alpha_1,\dots,\alpha_p$. For a generic
-  matrix $\mN$ of size $p \times q$ as in~\eqref{eqdef:type1aff} or a
-  generic matrix $\mM$ of the form
-  \begin{align}\label{eqdef:type2aff}
-    \mM= \left( \begin{matrix}
-      \lambda_{1,1} & \lambda_{1,2} & \cdots & \lambda_{1, q}\\
-      \lambda_{2,1} &  \lambda_{2,2} & \cdots & \lambda_{2, q}\\
-      \vdots & & & \vdots\\
-      \lambda_{p,1} &  \lambda_{p,2}& \cdots & \lambda_{p, q}
-    \end{matrix} \right),
-  \end{align}
-  where $\lambda_{i,j}$ is a product of $\alpha_i$ (non necessarily
-  homogeneous) linear forms
-  $\lambda_{i,j,1},\dots,\lambda_{i,j,\alpha_i}$ in $t$ variables
-  $X_1,\dots,X_t$, with $t=q-p+1$, $V_p(\mN)$ and $V_p(\mM)$ have
+  function of degree $t$ in $\alpha_1,\dots,\alpha_p$. For generic $p
+  \times q$ matrices $\mN$ as in~\eqref{eqdef:type1aff} or $\mM$ an
+  in~\eqref{eqdef:type2aff}, with entries in $t=q-p+1$ variables,
+$V_p(\mN)$ and $V_p(\mM)$ have
   cardinality $S_{t}(\alpha_1,\dots,\alpha_p)$.
 \end{lemma}
 \begin{proof}
