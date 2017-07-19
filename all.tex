@@ -2617,25 +2617,29 @@ with but $X_0=1$. Explicitly, we have
 0 & 0 & \cdots & \lambda_{p,p} & \lambda_{p,p+1} & \cdots & \lambda_{p, q}
 \end{matrix} \right),
 \end{align}
-where $\lambda_{i,j}$ is products of $\alpha_i$ linear forms $\lambda_{i,j,k}$ with coefficients in $\KK$.
-By Proposition~\ref{lemma:appendix}, we deduce that for a generic
-choice of the coefficients of these linear forms,
-$I_p(\mN) \subset \KKbar{}^n$ is a finite set, whose structure is 
+where for all $i,j$, $\lambda_{i,j}$ is the product of $\alpha_i$
+linear forms $(\lambda_{i,j,k})_{1 \le k \le \alpha_i}$ with
+coefficients in $\KK$.  By Proposition~\ref{lemma:appendix}, we deduce
+that for a generic choice of the coefficients of these linear forms,
+$I_p(\mN) \subset \KKbar{}^n$ is a finite set, whose structure is
 given by Lemma~\ref{lemma:union}.
 
-In the following algorithm, we assume the existence of a subroutine
-$\mathsf{RowDegree}(\Gamma)$ which takes as input a straight-line
-program $\Gamma$ that computes a polynomial matrix $\mF$ and a system
-of equations $G$, and solve Problem~\ref{problem2} for this input
-using a row-degree homotopy. We give such an algorithm in the next
-section. We denote by $T_{\rm row}(E,\bgamma,\balpha,q)$ the time spent by
+Algorithm $\mathsf{RowDegreeDiagonal}$ below takes as input the linear
+forms $(\lambda_{i,j,k})$ and computes a zero-dimensional
+parametrization of $I_p(\mN)$. In the algorithm, we assume the
+existence of a subroutine $\mathsf{RowDegree}(\Gamma)$ which takes as
+input a straight-line program $\Gamma$ that computes a polynomial
+matrix $\mF$ and a system of equations $G$, and solve
+Problem~\ref{problem2} for this input using a row-degree homotopy. We
+give such an algorithm in the next section. We denote by $T_{\rm
+  row}(E,\bgamma,\balpha,q)$ the time spent by
 $\mathsf{RowDegree}(\Gamma)$ on input a straight-line program of
 length $E$ that computes $\mF$ with row degrees
-$\balpha=(\alpha_1,\dots,\alpha_p)$ and $q$ columns, and $G$ of
-degrees $\gamma=(\gamma_1,\dots,\gamma_s)$. 
+$\balpha=(\alpha_1,\dots,\alpha_p)$ and $q$ columns, and
+$G=(g_1,\dots,g_s)$ of degrees $\gamma=(\gamma_1,\dots,\gamma_s)$.
 
-We will be interested in the particular case where the input matrix
-has the form
+We will be interested in the particular case of subroutine
+$\mathsf{RowDegree}$ where the input matrix has the form
 \begin{align}\label{eqdef:type2aff}
   \mM= \left( \begin{matrix}
     \lambda_{1,1} & \lambda_{1,2} & \cdots & \lambda_{1, q}\\
@@ -2644,63 +2648,25 @@ has the form
     \lambda_{p,1} &  \lambda_{p,2}& \cdots & \lambda_{p, q}
   \end{matrix} \right),
 \end{align}
-where for all $i,j$, $\lambda_{i,j}$ is a product of $\alpha_i$ (non
-necessarily homogeneous) linear forms
-$\lambda_{i,j,1},\dots,\lambda_{i,j,\alpha_i}$ in $n$ variables
-$X_1,\dots,X_n$. In this case, each entry $\lambda_{i,j}$ can be
-computed in $O(n \alpha_i)$ operations in $\KK$, so that the whole
-matrix $\mM$ can be computed by a straight-line program of length
-$O(nq(\alpha_1+\cdots+\alpha_p))$. In this case there are no
-additional equations $G$, so we denote the cost of Algorithm {\sf
-  RowDegree} for such input 
+where for all $i,j$, $\lambda_{i,j}$ is the product of $\alpha_i$ (non
+necessarily homogeneous) linear forms $(\lambda_{i,j,k})_{1 \le k \le
+  \alpha_i}$ in $n$ variables $X_1,\dots,X_n$. In this case, each
+entry $\lambda_{i,j}$ can be computed in $O(n \alpha_i)$ operations in
+$\KK$, so that the whole matrix $\mM$ can be computed by a
+straight-line program of length $O(nq(\alpha_1+\cdots+\alpha_p))$. In
+this case there are no additional equations $G$, so we denote the cost
+of Algorithm {\sf RowDegree} for such input by
 \begin{align}
 T_{M,{\rm row}}(\balpha,q)=T_{\rm row}(nq(\alpha_1+\cdots+\alpha_p),(),\balpha,q).
 \end{align}
 For convenience, if $p \ge q$,
-we write$T_{M,{\rm row}}(\balpha,q)=1$.
-
-\begin{lemma}\label{lemma:rowdegreediagonal}
-  The total cost of $\mathsf{RowDegreeDiagonal}(\Gamma)$
-  is $$\softO\left (n^3(c + S_n(\alpha_1,\dots,\alpha_p))
- + \sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(n,p)}}
-\alpha_{i_1} \cdots \alpha_{i_\kappa} T_{\rm row}(E+O(n^2), (), (\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-1)\right),$$
-  where $c$ is the cardinality of $V_p(\mN)$.
-\end{lemma}
-\begin{proof}
-  The cost reported at each step in the algorithm is the total amount
-  of time spent there, over all iterations (the sums in the first loop
-  are for $\kappa \le \min(n-1,p)$, the ones in the second loop for
-  $\kappa=n$ if $n \le p$). Most steps are straightforward to
-  analyze. We briefly comment on Step~\ref{step:substdiag}, which
-  consists in adding $\kappa$ coordinates $(X_{n-\kappa+1},\dots,X_n)$
-  to a zero-dimensional parametrization, where
-  $(X_{n-\kappa+1},\dots,X_n)$ are known as linear forms
-  $(f_{\bi,\br,j})_{n-\kappa+1 \le j \le n}$ in $(X_1, \ldots,
-  X_{n-\kappa})$: this is done by means of a matrix product in size
-  $(\kappa \times n-\kappa)$ by $(n-\kappa \times c_{\bi,\br})$, where
-  $c_{\bi,\br}$ is the cardinality of $V_\kappa(\mM_{\bi,\br})$, for
-  $\bi=(i_1,\dots,i_\kappa)$.  The cost is thus $O(n^2 c_{\bi,\br})$;
-  the sum of these costs is thus $O(n^2 c)$, since the sum of all
-  $c_{\bi,\br}$ is by Remark~\ref{remark:disjoint}.
-
-  The combination in the last step is done by fast Chinese Remaindering,
-  in quasi-linear time $\softO(\sum_{\bi,\br} n c_{\bi,\br})$,
-  which is $\softO(n c)$. Thus, the total runtime is 
-  $$\softO\left (n^2 c + \sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \br=(r_1,\dots,r_\kappa)\\\kappa\le\min(n,p)}}
-  n^3 + T_{\rm row}(E+O(n^2), (), (\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-1)\right).$$
-  The cost reported in the summand does not depend on $\br$, so that 
-  the sum can be rewritten as 
-  $$\sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(n,p)}}
-  \alpha_{i_1} \cdots \alpha_{i_\kappa}( n^3 + T_{\rm row}(E+O(n^2), (), (\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-1)).$$
-  The final simplification comes from noting that $\sum_{\bi} \alpha_{i_1} \cdots \alpha_{i_\kappa}$,
-  for $\bi$ a subsequence of $(1,\dots,p)$ of length $\kappa\le\min(n,p)$, 
-  is bounded from above by $S_n(\alpha_1,\dots,\alpha_p)$.
-\end{proof}
+we write $T_{M,{\rm row}}(\balpha,q)=1$.
 
 \begin{algorithm}[!h]
-\caption{$\mathsf{RowDegreeDiagonal}(\Gamma)$}
-{\bf Input}: a straight-line program $\Gamma$ of length $E$ that computes
- $\mN \in \KK[X_0, \ldots, X_n]^{p \times q}$ as in~\eqref{eqdef:type1aff}, with $p \leq q$ and $n = q-p+1$\\
+\caption{$\mathsf{RowDegreeDiagonal}((\lambda_{i,j,k})_{i,j,k})$}
+{\bf Input}: linear forms $(\lambda_{i,j,k})_{i,j,k}$ making up 
+the entries of 
+$\mN \in \KK[X_0, \ldots, X_n]^{p \times q}$ as in~\eqref{eqdef:type1aff}, with $p \leq q$ and $n = q-p+1$\\
 {\bf Output}: a zero-dimensional parametrization $\scrR$ of $V_p(\mN)$
 \begin{enumerate}
 \item for any subsequence $\bi = (i_1, \ldots, i_\kappa)$ of $(1, \ldots, p)$ with $1 \leq \kappa \leq\min(n-1,p)$
@@ -2710,11 +2676,11 @@ we write$T_{M,{\rm row}}(\balpha,q)=1$.
     \item apply Gaussian elimination to the system $\lambda_{i_1,i_1,r_1}=\dots=\lambda_{i_\kappa,i_\kappa,r_\kappa}=0$
       to rewrite $(X_{n-\kappa+1}, \ldots, X_n)$ as linear forms $(f_{\bi,\br,j})_{n-\kappa+1 \le j \le n}$ in $(X_1, \ldots, X_{n-\kappa})$. \\
 $\text{\sf{cost:~}} O(\sum_{\bi,\br} n^3)$
-    \item construct a straight-line program $\Gamma_{\bi,\br}$ that computes the matrix $\mM_{\bi,\br} \in \KK[X_1, \dots, X_{n-\kappa}]^{\kappa \times (n-1)}$ obtained
-      by substituting $(f_{\bi,\br,j})_{n-\kappa+1 \le j \le n}$ into $\mN_{\bi,(p+1, \ldots, q)}$ \\
-length of $\Gamma_{\bi,\br}$ is $E+O(n^2)$
+    \item\label{step:constSLP} construct a straight-line program $\Gamma_{\bi,\br}$ that computes the matrix $\mM_{\bi,\br} \in \KK[X_1, \dots, X_{n-\kappa}]^{\kappa \times (n-1)}$ obtained
+      by substituting $(f_{\bi,\br,j})_{n-\kappa+1 \le j \le n}$ into $\mN_{\bi,(p+1, \ldots, q)}$. The length of $\Gamma_{\bi,\br}$ is $O(\kappa n(\alpha_{i_1}+\cdots+\alpha_{i_\kappa}))$.\\
+      $\text{\sf{cost:~}} O(\sum_{\bi,\br} (\alpha_{i_1} + \cdots + \alpha_{i_\kappa}) n^3)$
     \item $\scrR_{\bi,\br}' \gets$ $\mathsf{RowDegree}(\Gamma_{\bi,\br})$  (points have coordinates $(X_1, \ldots, X_{n-\kappa})$)\\
-$\text{\sf{cost:~}} \sum_{\bi,\br} T_{\rm row}(E+O(n^2), (), (\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-1)$
+$\text{\sf{cost:~}} \sum_{\bi,\br} T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-1)$
     \item\label{step:substdiag} deduce $\scrR_{\bi,\br}$ from $\scrR_{\bi,\br}'$ by adding the expressions for $(X_{n-\kappa+1}, \ldots, X_n)$\\
       $\text{\sf{cost:~}} O(\sum_{\bi,\br} n^2 c_{\bi,\br})$
   \end{enumerate}
@@ -2735,6 +2701,71 @@ $\text{\sf{cost:~}} \sum_{\bi,\br} T_{\rm row}(E+O(n^2), (), (\alpha_{i_1},\dots
 \end{enumerate}
 \label{Row}
 \end{algorithm}
+
+\begin{lemma}\label{lemma:rowdegreediagonal}
+  Let $S_n(\alpha_1,\dots,\alpha_p)$ be the degree $n$ complete
+  symmetric function of $(\alpha_1,\dots,\alpha_p)$.  The total cost of
+  $\mathsf{RowDegreeDiagonal}((\lambda_{i,j,k})_{i,j,k})$
+  is $$\sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(n-1,p)}}
+  \alpha_{i_1} \cdots \alpha_{i_\kappa} T_{M,{\rm
+      row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-1) + \softO\left (n^3(c + S_n(\alpha_1,\dots,\alpha_p))  \right),$$
+  where $c$ is the cardinality of $V_p(\mN)$.
+\end{lemma}
+\begin{proof}
+  The cost reported at each step in the algorithm is the total amount
+  of time spent there, over all iterations (the sums in the first loop
+  are for $\kappa \le \min(n-1,p)$, the ones in the second loop for
+  $\kappa=n$ if $n \le p$). Several steps are straightforward to
+  analyze; we briefly comment on a few of them.
+
+  Step~\ref{step:constSLP} uses the linear forms
+  $(f_{\bi,\br,j})_{n-\kappa+1 \le j \le n}$ to construct a
+  straight-line program $\Gamma_{\bi,\br}$ that computes the entries
+  of $\mM_{\bi,\br}$. This is done by computing the coefficients
+  of the linear forms in $(X_1,\dots,X_{n-\kappa})$ obtained after 
+  substitution. Each linear form requires a matrix-vector product 
+  with a matrix of size $(n-\kappa) \times n$, for $O(n^2)$ operations,
+  whence a total of $O((\alpha_{i_1} + \cdots +\alpha_{i_\kappa})n^3)$
+  for all entries.
+
+  Step~\ref{step:substdiag}, which consists in adding $\kappa$
+  coordinates $(X_{n-\kappa+1},\dots,X_n)$ to a zero-dimensional
+  parametrization, where $(X_{n-\kappa+1},\dots,X_n)$ are known as
+  linear forms $(f_{\bi,\br,j})_{n-\kappa+1 \le j \le n}$ in $(X_1,
+  \ldots, X_{n-\kappa})$: this is done by means of a matrix product in
+  size $(\kappa \times n-\kappa)$ by $(n-\kappa \times c_{\bi,\br})$,
+  where $c_{\bi,\br}$ is the cardinality of $V_\kappa(\mM_{\bi,\br})$,
+  for $\bi=(i_1,\dots,i_\kappa)$.  The cost is thus $O(n^2
+  c_{\bi,\br})$; the sum of these costs is thus $O(n^2 c)$, since the
+  sum of all $c_{\bi,\br}$ is by Remark~\ref{remark:disjoint}.
+
+  The combination in the last step is done by fast Chinese Remaindering,
+  in quasi-linear time $\softO(\sum_{\bi,\br} n c_{\bi,\br})$,
+  which is $\softO(n c)$. Thus, the total runtime is 
+  \begin{multline*}
+ \sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \br=(r_1,\dots,r_\kappa)\\\kappa\le\min(n-1,p)}}
+T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-1)\\
++\softO\left (n^2 c + \sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \br=(r_1,\dots,r_\kappa)\\\kappa\le\min(n-1,p)}}
+  (\alpha_{i_1} + \cdots +\alpha_{i_\kappa}) n^3 
+  +  \sum_{\substack{\bi=(i_1,\dots,i_n)\\ \br=(r_1,\dots,r_n)}} n^3\right).    
+  \end{multline*}
+  The costs reported in the sums do not depend on $\br$, so that 
+  this can be rewritten as 
+  \begin{multline*}
+ \sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(n-1,p)}}
+  \alpha_{i_1}  \cdots \alpha_{i_\kappa}T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-1)\\
++\softO\left (n^2 c + \sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(n-1,p)}}
+    \alpha_{i_1}  \cdots \alpha_{i_\kappa} (\alpha_{i_1} + \cdots +\alpha_{i_\kappa}) n^3 
+  +  \sum_{\substack{\bi=(i_1,\dots,i_n)}   }\alpha_{i_1}  \cdots \alpha_{i_n} n^3\right).    
+  \end{multline*}
+  The final simplification comes from noting that $\sum_{\bi}
+  \alpha_{i_1} \cdots \alpha_{i_\kappa}(\alpha_{i_1} + \cdots
+  +\alpha_{i_\kappa})$, for $\bi$ a subsequence of $(1,\dots,p)$ of
+  length $\kappa\le\min(n-1,p)$, is bounded from above by
+  $S_n(\alpha_1,\dots,\alpha_p)$. The same holds for the second
+  sum (which is empty if $n >p$).
+\end{proof}
+
 
 
 
@@ -3092,15 +3123,15 @@ can then apply Algorithm {\sf RowDegreeDiagonal} to compute
 a zero-dimensional parametrization $\scrR'_\bu$ of $V_p(\mN_\bu)$.
 The number of points $c$ in the output is $S_{n-s}(\alpha_1,\dots,\alpha_p)$
 (Corollary~\ref{coro:complete}),
-so by Lemma~\ref{lemma:rowdegreediagonal}, Algorithm {\sf RowDegreeDiagonal} takes time $\softO(T)$, 
-with
-\begin{eqnarray}\label{eqdef:T}
-T&=&n^3 S_{n-s}(\alpha_1,\dots,\alpha_p) \nonumber \\[1mm]
- & &+ \sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(n-s,p)}}
-\alpha_{i_1} \cdots \alpha_{i_\kappa} T_{\rm row}(n^2(\alpha_1 + \cdots + \alpha_p), (), (\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-s-1).  
+so by Lemma~\ref{lemma:rowdegreediagonal}, Algorithm {\sf RowDegreeDiagonal} takes time 
+\begin{eqnarray}
+T=\sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(n-s-1,p)}}
+\alpha_{i_1} \cdots \alpha_{i_\kappa} T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-s-1)
++
+\softO(n^3 S_{n-s}(\alpha_1,\dots,\alpha_p)).  \label{eqdef:T}
 \end{eqnarray}
 Since there are  $\gamma_1 \cdots \gamma_s$ choices of $\bu$,
-the total cost is $\softO(\gamma_1 \cdots \gamma_s T)$.
+the total cost is  $\gamma_1 \cdots \gamma_s T$.
 
 The next stage consists in adding to each $\scrR'_\bu$, which involves
 only variables $(X_1,\dots,X_{n-s})$, the expressions of
@@ -3113,8 +3144,8 @@ parametrization $\scrR$ using Chinese Remaindering, in time
 $\softO(\gamma_1 \cdots \gamma_s n S_{n-s}(\alpha_1,\dots,\alpha_p))$.
 
 Altogether, the overall time spent in computing the zero-dimensional
-parametrization $\scrR$ of $V(\bA)$ is $\softO(\gamma_1 \cdots
-\gamma_s T)$.
+parametrization $\scrR$ of $V(\bA)$ is 
+  $\gamma_1 \cdots \gamma_s T$.
 
 
 \paragraph{Property $\assD_2$.} Next, we need to determine an upper bound 
@@ -3150,17 +3181,57 @@ $$\softO\left (c(e+c^5 n)\left(E + {q \choose p} n^3 +n \sum_i
 Since all of $ {q \choose p}, \sum_i \gamma_i$ and $\sum_j \delta_j$
 are at most $cn$, this becomes
 $\softO\left (c(e+c^5 n)(E + cn^4)\right),$ with
-$c=\gamma_1\cdots\gamma_s \delta_{\rm row}(\mF)$  and
-$e=(\gamma_1+1)\cdots(\gamma_s+1) \tilde\delta_{\rm row}(\mF)$.  This is also
+$c=\gamma_1\cdots\gamma_sS_{n-s}(\alpha_1,\dots,\alpha_p)$  and
+$e=(\gamma_1+1)\cdots(\gamma_s+1)S_{n-s}(\alpha_1+1,\dots,\alpha_p+1)$.  This is also
 $\softO\left (c(e+c^5 )(E + cn^4)\right).$ To conclude, the 
 total cost of the algorithm is
-$$T_{\rm row}(E,\bgamma,\balpha,q)= \softO(\gamma_1 \cdots\gamma_s T + c(e+c^5 )(E + cn^4)),$$
-with $T$ as in~\eqref{eqdef:T}.
+\begin{align}\label{eq:recT}
+T_{\rm row}(E,\bgamma,(\alpha_1,\dots,\alpha_p),q)= \gamma_1 \cdots\gamma_s T + \softO( c(e+c^5 )(E + cn^4)),  
+\end{align}
+with $T$ as in~\eqref{eqdef:T}. This relation will now allow us to
+write a recurrence relation on $T_{M,{\rm row}}$.
 
-This relation will now allow us to write a recurrence relation 
-on $T_{\rm row}$.
-
-
+\begin{lemma}
+  One can take $T_{M,{\rm row}}((\alpha_1,\dots,\alpha_p),q)= \softO( n^5 q c^3(e+c^5 )))$, with
+  $n=q-p+1$,
+  $c=S_{n}(\alpha_1,\dots,\alpha_p)$ and
+  $e=S_{n}(\alpha_1+1,\dots,\alpha_p+1)$.
+\end{lemma}
+\begin{proof}
+  We apply the previous result in the case where $s=0$, so that
+  $\gamma_1 \cdots \gamma_s=1$, and for a $p \times q$ input matrix
+  $\mM$ as in~\eqref{eqdef:type2aff}. In this case, we can take
+  $E=O(nq(\alpha_1 + \cdots + \alpha_p))$; following our convention in
+  the previous section, the runtime $T_{\rm row}(E,\bgamma,(\alpha_1,\dots,\alpha_p),q)$
+  is then written $T_{M,{\rm row}}((\alpha_1,\dots,\alpha_p),q)$.  Equation~\eqref{eq:recT},
+  combined with the definition of $T$ in~\eqref{eqdef:T}, gives the 
+  recursion
+  \begin{multline}
+  T_{M,{\rm row}}((\alpha_1,\dots,\alpha_p),q)=
+\sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(n-1,p)}}
+\alpha_{i_1} \cdots \alpha_{i_\kappa} T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-1)
+\\ + \softO\Big(  
+  n^4 q c(e+c^5 )(\alpha_1 + \cdots + \alpha_p)\Big), \quad n=q-p+1,\label{rec:Trow}
+  \end{multline}
+  with $c=S_n(\alpha_1,\dots,\alpha_p)$ and
+  $e=S_n(\alpha_1+1,\dots,\alpha_p+1)$.  The right-hand term $\softO(
+  n^4 q c(e+c^5 )(\alpha_1 + \cdots + \alpha_p))$ is at its maximum at
+  the root of the recursion tree.  Thus, we can find an upper bound on
+  $T_{M,{\rm row}}$ by finding a solution to the recurrence
+  \begin{align}\label{rec:TrowC}
+  T_{M,{\rm row}}((\alpha_1,\dots,\alpha_p),q)=
+\sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(n-1,p)}}
+\alpha_{i_1} \cdots \alpha_{i_\kappa} T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-1)
++ C,
+  \end{align}
+  for some constant $C$, and substituting $C=\softO( n^4 q c(e+c^5
+  )(\alpha_1 + \cdots + \alpha_p))$.  Now, a quick induction shows
+  that $T_{M,{\rm row}}= C n S_n(\alpha_1,\dots,\alpha_p)$ is a
+  solution of~\eqref{rec:TrowC}. As a result,
+   $T_{M,{\rm row}}= \softO( n^5 q c^2(e+c^5 )(\alpha_1 + \cdots + \alpha_p)))$
+  is a solution of~\eqref{rec:Trow},
+  and this quantity is $ \softO( n^5 q c^3(e+c^5 )))$.
+\end{proof}
 
 %% $$\softO(c^5 m n^2  + c(e+c^5 n)(E + n^3))
 
