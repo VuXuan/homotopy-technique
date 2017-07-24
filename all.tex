@@ -97,13 +97,20 @@ $\KK[X_1,\dots,X_n]$ is the multivariate polynomial ring in $n$
 variables with coefficients in $\KK$. Let $\mF=[f_{i,j}] \in
 \KK[X_1,\dots,X_n]^{p \times q}$ be a polynomial matrix, with $p \leq
 q$. The first question which will interest us in this paper is to
-describe the set $S_\mF$ of points $\x \in \KKbar{}^n$ at which the
-evaluation of the matrix $\mF$ has rank less than $p$. Observe that
-$S_\mF$ is an algebraic set, since it is defined by the vanishing of
-all maximal minors of $\mF$.  In the particular case $p=1$, this
-simply means finding all common solutions of $f_{1,1},\dots,f_{1,q}$.
+describe the set of points $\x \in \KKbar{}^n$ at which the evaluation
+of the matrix $\mF$ has rank less than $p$.  In the particular case
+$p=1$, this simply means finding all common solutions of
+$f_{1,1},\dots,f_{1,q}$.
 
-Any algebraic set is the finite union of its \emph{irreducible
+For any matrix $\mF$ over a ring $R$, and for any integer $r$,
+$M_r(\mF)$ will denote the set of $r$-minors of $\mF$, and $I_r(\mF)$
+will denote the ideal they generate in $R$. For any ideal $I$ in $\KK[X_1,\dots,X_n]$, $V(I)$ will denote the
+zero-set of $I$ in $\KKbar{}^n$, and for a matrix $\mF$ with entries in 
+$\KK[X_1,\dots,X_n]$, we will write $V_r(\mF)=V(I_r(\mF))$. Thus,
+we have
+$$V_r(\mF)=\{\bx \in \KKbar{}^n \mid \mathrm{rank}(\mF({\bx})) < p\}.$$
+The set $V_r(\mF)$ is an algebraic set, since it is defined by the vanishing of
+all maximal minors of $\mF$. Any algebraic set is the finite union of its \emph{irreducible
   components}: these are the maximal irreducible algebraic sets
 contained in $S_{\mF}$ (an algebraic set is irreducible if it is not
 the union of two proper algebraic sets). The {\em dimension} of an
@@ -203,16 +210,7 @@ elementary symmetric polynomial of degree $k$ in $(\delta_1, \ldots,
 symmetric polynomial in $(\alpha_1,\dots,\alpha_p)$.  
 
 
-\smallskip
-
-For any matrix $\mF$ over a ring $R$, and for any integer $r$,
-$M_r(\mF)$ will denote the set of $r$-minors of $\mF$, and $I_r(\mF)$
-will denote the ideal they generate in $R$. If $R$ is a polynomial
-ring in $n$ variables over a field $\KK$, $V_r(\mF)$ will denote the
-zero-set of $I_r(\mF)$ in $\KKbar{}^n$. 
-
-For any ideal $I$ in $\KK[X_1,\dots,X_n]$, $V(I)$ will denote the
-zero-set of $I$ in $\KKbar{}^n$. The ideal $I$ can be written as the
+ The ideal $I$ can be written as the
 intersection of finitely many primary components, that is,
 $I=Q_1\cap\cdots \cap Q_s$ for some primary ideals $Q_1,\dots,Q_s$;
 this decomposition is said to be minimal when $V(Q_i)\neq V(Q_j)$ for
