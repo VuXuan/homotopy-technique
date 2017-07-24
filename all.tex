@@ -107,32 +107,31 @@ of $f_{1,1},\dots,f_{1,q}$.
 As $S_\mF$ is an algebraic set, it can be defined as the finite union
 of its \emph{irreducible components}: these are the algebraic sets
 contained in $S_{\mF}$ which are not the union of two proper algebraic
-sets defined over $\KK$. In the sequel, we use the classical notion of
-dimension which is the largest integer $d$ such that intersecting
+sets defined over $\KK$. In the sequel, we also use the classical notion of
+dimension, which is the largest integer $d$ such that intersecting
 $S_{\mF}$ with $d$ generic hyperplanes yields a finite set. Those
 algebraic sets with all irreducible components of the same dimension
-are said to be equidimensional. We refer to \cite[xxx]{Shafarevich77}
+are called {\em equidimensional}. We refer to e.g.~\cite{Shafarevich77}
 for these notions.
 
 \smallskip
-We restrict ourselves to the case where $n = q-p+1$.  Indeed, in this
-case, $S_\mF$ is expected to be finite: for arbitrary $n$, results due
-to Macaulay~\cite{Macaulay16} and Eagon and Northcott~\cite{EN62}
-imply that all irreducible components of $S_\mF$ have dimension at
-least (and, expectedly, equal to) $n-(q-p+1)$; indeed, in the case
-$n = q-p+1$, $S_\mF$ is finite for a generic choice of the entries of
-$\mF$ (we will make this statement more precise in the following
-sections). However, beyond the equality $n = q-p+1$, we make no
-assumption on the input matrix $\mF$.
+
+For the problem above, we restrict ourselves to the case where $n =
+q-p+1$.  Indeed, in this case, $S_\mF$ is expected to be finite: for
+arbitrary $n$, results due to Macaulay~\cite{Macaulay16} and Eagon and
+Northcott~\cite{EN62} imply that all irreducible components of $S_\mF$
+have dimension at least (and, expectedly, equal to) $n-(q-p+1)$; in
+the case $n = q-p+1$, $S_\mF$ is finite for a generic choice of the
+entries of $\mF$ (we will make this statement more precise in the
+following sections). However, beyond the equality $n = q-p+1$, we make
+no assumption on the input matrix $\mF$.
 
 Because $S_\mF$ is an algebraic set, its {\em isolated points} form a
 finite subset of $\KKbar{}^n$, defined over $\KK$: these are the
-points in the irreducible components of $S_\mF$ which have dimension
-$0$. This notion makes sense for any field $\KK$; when
-$\KK=\mathbb{R}$, these points are indeed isolated for the metric
-topology. The next section recalls the basic facts we need regarding
-polynomial systems and algebraic varieties.  Then, our first question
-is the following.
+points in the irreducible components of $S_\mF$ of dimension $0$. This
+notion makes sense for any field $\KK$; when $\KK=\mathbb{R}$, these
+points are indeed isolated for the metric topology. Then, our first
+question is the following.
 
 
 \begin{pbm} \label{problem} 
@@ -141,8 +140,7 @@ is the following.
 \end{pbm}
 
 Problem~\ref{problem} is a particular case of a slightly more general
-question% , where we solve determinantal systems of an algebraic set
-. In addition to matrix $\mF$, we may indeed take into account
+question. In addition to matrix $\mF$, we may indeed take into account
 algebraic equations of the form $G=(g_1,\dots,g_s)$ in
 $\KK[X_1,\dots,X_n]$. In this setting, the natural relation between
 the number $n$ of variables, the size of $\mF$ and the number $s$ of
@@ -160,26 +158,27 @@ the following.
 \end{pbm}
 
 We will represent the output of our algorithm using univariate
-polynomials. Let $V \subset \KKbar{}^n$ be a zero-dimensional algebraic
-set defined over $\KK$. A \emph{zero-dimensional parametrization}
-$\scrR = ((w,v_1, \ldots, v_n), \lambda)$ of $V$ consists in
-polynomials $(w,v_1, \ldots, v_n)$ such that $w \in \KK[X]$ is monic
-and squarefree, all $v_i \in \KK[X]$ and $\deg(v_i) < \deg(q)$, and
-$\lambda$ is a $\KK$-linear form in $n$ variables, such that
+polynomials. Let $V \subset \KKbar{}^n$ be a zero-dimensional
+algebraic set defined over $\KK$. A \emph{zero-dimensional
+  parametrization} $\scrR = ((w,v_1, \ldots, v_n), \lambda)$ of $V$
+consists in polynomials $(w,v_1, \ldots, v_n)$ such that $w \in
+\KK[X]$ is monic and squarefree, all $v_i$ are in $\KK[X]$ and satisfy
+$\deg(v_i) < \deg(w)$, and $\lambda$ is a $\KK$-linear form in $n$
+variables, such that
 \begin{itemize}
-\item $\lambda(v_1, \ldots, v_n) = Xw'$ mod $w$ with $w'=\frac{\partial w}{\partial X}$
+\item $\lambda(v_1, \ldots, v_n) = Xw'$ mod $w$;
 \item we have $V = Z(\scrR)$, with $$Z(\scrR)= \left\{\left(\frac{v_1(\tau)}{w'(\tau)}, \ldots, \frac{v_n(\tau)}{w'(\tau)}\right) \ | \ w(\tau) = 0\right\};$$
 \end{itemize}
-the constraint on $\lambda$ says that the root of $q$ are the values
+the constraint on $\lambda$ says that the root of $w$ are the values
 taken by $\lambda$ on $V$. This representation was introduced
 in~\cite{Kronecker82,Macaulay16}, and has been used in a variety of
 algorithms, such
 as those in~\cite{GiMo89,GiHeMoPa95,ABRW,GiHeMoMoPa98,Rouillier99,GiLeSa01}.
-The reason we use a rational parametrization, with $q'$ as a
+The reason we use a rational parametrization, with $w'$ as a
 denominator, goes back to~\cite{ABRW, Rouillier99, GiLeSa01}: when
 $\KK=\Q$, this allows us to control precisely the bit-size of the
 coefficients, using bounds such as those
-in~\cite{Schost03,DaSc04}. (The same phenomenom holds with $\K=k(T)$,
+in~\cite{Schost03,DaSc04}. (The same phenomenom holds with $\KK=k(T)$,
 in which case we want to control degrees in $T$ of the numerators and
 denominators of the coefficients of $\scrR$.)
 
@@ -192,48 +191,48 @@ f_{1,1} & \cdots & f_{1,q}\\
 f_{p,1} & \cdots & f_{p,q}
 \end{matrix} \right), \ \mathrm{where} \ f_{i,j} \in \KK[X_1,\dots,X_n] \ \mathrm{for} \ 1 \leq i \leq p, 1 \leq j \leq q.
 \]
-We will consider two kinds of degree for matrix $\mF$ (these two
+We will consider two  degree measures for matrix $\mF$ (these two
 situations have been discussed before for determinantal
 ideals~\cite{NieRan09,MiSt04}). For $i=1,\dots,p$, we will write $\rdeg(\mF,i)$ for the
 degree of the $i$th row of $\mF$, that is,
 $\rdeg(\mF,i)=\max(\deg(f_{i,j}))_{1 \le j \le q}$; similarly, for $j=1,\dots,q$, we write
 $\cdeg(\mF,j)$ for the degree of the $j$th column of $\mF$, that is,
-$\cdeg(\mF,j)=\max(\deg(f_{i,j}))_{1 \le i \le p}$. Then, we define
-$$\delta_{\rm row}(\mF) = S_{q-p+1}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p)),$$
-where for $k\ge 0$, $S_k(C_1,\dots,C_p)$ is the $k$th complete symmetric
-polynomial in variables $C_1,\dots,C_p$; we also set 
-$$\delta_{\rm col}(\mF) = E_{q-p+1}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q)),$$
-where for $k \ge 0$, $E_k(\delta_1,\dots,\delta_q)$ is the 
-elementary symmetric polynomial of degree $k$ in $\delta_1, \ldots, \delta_q$.
+$\cdeg(\mF,j)=\max(\deg(f_{i,j}))_{1 \le i \le p}$. 
 
 \smallskip
+
 For any matrix $\mF$ over a ring $R$, and for any integer $r$,
 $M_r(\mF)$ will denote the set of $r$-minors of $\mF$, and $I_r(\mF)$
 will denote the ideal they generate in $R$. If $R$ is a polynomial
 ring in $n$ variables over a field $\KK$, $V_r(\mF)$ will denote the
 zero-set of $I_r(\mF)$ in $\KKbar{}^n$. 
 
-More generally, for any ideal $I$ in $R$, $V(I)$ will denote the
-zero-set of $I$ in $\KKbar{}^n$. As $V(I)$ is the union of irreducible
-components, $I$ is the intersection of finitely many primary
-components $Q_1\cap\cdots \cap Q_s$ and this decomposition is said to
-be minimal when $V(Q_i)\neq V(Q_j)$ for $i\neq j$. Observe that, for
-$\bx \in V(I)$ isolated, there exists a unique primary component (from
-a minimal primary decomposition of $I$) of dimension zero such that
-$\bx \in V(Q_i)$. Then, the \emph{multiplicity} of $\bx$ is defined as
-the dimension of $\KK[\X]/Q_i$. We refer to \cite{Eisenbud95} for more
+For any ideal $I$ in $\KK[X_1,\dots,X_n]$, $V(I)$ will denote the zero-set of $I$ in
+$\KKbar{}^n$. As $V(I)$ is the union of irreducible components, $I$ is
+the intersection of finitely many primary components $Q_1\cap\cdots
+\cap Q_s$ and this decomposition is said to be minimal when
+$V(Q_i)\neq V(Q_j)$ for $i\neq j$. Observe that, for $\bx \in V(I)$
+isolated, there exists a unique primary component (from a minimal
+primary decomposition of $I$) of dimension zero such that $\bx \in
+V(Q_i)$. Then, the \emph{multiplicity} of $\bx$ is defined as the
+dimension of $\KK[X_1,\dots,X_n]/Q_i$. We refer to \cite{Eisenbud95} for more
 details on these notions.
 
 \smallskip
-Our first result is then the following.
+
+Finally, for $k \ge 0$, $E_k(\delta_1,\dots,\delta_q)$ is the elementary
+symmetric polynomial of degree $k$ in $(\delta_1, \ldots, \delta_q)$
+and $S_k(\alpha_1,\dots,\alpha_p)$ is the $k$th complete symmetric
+polynomial in $(\alpha_1,\dots,\alpha_p)$.  Our first result is then
+the following.
 \begin{theorem}\label{theo:1}
   Let $\mF$ be in $\KK[X_1,\dots,X_n]^{p \times q}$ and let
-  $(g_1,\dots,g_s)$ be in $\KK[X_1,\dots,X_n]$, with $p \le q$ and
+  $G=(g_1,\dots,g_s)$ be in $\KK[X_1,\dots,X_n]$, with $p \le q$ and
   $n=q-p+s+1$. Then, the sum of the multiplicities of the isolated
   points of $I_p(\mF) + \langle g_1,\dots,g_s \rangle$ is at most
-  $\deg(g_1) \cdots \deg(g_s) \min(\delta_{\rm row}(\mF), \delta_{\rm
-    col}(\mF))$.
+  $$\deg(g_1) \cdots \deg(g_s) \min\Big(E_{q-p+1}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q)), S_{q-p+1}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))\Big).$$
 \end{theorem}
+
 Previous work by Miller and Sturmfels~\cite[Chapter~15]{MiSt04} proved
 very general results on the multi-degrees of determinantal ideals
 built from matrices with indeterminate entries (in which case we have
@@ -241,118 +240,150 @@ $s=0$, but the assumption $n=q-p+1$ does not hold); in particular,
 they obtain analogues (and generalizations) of the result in
 Theorem~\ref{theo:1} in that context.
 
-Nie and Ranestad proved that the bounds in Theorem~\ref{theo:1} are
-equalities for two families of polynomials:
+Nie and Ranestad proved in~\cite{NieRan09} that the bounds in
+Theorem~\ref{theo:1} are equalities for two families of polynomials:
 \begin{itemize}
-\item when the entries of $\mF$ are chosen generic homogeneous and
+\item when the entries of $\mF$ are generic and homogeneous, and
   such that $\deg(f_{i,j}) = \rdeg(\mF,i)$ for all $i,j$, then the
-  ideal $I_{\mF}$ has degree $\delta_{\rm row}(\mF)$;
-\item when the entries of $\mF$ are chosen generic homogeneous and
+  ideal $I_p(\mF)$ has degree $E_{q-p+1}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q))$;
+\item when the entries of $\mF$ are  generic and homogeneous, and
   such that $\deg(f_{i,j}) = \cdeg(\mF,j)$ for all $i,j$, the ideal
-  $I_{\mF}$ has degree $\delta_{\rm col}(\mF)$.
+  $I_p(\mF)$ has degree $S_{q-p+1}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))$.
 \end{itemize}
-From this, they deduce that the degree of the ideal $I_{\mF,G}$ is at
-most $\deg(g_1) \cdots \deg(g_s) \delta_{\rm row}(\mF)$, in the
+From this, they deduce that the degree of the ideal $I_p(\mF) +
+\langle g_1,\dots,g_s \rangle$ is at most \sloppy $\deg(g_1) \cdots
+\deg(g_s) S_{q-p+1}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))$, in the
 particular case when the matrix $\mF$ is the Jacobian matrix of $G$
 (together with one extra row, corresponding to the gradient of a
 function $g$ that we want to optimize on $V(G)$), and assuming that
-this ideal has dimension zero.
+this ideal has dimension zero. For generic polynomials
+$\mF$ and $G$ as above, Spaenlehauer gave in~\cite{Spa14} an explicit
+expression for the Hilbert function of the ideal $I_p(\mF) + \langle
+g_1,\dots,g_s \rangle$.
 
-For generic (homogeneous) polynomials $G$, and $\mF$ as in the
-previous paragraph, Spaenlehauer gave in~\cite{Spa14} an explicit
-expression for the Hilbert function of the ideal $I_{\mF,G}$.
-
+\smallskip
 
 Our second result gives a bound on the cost of computing a
 zero-dimensional parametrization of the isolated solutions of
-$I_\mF$. Our algorithms take as input a \emph{straight-line program}
-(that is, a sequence of elementary operations $+, -, \times$) that
-computes the entries of $\mF$ from the input variables $\X$. The
+$I_p(\mF) + \langle g_1,\dots,g_s \rangle$. Our algorithms take as
+input a \emph{straight-line program} (that is, a sequence of
+elementary operations $+, -, \times$) that computes the entries of
+$\mF$ and $G$ from the input variables $X_1,\dots,X_n$. The
 \emph{length $E$} of the input is the number of operations it
 performs. This assumption is not restrictive, since any matrix $\mF$
-can be computed by a (trivial) straight-line program.
+and polynomials $G$ can be computed by a straight-line program
+(a naive solution would consist in computing and adding all monomials
+in $\mF$ and $G$).
 
 \begin{theorem}
-  \todo{$G$ should be integrated ; we also need to define $\delta$.}
-  Let $\mF$ be in $\KK[\X]^{p \times q}$, with $p \le q$, and assume
-  that either~\eqref{eq:rowdeg} or~\eqref{eq:coldeg} holds. Then,
-  there exists a randomized algorithm which computes a
-  zero-dimensional parametrization for the isolated solutions of
-  $I_\mF$, using $({q \choose p} E \delta)^{O(1)}$.
+  Suppose that $\KK$ has characteristic zero, and suppose that matrix
+  $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$ and polynomials
+  $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$ are given by a
+  straight-line program of length $E$. Then, there exist 
+   algorithms that solve Problem~\ref{problem2} in either
+   $$O( \dots )$$
+or 
+   $$O( \dots )$$
+  operation in $\KK$.
 \end{theorem}
-The number ${q \choose p}$ is the number of elements in the
-determinantal system of $\mF$. In several cases, we can improve the
-algorithm and replace this by the number $q$ of columns of $\mF$,
-for instance, when all isolated solutions of $I_\mF$ are known
-to have multiplicity one.
+The probabilistic aspects are as follows: at several steps, the
+algorithms will draw elements from the base field at random. In all
+cases, there exists an algebraic hypersurface $\cal H$ of the parameter
+space such that success is guaranteed for all choices of parameters not
+in~$\cal H$.
 
-Let be $T$ is a new variable. The main idea of our algorithms is to
-use the \emph{homotopy}
-\[\mU = (1-T)\cdot \mL + T \cdot \mF \in \KK[T, \X]^{p \times q}\footnote{Notations changed in order to match those in Sections 5 and 6.}\]
-that connects a \emph{start matrix} $\mL$ to the target matrix $\mF$,
-together with a more standard homotopy\footnote{MS: Is it
-  understandable? I wonder...}
-\[V = (1-T) \cdot K + T \cdot G\]
-connecting a start system $K$ to the target system $G$. However, we
-need some properties on the start matrix such that we can compute the
-isolated points of $S_{\mF, G}$. Assume that we know the solutions for
-$K$ together with the determinantal system of $\mL$. By using the
-Newton iteration to $V$ with the determinantal system of $\mU$, we can
-lift into the isolated solutions for that of $G$ together with the
-determinantal system of $\mF$. Therefore, we need to create a start
-system $K$ and a start matrix $\mL$ such that
-\begin{itemize}
-\item the solutions of $K$ and the determinantal system of $\mL$ can
-  be found effectively,
-\item we can extract a square subsystem with full-rank Jacobian,
-\item there is no solution of its determinantal system ``at
-  infinity'', i.e. when $T$ goes from $0$ to $1$, the corresponding
-  solutions do not diverge.
-\end{itemize}
+%% The number ${q \choose p}$ is the number of elements in the
+%% determinantal system of $\mF$. In several cases, we can improve the
+%% algorithm and replace this by the number $q$ of columns of $\mF$, for
+%% instance, when all isolated solutions of $I_\mF$ are known to have
+%% multiplicity one.
 
+\todo{previous GB work; more detail on previous homotopy work}
+Our algorithm is based on a {\em symbolic homotopy continuation}.
+Homotopy continuation algorithms have become a foundational tools for
+numerical algorithms, either in continuation of Shub and Smale's early
+work~\cite{ShSm93}, or along the lines of work by Morgan, Sommese,
+Wampler, as summarized for instance in~\cite{SoWa05}, with an emphasis
+on the algebraic geometry underlying these techniques. By contrast,
+their usage in symbolic contexts is more recent. Early references
+are~\cite{HeKrPuSaWa99,BoMaWaWa04}, which deal with systems with no
+particular structure; further work extended this idea to sparse
+systems (in the polyhedral sense)~\cite{JeMaSoWa09,HeJeSa10,HeJeSa13,HeJeSa14}
+and multihomogeneous systems~\cite{HeJeSaSo02,SaSc16}.
 
+Most algorithms in the previous references have in common that they
+solve {\em square} systems, that is, systems with as many equations as
+unknowns (extensions may deal with systems of positive dimension, but
+those are essentially variants of the algorithm for square systems).
+One of the novelties in this paper is to deal with determinantal
+systems of equations, which are in essence over-determined; this is
+made possible by the algebraic properties of determinantal ideals.
+In the following paragraphs, we describe our result in more detail.
 
-One difficulty raised by the above homotopy process is that the final
-solutions obtained for $T=1$ are not necessarily isolated points of
-$S_{\mF, G}$: some of them can actually lie in positive dimensional
-components of $S_{\mF, G}$.  Hence, we need an algorithm which takes
-as input a polynomial sequence $\bC$ and a point $\bx$ in the zero-set
-of $\bC$ and which decides whether $\bx$ is an isolated solution to
-$\bC$ (typically, for us, $\bC$ will be a system consisting of the
-entries of $G$ and the maximal minors of $\mF$).
+As a preliminary, we discuss an algorithm which takes as input a
+polynomial sequence $\bC$ and a point $\bx$ in the zero-set of $\bC$,
+and which decides whether $\bx$ is an isolated solution to $\bC$
+(typically, for us, $\bC$ will be a system consisting of the entries
+of $G$ and the maximal minors of $\mF$).
 
-That decision problem is difficult to solve in a well-controlled
+This decision problem is difficult to solve in a well-controlled
 runtime. However, when a bound $\mu$ is known on the multiplicity of
 $\bx$ as a root of $\bC$, it becomes possible to make this decision in
 time linear in the evaluation complexity of $\bC$, and polynomial in
 the cardinality of $\bC$, the dimension of the ambient space and
 $\mu$. This is explained in Section~\ref{sec:isolated} where we
-revisit an algorithm and its complexity analysis for getting such a
-runtime.
+explain how to modify an algorithm by Mourrain~\cite{Mourrain97} and
+adapt it to our context.
 
 In Section~\ref{sec:homotopy}, we give an algorithm which takes as
-input a polynomial sequence and computes a zero-dimensional
-parametrization of the isolated points of $V(\bC)$ assuming the
-existence of a suitable homotopy deformation. The obtained complexity
-depends linearly on the complexity of evaluating $\bC$ and
+input a sequence of polynomial $\bC$ and computes a zero-dimensional
+parametrization of the isolated points of $V(\bC)$, assuming the
+existence of a suitable homotopy deformation. Explicitly, we suppose
+that $\bC$ involves variables $\bX=(X_1,\dots,X_n)$, we let $T$ be a
+new variable, and we suppose that we know a family of polynomials
+$\bB$ in $\KK[T,\bX]$ such that $\bB(1,\bX)=\bC$. Let then $\bA$ be
+the polynomials $\bB(0,\bX)$, and suppose that $V(\bA)$ is finite, and
+that we are able to find a zero-dimensional parametrization of it
+efficiently. We will actually need a few further conditions (for
+instance, all points in $V(\bA)$, the Jacobian matrix of these
+polynomials must have rank $n$).
+
+We will see in Section~\ref{sec:homotopy} that when all these
+conditions hold, we can divise a homotopy algorithm that lifts the
+points of $V(\bA)$ (that correspond to $T=0$) into a curve $C$
+parametrized by $T$. The isolated points of $V(\bC)$ all belong to the
+fiber of $C$ above $T=1$, but some points in this fiber can actually
+lie in positive dimensional components of $V(\bC)$; the algorithm of
+Section~\ref{sec:isolated} will filter out such points. The complexity
+we obtain depends linearly on the complexity of evaluating $\bC$ and
 polynomially on a bound on the sum of the multiplicites of the
 isolated points of $V(\bC)$ and the degree of the homotopy curve.
 
-To apply these results to the case we are interested in, we need to
-investigate properties of determinantal systems. This is done in
-Section \ref{sec:check} where we essentially prove that the
-assumptions needed to ensure the existence of a suitable homotopy
-deformation for our systems are satisfied. 
+We will apply this result to our determinantal problems as
+follows. Given $\mF \in \K[\bX]^{p \times q}$ and $G=(g_1,\dots,g_s)$,
+we will build a matrix
+\[\mU = (1-T)\cdot \mL + T \cdot \mF \in \KK[T, \X]^{p \times q}\]
+that connects a \emph{start matrix} $\mL$ to the target matrix $\mF$,
+together with a homotopy such as
+\[V = (1-T) \cdot K + T \cdot G,\]
+that connects a start system $K=(k_1,\dots,k_s)$ to the target system
+$G$.  In Section~\ref{sec:check}, we prove that the most basic the
+assumptions of the algorithm of Section~\ref{sec:homotopy} are
+satisfied for such systems, independently of the choice of $\mL$ and
+$K$.
 
-Next, the final step consists in bounding a priori the sum of the
-multiplicities of the isolated points in $S_{\mF, G}$ as well as the
-degree of the homotopy curve. Doing that when considering degrees
-according to columns (column-degree case) or rows (row-degree case)
-requires different arguments ; this is reflected by the different
-definitions of $\delta_{\rm col}$ and $\delta_{\rm row}$ given
-above. The column-degree case is treated in
-Section~\ref{sec:columndegree}. The row-degree case is treated in
-Section~\ref{sec:rowdegree}. 
+The construction of the system $K$ will be rather straightforward; the
+difficulty lies in the definition of a matrix $\mL$ that will respect
+either the column-degree or the row-degree of $\mF$ (while satisyfing
+all assumptions for the algorithm of Section~\ref{sec:homotopy}).  The
+column-degree case is treated in Section~\ref{sec:columndegree},
+whereas the row-degree case is treated in Sections~\ref{sec:prel-row}
+and~\ref{sec:rowdegree}. In both cases, we bound the sum of the
+multiplicities of the isolated points in $S_{\mF, G}$ (thereby
+establishing Theorem~\ref{theo:1}), as well as the degree of the
+homotopy curve. 
+
+
 
 %\todo{Some background on polynomial systems and stuff}
 
@@ -1906,7 +1937,7 @@ $\mathsf{cost: \softO\left (c(e+c^5 )(E + cn^4)\right)}$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Preliminaries for the row-degree homotopy}
+\section{Preliminaries for the row-degree homotopy}\label{sec:prel-row}
 
 In this section, we work with two families of matrices of size $p
 \times q$, with $p \le q$, and with entries that are polynomials in
