@@ -103,31 +103,29 @@ $S_\mF$ is an algebraic set, since it is defined by the vanishing of
 all maximal minors of $\mF$.  In the particular case $p=1$, this
 simply means finding all common solutions of $f_{1,1},\dots,f_{1,q}$.
 
-As $S_\mF$ is an algebraic set, it can be defined as the finite union
-of its \emph{irreducible components}: these are the algebraic sets
-contained in $S_{\mF}$ which are not the union of two proper algebraic
-sets defined over $\KK$. In the sequel, we also use the classical notion of
-dimension, which is the largest integer $d$ such that intersecting
-$S_{\mF}$ with $d$ generic hyperplanes yields a finite set. Those
-algebraic sets with all irreducible components of the same dimension
-are called {\em equidimensional}. We refer to e.g.~\cite{Shafarevich77}
-for these notions.
-
-\smallskip
+Any algebraic set is the finite union of its \emph{irreducible
+  components}: these are the maximal irreducible algebraic sets
+contained in $S_{\mF}$ (an algebraic set is irreducible if it is not
+the union of two proper algebraic sets). The {\em dimension} of an
+algebraic set $S$ is the largest integer $d$ such that intersecting
+$S$ with $d$ generic hyperplanes yields a finite set. Those algebraic
+sets with all irreducible components of the same dimension are called
+{\em equidimensional}. We refer to e.g.~\cite{Shafarevich77} for these
+notions.
 
 For the problem above, we restrict ourselves to the case where $n =
 q-p+1$.  Indeed, in this case, $S_\mF$ is expected to be finite: for
 arbitrary $n$, results due to Macaulay~\cite{Macaulay16} and Eagon and
 Northcott~\cite{EN62} imply that all irreducible components of $S_\mF$
-have dimension at least (and, expectedly, equal to) $n-(q-p+1)$; in
-the case $n = q-p+1$, $S_\mF$ is finite for a generic choice of the
-entries of $\mF$ (we will make this statement more precise in the
-following sections). However, beyond the equality $n = q-p+1$, we make
-no assumption on the input matrix $\mF$.
+have dimension at least $n-(q-p+1)$; more precisely, in the case $n =
+q-p+1$, $S_\mF$ has dimension zero for a generic choice of the entries
+of $\mF$ (this is proved for instance in~\cite{Spa14}). However, in
+this paper, apart from the equality $n = q-p+1$, we make no assumption on
+the input matrix $\mF$.
 
 Because $S_\mF$ is an algebraic set, its {\em isolated points} form a
 finite subset of $\KKbar{}^n$, defined over $\KK$: these are the
-points in the irreducible components of $S_\mF$ of dimension $0$. This
+points in the irreducible components of $S_\mF$ of dimension zero. This
 notion makes sense for any field $\KK$; when $\KK=\mathbb{R}$, these
 points are indeed isolated for the metric topology. Then, our first
 question is the following.
@@ -140,7 +138,9 @@ question is the following.
 
 Problem~\ref{problem} is a particular case of a slightly more general
 question. In addition to matrix $\mF$, we may indeed take into account
-algebraic equations of the form $G=(g_1,\dots,g_s)$ in
+further equations of the form $g_1 =\cdots=g_s=0$,
+for some
+ $G=(g_1,\dots,g_s)$ in
 $\KK[X_1,\dots,X_n]$. In this setting, the natural relation between
 the number $n$ of variables, the size of $\mF$ and the number $s$ of
 polynomials in $G$ is now $n=q-p+s+1$. Then, we define the algebraic
@@ -168,7 +168,7 @@ variables, such that
 \item $\lambda(v_1, \ldots, v_n) = Xw'$ mod $w$;
 \item we have $V = Z(\scrR)$, with $$Z(\scrR)= \left\{\left(\frac{v_1(\tau)}{w'(\tau)}, \ldots, \frac{v_n(\tau)}{w'(\tau)}\right) \ | \ w(\tau) = 0\right\};$$
 \end{itemize}
-the constraint on $\lambda$ says that the root of $w$ are the values
+the constraint on $\lambda$ then says that the root of $w$ are the values
 taken by $\lambda$ on $V$. This representation was introduced
 in~\cite{Kronecker82,Macaulay16}, and has been used in a variety of
 algorithms, such
@@ -177,7 +177,7 @@ The reason we use a rational parametrization, with $w'$ as a
 denominator, goes back to~\cite{ABRW, Rouillier99, GiLeSa01}: when
 $\KK=\Q$, this allows us to control precisely the bit-size of the
 coefficients, using bounds such as those
-in~\cite{Schost03,DaSc04}. (The same phenomenom holds with $\KK=k(T)$,
+in~\cite{Schost03,DaSc04}. (The same phenomenon holds with $\KK=k(T)$,
 in which case we want to control degrees in $T$ of the numerators and
 denominators of the coefficients of $\scrR$.)
 
@@ -190,13 +190,18 @@ f_{1,1} & \cdots & f_{1,q}\\
 f_{p,1} & \cdots & f_{p,q}
 \end{matrix} \right), \ \mathrm{where} \ f_{i,j} \in \KK[X_1,\dots,X_n] \ \mathrm{for} \ 1 \leq i \leq p, 1 \leq j \leq q.
 \]
-We will consider two  degree measures for matrix $\mF$ (these two
-situations have been discussed before for determinantal
-ideals~\cite{NieRan09,MiSt04}). For $i=1,\dots,p$, we will write $\rdeg(\mF,i)$ for the
-degree of the $i$th row of $\mF$, that is,
-$\rdeg(\mF,i)=\max(\deg(f_{i,j}))_{1 \le j \le q}$; similarly, for $j=1,\dots,q$, we write
-$\cdeg(\mF,j)$ for the degree of the $j$th column of $\mF$, that is,
-$\cdeg(\mF,j)=\max(\deg(f_{i,j}))_{1 \le i \le p}$. 
+We will consider two degree measures for matrix $\mF$ (these two
+situations have been discussed before for determinantal ideals, as
+in~\cite{NieRan09,MiSt04}). For $i=1,\dots,p$, we will write
+$\rdeg(\mF,i)$ for the degree of the $i$th row of $\mF$, that is,
+$\rdeg(\mF,i)=\max(\deg(f_{i,j}))_{1 \le j \le q}$; similarly, for
+$j=1,\dots,q$, we write $\cdeg(\mF,j)$ for the degree of the $j$th
+column of $\mF$, that is, $\cdeg(\mF,j)=\max(\deg(f_{i,j}))_{1 \le i
+  \le p}$. For $k \ge 0$, $E_k(\delta_1,\dots,\delta_q)$ is the
+elementary symmetric polynomial of degree $k$ in $(\delta_1, \ldots,
+\delta_q)$ and $S_k(\alpha_1,\dots,\alpha_p)$ is the $k$th complete
+symmetric polynomial in $(\alpha_1,\dots,\alpha_p)$.  
+
 
 \smallskip
 
@@ -206,24 +211,20 @@ will denote the ideal they generate in $R$. If $R$ is a polynomial
 ring in $n$ variables over a field $\KK$, $V_r(\mF)$ will denote the
 zero-set of $I_r(\mF)$ in $\KKbar{}^n$. 
 
-For any ideal $I$ in $\KK[X_1,\dots,X_n]$, $V(I)$ will denote the zero-set of $I$ in
-$\KKbar{}^n$. As $V(I)$ is the union of irreducible components, $I$ is
-the intersection of finitely many primary components $Q_1\cap\cdots
-\cap Q_s$ and this decomposition is said to be minimal when
-$V(Q_i)\neq V(Q_j)$ for $i\neq j$. Observe that, for $\bx \in V(I)$
-isolated, there exists a unique primary component (from a minimal
-primary decomposition of $I$) of dimension zero such that $\bx \in
-V(Q_i)$. Then, the \emph{multiplicity} of $\bx$ is defined as the
-dimension of $\KK[X_1,\dots,X_n]/Q_i$. We refer to \cite{Eisenbud95} for more
-details on these notions.
+For any ideal $I$ in $\KK[X_1,\dots,X_n]$, $V(I)$ will denote the
+zero-set of $I$ in $\KKbar{}^n$. The ideal $I$ can be written as the
+intersection of finitely many primary components, that is,
+$I=Q_1\cap\cdots \cap Q_s$ for some primary ideals $Q_1,\dots,Q_s$;
+this decomposition is said to be minimal when $V(Q_i)\neq V(Q_j)$ for
+$i\neq j$. For $\bx \in V(I)$ isolated, there exists a unique primary
+component $Q_i$ (which has dimension zero) such that $\bx \in V(Q_i)$;
+although minimal primary decompositions are not unique, the fact that
+$\bx$ is isolated implies that $Q_i$ does not depend on the primary
+decomposition of $I$ we consider; then, the \emph{multiplicity} of
+$\bx$ is defined as the dimension of $\KK[X_1,\dots,X_n]/Q_i$ (we
+refer to \cite{Eisenbud95} for more details on these notions). Our
+first result is then the following.
 
-\smallskip
-
-Finally, for $k \ge 0$, $E_k(\delta_1,\dots,\delta_q)$ is the elementary
-symmetric polynomial of degree $k$ in $(\delta_1, \ldots, \delta_q)$
-and $S_k(\alpha_1,\dots,\alpha_p)$ is the $k$th complete symmetric
-polynomial in $(\alpha_1,\dots,\alpha_p)$.  Our first result is then
-the following.
 \begin{theorem}\label{theo:1}
   Let $\mF$ be in $\KK[X_1,\dots,X_n]^{p \times q}$ and let
   $G=(g_1,\dots,g_s)$ be in $\KK[X_1,\dots,X_n]$, with $p \le q$ and
