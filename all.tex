@@ -398,7 +398,7 @@ degree of the homotopy curve.
 Let $\LL$ be a field containing the field $\KK$ and $\LLbar$ be an
 algebraic closure of $\LL$.  Let $\bC=(c_1,\dots,c_m)$ be polynomials
 in $\KK[\bX]$, with $\bX=(X_1,\dots,X_n)$. Given a point $\bx$ with
-coordinates in $\LL^n$ in the zero-set $V(\bC)\subset \LLbar^n$, we
+coordinates in $\LL$ in the zero-set $V(\bC)\subset \LLbar{}^n$, we
 discuss here how to decide whether $\bx$ is an isolated point in
 $V(\bC)$. We make the following assumption:
 \begin{description}[leftmargin=*]
@@ -407,7 +407,8 @@ $V(\bC)$. We make the following assumption:
  or $\bx$ is isolated in $V(\bC)$, with multiplicity at most $\mu$
   with respect to the ideal $\langle \bC\rangle$.
 \end{description}
-
+Without loss of generality, we also assume that $m\ge n$ (otherwise, $\bx$
+cannot be an isolated solution). 
 \begin{proposition}\label{prop:testisolated}
   Suppose that $\bC$ is given by a straight-line program of length $E$.
   If assumption $\assH$ is satisfied, we can decide whether $\bx$ is an
@@ -426,8 +427,7 @@ model: Mourrain's original result depends on the number of monomials
 appearing when we expand $\bC$, which would be too high for the
 applications we will make of this result.
 
-Without loss of generality, we assume that $m\ge n$ (otherwise, $\bx$
-cannot be an isolated solution). We also assume that $\bx=0$; this is
+We assume henceforth that $\bx=0$; this is
 done by replacing $\bC$ by the polynomials $\bC(\bX+\bx)$, which have
 complexity of evaluation $E'=E+n$.  The basis of our algorithm is the
 following remark.
@@ -437,7 +437,7 @@ following remark.
   $\langle \bC \rangle + \m^{\mu+1}$, where
   $\m=\langle X_1,\dots,X_n\rangle$ is the maximal ideal at the
   origin. Then, $0$ is isolated in $V(\bC)$ if and only if the
-  multiplicity $\delta$ of $I$ at the origin is at most $\mu$.
+  multiplicity $d$ of $I$ at the origin is at most $\mu$.
 \end{lemma}
 \begin{proof}
   This follows from the following
@@ -451,49 +451,55 @@ following remark.
   \begin{itemize}
   \item If $0$ is isolated in $V(\bC)$, then by assumption $\assH$ 
     its multiplicity with respect to $\langle \bC\rangle$ is at most $\mu$,
-    and its multiplicity $\delta$ with respect to $I$ cannot be larger.
+    and its multiplicity $d$ with respect to $I$ cannot be larger.
   \item Otherwise, by the result above, $\nu_{k+1} > \nu_k$ holds for
     all $k \ge 1$, so that $\nu_k \ge k$ holds for all such $k$ (since
-    $\nu_1=1$). In particular, the multiplicity $\delta$ of 
+    $\nu_1=1$). In particular, the multiplicity $d$ of 
  $I$ at the origin, which is $\nu_{\mu+1}$, is at least $\mu+1$.
     \qedhere
   \end{itemize}
 \end{proof}
 
-Hence, we are left with deciding whether the multiplicity of the
-$\m$-primary ideal $I$ is at most $\mu$. We do this by following and
-slightly modifying Mourrain's algorithm for the computation of the
-orthogonal $I^{\perp}$, that is, the set of $\LL$-linear forms
-$\LL[\bX] \to \LL$ that vanish on $I$; this is a $\LL$-vector space
-naturally identified with the dual of $\LL[\bX]/I$, so it has dimension
-$\delta$, the multiplicity of $I$ at the origin (note that $I$ is $\m$-primary).
+Hence, we are left with deciding whether the multiplicity $d$ of the
+ideal $I$ at the origin is at most $\mu$; remark that this
+multiplicity is equal to the dimension of $\LL[\bX]/I$, since $I$ is
+$\m$-primary.  We do this by following and slightly modifying
+Mourrain's algorithm for the computation of the orthogonal
+$I^{\perp}$, that is, the set of $\LL$-linear forms $\LL[\bX] \to \LL$
+that vanish on $I$; this is a $\LL$-vector space naturally identified
+with the dual of $\LL[\bX]/I$, so it has dimension $d$, the
+multiplicity of $I$ at the origin.
 
 We do not need to give all details of the algorithm, let alone proof
 of correctness; we just mention the key ingredients for the cost
-analysis in our setting. A linear form $\beta: \LL[\bX] \to \LL$ that
-vanishes on $I$ must vanish on all monomials, except a finite number
-(since all monomials, except a finite number, belong to
-$I$)\footnote{I commented the sentence on the finite generating series
-  because we don't use it.}% ; a
+analysis in our setting. 
+
+%% A linear form $\beta: \LL[\bX] \to \LL$ that
+%% vanishes on $I$ must vanish on all monomials, except a finite number
+%% (since all monomials, except a finite number, belong to
+%% $I$).
+
+%% \footnote{I commented the sentence on the finite generating series
+%%   because we don't use it.}
+
+% ; a
 % natural way to represent such a linear form would then be as the
 % finite generating series $\sum_{\balpha \in \N^n}
 % \beta(X_1^{\alpha_1}\cdots X_n^{\alpha_n}) d_1^{\alpha_1}\cdots
 % d_n^{\alpha_n}$, for some new variables $d_1,\dots,d_n$; however the
 % number of non-zero coefficients in such a sum cannot be bounded
 % polynomially in terms of $n,\mu$
-.
 
-Hence, the algorithm uses another way to represent the elements in
-$I^{\perp}$, by means of {\em multiplication matrices}. An important
-feature of $I^{\perp}$ is that it admits the structure of a
-$\LL[\bX]$-module: for $k$ in $\{1,\dots,n\}$ and $\beta$ in
-$I^{\perp}$, the $\LL$-linear form
-$X_k \cdot \beta: f \mapsto \beta(X_k f)$ is easily seen to still lie
-in $I^{\perp}$.  In particular, if
-$\bbeta=(\beta_1,\dots,\beta_d)$\footnote{\check je change $m$ en
-  $d$ car $m$ c'\'etait le nombre d'\'equations} is a $\LL$-basis
-of $I^{\perp}$, then for all $k$ as above, and all $i$ in
-$\{1,\dots,m\}$, $X_k \cdot \beta_i$ is a linear combination of
+
+The algorithm represents the elements in $I^{\perp}$ by means of {\em
+  multiplication matrices}. An important feature of $I^{\perp}$ is
+that it admits the structure of a $\LL[\bX]$-module: for $k$ in
+$\{1,\dots,n\}$ and $\beta$ in $I^{\perp}$, the $\LL$-linear form $X_k
+\cdot \beta: f \mapsto \beta(X_k f)$ is easily seen to still lie in
+$I^{\perp}$.  In particular, if
+$\bbeta=(\beta_1,\dots,\beta_d)$ is an $\LL$-basis of
+$I^{\perp}$, then for all $k$ as above, and all $i$ in
+$\{1,\dots,d\}$, $X_k \cdot \beta_i$ is a linear combination of
 $\beta_1,\dots,\beta_d$. Mourrain's algorithm computes a basis
 $\bbeta=(\beta_1,\dots,\beta_d)$ with the following features:
 \begin{itemize}
@@ -512,7 +518,7 @@ The following lemma follows~\cite{Mourrain97} in its description
 of the matrices $\bM_{k,s}$; the (rather straightforward) complexity analysis 
 in the straight-line program model is new.
 \begin{lemma}\label{lemma:evalbeta}
-   Let $s$ be in $1,\dots,\delta$, and suppose that the coefficients
+   Let $s$ be in $1,\dots,d$, and suppose that the coefficients
   $\lambda^{(k)}_{i,j}$ are known for $i=1,\dots,s$, $j=0,\dots,i-1$
   and $k=1,\dots,n$. Given a straight-line program $\Gamma$ of length
   $\Lambda$ that computes $\h=(h_1,\dots,h_R)$, one can compute
@@ -558,7 +564,7 @@ $$
 where $\Delta_{k,k',s} = \bM_{k,s}\bM_{k',s}-\bM_{k',s}\bM_{k,s}.$ Because 
 the linear forms $\beta_1,\dots,\beta_s$ are linearly independent, this implies
 that all rows of $\Delta_{k,k',s}$ must be zero, as claimed.
-We then deduce that for any polynomial $h$ in $\KK[\bX]$, we have
+We then deduce that for any polynomial $h$ in $\LL[\bX]$, we have
 the equality
 $$  \begin{bmatrix}
     \beta_1(h)\\
@@ -583,7 +589,7 @@ successively $\bbeta^{(2)}=(\beta_{e_1+1},\dots,\beta_{e_2})$,
 $\bbeta^{(3)}=(\beta_{e_2+1},\dots,\beta_{e_3})$, \dots for some
 integers $e_1 \le e_2 \le e_3 \dots$ Mourrain's algorithm stops when
 $e_{\ell+1}=e_{\ell}$, in which case $\beta_1,\dots,\beta_{e_\ell}$ is
-a $\KK$-basis of $I^\perp$, and $e_\ell=\delta$. In our case, we
+an $\LL$-basis of $I^\perp$, and $e_\ell=d$. In our case, we
 are not interested in computing this multiplicity, but only in
 deciding whether it is less than or equal to the parameter $\mu$. We do it as follows: assume that we have
 computed $\bbeta^{(1)},\bbeta^{(2)},\dots,\bbeta^{(\ell)}$, together
@@ -592,7 +598,7 @@ with the corresponding integers $e_1,e_2,\dots,e_\ell$, with $e_1 <
 and continue according to the following:
 \begin{itemize}
 \item if $e_{\ell+1}=e_{\ell}$, we conclude that the multiplicity
-  $\delta$ of $I$ at the origin is $e_\ell \le \mu$; we stop the
+  $d$ of $I$ at the origin is $e_\ell \le \mu$; we stop the
   algorithm;
 \item if $e_{\ell+1} > \mu$, we conclude that this multiplicity is greater 
   than $\mu$; we stop the algorithm;
@@ -628,17 +634,15 @@ $\bbeta^{(1)},\dots,\bbeta^{(\ell)}$ vanish on all monomials of degree
 at least $\ell$.
 
 There remains the question of setting up the system $S_\ell$. For $k$
-in $\{1,\dots,n\}$ and a $\LL$-linear form $\beta$, we denote by
-$X_k^{-1} \cdot \beta$ the $\LL$-linear form defined as follows:
+in $\{1,\dots,n\}$ and an $\LL$-linear form $\beta$, we denote by
+$X_k^{-1} \cdot \beta$ the $\LL$-linear form defined by $\LL$-linearity as follows:
 \begin{itemize}
-\item $(X_k^{-1} \cdot \beta)(X_k f) = \beta(f)$ for any term $f$ in $\LL[\bX]$,
-\item $(X_k^{-1} \cdot \beta)(f)=0$ if $f\in \LL[\bX]$ is a term which does not depend on $X_k$.
+\item $(X_k^{-1} \cdot \beta)(X_k f) = \beta(f)$ for any monomial $f$ in $\LL[\bX]$,
+\item $(X_k^{-1} \cdot \beta)(f)=0$ if $f\in \LL[\bX]$ is a monomial which does not depend on $X_k$.
 \end{itemize}
-Next, when $f$ is a polynomial in $\LL[\bX]$,
-$(X_k^{-1} \cdot \beta)(f)$ is defined as the sum of the image of its
-terms by $(X_k^{-1} \cdot \beta)$.  In other words,
+In other words,
 $(X_k^{-1} \cdot \beta)(f)=\beta(\delta_k(f))$ holds for all $f$,
-where $\delta_k:\KK[\bX] \to \KK[\bX]$ is the $k$th divided difference
+where $\delta_k:\LL[\bX] \to \LL[\bX]$ is the $k$th divided difference
 operator
 $$f\mapsto \frac
 {f(X_1,\dots,X_n)-f(X_1,\dots,X_{k-1},0,X_{k+1},\dots,X_n)}{X_k}.$$
@@ -679,20 +683,20 @@ $k=1,\dots,n$, $i=1,\dots,e_\ell$ and $j=1,\dots,m$.  Fixing $k$, we
 let $\bC_k = (c_{j,k})_{1 \le j \le m}$, where $c_{j,k}$ is the
 polynomial $c_j(X_1,\dots,X_k,0,\dots,0)$; note that the system
 $\bC_k$ can be computed by a straight-line program of length
-$E'\leq E+n$. Then, applying the following lemma with
+$E'= E+n$. Then, applying the following lemma with
 $s=e_\ell \le \mu$ and $\h = \bC_k$, we deduce that the values
 $(X_k^{-1} \cdot \beta_i)(c_j(X_1,\dots,X_k,0,\dots,0))$, for $k$
 fixed, can be computed in time $O(\mu^3 (E+n))$.
 
 
 \begin{lemma}
-  Let $s$ be in $1,\dots,\delta$, and suppose that the coefficients
+  Let $s$ be in $1,\dots,d$, and suppose that the coefficients
   $\lambda^{(k)}_{i,j}$ are known for $i=1,\dots,s$, $j=0,\dots,i-1$
   and $k=1,\dots,n$. Given a straight-line program $\Gamma$ of length
   $\Lambda$ that computes $\h=(h_1,\dots,h_R)$ and given $k$ in
   $\{1,\dots,n\}$, one can compute $(X_k^{-1}\cdot \beta_i)(h_r)$, for
   all $i=1,\dots,s$ and $r=1,\dots,R$, using $O(s^3 (\Lambda+n))$
-  operations in $\KK$.
+  operations in $\LL$.
 \end{lemma}
 \begin{proof}
   In view of the formula $(X_k^{-1} \cdot
@@ -705,7 +709,7 @@ fixed, can be computed in time $O(\mu^3 (E+n))$.
   $\eta_{-n+1},\dots,\eta_\Lambda$ and $\nu_{-n+1},\dots,\nu_\Lambda$,
   with
   $\eta_\ell=\gamma_\ell(X_1,\dots,X_{k-1},0,X_{k+1},\dots,X_n)$
-  and $\nu_\ell$ in $\KK[\bX]$ such that
+  and $\nu_\ell$ in $\LL[\bX]$ such that
   $\gamma_\ell= \eta_\ell+X_k \nu_\ell$ holds for all $\ell$, so
   that in particular $\nu_\ell=\delta_k(\gamma_\ell)$.  To compute
   $\eta_\ell$ and $\nu_\ell$, assuming all previous
@@ -714,7 +718,7 @@ fixed, can be computed in time $O(\mu^3 (E+n))$.
   \begin{itemize}
   \item if $\gamma_\ell=X_k$, we set $\eta_\ell=0$ and $\nu_\ell=1$;
   \item if $\gamma_\ell=X_{k'}$, with $k' \ne k$, we set $\eta_\ell=X_{k'}$ and $\nu_\ell=0$;
-  \item if $\gamma_\ell =c_\ell$, with $c_\ell \in \KK$,
+  \item if $\gamma_\ell =c_\ell$, with $c_\ell \in \LL$,
     then we set $\eta_\ell=c_\ell$ and  $\nu_\ell=0$;
   \item if $\gamma_\ell = \gamma_{a_\ell} \pm \gamma_{b_\ell}$,
     for some indices $a_\ell,b_\ell < \ell$, 
@@ -741,7 +745,7 @@ length $O(\Lambda+n)$.
 
 Taking all values of $k$ into account, we see that we can compute all
 entries we need to set up the linear system $S_\ell$ using $O(\mu^3
-n(E+n))$ operations in $\KK$. After discarding the useless equations
+n(E+n))$ operations in $\LL$. After discarding the useless equations
 described above, the numbers of equations and unknowns in the system
 $S_\ell$ are respectively at most $n^2 \mu+m$ and $n \mu$; this
 implies that we can find a nullspace basis of it in time $O(n^4 \mu^3
@@ -761,7 +765,7 @@ Proposition~\ref{prop:testisolated} is proved.
 
 \section{Symbolic homotopies}\label{sec:homotopy}
 
-In this section, we work over a field $\KK$, using $n$ variables
+In this section, we work over the field $\KK$, still using $n$ variables
 $\bX=(X_1,\dots,X_n)$. Given polynomials $\bC=(c_1,\dots,c_m)$ in
 $\KK[\bX]^m$, we give an algorithm to compute a zero-dimensional
 parametrization of the isolated points of $V(\bC)$, assuming the
@@ -786,7 +790,7 @@ $\assA_1$ is Krull's theorem, and $\assA_2$ is Macaulay's unmixedness
 theorem in the Cohen-Macaulay ring
 $\KKbar[T,\bX]_\m$~\cite[Corollary~18.14]{Eisenbud95}. More generally,
 these properties hold when $\bB$ is the sequence of $p$-minors of a $p
-\times q$ matrix with entries in $\KK[T,\bX]$, with $n=q-p+1$; we
+\times q$ matrix with entries in $\KK[T,\bX]$, with $p \le q$ and $n=q-p+1$; we
 discuss this, and a slightly more general situation, in Section~\ref{sec:check}.  
 
 For $\tau$ in $\KKbar$, we further denote by $\assG(\tau)$ the
@@ -820,13 +824,13 @@ of the algorithm, we introduce the following assumptions.
 \item[${\assD}_1$.] We are given $\tau$ in $\KK$ such that $\assG(\tau)$
   holds; without loss of generality, we assume that $\tau=0$. We also
   suppose that we know a description of $V(\bB_{0})$ by means of a
-  zero-dimensional parametrization with
+  zero-dimensional parametrization  $\scrR_0 =((w_{0},v_{0,1},\dots,v_{0,n}),\lambda)$ with
   coefficients in $\KK$. The linear form $\lambda$ needs to satisfy
   some genericity requirements, that are described in
   Subsection~\ref{proof:prop2}.
 \item[${\assD}_2$.] We know an integer $e$ such that the union of the
   one-dimensional components of $V(J)$ in $\KKbar{}^{n+1}$ has degree
-  at most $e$ (further, we prove that $e \ge c$, see Lemma~\ref{lemma:c_versus_e}).
+  at most $e$ (further, we prove that $e \ge c$).
 \item[${\assD}_3$.] We can compute $\bB$ using a straight-line program
   of length $E$.
 \end{description}
