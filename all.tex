@@ -1293,21 +1293,20 @@ of~\cite{GiLeSa01}, this can be done using $\softO(c\,e (E+n^2)n)$
 operations in $\KK$.  Using the Chinese Remainder Theorem, we can
 combine all $\scrR_{j}$ into a single zero-dimensional parametrization
 $\scrR$ with coefficients in $\KK[[T]]/\langle T^{2e}\rangle$, since
-for $j\ne j'$ $q_{0,j}$ and $q_{0,j'}$ generate the unit ideal in
+for $j\ne j'$ $w_{0,j}$ and $w_{0,j'}$ generate the unit ideal in
 $\KK[[T]]/\langle T^{2e}\rangle$; this takes time 
 $\softO(c\,e\,n)$.
 
 Using the notation of the previous subsection, the zeros of $\scrR$ in
 $\KKbar[[T]]/\langle T^{2e}\rangle$ are the truncations of the power
-series roots $\Phi_1,\dots,\Phi_c$ of $\mathfrak{J}'$. Since $J'$ is
-supposed to have degree at most $e$, knowing $\scrR$ at precision $2e$
-allows us to reconstruct a zero-dimensional parametrization $\scrS$
-with coefficients in $\KK(\tau)$ such that
-$Z(\scrS)=V(\mathfrak{J}')$, with all coefficients having numerator
-and denominator of degree at most $e$~\cite[Theorem~1]{Schost03}.
-This is done by applying rational function reconstruction to all
-coefficients of $\scrR$, as in~\cite{Schost03}, and takes time
-$\softO(c\,e\,n)$.
+series roots $\Phi_1,\dots,\Phi_c$ of $\mathfrak{J}'$. Since $V(J')$ has
+degree at most $e$, knowing $\scrR$ at precision $2e$ allows us to
+reconstruct a zero-dimensional parametrization $\scrS$ with
+coefficients in $\KK(\tau)$ such that $Z(\scrS)=V(\mathfrak{J}')$,
+with all coefficients having numerator and denominator of degree at
+most $e$~\cite[Theorem~1]{Schost03}.  This is done by applying
+rational function reconstruction to all coefficients of $\scrR$, as
+in~\cite{Schost03}, and takes time $\softO(c\,e\,n)$.
 
 
 \paragraph{A finite set containing the isolated points of $V(\bC)$.}
@@ -1317,14 +1316,14 @@ of Puiseux series $\KKbar\langle\langle T'\rangle\rangle$ at $T=1$,
 with $T'=T-1$. Without loss of generality, we assume that
 $\Phi'_1,\dots,\Phi'_{\kappa'}$ are bounded, and
 $\Phi'_{\kappa'+1},\dots,\Phi'_c$ are not, for some $\kappa'$ in
-$\{0,\dots,c\}$, and we let $\varphi'_1,\dots,\varphi'_\kappa$ by
+$\{0,\dots,c\}$, and we define $\varphi'_1,\dots,\varphi'_{\kappa'}$ by
 $\varphi'_i=\lim_0(\Phi'_i)\in\KKbar{}^n$ for $i=1,\dots,\kappa'$.  By
 Lemma~\ref{lemma:Z1},
-$V(J' + \langle T-1\rangle) = \{ \varphi'_i \mid i=1,\dots,k\}$.
+$V(J' + \langle T-1\rangle) = \{ \varphi'_i \mid i=1,\dots,\kappa'\}$.
 
 We can now specify our requirements on the linear form $\lambda$.
 Following~\cite{RRS} and~\cite{SaSc16}, we ask that $\lambda$ is a
-{\rm well-separating element},
+{\em well-separating element}, that is:
 \begin{enumerate}
 \item $\lambda$ is separating for $V(\mathfrak{J}')=\{\Phi'_1,\dots,\Phi'_c\}$;
 \item $\lambda$ is separating for $V(J' + \langle T-1\rangle) = \{ \varphi'_1,\dots,\varphi'_{\kappa'}\}$.
@@ -1334,20 +1333,20 @@ Following~\cite{RRS} and~\cite{SaSc16}, we ask that $\lambda$ is a
 These conditions are satisfied for a generic choice of $\lambda$, as
 showed in~\cite{SaSc16}. When this is the case, Lemma~4.4
 in~\cite{RRS} shows how to recover a zero-dimensional parametrization
-$\scrR_1=((q_1,v_{1,1},\dots,v_{1,n}),\lambda)$ with coefficients in
-$\KK$ for the limit set $V(J' + \langle T-1\rangle) =\{\varphi'_i \mid i=1,\dots,\kappa\}$
+$\scrR_1=((w_1,v_{1,1},\dots,v_{1,n}),\lambda)$ with coefficients in
+$\KK$ for the limit set $V(J' + \langle T-1\rangle) =\{\varphi'_i \mid i=1,\dots,{\kappa'}\}$
 starting from $\scrS$, in time 
 $\softO(c\,e\,n)$.
 
 \paragraph{Cleaning.}
 Lemma~\ref{lemma:vPi} implies that for any isolated solution $\bx$ of
 $\bC$, $(1,\bx)$ is in $V(J' + \langle T-1\rangle)$, so in a second
-time, we discard from $V(J'_1)$ those points that do not correspond to
-isolated points of $V(\bC)$. All such points belong to a
-positive-dimensional component of $V(\bC)$, so we can use the algorithm
-of Section~\ref{sec:isolated}. By Proposition~\ref{prop:degree_fiber},
-we can take $c$ as an upper bound on the multiplicity of isolated
-solutions of $\bC$.
+time, we discard from $V(J' + \langle T-1\rangle)$ those points that
+do not correspond to isolated points of $V(\bC)$. All such points
+belong to a positive-dimensional component of $V(\bC)$, so we can use
+the algorithm of Section~\ref{sec:isolated}. By
+Proposition~\ref{prop:degree_fiber}, we can take $c$ as an upper bound
+on the multiplicity of isolated solutions of $\bC$.
 
 Using the same dynamic evaluation techniques as in the first paragraph
 above, we can use the algorithm of Section~\ref{sec:isolated} as if
@@ -1363,20 +1362,18 @@ costs seen so far, we prove Proposition~\ref{prop:compute_isolated}.
 \begin{enumerate}
   \setlength\itemsep{0em}
 \item decompose $\scrR_0$ into $(\scrR_{0,j})_{1 \leq j \leq t}$\\
-$\mathsf{cost: \softO((mn^2 + nE) c^2)}$
+$\text{\sf{cost:~}} \softO((mn^2 + nE) c^2)$
 \item lift $(\scrR_{0,j})_{1 \leq j \leq t}$ to $(\scrR_j)_{1\leq j \leq t}$ with 
   coefficients in $\KK[[T]]/\langle T^{2e}\rangle$\\
-$\mathsf{cost: \softO(c\,e (E+n^2)n)}$
+$\text{\sf{cost:~}} \softO(c\,e (E+n^2)n)$
 \item combine $(\scrR_j)_{1 \leq j \leq t}$ into  $\scrR$ with coefficients in $\KK[[T]]/\langle T^{2e}\rangle$\\
-$\mathsf{cost: \softO(c\,e\,n)}$
+$\text{\sf{cost:~}} \softO(c\,e\,n)$
 \item compute a zero-dimensional parametrization $\scrS$ with coefficients in $\KK(T)$ from $\scrR$\\
-$\mathsf{cost: \softO(c\,e\,n)}$
-%% \item clean denominators of $\scrS$\\
-%% $\mathsf{cost: \softO(c\,e\,n)}$
+$\text{\sf{cost:~}} \softO(c\,e\,n)$
 \item deduce a zero-dimensional parametrization $\scrR_1$ with coefficients in $\KK$ from $\scrS$\\
-$\mathsf{cost: \softO(c\,e\,n)}$
+$\text{\sf{cost:~}} \softO(c\,e\,n)$
 \item remove from $Z(\scrR_1)$ points that are not isolated in $V(\bC)$ \\
-$\mathsf{cost: O(n^4 c^6 + n^2 m c^5 + n E c^6)}$
+$\text{\sf{cost:~}} O(n^4 c^6 + n^2 m c^5 + n E c^6)$
 \end{enumerate}
 \label{DetSys}
 \end{algorithm}
