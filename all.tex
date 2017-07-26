@@ -2127,7 +2127,7 @@ in~\eqref{eq:union} would lead to consider points in $\P^0(\KKGpbar)$.
   and only if there exists $r_k$ in $\{1,\dots,\alpha_{i_k}\}$ such
   that $\mathfrak{l}^H_{i_k,i_k,r_k}(\tilde\bx)=0$. Thus, $\tilde\bx$
   is in $V_t(\mathfrak{N}^H_{\balpha,q})$ if and only if there exists
-  $\bi=(i_1,\dots,i_\kappa)$ subsequence of $(1,\dots,p)$, with
+  a subsequence $\bi=(i_1,\dots,i_\kappa)$  of $(1,\dots,p)$, with
   $\kappa \ge p-t+1$, and $\br=(r_1,\dots,r_\kappa)$ in $R_\bi$ such that
   $\mathfrak{l}^H_{i_1,i_1,r_1}(\tilde\bx)=\cdots=\mathfrak{l}^H_{i_\kappa,i_\kappa,r_\kappa}(\tilde\bx)=0$
   and the submatrix of $\mathfrak{N}^H_{\balpha,q}$ associated to $\bi$
@@ -2280,7 +2280,7 @@ $\mathfrak{N}^H_{\balpha,q}$ is a diagonal matrix, whose diagonal entries
 are products of homogeneous linear forms in $(X_0,X_1)$ with indeterminate
 coefficients. Then, $\mathfrak{N}^H_{\balpha,q}$ has rank less than $p$ at
 $\tilde\bx\in\P^1(\KKGpbar)$ if and only if one of the linear factors
-of some diagonal term vanishes at $\tilde \bx$. None of this linear
+of some diagonal term vanishes at $\tilde \bx$. None of these linear
 forms has a projective root at infinity, so we are done.
 
 Consider next a pair $(\balpha,q)$, with
@@ -2419,11 +2419,11 @@ with $1 \le p \le q$, and we write $A=A(\balpha,q)$ and
 $A'=A'(\balpha,q)$; we will prove the following properties.
 \begin{description}[leftmargin=*]
 \item[$\assI_4(\balpha,q).$] The Jacobian matrix of
-  $I_p(\mathfrak{M}^H_{\balpha,q})$ with respect to
+  the $p$-minors of $\mathfrak{M}^H_{\balpha,q}$ with respect to
   $\tilde\bX=(X_0,\dots,X_n)$ has rank $n$ at all points in
   $V_p(\mathfrak{M}^H_{\balpha,q})$.
 \item[$\assJ_4(\balpha,q).$] The Jacobian matrix of
-  $I_p(\mathfrak{N}^H_{\balpha,q})$ with respect to
+  $p$-minors of $I\mathfrak{N}^H_{\balpha,q}$ with respect to
   $\tilde\bX=(X_0,\dots,X_n)$ has rank $n$ at all points in
   $V_p(\mathfrak{N}^H_{\balpha,q})$.
 \end{description}
@@ -2471,7 +2471,7 @@ We take $t=p$ in the formula of Lemma~\ref{lemma:union}, and we first
 deal with the terms in~\eqref{eq:union}.  Thus, we choose a
 subsequence $\bi=(i_1,\dots,i_\kappa)$ of $(1,\dots,p)$, with $1 \le \kappa\le
 \min(p,n-1)$, and indices $\br=(r_1,\dots,r_\kappa)$, with $ 1\le r_k \le
-\alpha_{i_k}$ for all $k$. We prove that the Jacobian matrix of $I_p(\mathfrak{N}^H_{\balpha,q})$
+\alpha_{i_k}$ for all $k$. We prove that the Jacobian matrix of the $p$-minors of $\mathfrak{N}^H_{\balpha,q}$
 with respect to $\tilde\bX=(X_0,\dots,X_n)$ has rank $n$ at all points $\tilde\bx=(x_0,\dots,x_n)$ of
 $V_p(\mathfrak{N}^H_{\balpha,q})$  such that
 $\tilde\bx'=(x_0,\dots,x_{n-\kappa})$ is in
@@ -2629,7 +2629,7 @@ forms $(\lambda_{i,j,k})$ and computes a zero-dimensional
 parametrization of $I_p(\mN)$. In the algorithm, we assume the
 existence of a subroutine $\mathsf{RowDegree}(\Gamma)$ which takes as
 input a straight-line program $\Gamma$ that computes a polynomial
-matrix $\mF$ and a system of equations $G$, and solve
+matrix $\mF$ and a system of equations $G$, and solves
 Problem~\ref{problem2} for this input using a row-degree homotopy. We
 give such an algorithm in the next section. We denote by $T_{\rm
   row}(E,\bgamma,\balpha,q)$ the time spent by
@@ -2777,7 +2777,7 @@ T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-1)\\
 
 We now give an algorithm to solve Problem~\ref{problem2} whose runtime
 will depend on the row-degrees of the input matrix $\mF$. This
-algorithm is more complex than the one in the
+algorithm is more complex than the one in 
 Section~\ref{sec:columndegree}, due to its recursive nature; this
 boils down to the fact that the start system we use for the homotopy
 must itself be solved by means of several homotopies of smaller size,
@@ -2794,6 +2794,11 @@ $\alpha_1=\rdeg(\mF,1),\dots,\alpha_p=\rdeg(\mF,p)$; with this
 notation, $\deg(f_{i,j}) \leq \alpha_i$ holds for all $i,j$. As in 
 Section~\ref{sec:columndegree}, we write
 $\gamma_1=\deg(g_1),\dots,\gamma_s=\deg(g_s)$.
+
+Similarly to what we did in Section~\ref{sec:columndegree}, we define
+\[
+\tilde\delta_{\rm row}(\mF)=S_{n-s}(\alpha_1 +1,\cdots,\alpha_p+1).
+\]
 
 \begin{proposition}\label{prop:rowdegree}
   There exists a randomized algorithm that computes the isolated
