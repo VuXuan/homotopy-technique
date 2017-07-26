@@ -976,46 +976,47 @@ in Proposition~\ref{prop:degree_fiber}.
 \end{lemma}
 \begin{proof}
   The sum in the lemma is also the sum of the multiplicities of the
-  ideal $J_\tau$ at all $(\tau,\bx)$, for $\bx$ an isolated solution of
-  $\bB_\tau$.  By Lemma~\ref{lemma:JJprime}, this is also the sum of
-  the multiplicities of $J'_\tau$ at all $(\tau,\bx)$, for $\bx$ an
+  ideal $J_\tau$ at all $(\tau,\bx)$, for $\bx$ an isolated solution
+  of $\bB_\tau$.  By Lemma~\ref{lemma:JJprime}, this is also the sum
+  of the multiplicities of $J'_\tau$ at all $(\tau,\bx)$, for $\bx$ an
   isolated solution of $\bB_\tau$. We prove below that the sum of the
   multiplicities of $J'_\tau$ at all $(\tau,\bx)$, for $\bx$ such that
   $(\tau,\bx)$ cancels $J'_\tau$, is at most $c$; this will be enough
   to conclude (for any isolated solution $\bx$ of $\bB_\tau$,
   $(\tau,\bx)$ is a root of $J'_\tau$, though the converse may not be
-  true).
+  true). Remark that the latter sum is simply the dimension of
+  $\KKbar[T,\bX]/J'_\tau$.
   
   Let $m_1,\dots,m_k$ be monomials that form a $\KKbar$-basis of
   $\KKbar[T,\bX]/J'_\tau$; since $T-\tau$ is in $J'_\tau$, these
   monomials can be assumed not to involve $T$.  We will prove that
   they are still $\KKbar(T)$-linearly independent in
   $\KKbar(T)[\bX]/{\frak J}'$; this will imply that $k \le c$,
-  and finish the proof of the first statement.
+  and finish the proof.
   
   Suppose that there exists a linear combination $A_1 m_1 + \cdots +
   A_k m_k$ in ${\frak J}'$, with all $A_i$'s in $\KKbar(T)$, not
   all of them zero. Thus, we have an equality $a_1/d_1\, m_1 + \cdots
   + a_k/d_k\, m_k = a/d$, with $a_1,\dots,a_k$ and
   $d,d_1,\dots,d_k$ in $\KKbar[T]$ and $a$ in the ideal
-  $J'$. Clearing denominators, we obtain a relation of the form $b_1
-  m_1 +\cdots+ b_k m_k \in J'$, with not all $b_i$'s zero. Let
+  $J'$. Clearing denominators, we obtain a relation of the form $e_1
+  m_1 +\cdots+ e_k m_k \in J'$, with not all $e_i$'s zero. Let
   $(T-\tau)^r$ be the highest power of $T-\tau$ that divides all
-  $b_i$'s (this is well-defined, since not all $b_i$'s vanish) so that
-  we can rewrite the above as $(T-\tau)^r (c_1 m_1 +\cdots+ c_k
-  m_k) \in J'$, with $c_i=b_i/(T-\tau)^r \in \KKbar[T]$ for all $i$.
+  $e_i$'s (this is well-defined, since not all $e_i$'s vanish) so that
+  we can rewrite the above as $(T-\tau)^r (f_1 m_1 +\cdots+ f_k
+  m_k) \in J'$, with $f_i=e_i/(T-\tau)^r \in \KKbar[T]$ for all $i$.
   In particular, our definition of $e$ implies that the values
-  $c_i(\tau)$ are not all zero.
+  $f_i(\tau)$ are not all zero.
 
   Recall that the ideal $J'$ has the form $J'=Q_1 \cap \cdots \cap
   Q_t$. For $i=1,\dots,t$, since $Q_i$ is primary, the membership
-  equality $(T-\tau)^r (c_1 m_1 +\cdots +c_k m_k) \in J'$ implies
-  that either $c_1 m_1 +\cdots +c_k m_k$ or some power
+  equality $(T-\tau)^r (f_1 m_1 +\cdots +f_k m_k) \in J'$ implies
+  that either $f_1 m_1 +\cdots +f_k m_k$ or some power
   $(T-\tau)^{rs}$, for some $s > 0$, is in $Q_i$. Since $Q_i$ does not
-  contain non-zero polynomials in $\KKbar[T]$, $c_1 m_1 +\cdots+ c_k
+  contain non-zero polynomials in $\KKbar[T]$, $f_1 m_1 +\cdots+ f_k
   m_k$ belongs to all $Q_i$'s, that is, to $J'$. We can then
   evaluate this relation at $T=\tau$. We saw that the values
-  $c_i(\tau)$ do not all vanish on the left, which is a contradiction
+  $f_i(\tau)$ do not all vanish on the left, which is a contradiction
   with the independence of the monomials $m_1,\dots,m_k$ modulo
   $J'_\tau$.
 \end{proof}
@@ -1027,8 +1028,8 @@ The field of Puiseux series $\KKbar\langle\langle T \rangle\rangle$
 contains an algebraic closure of $\KKbar(T)$; we thus let
 $\Phi_1,\dots,\Phi_{c'}$ be the points of $V(\mathfrak{J}')$, with
 coordinates taken in $\KKbar\langle\langle T \rangle\rangle$. In
-particular, we see that $c' \le c$; we prove below that if $\assG(0)$ holds, we actually
-have $c'=c$.
+particular, we see that $c' \le c$; we prove below that if $\assG(0)$
+holds, we actually have $c'=c$ (that is, that $\mathfrak{J}'$ is radical).
 
 Any Puiseux series $\varphi$ in $\KKbar\langle\langle T
 \rangle\rangle$ admits a well-defined {\em valuation} $\nu(\varphi)$,
@@ -1049,45 +1050,43 @@ $\varphi_i=\lim_0(\Phi_i)\in\KKbar{}^n$ for
 $i=1,\dots,\kappa$.
 
 \begin{lemma}\label{lemma:Z1}
-  The equality $V(J +\langle T \rangle)=\{\varphi_i \mid i=1,\dots,\kappa\}$ holds.
+  The equality $V(J' +\langle T \rangle)=\{\varphi_i \mid i=1,\dots,\kappa\}$ holds.
 \end{lemma}
 \begin{proof}
-  Let $S_1,\dots,S_R$ be generators of the ideal $J$ in
-  $\KK[T,\bX]$, so that these polynomials also generate
-  $\mathfrak{J}$ in $\KK(T)[\bX]$; then, the polynomials
-  $s_i=S_i(0,\bX) \in \KK[\bX]$, for $i=1,\dots,R$, are such that
-  $J+\langle T\rangle = \langle T,s_1,\dots,s_R \rangle$.  Consider
-  $i \le \kappa$, and the corresponding vector of Puiseux series
-  $\Phi_i$. We know that for $j=1,\dots,R$, we have $S_j(\Phi_i)=0$.
-  Since all elements involved have non-negative valuation, we can take
-  the coefficient of degree $0$ in $T$ in this equality and deduce
-  $s_j(\varphi_i)=0$, as claimed. Hence, each $\varphi_i$, for $i \le
-  \kappa$, is in $V(J + \langle T \rangle)$.
+  Let $(s_1,\dots,s_h)$ be generators  of the ideal $J'$ in $\KKbar[T,\bX]$;
+  they also generate $\mathfrak{J}'$ in
+  $\KKbar(T)[\bX]$. Then, the polynomials $s_{0,i}=s_i(0,\bX) \in \KKbar[\bX]$,
+  for $i=1,\dots,h$, are such that $J'+\langle T\rangle = \langle
+  T,s_{0,1},\dots,s_{0,h} \rangle$.  Consider $i \le \kappa$, and the
+  corresponding vector of Puiseux series $\Phi_i$. We know that for
+  $j=1,\dots,h$, we have $s_j(\Phi_i)=0$.  Since all elements involved
+  have non-negative valuation, we can take the coefficient of degree
+  $0$ in $T$ in this equality and deduce $s_{0,j}(\varphi_i)=0$, as
+  claimed. Hence, each $\varphi_i$, for $i \le \kappa$, is in $V(J' +
+  \langle T \rangle)$.
 
   Conversely, take indeterminates $T_1,\dots,T_n$, and let $\LL$ be
   the algebraic closure of the field $\KKbar(T_1,\dots,T_n)$; let
-  $W\subset{\LL}{}^{n+1}$ be the zero-set of the ideal $J\cdot
-  \LL[T,\bX]$ and consider the projection $W \to {\LL}{}^2$ defined
-  by $(\tau,x_1,\dots,x_n)\mapsto (\tau,T_1 x_1 + \cdots + T_n x_n)$. The
-  Zariski closure $S$ of the image of this mapping is a
-  hypersurface. 
-  Since
-  the ideal $J$ is generated by polynomials with coefficients in $\KK$,
-  one deduces that $S$ admits a squarefree defining equation in
-  $\KK(T_1,\dots,T_n)[T,T_0]$.
+  ${\cal C}\subset{\LL}{}^{n+1}$ be the zero-set of the ideal $J'\cdot
+  \LL[T,\bX]$ and consider the projection ${\cal C} \to {\LL}{}^2$
+  defined by $(\tau,x_1,\dots,x_n)\mapsto (\tau,T_1 x_1 + \cdots + T_n
+  x_n)$. The Zariski closure ${\cal S}$ of the image of this mapping
+  is a hypersurface, that is, a plane curve.  Since the ideal $J'$ is generated by polynomials
+  with coefficients in $\KKbar$, one deduces that ${\cal S}$ admits a squarefree
+  defining equation in $\KKbar(T_1,\dots,T_n)[T,T_0]$.
 
   Consider such a polynomial, say $C$, and assume without loss of
   generality that $C$ belongs to 
-  $\KK[T_1,\dots,T_n][T,T_0]$. Because $J$ admits no irreducible
+  $\KKbar[T_1,\dots,T_n][T,T_0]$. Because ${\cal C}$ admits no irreducible
   component lying above $T=\tau$, for any $\tau$ in $\KKbar$, $C$
-  admits no factor in $\KK[T]$; thus, $C(0,T_0)$ is non-zero.
+  admits no factor in $\KKbar[T]$; thus, $C(0,T_0)$ is non-zero.
 
-  Let $\ell \in \KK[T_1,\dots,T_n,T]$ be the leading coefficient of
+  Let $\ell \in \KKbar[T_1,\dots,T_n,T]$ be the leading coefficient of
   $C$ with respect to $T_0$. Proposition~1 in~\cite{Schost03} proves
-  that $C/\ell$, seen in $\KK(T_1,\dots,T_n,T)[T_0] \subset
+  that $C/\ell$, seen in $\KKbar(T_1,\dots,T_n,T)[T_0] \subset
   \LL(T)[T_0]$, is the minimal polynomial of $T_1 X_1 + \cdots +
-  T_n X_n$ in $\LL(T)[\bX]/J\cdot \LL(T)[\bX]$. The latter ideal
-  is also the extension of $\mathfrak{J}$ to $\LL(T)[\bX]$, 
+  T_n X_n$ in $\LL(T)[\bX]/\sqrt{J'}\cdot \LL(T)[\bX]$. The latter ideal
+  is also the extension of $\sqrt{\mathfrak{J}'}$ to $\LL(T)[\bX]$, 
   so $C/\ell$ factors as
   $$\frac C\ell = \prod_{1\le i \le c'}(T_0-T_1 \Phi_{i,1} - \cdots - T_n \Phi_{i,n})$$
   in $\LL\langle\langle T \rangle\rangle[T_0]$.
@@ -1099,7 +1098,7 @@ $i=1,\dots,\kappa$.
 to $\KKbar\langle\langle T \rangle\rangle[T_1,\dots,T_n,T_0]$ in the
   direct manner, by setting $\nu(\sum_\alpha f_\alpha T_0^{\alpha_0}
   \cdots T_n^{\alpha_n}) = \min_\alpha \nu(f_\alpha)$. The fact that
-  $C$ has no factor in $\KK[T]$ implies that
+  $C$ has no factor in $\KKbar[T]$ implies that
   $\nu(C)=0$. Using Gauss' Lemma, we see that the valuation of the
   right-hand side is $\nu(\ell) + \sum_{\kappa < i \le c}\mu_i$, with $\mu_i= \nu(\Phi_i)$ for all $i$;
   note that $\mu_i < 0$ for $i > \kappa$. Thus, we can
@@ -1114,7 +1113,7 @@ to $\KKbar\langle\langle T \rangle\rangle[T_1,\dots,T_n,T_0]$ in the
   \cdots - T_n \varphi_{i,n} ),$$ where $s$ is in $\KKbar[T_1,\dots,T_n]$;
   note that $s \ne 0$, since $C(0,T_0)$ is non-zero.
  By construction of $C$, for any
-  $\bx=(x_1,\dots,x_n)$ in $V(J+\langle T \rangle)$, $T_1 x_1 + \cdots + T_n x_n$
+  $\bx=(x_1,\dots,x_n)$ in $V(J'+\langle T \rangle)$, $T_1 x_1 + \cdots + T_n x_n$
   cancels $C(0,T_0)$, so $\bx$ must be one of
   $\varphi_1,\dots,\varphi_{\kappa}$.
 \end{proof}
@@ -1123,11 +1122,11 @@ To conclude the proof of Proposition~\ref{prop:degree_fiber},
 we now assume that property $\assG(0)$ holds.
 
 \begin{lemma}
-   $\Phi_1,\dots,\Phi_{c'}$ are bounded.
+   $\Phi_1,\dots,\Phi_{c'}$ are bounded; equivalently, $\kappa=c'$.
 \end{lemma}
 \begin{proof}
   Since we want to prove that $\Phi_1,\dots,\Phi_{c'}$ are bounded,
-  one can assume that they are not the origin.  
+  one can assume that they are all non-zero.
 
   For $i=1,\dots,c'$, write
   $\Phi_i=1/T^{e_i} (\Psi_{i,1},\dots,\Psi_{i,n})$, for a vector
@@ -1175,23 +1174,24 @@ we now assume that property $\assG(0)$ holds.
   criterion~\cite[Theorem~16.19.b]{Eisenbud95}, this is the case if
   and only if the Jacobian matrix of $\bB$ with respect to $\bX$ has
   full rank $n$ at $\Phi_i$. We know that $\varphi_i=\lim_0(\Phi_i)$
-  is a root of $\bB_0$, and the Jacobian criterion conversely implies
+  is a root of $\bB_0$ (Lemma~\ref{lemma:Z1}), and the Jacobian criterion conversely implies
   that since the ideal $\langle \bB_0 \rangle$ is radical (by
   assumption $\assG_3(0)$) and zero-dimensional (by assumption
   $\assG_2(0)$), the Jacobian matrix of $\bB_0(\bX)=\bB(0,\bX)$ has
-  full rank $n$. Since this matrix is the limit at zero of the
+  full rank $n$ at $\varphi_i$. Since this matrix is the limit at zero of the
   Jacobian matrix of $\bB$ with respect to $\bX$, taken at $\Phi_i$,
   the latter must have full rank $n$, and our claim that $\frak{J}'$
   is radical is proved.
 \end{proof}
 
 To finish the proof of Proposition~\ref{prop:degree_fiber}, we have to
-establish that $V(\bB_0)$ consists of exactly $c$ solutions.  Let thus
-$d$ be the number of points in $V(\bB_0)$.  Since $\langle \bB_0
-\rangle$ is radical (this is $\assG_3(0)$), Lemma~\ref{lemma:19}
-implies that $d \le c$, so we only have to prove that $c \le d$. To
-prove this, we prove that for $i,i'$ in $\{1,\dots,c\}$, with $i \ne
-i'$, we have $\varphi_i \ne \varphi_{i'}$.
+establish that $V(\bB_0)$ consists of exactly $c$ solutions. First,
+since $V(\bB_0)$ is finite, Lemma~\ref{lemma:vPi} implies that $\bx$
+is in $V(\bB_0)$ if and only if $(0,\bx)$ is in $V(J' + \langle
+T\rangle)$. Next, remark that the two previous lemma taken together
+imply that $c=\kappa$; thus, in view of Lemma~\ref{lemma:Z1}, to
+conclude, it is enough to prove that for $i,i'$ in $\{1,\dots,c\}$,
+with $i \ne i'$, we have $\varphi_i \ne \varphi_{i'}$.
 
 Suppose to the contrary that $\varphi_i = \varphi_{i'}$. We know that
 the Jacobian matrix of $\bB_0$ has full rank $n$ at $\varphi_i$; up to
@@ -1247,8 +1247,8 @@ which has coordinates in the field $\LL=\KK[Y]/\langle w_0 \rangle$,
 and find a non-zero minor of size $n$ in this matrix. It takes
 $O(n E)$ oeprations in $\LL$ to compute this Jacobian matrix, and
 $O(mn^2)$ operations in $\LL$ to find an invertible minor, e.g. using
-Gaussian elimination. The total time, under the assumption that $q_0$
-is invertible, is thus $O(mn^2 + nE)$ operations in $\LL$, that is,
+Gaussian elimination. The total time, under the assumption that $w_0$
+is irreducible, is thus $O(mn^2 + nE)$ operations in $\LL$, that is,
 $\softO( (mn^2 + nE) c)$ operations in $\KK$.
 
 When $w_0$ is not invertible, $\LL=\KK[Y]/\langle w_0 \rangle$ is a
@@ -1272,9 +1272,10 @@ subsets $Z(\scrR'_0)$ and $Z(\scrR''_0)$ where $r_0$ vanishes, resp.\
 is non-zero.
 
 We can then start over again, from $\scrR'_0$ and $\scrR''_0$
-independently. Overall, in the worst case, this splitting process 
-induces a extra factor $O(c)$ in the runtime, 
-for a total of $\softO( (mn^2 + nE) c^2)$ operations in $\KK$.
+independently. Overall, in the worst case, this splitting process
+induces a extra factor $O(c)$ in the runtime compared to the case
+where $w_0$ is irreducible, for a total of $\softO( (mn^2 + nE) c^2)$
+operations in $\KK$.
 
 \paragraph{Lifting power series and rational reconstruction.}
 For $j=1,\dots,t$, we can then apply Newton iteration to the system
@@ -1282,8 +1283,10 @@ $(b_i)_{i \in \bi_j}$ to lift
 $\scrR_{0,j}=((w_{0,j},v_{0,j,1},\dots,v_{0,j,n}),\lambda)$ into a
 zero-dimensional parametrization
 $\scrR_{j}=((w_{j},v_{j,1},\dots,v_{j,n}),\lambda)$ with coefficients
-in $\KK[[T]]/\langle T^{2e}\rangle$, for $e$ as in ${\assD}_2$.  (Note
-that Lemma~\ref{lemma:c_versus_e} implies that $c \le e$).
+in $\KK[[T]]/\langle T^{2e}\rangle$, for $e$ as in ${\assD}_2$.  Note
+that $c \le e$: we saw in the last paragraphs of the previous
+subsection that $c$ is the cardinality of $V(J' + \langle T \rangle)$,
+so that $c \le \deg(V(J'))$, and the latter quantity is at most $e$.
 
 As explained in~\cite[Section~2.2]{SaSc16}, using the algorithm
 of~\cite{GiLeSa01}, this can be done using $\softO(c\,e (E+n^2)n)$
