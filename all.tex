@@ -1561,23 +1561,27 @@ particular that with this notation, $\deg(f_{i,j}) \leq \delta_j$
 holds for all $i,j$.  We will also write
 $\gamma_1=\deg(g_1),\dots,\gamma_s=\deg(g_s)$.
 
-We defined in the introduction 
-$$\delta_{\rm col}(\mF) = E_{q-p+1}(\delta_1, \ldots, \delta_q)$$
-where $E_k(\delta_1,\dots,\delta_q)$ is the elementary symmetric
-polynomial of degree $k$ in $\delta_1, \ldots, \delta_q$. Further, we
-define $\tilde\delta_{\rm col}(\mF)$ as
-$E_{q-p+1}(\delta_1+1, \ldots, \delta_q+1)$.
+We point out that (in the case where there are no polynomials $G$),
+the construction used in this section was already in the appendix
+of~\cite{NieRan09}, where it was used to bound the number of solutions
+of determinantal systems (as we mentioned in the introduction).
+
+
 \begin{proposition}
-  There exists a randomized algorithm that computes the isolated
-  points of $\VpFG{p}{\mF}{G}$ using
-  $\softO\left (c(e+c^5 )(E + cn^4)\right)$ operations in $\KK$, with
-  $c=\gamma_1\cdots\gamma_s \delta_{\rm col}(\mF)$ and
-  $e=(\gamma_1+1)\cdots(\gamma_s+1) \tilde\delta_{\rm
-    col}(\mF)$\footnote{what is $\tilde\delta$?}.
+  Suppose that $\KK$ has characteristic zero, and suppose that matrix
+  $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$ and polynomials
+  $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$ are given by a
+  straight-line program of length $\Lambda$. Then, there exist 
+an algorithm that computes the isolated points of
+  $\VpFG{p}{\mF}{G}$ using $$\softO\left (c(e+c^5 )(\Lambda + cn^4)\right)$$
+  operations in $\KK$, with
+  $c=\gamma_1\cdots\gamma_sE_{q-p+1}(\delta_1, \ldots, \delta_q)$ and
+  $e=(\gamma_1+1)\cdots(\gamma_s+1) E_{q-p+1}(\delta_1+1, \ldots,
+  \delta_q+1)$.
 \end{proposition}
 Remark that if all $\gamma_i$'s and $\delta_j$'s are at least equal to
 $2$, we have the inequality $e \le c^2$, and the runtime becomes
-$\softO\left (c^6 (E + c)\right)$.
+$\softO\left (c^6 (\Lambda + c)\right)$.
 
 \medskip
 
@@ -1610,12 +1614,12 @@ $$\mu_{i,k} =  \mu_{i,k,0} + \sum_{\ell = 1}^{n}\mu_{i,k,\ell}X_\ell,$$ where
 all $\mu_{i,k,\ell}$ are random elements in $\KK$; then, we let
 $$a_i=\prod_{k=1}^{\gamma_i} \mu_{i,k}.$$ We can thus define the
 system of equations $\bA=(a_1,\dots,a_s,\dots,a_m)$, with $a_i$ as
-above for $i=1,\dots,s$, and $(a_{s+1},\dots,a_{m})$ are the
+above for $i=1,\dots,s$, and where $(a_{s+1},\dots,a_{m})$ are the
 $p$-minors of $\mL$ (taken in the same order as those in the system
 $\bC$).
 
 Finally, we let $T$ be a new variable, we define the matrix
-$\mU=(1-T)\, \mL + T \, \mF \in \KK[T,\bX]^{p\times q}$, and we let $\bB$ be the polynomials in
+$\mU=(1-T)\cdot \mL + T \cdot \mF \in \KK[T,\bX]^{p\times q}$, and we let $\bB$ be the polynomials in
 $\KK[T,\bX]$ given by $\bB=(b_1,\dots,b_s,\dots,b_m)$, where
 \begin{itemize}
 \item $b_i=(1-T) a_i + T g_i$ for $i=1,\dots,s$
@@ -1645,7 +1649,7 @@ must be exactly $\gamma_i$.
 To each index $i=s+1,\dots,m$ corresponds a sequence
 $\bj_i=(j_{i,1},\dots,j_{i,p})$ such that $b_i$ and $a_i$ are the
 minors built with columns index by $\bj_i$ in respectively
-$\mU=(1-T)\, \mL + T \, \mF$ and $\mL$. In view of the shape of $\mL$,
+$\mU=(1-T)\cdot \mL + T \cdot \mF$ and $\mL$. In view of the shape of $\mL$,
 the polynomial $a_i$ is equal to $c_i\lambda_{j_{i,1}}\cdots
 \lambda_{j_{i,p}}$, where $c_i$ is a non-zero constant, so it has degree
 $\delta_{j_{i,1}} + \cdots + \delta_{j_{i,p}}$.  Since the columns
@@ -1666,7 +1670,7 @@ where for $j=1,\dots,q$ we set
 $\lambda^H_j = \prod_{k=1}^{\delta_j}\lambda^H_{j,k}$,
 with
 $$\lambda^H_{j,k}=\lambda_{j,k,0}X_0 + \sum_{\ell = 1}^{n}\lambda_{j,k,\ell}X_\ell.$$
-To prove  $\assG_1(0)$, we start by writing down all projective
+To prove  $\assG_2(0)$, we start by writing down all projective
 solutions of this system (this will be of use below), before adding
 the constraint $X_0=0$.
 
@@ -1679,9 +1683,9 @@ $$\mu^H_{i,u_i}=0, \quad \text{~that is,~} \quad \mu_{i,u_i,0}X_0 + \sum_{\ell =
 In what follows, we fix such an $\bu$.
 Then, for a generic choice of coefficients $\mu_{i,k,\ell}$, these equations
 are equivalent to
-$$X_{n-s+1}=\Phi_{\bu,n-s+1}(X_0,\dots,X_{n-s}),\dots,X_{n}=\Phi_{\bu,n}(X_0,\dots,X_{n-s}),$$
+$$X_{n-s+1}=\Phi_{n-s+1,\bu}(X_0,\dots,X_{n-s}),\dots,X_{n}=\Phi_{n,\bu}(X_0,\dots,X_{n-s}),$$
 for some homogeneous linear forms
-$\Phi_{\bu,n-s+1},\dots,\Phi_{\bu,n}$.  After applying this
+$\Phi_{n-s+1,\bu},\dots,\Phi_{n,\bu}$.  After applying this
 substitution, for all $j=1,\dots,q$, $\lambda^H_j$ can be rewritten as
 $$\lambda^H_{j,\bu}=\prod_{k=1}^{\delta_j}\lambda^H_{j,k,\bu},$$
 where 
@@ -1691,7 +1695,7 @@ $$\lambda^H_{j,k,\bu}=\lambda_{j,k,0}X_0 + \sum_{\ell =
 \Phi_{\ell,\bu}(X_0,\dots,X_{n-s}).$$ Then,
 $\bx=(x_0,\dots,x_n)$ cancels $a^H_{s+1},\dots,a^H_m$ if and only if
 $\bx'=(x_0,\dots,x_{n-s})$ cancels the product
-$\lambda^H_{j_1,\bu}\cdots \lambda^H_{j_p,\bu},$ for any choice of columns
+$\lambda^H_{j_1,\bu}\cdots \lambda^H_{j_p,\bu},$ for any choice of $p$ columns
 $\bj=(j_1,\dots,j_p)$.
 
 \begin{lemma}
@@ -1703,28 +1707,29 @@ $\bj=(j_1,\dots,j_p)$.
 \end{lemma}
 \begin{proof}
   Take an arbitraty representative $\bx^*$ of $\bx'$ in
-  $\KKbar{}^{n+1}$, consider the polynomial
+  $\KKbar{}^{n+1}$, and consider the polynomial 
   $(1+\lambda^H_{1,\bu}(\bx^*)Y_1) \cdots (1+\lambda^H_{q,\bu}(\bx^*)Y_q),$
   for new variables $Y_1,\dots,Y_q$. The products
   $\lambda^H_{j_1,\bu}(\bx^*)\cdots \lambda^H_{j_p,\bu}(\bx^*)$ are all zero
   if and only if this polynomial has degree less than $p$, that is, if
-  and only if $q-p+1$ terms among
+  and only if $q-p+1=n-s$ terms among
   $\lambda^H_{1,\bu}(\bx^*),\dots,\lambda^H_{q,\bu}(\bx^*)$ vanish.
 \end{proof}
 
 
-For generic coefficients $\lambda_{j,k,\ell}$ and $\mu_{i,k,\ell}$,
+For a given $\bu$ and generic coefficients $\lambda_{j,k,\ell}$ and $\mu_{i,k,\ell}$,
+ the linear forms $\lambda^H_{j,k,\bu}$ are all pairwise distinct, so
 the condition of the lemma holds if and only if there exist
 $\bj=\{j_1,\dots,j_{n-s}\} \subset \{1,\dots,q\}$ and
 $\bv=(v_1,\dots,v_{n-s})$, with $v_k$ in $\{1,\dots,\delta_k\}$ for all
 $k$, such that $\lambda^H_{j_k,v_k,\bu}(\bx')=0$ 
 for $k=1,\dots,n-s$.
 
-This implies that for a fixed $\bu$, the possible values of $\bx'$ are
-in finite number (we will write it down precisely below), determined
-as solutions of a linear system of size $n-s$ with generic
-coefficients. In particular, none of these points satisfies $X_0=0$,
-so that $\assG_1(0)$ holds.
+This implies that for a fixed $\bu$, the possible values of $\bx'=(x_0,\dots,x_{n-s}) \in \P^{n-s}(\KKbar)$ are
+determined as solutions of a linear system of size $n-s$. For a
+generic choice of the coefficients $\lambda_{j,k,\ell}$ and
+$\mu_{i,k,\ell}$, none of these points satisfies $X_0=0$, so that
+$\assG_2(0)$ holds.
 
 \paragraph{Property $\assG_3(0)$.} From $\assG_2(0)$, we know that
 the projective variety defined by $\bA^\mH$ has no point at infinity,
@@ -1736,10 +1741,10 @@ $\bu=(u_1,\dots,u_s)$ with $u_k$ in $\{1,\dots,\gamma_k\}$ for all $k$,
 column indices $\bj=(j_1,\dots,j_{n-s})$, and
 $\bv=(v_1,\dots,v_{n-s})$, with $v_k$ in $\{1,\dots,\delta_k\}$
 for all $k$, solving the affine linear system
-$$\lambda_{\bu,j_1,v_1}(X_1,\dots,X_{n-s})=\cdots=\lambda_{\bu,j_{n-s},v_{n-s}}(X_1,\dots,X_{n-s})=0$$ 
+$$\lambda_{j_1,v_1,\bu}(X_1,\dots,X_{n-s})=\cdots=\lambda_{j_{n-s},v_{n-s},\bu}(X_1,\dots,X_{n-s})=0$$ 
 and using the expressions
-$$X_{n-s+1}=\phi_{\bu,n-s+1}(X_1,\dots,X_{n-s}),\dots,X_{n}=\mathfrak{h}_{\bu,n}(1,X_1,\dots,X_{n-s}),$$
-where $\phi_{\bu,k}(X_1,\dots,X_{n-s})=\Phi_{\bu,n-s+1}(1,X_1,\dots,X_{n-s})$
+$$X_{n-s+1}=\phi_{n-s+1,\bu}(X_1,\dots,X_{n-s}),\dots,X_{n}=\mathfrak{h}_{n,\bu}(1,X_1,\dots,X_{n-s}),$$
+where $\phi_{k,\bu}(X_1,\dots,X_{n-s})=\Phi_{n-s+1,\bu}(1,X_1,\dots,X_{n-s})$
 for all $k$.
 To prove that the ideal generated by $\bA$ is radical, we prove that
 at any point as described above, the Jacobian matrix of $\bA$ with
@@ -1748,26 +1753,28 @@ respect to $X_1,\dots,X_n$ has full rank.
 Let thus $\bu$, $\bj$ and $\bv$ be as above, let $\bx \in \KKbar{}^n$
 be the corresponding point in $V(\bA)$, and consider equations
 $(a_1,\dots,a_s)$ first. Each such equation is a product of linear forms
-as $a_i=\prod_{k=1}^{\gamma_i} \mu_{i,k}$, with $\mu_{i,u_i}(\bx)=0$.
+such as $a_i=\prod_{k=1}^{\gamma_i} \mu_{i,k}$, with $\mu_{i,u_i}(\bx)=0$.
 Since the coefficients $\mu_{i,k,\ell}$ are chosen generically, for
 $i=1,\dots,s$ and $k \ne u_i$, $\mu_{i,k}(\bx)$ is non-zero; as a
 result, in the local ring at $\bx$, the polynomials $(a_1,\dots,a_s)$
 are equal (up to units) to the linear forms
 $(\mu_{1,u_1},\dots,\mu_{s,u_s})$.
 
-Next, we consider the $p$-minors of $\mA$; in what follows, we 
+Next, we consider the $p$-minors of $\mL$; in what follows, we 
 write $\bx'=(x_1,\dots,x_{n-s})$. Our starting point is that due to 
 the genericity of the coefficients $\lambda_{j,k,\ell}$, since 
-$$\lambda_{j_1,v_1,\bu}(\bx')=\cdots=\lambda_{j_{n-s},v_{n-s},\bu}(\bx')=0,$$ 
+$$\lambda_{j_1,v_1,\bu}=\cdots=\lambda_{j_{n-s},v_{n-s},\bu}=0$$
+only admits $\bx'$ as a solution,
 none of the other linear forms $\lambda_{j,k,\bu}$ vanishes at $\bx'$.
+Equivalently, none of the other linear forms $\lambda_{j,k}$ vanishes at $\bx$.
 
 Recall that $n=q-p+s+1$, so that $n-s = q-(p-1)$. Hence, there are
-exactly $p-1$ columns of $\mA$ not indexed by $\bj=(j_1,\dots,j_{n-s})$; call
+exactly $p-1$ columns of $\mL$ not indexed by $\bj=(j_1,\dots,j_{n-s})$; call
 them $\bj'=(j'_1,\dots,j'_{p-1})$. We can then consider the 
 products
 $$ \lambda_{j_1} \lambda_{j'_1} \cdots \lambda_{j'_{p-1}},\dots, \lambda_{j_{n-s}}
 \lambda_{j'_1} \cdots \lambda_{j'_{p-1}};$$ each of them (up to a non-zero
-constant) is a $p$-minor of $\mA$, so they appear as elements in the
+constant) is a $p$-minor of $\mL$, so they appear as elements in the
 sequence $(a_{s+1},\dots,a_m)$, say as
 $(a_{e_1},\dots,a_{e_{n-s}})$. By the remark of the previous
 paragraph, in the local ring at $\bx$, up to non-zero constants, these
@@ -1778,7 +1785,7 @@ To summarize, we have found that the linear equations
 $(\mu_{1,u_1},\dots,\mu_{s,u_s})$ and
 $(\lambda_{j_1,v_1},\dots,\lambda_{j_{n-s},v_{n-s}})$ belong to the
 ideal $\langle \bA \rangle_\m$, where $\m$ is the maximal ideal at
-$\bx$. As a result, the Jacobian matrix of $\mA$ must be invertible
+$\bx$. As a result, the Jacobian matrix of $\bA$ must be invertible
 at $\bx$, and $\assG_3(0)$ holds.
 
 
@@ -1792,19 +1799,17 @@ of $\bC=\bB_1$ is at most $c$, where $c$ is the number of solutions of
 $\bA$. 
 
 \begin{lemma}\label{lemma:column:c_estimate}
-  Under the above assumptions and notations, $c=\gamma_1\cdots
-\gamma_s \delta_{\rm col}(\mF)$. 
+  Under the above assumptions, $c=\gamma_1\cdots \gamma_s
+  E_{q-p+1}(\delta_1, \ldots, \delta_q)$.
 \end{lemma}
-
 \begin{proof}
 To estimate $c$, note first that there are $\gamma_1\cdots
 \gamma_s$ choices of $\bu$. For each choice of $\bu$, there are
-$\delta_{\rm col}(\mF)=E_{n-s}(\delta_1, \ldots, \delta_q)$ ways to
+$E_{n-s}(\delta_1, \ldots, \delta_q)$ ways to
 choose $\bj$ and $\bv$, where $E_{n-s}$ denotes the elementary
-symmetric polynomials of degree $n-s$. As a result, $c=\gamma_1\cdots
-\gamma_s \delta_{\rm col}(\mF)$.   
+symmetric polynomials of degree $n-s=q-p+1$.   
 \end{proof}
-We can now inspect assumptions $\assD_1,\dots,\assD_4$ that are needed
+We can now inspect assumptions $\assD_1,\dots,\assD_4$, which are needed
 to apply the algorithm of Proposition~\ref{prop:compute_isolated}.
 
 \paragraph{Property $\assD_1$.} We know that $\assG_1(0),\assG_2(0),\assG_3(0)$
@@ -1812,12 +1817,13 @@ hold, so we are going to compute a zero-dimensional parametrization of
 $V(\bA)$.  We do this by following the description of the solutions of
 $\bA$ given in the previous paragraph: for any choice of indices
 $\bu$, $\bj$ and $\bv$ as above, the corresponding point $\bx \in
-\KKbar{}^n$ in $V(\bA)$ can be found by solving a linear system of
-size $n$, so in time $O(n^3)$. We repeat this procedure
-$c=\gamma_1\cdots \gamma_s \delta_{\rm col}(\mF)$ times, using a total
-of $O(c n^3)$ operations in $\KK$.
+\KKbar{}^n$ in $V(\bA)$ can be found by solving the linear system of
+size $n$ given by $(\mu_{1,u_1},\dots,\mu_{s,u_s})$ and
+$(\lambda_{j_1,v_1},\dots,\lambda_{j_{n-s},v_{n-s}})$, so in time
+$O(n^3)$. We repeat this procedure $c$ times, using a total of $O(c
+n^3)$ operations in $\KK$.
 
-Knowing all the points in $V(\bA)$, we can reconstruct a zero-dimensional
+Knowing all the points in $V(\bA)$, we can construct a zero-dimensional
 parametrization $\scrR_0$ such that $Z(\scrR_0)=V(\bA)$ in time
 $O\tilde{~}(cn)$ by means of fast interpolation~\cite[Chapter~10]{GaGe03}.
 (Note that for practical purposes, we may modify the algorithm
@@ -1831,9 +1837,8 @@ one-dimensional irreducible components of $V(\bB) \subset
 
 \begin{lemma}\label{lemma:columndegree:e_estimate}
   Under the above assumptions and notation, $e$ is bounded above by
-  $(\gamma_1+1)\cdots(\gamma_s+1) \tilde\delta_{\rm col}(\mF)$.
+  $(\gamma_1+1)\cdots(\gamma_s+1) E_{q-p+1}(\delta_1+1, \ldots, \delta_q+1)$.
 \end{lemma}
-
 \begin{proof}
 Let us write $V(\bB)=V(J') \cup V' \cup V''$, where $V''$ is the union
 of the other components of dimension one of $V(\bB)$ and $V''$ is the
@@ -1849,26 +1854,26 @@ The hyperplane $H$ is defined by an equation
 $h_0 + h_1 X_1 + \cdots + h_{n}X_{n} + h_{n+1} T=0$. This equation
 allows us to rewrite $T$ as
 $\eta(X_1,\dots,X_n)=-(h_0 + h_1 X_1 + \cdots +
-h_{n+1}X_{n+1})/h_{n+2}$;
+h_{n}X_{n})/h_{n+1}$;
 the points in $V(\bB)\cap V(H)$ are thus in one-to-one correspondence
 with the solutions of the system
 $(\beta_1,\dots,\beta_s,\beta_{s+1},\dots,\beta_m)$, where
 $\beta_i=(1-\eta) a_i + \eta g_i$, for $i=1,\dots,s$, and
 $\beta_{s+1},\dots,\beta_m$ are the $p$-minors of the matrix
-${\mU}=(1-\eta)\, \mL + \eta \, \mF $.  Now, the polynomials
+${\nu}=(1-\eta)\, \mL + \eta \, \mF $.  Now, the polynomials
 $(\beta_1,\dots,\beta_s)$ have respective degrees at most
-$(\gamma_1+1),\dots,(\gamma_s+1)$, and the column degrees of ${\mU}$
+$(\gamma_1+1),\dots,(\gamma_s+1)$, and the column degrees of ${\nu}$
 are $\delta_1+1,\dots,\delta_q+1$.
 
 We can then apply Proposition~\ref{prop:degree_fiber}, which shows we
 can take for $e$ the integer $(\gamma_1+1)\cdots(\gamma_s+1)
-\tilde\delta_{\rm col}(\mF)$.  
+E_{q-p+1}(\delta_1+1, \ldots, \delta_q+1)$.  
 \end{proof}
 
 \paragraph{Property $\assD_3$.} Finally, we need to give an estimate on
 the size of a straight-line program that computes the polynomials
 $\bB=(b_1,\dots,b_m)$, assuming that we are given a straight-line
-program $\Gamma$ of size $E$ that computes polynomials $G=(g_1,\dots,g_s)$ and
+program $\Gamma$ of size $\Lambda$ that computes polynomials $G=(g_1,\dots,g_s)$ and
 the entries of $\mF$.
 
 First, we estimate the complexity of computing the polynomials
@@ -1876,33 +1881,33 @@ $(b_1,\dots,b_s)$. For $i \le s$, the $i$th polynomial $b_i$ is equal
 to $(1-T)a_i + T g_i$, where $a_i$ is a product of $\gamma_i$ linear
 forms in $n$ variables. This polynomial can be computed in $O(n
 \gamma_i)$ operations in $\KK$, hence for a total of $O(n \sum_i
-\gamma_i)$ operations for $(a_1,\dots,a_s)$, and $O(E+n \sum_i
+\gamma_i)$ operations for $(a_1,\dots,a_s)$, and $O(\Lambda+n \sum_i
 \gamma_i)$ for $(b_1,\dots,b_s)$. The polynomials
 $(b_{s+1},\dots,b_m)$ are the $p$-minors of $\mU=(1-T)\mL+T\mF$.
 
 The polynomials $\lambda_1,\dots,\lambda_q$ can be computed in $O(n \sum_j
 \delta_j)$ operations, so that the entries of $\mU$ can be computed in
-$O(n^2 + E + n \sum_j \delta_j)$ operations. From that, all $p$-minors
+$O(n^2 + \Lambda + n \sum_j \delta_j)$ operations. From that, all $p$-minors
 of $\mU$ can be deduced in $O({q \choose p} n^3)$ further steps.
 To summarize, all polynomials in $\bB$ can be computed by a straight-line
 program $\Gamma'$ of size
-$E'=O(E + {q \choose p} n^3 +n \sum_i \gamma_i + n \sum_j \delta_j)$.
+$\Lambda'=O(\Lambda + {q \choose p} n^3 +n \sum_i \gamma_i + n \sum_j \delta_j)$.
 
 \medskip
 
 We can then finally apply Proposition~\ref{prop:compute_isolated},
-whose runtime is $\softO(c^5 m n^2 + c(e+c^5 n)(E' + n^3))$ operations
+whose runtime is $\softO(c^5 m n^2 + c(e+c^5 n)(\Lambda' + n^3))$ operations
 in~$\KK$; since $m \le n + {q \choose p}$, this can be simplified as
-$$\softO\left (c(e+c^5 n)\left(E + {q \choose p} n^3 +n \sum_i
+$$\softO\left (c(e+c^5 n)\left(\Lambda + {q \choose p} n^3 +n \sum_i
     \gamma_i + n \sum_j \delta_j\right)\right).$$
 Since all of $ {q \choose p}, \sum_i \gamma_i$ and $\sum_j \delta_j$
 are at most $cn$, this becomes
-$\softO\left (c(e+c^5 n)(E + cn^4)\right),$ with
+$\softO\left (c(e+c^5 n)(\Lambda + cn^4)\right),$ with
 $c=\gamma_1\cdots\gamma_s \delta_{\rm col}(\mF)$ (see
 Lemma~\ref{lemma:column:c_estimate}) and
 $e=(\gamma_1+1)\cdots(\gamma_s+1) \tilde\delta_{\rm col}(\mF)$ (see
 Lemma~\ref{lemma:columndegree:e_estimate}).  This is also
-$\softO\left (c(e+c^5 )(E + cn^4)\right).$
+$\softO\left (c(e+c^5 )(\Lambda + cn^4)\right).$
 
 \begin{algorithm}
 \caption{$\mathsf{ColumnDegree}(\Gamma)$}
@@ -1930,11 +1935,11 @@ $\mathsf{cost: O(cn^3)}$, with $c=\gamma_1\cdots\gamma_s \delta_{\rm col}(\mF)$
 $\mathsf{cost: \softO(cn)}$
 
 \item construct a straight-line program $\Gamma'$ that computes all polynomials $\bB$\\
-  length of $\Gamma'$ is $E'=O(E + {q \choose p} n^3 + n
+  length of $\Gamma'$ is $\Lambda'=O(\Lambda + {q \choose p} n^3 + n
 (\alpha_1+\cdots+\alpha_p) + n(\gamma_1 + \cdots + \gamma_s))$
 
 \item return $\mathsf{Homotopy}(\Gamma',\scrR)$ 
-$\mathsf{cost: \softO\left (c(e+c^5 )(E + cn^4)\right)}$
+$\mathsf{cost: \softO\left (c(e+c^5 )(\Lambda + cn^4)\right)}$
 \end{enumerate}
 \label{ColHom}
 \end{algorithm}
