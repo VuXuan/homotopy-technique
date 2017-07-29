@@ -1649,10 +1649,11 @@ must be exactly $\gamma_i$.
 To each index $i=s+1,\dots,m$ corresponds a sequence
 $\bj_i=(j_{i,1},\dots,j_{i,p})$ such that $b_i$ and $a_i$ are the
 minors built with columns index by $\bj_i$ in respectively
-$\mU=(1-T)\cdot \mL + T \cdot \mF$ and $\mL$. In view of the shape of $\mL$,
-the polynomial $a_i$ is equal to $c_i\lambda_{j_{i,1}}\cdots
-\lambda_{j_{i,p}}$, where $c_i$ is a non-zero constant, so it has degree
-$\delta_{j_{i,1}} + \cdots + \delta_{j_{i,p}}$.  Since the columns
+$\mU=(1-T)\cdot \mL + T \cdot \mF$ and $\mL$. In view of the shape of
+$\mL$, the polynomial $a_i$ is equal to $c_i\lambda_{j_{i,1}}\cdots
+\lambda_{j_{i,p}}$, where $c_i$ is a non-zero constant
+\todo{characteristic of $\KK$}, so it has degree $\delta_{j_{i,1}} +
+\cdots + \delta_{j_{i,p}}$.  Since the columns
 $(j_{i,1},\dots,j_{i,p})$ of $U$ have respective degrees at most
 $(\delta_{j_{i,1}},\dots,\delta_{j_{i,p}})$, $b_i$ has degree at most
 $\delta_{j_{i,1}} + \cdots + \delta_{j_{i,p}}$. However, evaluating
@@ -1880,38 +1881,56 @@ First, we estimate the complexity of computing the polynomials
 $(b_1,\dots,b_s)$. For $i \le s$, the $i$th polynomial $b_i$ is equal
 to $(1-T)a_i + T g_i$, where $a_i$ is a product of $\gamma_i$ linear
 forms in $n$ variables. This polynomial can be computed in $O(n
-\gamma_i)$ operations in $\KK$, hence for a total of $O(n \sum_i
-\gamma_i)$ operations for $(a_1,\dots,a_s)$, and $O(\Lambda+n \sum_i
-\gamma_i)$ for $(b_1,\dots,b_s)$. The polynomials
-$(b_{s+1},\dots,b_m)$ are the $p$-minors of $\mU=(1-T)\mL+T\mF$.
+\gamma_i)$ operations in $\KK$, hence for a total of $O(n
+(\gamma_1+\cdots+\gamma_s))$ operations for $(a_1,\dots,a_s)$, and $O(\Lambda+n (\gamma_1+\cdots+\gamma_s))$ for $(b_1,\dots,b_s)$. 
 
-The polynomials $\lambda_1,\dots,\lambda_q$ can be computed in $O(n \sum_j
-\delta_j)$ operations, so that the entries of $\mU$ can be computed in
-$O(n^2 + \Lambda + n \sum_j \delta_j)$ operations. From that, all $p$-minors
-of $\mU$ can be deduced in $O({q \choose p} n^3)$ further steps.
-To summarize, all polynomials in $\bB$ can be computed by a straight-line
-program $\Gamma'$ of size
-$\Lambda'=O(\Lambda + {q \choose p} n^3 +n \sum_i \gamma_i + n \sum_j \delta_j)$.
+The polynomials $(b_{s+1},\dots,b_m)$ are the $p$-minors of
+$\mU=(1-T)\mL+T\mF$.  The polynomials $\lambda_1,\dots,\lambda_q$ can
+be computed in $O(n (\delta_1+\cdots+\delta_q))$ operations, so that
+the entries of $\mU$ can be computed in $O(\Lambda +
+n(\delta_1+\cdots+\delta_q))$ operations. From that, all $p$-minors of
+$\mU$ can be deduced in $O({q \choose p} n^3)$ further steps.  To
+summarize, all polynomials in $\bB$ can be computed by a straight-line
+program $\Gamma'$ of size $\Lambda'=O(\Lambda + {q \choose p} n^3 +n(\gamma_1+\cdots+\gamma_s+\delta_1+\cdots+\delta_q))$.
 
-\medskip
-
+\paragraph{Completing the cost analysis.}
 We can then finally apply Proposition~\ref{prop:compute_isolated},
 whose runtime is $\softO(c^5 m n^2 + c(e+c^5 n)(\Lambda' + n^3))$ operations
 in~$\KK$; since $m \le n + {q \choose p}$, this can be simplified as
-$$\softO\left (c(e+c^5 n)\left(\Lambda + {q \choose p} n^3 +n \sum_i
-    \gamma_i + n \sum_j \delta_j\right)\right).$$
-Since all of $ {q \choose p}, \sum_i \gamma_i$ and $\sum_j \delta_j$
-are at most $cn$, this becomes
-$\softO\left (c(e+c^5 n)(\Lambda + cn^4)\right),$ with
-$c=\gamma_1\cdots\gamma_s \delta_{\rm col}(\mF)$ (see
-Lemma~\ref{lemma:column:c_estimate}) and
-$e=(\gamma_1+1)\cdots(\gamma_s+1) \tilde\delta_{\rm col}(\mF)$ (see
-Lemma~\ref{lemma:columndegree:e_estimate}).  This is also
-$\softO\left (c(e+c^5 )(\Lambda + cn^4)\right).$
+$$\softO\left (c(e+c^5 n)\left(\Lambda + {q \choose p} n^3
++n(\gamma_1+\cdots+\gamma_s+\delta_1+\cdots+\delta_q)\right)\right).$$
+Now, \todo{using the assumption that all $\gamma_j$'s and $\delta_i$'s are 
+at least equal to $1$}, we prove that $ {q \choose p}$ and
+$\gamma_1+\cdots+\gamma_s+\delta_1+\cdots+\delta_q$ are both
+$O(cn)$ (and we recall that $c=E_{q-p+1}(\delta_1,\dots,\delta_q)$)
+\begin{itemize}
+\item $c$ is at least equal to $ {q \choose {q-p+1}}= \frac p{q-p+1}{q
+  \choose p}$, so that ${q \choose p} \le c(q-p+1) \le cn$.
+\item All $\gamma_j$'s are at most $c$, so that their sum is at most
+  $cn$, since $s \le n$.
+\item The sum $\delta_1+\cdots+\delta_q$ is at most equal to $cn$ as
+  well.  If $p=1$ (so that $q-p+1=q$, and thus $q \le n$), since
+  $\delta_i \le c$ holds for all $i\le q$, their sum is at most $cq\le
+  cn$. Otherwise, when $q-p+1 < q$, we claim that we actually have
+  $\delta_1+\cdots+\delta_q \le c$. Indeed this is true when
+  $\delta_1=\cdots=\delta_q=1$, and if this inequality holds for
+  $(\delta_1,\dots,\delta_q)$, it also holds for
+  $(\delta_1+1,\delta_2,\dots,\delta_q)$.
+\end{itemize}
+As a result, our bound becomes $\softO\left (c(e+c^5 n)(\Lambda +
+cn^4)\right).$  This can also be rewritten as $\softO\left
+(c(e+c^5 )(\Lambda + cn^4)\right)$, by means of a 
+ case discussion between $e$ and $c^5 n$. If $c^5 n \le e$,
+then $e+c^5 n$ is in $O(e)$. Else,
+we have $e \le c^5 n$; since $e \ge 2^n$, this implies 
+that $c \ge 2^n/n$, so that $n$ is in $O(\log(c))$, 
+and $e+c^5 n$ is in $\softO(c^5)$.
+
+
 
 \begin{algorithm}
 \caption{$\mathsf{ColumnDegree}(\Gamma)$}
-{\bf Input}: a straight-line program $\Gamma$ that computes 
+{\bf Input}: a straight-line program $\Gamma$ of length $\Lambda$ that computes 
 \begin{itemize}  
 \setlength\itemsep{0em}
 \item $F \in \KK[X_1, \ldots, X_n]^{p \times q}$ with $\deg(f_{i,j}) \leq \delta_j$ for all $j$ and $p \le q$
@@ -1927,24 +1946,25 @@ $\softO\left (c(e+c^5 )(\Lambda + cn^4)\right).$
 \begin{enumerate}\setlength\itemsep{0em}
  \item let $\scrR_{\bi,\bj,\bv}$ a zero-dimensional parametrization of the solution of the system 
 $$\mu_{1,u_1}=\cdots=\mu_{s,u_s}=\lambda_{j_1,v_1}=\cdots=\lambda_{j_{n-s},v_{n-s}}=0$$
-$\mathsf{cost: O(cn^3)}$, with $c=\gamma_1\cdots\gamma_s \delta_{\rm col}(\mF)$
+$\text{\sf{cost:~}} O(cn^3)$, with $c=\gamma_1\cdots\gamma_s E_{q-p+1}(\delta_1,\dots,\delta_q)$
 \end{enumerate}
 \end{enumerate}
 \end{enumerate}
-\item combine all $(\scrR_{\bu,\bj,\bv})_{\bu,\bj,\bv}$ into $\scrR$\\
-$\mathsf{cost: \softO(cn)}$
+\item combine all $(\scrR_{\bu,\bj,\bv})_{\bu,\bj,\bv}$ into a zero-dimensional parametrization $\scrR$\\
+$\text{\sf{cost:~}} \softO(cn)$
 
 \item construct a straight-line program $\Gamma'$ that computes all polynomials $\bB$\\
   length of $\Gamma'$ is $\Lambda'=O(\Lambda + {q \choose p} n^3 + n
 (\alpha_1+\cdots+\alpha_p) + n(\gamma_1 + \cdots + \gamma_s))$
 
-\item return $\mathsf{Homotopy}(\Gamma',\scrR)$ 
-$\mathsf{cost: \softO\left (c(e+c^5 )(\Lambda + cn^4)\right)}$
+\item return $\mathsf{Homotopy}(\Gamma',\scrR)$ \\
+$\text{\sf{cost:~}} \softO\left (c(e+c^5 )(\Lambda + cn^4)\right)$, 
+with $e=(\gamma_1+1)\cdots(\gamma_s+1) E_{q-p+1}(\delta_1+1,\dots,\delta_q+1)$
 \end{enumerate}
 \label{ColHom}
 \end{algorithm}
 
-%% case discussion on e and c^5 n.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
