@@ -521,9 +521,9 @@ in the straight-line program model is new.
    Let $s$ be in $1,\dots,d$, and suppose that the coefficients
   $\lambda^{(k)}_{i,j}$ are known for $i=1,\dots,s$, $j=0,\dots,i-1$
   and $k=1,\dots,n$. Given a straight-line program $\Gamma$ of length
-  $\Lambda$ that computes $\h=(h_1,\dots,h_R)$, one can compute
+  $\sigma$ that computes $\h=(h_1,\dots,h_R)$, one can compute
   $\beta_i(h_r)$, for all $i=1,\dots,s$ and $r=1,\dots,R$, using
-  $O(s^3\,\Lambda)$ operations in $\LL$.
+  $O(s^3\,\sigma)$ operations in $\LL$.
 \end{lemma}
 \begin{proof}
   By definition, for $h$ in $\LL[\bX]$ and $k=1,\dots,n$, the following equality
@@ -580,7 +580,7 @@ h(\bM_{1,s},\dots,\bM_{n,s})   \begin{bmatrix}
   To prove the lemma, it is then enough to note that the evaluations \sloppy
   $h_1(\bM_{1,s},\dots,\bM_{n,s}),\dots,h_R(\bM_{1,s},\dots,\bM_{n,s})$
   can be computed using the straight-line program doing
-  $O(s^3\,\Lambda)$ operations.
+  $O(s^3\,\sigma)$ operations.
 \end{proof}
 
 Mourrain's algorithm proceeds in an iterative manner, starting from
@@ -693,20 +693,20 @@ fixed, can be computed in time $O(\mu^3 (E+n))$.
   Let $s$ be in $1,\dots,d$, and suppose that the coefficients
   $\lambda^{(k)}_{i,j}$ are known for $i=1,\dots,s$, $j=0,\dots,i-1$
   and $k=1,\dots,n$. Given a straight-line program $\Gamma$ of length
-  $\Lambda$ that computes $\h=(h_1,\dots,h_R)$ and given $k$ in
+  $\sigma$ that computes $\h=(h_1,\dots,h_R)$ and given $k$ in
   $\{1,\dots,n\}$, one can compute $(X_k^{-1}\cdot \beta_i)(h_r)$, for
-  all $i=1,\dots,s$ and $r=1,\dots,R$, using $O(s^3 (\Lambda+n))$
+  all $i=1,\dots,s$ and $r=1,\dots,R$, using $O(s^3 (\sigma+n))$
   operations in $\LL$.
 \end{lemma}
 \begin{proof}
   In view of the formula $(X_k^{-1} \cdot
   \beta)(f)=\beta(\delta_k(f))$, and of Lemma~\ref{lemma:evalbeta}, it is
   enough to prove the existence of a straight-line program of length
-  $O(\Lambda+n)$ that computes $(\delta_k(h_1),\dots,\delta_k(h_R))$.
+  $O(\sigma+n)$ that computes $(\delta_k(h_1),\dots,\delta_k(h_R))$.
 
   To do this, we replace all polynomials
-  $\gamma_{-n+1},\dots,\gamma_\Lambda$ computed by $\Gamma$ by terms
-  $\eta_{-n+1},\dots,\eta_\Lambda$ and $\nu_{-n+1},\dots,\nu_\Lambda$,
+  $\gamma_{-n+1},\dots,\gamma_\sigma$ computed by $\Gamma$ by terms
+  $\eta_{-n+1},\dots,\eta_\sigma$ and $\nu_{-n+1},\dots,\nu_\sigma$,
   with
   $\eta_\ell=\gamma_\ell(X_1,\dots,X_{k-1},0,X_{k+1},\dots,X_n)$
   and $\nu_\ell$ in $\LL[\bX]$ such that
@@ -739,8 +739,8 @@ One verifies that in all cases, the relation $\gamma_\ell=
 construction allows us to compute $\eta_\ell$ and $\nu_\ell$ in
 $O(1)$ operations from the knowledge of all previous $\eta_{\ell'}$
 and $\nu_{\ell'}$, we deduce that all $\eta_\ell$ and $\nu_\ell$,
-for $\ell=-n+1,\dots,\Lambda$, can be computed by a straight-line program of
-length $O(\Lambda+n)$.
+for $\ell=-n+1,\dots,\sigma$, can be computed by a straight-line program of
+length $O(\sigma+n)$.
 \end{proof}
 
 Taking all values of $k$ into account, we see that we can compute all
@@ -1571,9 +1571,9 @@ of determinantal systems (as we mentioned in the introduction).
   Suppose that $\KK$ has characteristic zero, and suppose that matrix
   $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$ and polynomials
   $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$ are given by a
-  straight-line program of length $\Lambda$. Then, there exist 
+  straight-line program of length $\sigma$. Then, there exist 
 an algorithm that computes the isolated points of
-  $\VpFG{p}{\mF}{G}$ using $$\softO\left (c(e+c^5 )(\Lambda + cn^4)\right)$$
+  $\VpFG{p}{\mF}{G}$ using $$\softO\left (c(e+c^5 )(\sigma + cn^4)\right)$$
   operations in $\KK$, with
   $c=\gamma_1\cdots\gamma_sE_{q-p+1}(\delta_1, \ldots, \delta_q)$ and
   $e=(\gamma_1+1)\cdots(\gamma_s+1) E_{q-p+1}(\delta_1+1, \ldots,
@@ -1581,7 +1581,7 @@ an algorithm that computes the isolated points of
 \end{proposition}
 Remark that if all $\gamma_i$'s and $\delta_j$'s are at least equal to
 $2$, we have the inequality $e \le c^2$, and the runtime becomes
-$\softO\left (c^6 (\Lambda + c)\right)$.
+$\softO\left (c^6 (\sigma + c)\right)$.
 
 \medskip
 
@@ -1874,7 +1874,7 @@ E_{q-p+1}(\delta_1+1, \ldots, \delta_q+1)$.
 \paragraph{Property $\assD_3$.} Finally, we need to give an estimate on
 the size of a straight-line program that computes the polynomials
 $\bB=(b_1,\dots,b_m)$, assuming that we are given a straight-line
-program $\Gamma$ of size $\Lambda$ that computes polynomials $G=(g_1,\dots,g_s)$ and
+program $\Gamma$ of size $\sigma$ that computes polynomials $G=(g_1,\dots,g_s)$ and
 the entries of $\mF$.
 
 First, we estimate the complexity of computing the polynomials
@@ -1882,22 +1882,22 @@ $(b_1,\dots,b_s)$. For $i \le s$, the $i$th polynomial $b_i$ is equal
 to $(1-T)a_i + T g_i$, where $a_i$ is a product of $\gamma_i$ linear
 forms in $n$ variables. This polynomial can be computed in $O(n
 \gamma_i)$ operations in $\KK$, hence for a total of $O(n
-(\gamma_1+\cdots+\gamma_s))$ operations for $(a_1,\dots,a_s)$, and $O(\Lambda+n (\gamma_1+\cdots+\gamma_s))$ for $(b_1,\dots,b_s)$. 
+(\gamma_1+\cdots+\gamma_s))$ operations for $(a_1,\dots,a_s)$, and $O(\sigma+n (\gamma_1+\cdots+\gamma_s))$ for $(b_1,\dots,b_s)$. 
 
 The polynomials $(b_{s+1},\dots,b_m)$ are the $p$-minors of
 $\mU=(1-T)\mL+T\mF$.  The polynomials $\lambda_1,\dots,\lambda_q$ can
 be computed in $O(n (\delta_1+\cdots+\delta_q))$ operations, so that
-the entries of $\mU$ can be computed in $O(\Lambda +
+the entries of $\mU$ can be computed in $O(\sigma +
 n(\delta_1+\cdots+\delta_q))$ operations. From that, all $p$-minors of
 $\mU$ can be deduced in $O({q \choose p} n^3)$ further steps.  To
 summarize, all polynomials in $\bB$ can be computed by a straight-line
-program $\Gamma'$ of size $\Lambda'=O(\Lambda + {q \choose p} n^3 +n(\gamma_1+\cdots+\gamma_s+\delta_1+\cdots+\delta_q))$.
+program $\Gamma'$ of size $\sigma'=O(\sigma + {q \choose p} n^3 +n(\gamma_1+\cdots+\gamma_s+\delta_1+\cdots+\delta_q))$.
 
 \paragraph{Completing the cost analysis.}
 We can then finally apply Proposition~\ref{prop:compute_isolated},
-whose runtime is $\softO(c^5 m n^2 + c(e+c^5 n)(\Lambda' + n^3))$ operations
+whose runtime is $\softO(c^5 m n^2 + c(e+c^5 n)(\sigma' + n^3))$ operations
 in~$\KK$; since $m \le n + {q \choose p}$, this can be simplified as
-$$\softO\left (c(e+c^5 n)\left(\Lambda + {q \choose p} n^3
+$$\softO\left (c(e+c^5 n)\left(\sigma + {q \choose p} n^3
 +n(\gamma_1+\cdots+\gamma_s+\delta_1+\cdots+\delta_q)\right)\right).$$
 Now, \todo{using the assumption that all $\gamma_j$'s and $\delta_i$'s are 
 at least equal to $1$}, we prove that $ {q \choose p}$ and
@@ -1917,9 +1917,9 @@ $O(cn)$ (and we recall that $c=E_{q-p+1}(\delta_1,\dots,\delta_q)$)
   $(\delta_1,\dots,\delta_q)$, it also holds for
   $(\delta_1+1,\delta_2,\dots,\delta_q)$.
 \end{itemize}
-As a result, our bound becomes $\softO\left (c(e+c^5 n)(\Lambda +
+As a result, our bound becomes $\softO\left (c(e+c^5 n)(\sigma +
 cn^4)\right).$  This can also be rewritten as $\softO\left
-(c(e+c^5 )(\Lambda + cn^4)\right)$, by means of a 
+(c(e+c^5 )(\sigma + cn^4)\right)$, by means of a 
  case discussion between $e$ and $c^5 n$. If $c^5 n \le e$,
 then $e+c^5 n$ is in $O(e)$. Else,
 we have $e \le c^5 n$; since $e \ge 2^n$, this implies 
@@ -1930,7 +1930,7 @@ and $e+c^5 n$ is in $\softO(c^5)$.
 
 \begin{algorithm}
 \caption{$\mathsf{ColumnDegree}(\Gamma)$}
-{\bf Input}: a straight-line program $\Gamma$ of length $\Lambda$ that computes 
+{\bf Input}: a straight-line program $\Gamma$ of length $\sigma$ that computes 
 \begin{itemize}  
 \setlength\itemsep{0em}
 \item $F \in \KK[X_1, \ldots, X_n]^{p \times q}$ with $\deg(f_{i,j}) \leq \delta_j$ for all $j$ and $p \le q$
@@ -1954,11 +1954,11 @@ $\text{\sf{cost:~}} O(cn^3)$, with $c=\gamma_1\cdots\gamma_s E_{q-p+1}(\delta_1,
 $\text{\sf{cost:~}} \softO(cn)$
 
 \item construct a straight-line program $\Gamma'$ that computes all polynomials $\bB$\\
-  length of $\Gamma'$ is $\Lambda'=O(\Lambda + {q \choose p} n^3 + n
+  length of $\Gamma'$ is $\sigma'=O(\sigma + {q \choose p} n^3 + n
 (\alpha_1+\cdots+\alpha_p) + n(\gamma_1 + \cdots + \gamma_s))$
 
 \item return $\mathsf{Homotopy}(\Gamma',\scrR)$ \\
-$\text{\sf{cost:~}} \softO\left (c(e+c^5 )(\Lambda + cn^4)\right)$, 
+$\text{\sf{cost:~}} \softO\left (c(e+c^5 )(\sigma + cn^4)\right)$, 
 with $e=(\gamma_1+1)\cdots(\gamma_s+1) E_{q-p+1}(\delta_1+1,\dots,\delta_q+1)$
 \end{enumerate}
 \label{ColHom}
@@ -1998,17 +1998,17 @@ where the ${}^H$ superscript indicates that all entries are
 homogenous.  In both cases, for all $i,j$, the entry $\lambda^H_{i,j}$
 is a product of $\alpha_i$ homogeneous linear forms in $n+1$ variables
 $X_0,\dots,X_n$ with coefficients in $\KK$ (except when
-$\lambda^H_{i,j}$ is explicitly set to zero in the first case), that
+$\lambda^H_{i,j}$ is explicitly set to zero in the second case), that
 is, $\lambda^H_{i,j}=\prod_{k=1}^{\alpha_i} \lambda^H_{i,j,k}$.  
 
 We are interested in describing the projective algebraic sets defined
 in $\P^n(\KKbar)$ by the $p$-minors of $\mN^H$ and $\mM^H$ (note that
-these minors are all homogeous). In the rest of this section, if $\mA$
-is a matrix with polynomial entries, all of whose $t$-minors are
-homogeneous in $X_0,\dots,X_n$, we use the notation $V_t(\mA)$ to
-denote the projective set defined by its $t$-minors in $\P^n(\KKbar)$
-(we use the same notation for affine algebraic sets in those cases 
-when the entries of $\mA$ are polynomials in $X_1,\dots,X_n$; 
+these minors are all homogeous). In the rest of this section, if
+$\mA^H$ is a matrix with polynomial entries that are homogeneous in
+$X_0,\dots,X_n$, we use the notation $V_t(\mA^H)$ to denote the
+projective set defined by its $t$-minors in $\P^n(\KKbar)$, for any
+$t\ge 1$ (we use the same notation for affine algebraic sets in those
+cases when the entries of our matrices are polynomials in $X_1,\dots,X_n$;
 this should cause no confusion).
 
 \begin{proposition}\label{lemma:appendix}
@@ -2023,27 +2023,26 @@ this should cause no confusion).
 \end{itemize}
 \end{proposition}
 
-The remainder of this section is devoted to prove this proposition.
+The bulk of this section is devoted to prove this proposition.
 Our strategy is to work all along with linear forms with indeterminate
 coefficients, and establish the properties we want in this context.
 Explicitly, we prove below properties called $\assI_2(\balpha,q),\assJ_2(\balpha,q)$
 and  $\assI_4(\balpha,q),\assJ_4(\balpha,q),$ which establish the proposition.
 In what follows, for any ring $R$ and any matrix $\mM \in R^{p\times
   q}$, if $S$ is a subsequence of $(1,\dots,p)$ and $T$ a subsequence
-of $(1,\dots,q)$, $\mM_{S,T}$ is the submatrix obtained by keeping
+of $(1,\dots,q)$, $\mM_{S,T}$ is the submatrix of $\mM$ obtained by keeping
 rows indexed by $S$ and columns indexed by $T$. We also call this the
 $(S,T)$-submatrix of $\mM$.
 
 
-
-Let thus $A=q(n+1)(\alpha_1 + \cdots + \alpha_p)$; this is the number
-of coefficients needed to define homogeneous linear forms
+Let thus ${\cal A}=q(n+1)(\alpha_1 + \cdots + \alpha_p)$; this is the
+number of coefficients needed to define homogeneous linear forms
 $\lambda^H_{i,j,k}$ in $X_0,\dots,X_n$, for $i=1,\dots,p$,
 $j=1,\dots,q$ and $k=1,\dots,\alpha_i$. If needed, we will write
-$A=A(\balpha,q)$ to make the dependency in $\balpha$ and $q$ explicit.
-Let then $\mathfrak{L}$ be the sequence of $A$ indeterminates
-$\mathfrak{L}=(\mathfrak{l}_{i,j,k,r})$, for $i,j,k$ as above and
-$r=0,\dots,n$, and define
+${\cal A}={\cal A}(\balpha,q)$ to make the dependency in $\balpha$ and
+$q$ explicit.  Let then $\mathfrak{L}$ be the sequence of ${\cal A}$
+indeterminates $\mathfrak{L}=(\mathfrak{l}_{i,j,k,r})$, for $i,j,k$ as
+above and $r=0,\dots,n$, and define
 $$\mathfrak{l}^H_{i,j,k} = \mathfrak{l}_{i,j,k,0}X_0 + \mathfrak{l}_{i,j,k,1} X_1 +\cdots + \mathfrak{l}_{i,j,k,n} X_n,$$
 as well as 
 $$\mathfrak{l}^H_{i,j} = \mathfrak{l}^H_{i,j,1} \cdots \mathfrak{l}^H_{i,j,\alpha_i} \in \KK[\mathfrak{L}][\tilde\bX],$$
@@ -2060,18 +2059,18 @@ Remark that for all $i,j$, the $(i,j)$-th entry of
 $\mathfrak{M}^H_{\balpha,q}$ has degree $\alpha_i$ in $\tilde \bX$;
 this matrix is thus the ``generic'' model of the matrix $\mM^H$ seen previously.
 
-Given $\Lambda=(\lambda_{i,j,k,r})\in \KKbar{}^A$, for any polynomial
+Given $\Lambda=(\lambda_{i,j,k,r})\in \KKbar{}^{\cal A}$, for any polynomial
 $\mathfrak{F}$ in $\KK(\mathfrak{L})[\tilde \bX]$, we write
 $\mathfrak{F}(\Lambda,\tilde\bX)$ for the polynomial obtained by
 evaluating $\mathfrak{l}_{i,j,k,r}$ at $\lambda_{i,j,k,r}$, for all
 indices $i,j,k,r$ as above, as long as no denominator vanishes through
 this evaluation; the notation extends to polynomial matrices. More
-generally, for a field $\LL$ containing $\KK$, and $L$ in $\LL^A$, the
-notation $\mathfrak{F}(L,\tilde\bX)$ is defined similarly.
+generally, for a field $\LL$ containing $\KK$, and $\Lambda$ in $\LL^{\cal A}$, the
+notation $\mathfrak{F}(\Lambda,\tilde\bX)$ is defined similarly.
 
-Let next $A'=n(n+1)(\alpha_1+\cdots+\alpha_p)$; as above, 
-we will write $A'=A'(\balpha,q)$ when needed. Let
-$\mathfrak{L}'\subset \mathfrak{L}$ be the sequence of $A'$
+Let next ${\cal A}'=n(n+1)(\alpha_1+\cdots+\alpha_p)$; as above, 
+we will write ${\cal A}'={\cal A}'(\balpha,q)$ when needed. Let
+$\mathfrak{L}'\subset \mathfrak{L}$ be the sequence of ${\cal A}'$
 indeterminates $\mathfrak{L}'=(\mathfrak{l}_{i,j,k,r})$, for indices
 $i,j,k,r$ as follows: $i$ is in $\{1,\dots,p\}$, $j$ is in
 $\{i,p+1,\dots,q\}$, and as previously, $k$ is in
@@ -2081,26 +2080,26 @@ $\KK[\mathfrak{L}'][\tilde\bX] \subset \KK[\mathfrak{L}][\tilde \bX]$,
 and allow us to define
 \begin{align}\label{eq:matMprime}
 \mathfrak{N}^H_{\balpha,q}=\left [\begin{matrix} \mathfrak{l}^H_{1,1} & 0 & 0
-    &\mathfrak{l}^H_{1,p+1} & \cdots & \mathfrak{l}^H_{1,q}\\ 0 & \ddots &
-    0 & \vdots & & \vdots\\ 0&0& \mathfrak{l}^H_{p,p}
+    &\mathfrak{l}^H_{1,p+1} & \cdots & \mathfrak{l}^H_{1,q}\\ \vdots & \ddots &
+    \vdots & \vdots & & \vdots\\ 0&0& \mathfrak{l}^H_{p,p}
     &\mathfrak{l}^H_{p,p+1} & \cdots & \mathfrak{l}^H_{p,q}
   \end{matrix}\right ]\in \KK[\mathfrak{L}'][\tilde\bX]^{p\times q}.
 \end{align}
-For $\Lambda' \in \KKbar{}^{A'}$ and $\mathfrak{F}$ in 
+For $\Lambda' \in \KKbar{}^{{\cal A}'}$ and $\mathfrak{F}$ in 
 $\KK(\mathfrak{L}')[\tilde\bX]$, the notation
 $\mathfrak{F}(\Lambda',\tilde\bX)$ is defined as in the case of
 polynomials over $\KK(\mathfrak{L})$ described previously.
 
 
 \paragraph{Setting up the recurrences.}
-The basic idea behind our proofs below is the following: to prove that
-a property holds for a matrix $\mathfrak{M}^H_{\balpha,q}$, we prove
+The basic idea behind the proofs below is the following: to prove that
+a property such as rank-deficiency holds for a matrix $\mathfrak{M}^H_{\balpha,q}$, we prove
 that it holds for a matrix of the form $\mathfrak{N}^H_{\balpha,q}$,
 and use an openness property. To prove that property for the
 latter matrices, we proceed by induction, relying on the presence of
 the left-hand diagonal block. Indeed, for a matrix such as
 $\mathfrak{N}^H_{\balpha,q}$ to be rank-deficient at $\tilde\bx \in
-\P^n(\KKGpbar)$, one of
+\P^n(\KKGpbar)$, at least one of
 $\mathfrak{l}^H_{1,1},\dots,\mathfrak{l}^H_{p,p}$ must vanish at
 $\tilde\bx$.
 
@@ -2142,11 +2141,11 @@ By Gaussian elimination, we can rewrite the homogeneous linear
 equations
 $\mathfrak{l}^H_{i_1,i_1,r_1}=\dots=\mathfrak{l}^H_{i_\kappa,i_\kappa,r_\kappa}=0$ as
 \begin{align}\label{eq:f_sr}
-X_{n-\kappa+1}=\mathfrak{f}_{\bi,\br,n-\kappa+1}(X_0,\dots,X_{n-\kappa}),\dots,X_{n}=\mathfrak{f}_{\bi,\br,n}(X_0,\dots,X_{n-\kappa}),  
+X_{n-\kappa+1}=\mathfrak{f}_{n-\kappa+1,\bi,\br}(X_0,\dots,X_{n-\kappa}),\dots,X_{n}=\mathfrak{f}_{n,\bi,\br}(X_0,\dots,X_{n-\kappa}),  
 \end{align}
 for some homogeneous linear forms
-$\mathfrak{f}_{\bi,\br,n-\kappa+1},\dots,\mathfrak{f}_{\bi,\br,n}$ of
-$(X_0,\dots,X_{n-t})$ with coefficients in
+$\mathfrak{f}_{n-\kappa+1,\bi,\br},\dots,\mathfrak{f}_{n,\bi,\br}$ of
+$(X_0,\dots,X_{n-\kappa})$ with coefficients in
 $\KK(\mathfrak{L}'_{\bi,\br})$. Applying this substitution in the
 entries of the submatrix of ${\mathfrak{N}^H_{\balpha,q}}$ associated
 to $\bi$ gives us the $\kappa \times (n-1)$ matrix
@@ -2154,23 +2153,23 @@ $\mathfrak{M}^H_{\balpha_\bi,n-1}(\mathfrak{H}_{\bi,\br},\tilde\bX')$,
 with $\balpha_\bi=(\alpha_{i_1},\dots,\alpha_{i_\kappa})$, whose
 entries are products of homogeneous linear forms in
 $\tilde\bX'=(X_0,\dots,X_{n-\kappa})$, and where $\mathfrak{H}_{\bi,\br}$ is a
-vector of $A(\balpha_\bi,n-1)$ elements in $\KK(\mathfrak{L}'_{\bi,\br})$.
+vector of ${\cal A}(\balpha_\bi,n-1)$ elements in $\KK(\mathfrak{L}'_{\bi,\br})$.
 
 The main result we will use in this section is the following lemma,
 which summarizes how the above process allows us to describe the
 projective zero-set of $t$-minors of $\mathfrak{N}^H_{\balpha,q}$, for
 any $t \le p$. This will be the basis of several recursions.
 \begin{lemma}\label{lemma:union}
-  For $t$ in $\{1,\dots,p\}$, $V_t(\mathfrak{N}^H_{\balpha,q})$ is the
+  For $t$ in $\{1,\dots,p\}$, $V_t(\mathfrak{N}^H_{\balpha,q}) \subset \P^{n}(\KKGpbar)$ is the
   union of the sets
  \begin{align}\label{eq:union}
- \left \{(\tilde\bx',\mathfrak{f}_{\bi,\br,n-\kappa+1}(\tilde\bx'),\dots,\mathfrak{f}_{\bi,\br,n}(\tilde\bx')) \mid \tilde\bx' \in
+ \left \{(\tilde\bx',\mathfrak{f}_{n-\kappa+1,\bi,\br}(\tilde\bx'),\dots,\mathfrak{f}_{n,\bi,\br}(\tilde\bx')) \mid \tilde\bx' \in
   V_{\kappa-(p-t)}(\mathfrak{M}^H_{\balpha_\bi,n-1}(\mathfrak{H}_{\bi,\br},\tilde\bX')) \subset \P^{n-\kappa}(\KKGpbar)\right \},   
  \end{align}
  for $\bi=(i_1,\dots,i_\kappa)$ of length $\kappa \in \{p-t+1,\dots,\min(p,n-1)\}$ and $\br$ in $R_\bi$,
  and with $\tilde\bX'=(X_0,\dots,X_{n-\kappa})$, together with
  $$\left \{
- (1,\mathfrak{f}_{\bi,\br,1}(1),\dots,\mathfrak{f}_{\bi,\br,n}(1))\right
+ (1,\mathfrak{f}_{1,\bi,\br}(1),\dots,\mathfrak{f}_{n,\bi,\br}(1))\right
  \}$$ if $t=p$ and $n \le p$, with $\bi=(i_1,\dots,i_n)$ and $\br$ in $R_\bi$.
 \end{lemma}
 \noindent We have to write a special case for $t=p$ and $n \le p$ in the last part of the lemma,
@@ -2200,14 +2199,14 @@ in~\eqref{eq:union} would lead to consider points in $\P^0(\KKGpbar)$.
   Applying~\eqref{eq:f_sr}, we deduce that the coordinates $(x_0,\dots,x_n)$ 
   of $\tilde \bx$ satisfy
   \begin{align*}
-    x_{n-\kappa+1}=\mathfrak{f}_{\bi,\br,n-\kappa+1}(\tilde\bx'),\dots,x_{n}=\mathfrak{f}_{\bi,\br,n}(\tilde\bx'),
+    x_{n-\kappa+1}=\mathfrak{f}_{n-\kappa+1,\bi,\br}(\tilde\bx'),\dots,x_{n}=\mathfrak{f}_{n,\bi,\br}(\tilde\bx'),
   \end{align*}
   with $\tilde\bx'=(x_0,\dots,x_{n-\kappa})$.  In particular, $\kappa
   \le n$, since otherwise this linear system would have no solution
   (recall that the coefficients are algebraically independent
   indeterminates). Remark also that $\tilde\bx'$ is a well-defined
-  element of $\P^{n-\kappa}(\KKGpbar)$, since otherwise $\tilde\bx$ would
-  vanish.
+  element of $\P^{n-\kappa}(\KKGpbar)$, that is, it is not identically
+  zero, since otherwise $\tilde\bx$ would vanish as well.
 
   For $\bi=(i_1,\dots,i_\kappa)$ with $\kappa \le n-1$, applying the above
   substitution in the submatrix of $\mathfrak{N}^H_{\balpha,q}$
@@ -2222,7 +2221,7 @@ in~\eqref{eq:union} would lead to consider points in $\P^0(\KKGpbar)$.
   When $\kappa=n$, that is, $\bi=(i_1,\dots,i_n)$ (this can happen
   only if $n \le p$), the linear equations above determine $\tilde\bx$
   entirely; setting $x_0=1$, we obtain
-  $x_{1}=\mathfrak{f}_{\bi,\br,1}(1),\dots,x_{n}=\mathfrak{f}_{\bi,\br,n}(1).$
+  $x_{1}=\mathfrak{f}_{1,\bi,\br}(1),\dots,x_{n}=\mathfrak{f}_{n,\bi,\br}(1).$
   In this case, the submatrix of $\mathfrak{N}^H_{\balpha,q}$
   associated to $\bi$ has size $n \times (n-1)$. Using the
   specialization of the coefficients that sets the off-diagonal entry
@@ -2230,9 +2229,9 @@ in~\eqref{eq:union} would lead to consider points in $\P^0(\KKGpbar)$.
   $i=1,\dots,n-1$, we see that its evaluation at $\tilde\bx$ has rank
   $n-1$; as a result $\mathfrak{N}^H_{\balpha,q}$ has rank $p-1$ at
   $\tilde \bx$. Thus, we need to take $\kappa=n$ into account only if
-  $t=p$, that is, we are interested in the maximal minors; in this
+  $t=p$, that is, if we are interested in the maximal minors; in this
   case, we have to take into account the point $\left \{
-  (1,\mathfrak{f}_{\bi,\br,1}(1),\dots,\mathfrak{f}_{\bi,\br,n}(1))\right
+  (1,\mathfrak{f}_{1,\bi,\br}(1),\dots,\mathfrak{f}_{n,\bi,\br}(1))\right
   \}$.
 \end{proof}
 
@@ -2240,7 +2239,7 @@ in~\eqref{eq:union} would lead to consider points in $\P^0(\KKGpbar)$.
 \paragraph{Solutions with higher rank defect.} 
 We discuss here the case $t=p-1$.  We take parameters
 $\balpha=(\alpha_1,\dots,\alpha_p)$ and $q$, with $2 \le p \le q$, and
-we write $A=A(\balpha,q)$ and $A'=A'(\balpha,q)$; we will establish
+we write ${\cal A}={\cal A}(\balpha,q)$ and ${\cal A}'={\cal A}'(\balpha,q)$; we will establish
 the following properties.
 \begin{description}[leftmargin=*]
 \item[$\assI_1(\balpha,q).$] The projective algebraic set
@@ -2252,21 +2251,21 @@ The first step of the proof is to establish that for $\balpha$ and $q$
 as above, $\assJ_1(\balpha,q)$ implies $\assI_1(\balpha,q)$. Let us
 thus fix $\balpha$ and $q$.  Assumption $\assJ_1(\balpha,q)$ implies
 that $V_{p-1}(\mathfrak{N}^H_{\balpha,q}(\Lambda',\tilde\bX))$ is
-empty for a generic $\Lambda'$ in~$\KKbar{}^{A'}$.  We will prove that
+empty for a generic $\Lambda'$ in~$\KKbar{}^{{\cal A}'}$.  We will prove that
 $V_{p-1}(\mathfrak{M}^H_{\balpha,q}(\Lambda,\tilde\bX))$ is empty for
-a generic $\Lambda$ in~$\KKbar{}^A$, which in turn establishes
+a generic $\Lambda$ in~$\KKbar{}^{\cal A}$, which in turn establishes
 $\assI_1(\balpha,q)$.
 
 
 Consider the ideal $I_{p-1}(\mathfrak{M}^H_{\balpha,q})$ in the polynomial
-ring $\KK[\mathfrak{L},\tilde\bX]$ in $A+n+1$ variables. This ideal
-defines an algebraic set $Z_{\balpha,q}$ in $\KKbar{}^A \times
-\P^n(\KKbar)$, and we let $\Delta_{\balpha,q} \subset \KKbar{}^A$ be its
+ring $\KK[\mathfrak{L},\tilde\bX]$ in ${\cal A}+n+1$ variables. This ideal
+defines an algebraic set $Z_{\balpha,q}$ in $\KKbar{}^{\cal A} \times
+\P^n(\KKbar)$, and we let $\Delta_{\balpha,q} \subset \KKbar{}^{\cal A}$ be its
 projection on the first factor: this is the set of all $\Lambda$ such that
 $V_{p-1}(\mathfrak{M}^H_{\balpha,q}(\Lambda,\tilde\bX))$ is not empty. Because the source is
 a projective space, $\Delta_{\balpha,q}$ is closed (so its complement is
 open), and we just have to verify that it is not equal to the whole
-$\KKbar{}^A$. This follows readily from property $\assJ_1(\balpha,q)$,
+$\KKbar{}^{\cal A}$. This follows readily from property $\assJ_1(\balpha,q)$,
 which proves that generic matrices of the form
 $\mathfrak{N}^H_{\balpha,q}(\Lambda',\tilde\bX)$ do not belong to $\Delta_{\balpha,q}$, so 
 $\assI_1(\balpha,q)$ holds.
@@ -2278,7 +2277,7 @@ entries are products of linear forms in $(X_0,X_1)$ with indeterminate
 coefficients. Hence, no pair of entries $\mathfrak{N}^H_{\balpha,q}$
 have any common solution in $\P^1(\KKGpbar)$, so the rank of
 $\mathfrak{N}^H_{\balpha,q}$ is at least $p-1$ at any $\tilde\bx \in
-\P^1(\KKGpbar)$. Hence, $\assJ_1(\balpha,p)$ holds, and so does
+\P^1(\KKGpbar)$. As a result, $\assJ_1(\balpha,p)$ holds, and so does
 $\assI_1(\balpha,p)$, by the claim in the previous paragraph.
 
 Consider next a pair $(\balpha,q)$, with
@@ -2292,18 +2291,24 @@ Take $t=p-1$ in Lemma~\ref{lemma:union}. Then, the parameters
 $(\kappa-(p-t),\balpha_\bi,n-1)$ used in each
 expression~\eqref{eq:union} are of the form
 $(\kappa-1,\balpha_\bi,n-1)$, with $2 \le \kappa \le \min(p,n-1)$.
-Since the entries of $\mathfrak{H}_{\bi,\br}$ are algebraically
-independent, since $\balpha_\bi$ has length $\kappa\ge 2$, and since we also
+Since the ${\cal A}(\balpha_\bi,n-1)$ entries of $\mathfrak{H}_{\bi,\br}$ are algebraically
+independent over $\KK$, $\KK(\mathfrak{H}_{\bi,\br})$ is isomorphic to 
+$\KK(\lambda_{u,j,k,r})$, for $u=1,\dots,\kappa$, 
+$j=1,\dots,n-1$, $k=1,\dots,\alpha_{i_u}$ 
+and $r=0,\dots,n-\kappa$, so that $V_{\kappa-1}(\mathfrak{M}^H_{\balpha_\bi,n-1}(\mathfrak{H}_{\bi,\br},\tilde\bX'))$
+has the same cardinality as 
+$V_{\kappa-1}(\mathfrak{M}^H_{\balpha_\bi,n-1})$.
+As a result, since $\balpha_\bi$ has length $\kappa\ge 2$, and since we also
 have $\kappa \le n-1$, $\kappa \le p$ and $n-1 < q$, we can apply the
 induction hypothesis and deduce that all
 $V_{\kappa-1}(\mathfrak{M}^H_{\balpha_\bi,n-1}(\mathfrak{H}_{\bi,\br},\tilde\bX'))$ appearing
-in Lemma~\ref{lemma:union} are empty. As a consequence,
+in Lemma~\ref{lemma:union} are empty. This in turn implies that
 $V_{p-1}(\mathfrak{N}^H_{\balpha,q})$ is empty, as claimed.
 
 
 \paragraph{Solutions at infinity.} Next, we focus on the case $t=p$.
 We take parameters $\balpha=(\alpha_1,\dots,\alpha_p)$ and $q$, with
-$1 \le p \le q$, and we write $A=A(\balpha,q)$ and $A'=A'(\balpha,q)$;
+$1 \le p \le q$, and we write ${\cal A}={\cal A}(\balpha,q)$ and ${\cal A}'={\cal A}'(\balpha,q)$;
 then, we prove the following properties.
 \begin{description}[leftmargin=*]
 \item[$\assI_2(\balpha,q).$] The projective algebraic set
@@ -2321,21 +2326,21 @@ $\assJ_2(\balpha,q)$ implies $\assI_2(\balpha,q)$.
 Let us thus fix $\balpha$ and $q$, and assume that
 $\assJ_2(\balpha,q)$ holds. We prove that
 $V_p(\mathfrak{M}^H_{\balpha,q}(\Lambda,\tilde\bX))$ has no point at
-infinity for a generic $\Lambda$ in $\KKbar{}^A$; this will imply
+infinity for a generic $\Lambda$ in $\KKbar{}^{\cal A}$; this will imply
 $\assI_2(\balpha,q)$. Consider the ideal generated by
 $I_{p}(\mathfrak{M}^H_{\balpha,q})$ and $X_0$ in the polynomial ring
-$\KK[\mathfrak{L},\tilde\bX]$ in $A+n+1$ variables. This ideal defines
-an algebraic set $Z'_{\balpha,q}$ in $\KKbar{}^A \times \P^n(\KKbar)$,
-and we let $\Delta'_{\balpha,q} \subset \KKbar{}^A$ be its projection
+$\KK[\mathfrak{L},\tilde\bX]$ in ${\cal A}+n+1$ variables. This ideal defines
+an algebraic set $Z'_{\balpha,q}$ in $\KKbar{}^{\cal A} \times \P^n(\KKbar)$,
+and we let $\Delta'_{\balpha,q} \subset \KKbar{}^{\cal A}$ be its projection
 on the first factor: this is thus the set of all $\Lambda$ in
-$\KKbar{}^A$ such that
+$\KKbar{}^{\cal A}$ such that
 $V_p(\mathfrak{M}^H_{\balpha,q}(\Lambda,\tilde\bX))$ has a point at
 infinity. Because the source is a projective space, $\Delta'_{\balpha,q}$ is
 closed (so its complement is open), and we just have to verify that it
-is not equal to the whole $\KKbar{}^A$. This follows from property
+is not equal to the whole $\KKbar{}^{\cal A}$. This follows from property
 $\assJ_2(\balpha,q)$, which implies that matrices of the form
 $\mathfrak{N}^H_{\balpha,q}(\Lambda',\tilde\bX)$, for generic
-$\Lambda'$ in $\KKbar{}^{A'}$, do not belong to $\Delta'_{\balpha,q}$.
+$\Lambda'$ in $\KKbar{}^{{\cal A}'}$, do not belong to $\Delta'_{\balpha,q}$.
 
 Again, we finish the proof by induction. We first take $p=q$, and we
 prove that $\assJ_2(\balpha,q)$ holds ($\assI_2(\balpha,q)$ will follow,
