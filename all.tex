@@ -2549,7 +2549,7 @@ $\tilde\bx'=(x_0,\dots,x_{n-\kappa})$ is in
 $V_\kappa(\mathfrak{M}^H_{\balpha_\bi,n-1}(\mathfrak{H}_{\bi,\br},\tilde\bX')) \subset
 \P^{n-\kappa}(\KKGpbar)$, and such that
 \begin{align}\label{eq:subsX}
-  x_{n-\kappa+1}=\mathfrak{f}_{\bi,\br,n-\kappa+1}(\tilde\bx'),\dots,x_{n}=\mathfrak{f}_{\bi,\br,n}(\tilde\bx').
+  x_{n-\kappa+1}=\mathfrak{f}_{n-\kappa+1,\bi,\br}(\tilde\bx'),\dots,x_{n}=\mathfrak{f}_{n,\bi,\br}(\tilde\bx').
 \end{align}
 By Lemma~\ref{lemma:union}, taking all such $\tilde\bx$ into account,
 for all $\bi$ and $\br$, will cover all points in
@@ -2558,29 +2558,33 @@ obtained from $\kappa=n$, which will admit a simpler treatment.
 For simplicity, we continue the proof with $\bi=(1,\dots,\kappa)$, so
 that we have $\balpha_\bi=(\alpha_1,\dots,\alpha_\kappa)$.  
 
-We are going to exhibit some nice polynomials that belong to
+We are going to exhibit some polynomials that belong to
 $I_p(\mathfrak{N}^H_{\balpha,q})$, for which we can control the rank
-of the Jacobian at $\tilde\bx$. First, we prove that for
-$i\in\{1,\dots,\kappa\}$ and $r \in \{1,\dots,\alpha_i\}-\{r_i\}$, as
-well as $i\in\{\kappa+1,\dots,p\}$ and $r \in \{1,\dots,\alpha_i\}$,
-the value $\mathfrak{l}^H_{i,i,r}(\tilde\bx)$ is non-zero.  We
-subdivide the indeterminates $\mathfrak{L}'$ into $\mathfrak{L}'_{\bi,\br}$ and
-$\mathfrak{L}''_{\bi,\br}$, where $\mathfrak{L}'_{\bi,\br}$ corresponds to the
-coefficients involved in $\mathfrak{l}^H_{i,i,r_i}$, for $i=1,\dots,\kappa$,
-and in the submatrix of $\mathfrak{N}^H_{\balpha,q}$ associated to $\bi$,
-and $\mathfrak{L}''_{\bi,\br}$ are the other coordinates.  By
+of the Jacobian at $\tilde\bx$. First, we prove that for $i$ in
+$\{1,\dots,\kappa\}$ and $r$ in $\{1,\dots,\alpha_i\}-\{r_i\}$, as
+well as $i$ in $\{\kappa+1,\dots,p\}$ and $r$ in
+$\{1,\dots,\alpha_i\}$, the value $\mathfrak{l}^H_{i,i,r}(\tilde\bx)$
+is non-zero.  We subdivide the indeterminates $\mathfrak{L}'$ into
+$\mathfrak{L}'_{\bi,\br}$ and $\mathfrak{L}''_{\bi,\br}$, where
+$\mathfrak{L}'_{\bi,\br}$ corresponds to the coefficients involved in
+$\mathfrak{l}^H_{i,i,r_i}$, for $i=1,\dots,\kappa$, and in the
+submatrix of $\mathfrak{N}^H_{\balpha,q}$ associated to $\bi$, and
+$\mathfrak{L}''_{\bi,\br}$ are the other coordinates.  By
 $\assI_2(\balpha_s,n-1)$,
-$V_\kappa(\mathfrak{M}^H_{\balpha_\bi,n-1}(\mathfrak{H}_{\bi,\br},\tilde\bX'))$ is finite; as
-a result, all coordinates of $\tilde\bx$ are algebraic over
-$\KK(\mathfrak{L}'_{\bi,\br})$. For $i,r$ as above, the coefficients
-of the equation
+$V_\kappa(\mathfrak{M}^H_{\balpha_\bi,n-1}(\mathfrak{H}_{\bi,\br},\tilde\bX'))$
+is finite; as a result, since all entries of $\mathfrak{H}_{\bi,\br}$ 
+are in $\KK(\mathfrak{L}'_{\bi,\br})$,
+all coordinates of $\tilde\bx$ are algebraic
+over $\KK(\mathfrak{L}'_{\bi,\br})$. For $i,r$ as above, the
+coefficients of the equation
 $$\mathfrak{l}^H_{i,i,r} = \frak{l}_{i,i,r,0} X_0+ \frak{l}_{i,i,r,1}
-X_1 +\cdots + \frak{l}_{i,i,r,n} X_n$$ are thus algebraically independent
-over the field of definition of $\tilde\bx'$, so that $\mathfrak{l}^H_{i,i,r}(\tilde\bx)$
+X_1 +\cdots + \frak{l}_{i,i,r,n} X_n$$ are
+in  $\KK(\mathfrak{L}''_{\bi,\br})$, thus algebraically independent
+over the field of definition of $\tilde\bx$, so that $\mathfrak{l}^H_{i,i,r}(\tilde\bx)$
 is non-zero.
 
 \begin{remark}\label{remark:disjoint}
-  In particular, the union in Lemma~\ref{lemma:union} is disjoint.
+  This implies in particular that the union in Lemma~\ref{lemma:union} is disjoint.
 \end{remark}
 
 In the following two paragraphs, assume $\kappa \ge 2$
@@ -2606,7 +2610,7 @@ at $\tilde\bx'$.  Thus, $\mathfrak{N}^H_i$ has rank $\kappa-1$ at
 $\tilde\bx$, from which the existence of the minor $c_i$ follows.
 If $\kappa=1$, we define $c_1=1$.
 
-We next deduce that for $i\in\{1,\dots,\kappa\}$, there exists a
+We next deduce that for $i$ in $\{1,\dots,\kappa\}$, there exists a
 polynomial of the form $b_{i} \mathfrak{l}^H_{i,i,r_i}$ in the ideal
 $I_p(\mathfrak{N}^H_{\balpha,q})$, with $b_{i}(\tilde\bx)\ne
 0$. Indeed, we consider the $p$-minor of $\mathfrak{N}^H_{\balpha,q}$
@@ -2620,41 +2624,38 @@ $$b_i \mathfrak{l}^H_{i,i,r_i}\quad\text{with}\quad b_i = \beta_i
 \mathfrak{l}^H_{\kappa+1,\kappa+1}\cdots \mathfrak{l}^H_{p,p}c_i.$$ Hence, $b_i\,
 \mathfrak{l}^H_{i,i,r_i}$ belongs to $I_p(\mathfrak{N}^H_{\balpha,q})$, and by
 the discussion of the three previous paragraphs, $b_i(\tilde\bx)\ne 0$,
-as claimed.
-
-For the same reasons, for every $\kappa$-minor $\eta$ of the submatrix of
-$\mathfrak{N}^H_{\balpha,q}$ associated to $\bi$, there exists a
-polynomial $b_\eta$ such that $b_\eta\, \eta$ belongs to
-$I_p(\mathfrak{N}^H_{\balpha,q})$, and $b_\eta(\tilde\bx)\ne 0$.  Using
-the fact that (up to the factors $b_i$) the equations
-$\mathfrak{l}^H_{i,i,r_i}$ are in $I_p(\mathfrak{N}^H_{\balpha,q})$, 
-for $i=1,\dots,\kappa$, and taking $b=b_1 \cdots b_\kappa$, we
-deduce 
+as claimed. In what follows, we write $b=b_1 \cdots b_\kappa$,
+so that $b(\tilde\bx) \ne 0$ and $b\, \mathfrak{l}^H_{i,i,r_i}$ 
+is in $I_p(\mathfrak{N}^H_{\balpha,q})$. 
+This in turn implies
+that all polynomials
 $$
-b(X_{n-\kappa+1}-\mathfrak{f}_{\bi,\br,n-\kappa+1}(\tilde\bX')),\dots,b(X_{n}-\mathfrak{f}_{\bi,\br,n}(\tilde\bX'))
-$$ are in $I_p(\mathfrak{N}^H_{\balpha,q})$ as well. This in turn
-implies the existence of a polynomial $\tilde b_\eta$, multiple of $b$, such that $\tilde
-b_\eta\,
-\eta(\tilde\bX',\mathfrak{f}_{\bi,\br,n-\kappa+1}(\tilde\bX'),\dots,\mathfrak{f}_{\bi,\br,n}(\tilde\bX'))$
-belongs to $I_p(\mathfrak{N}^H_{\balpha,q})$, and $\tilde
-b_\eta(\tilde\bx)\ne 0$. Now, the polyomial
-$\eta(\tilde\bX',\mathfrak{f}_{\bi,\br,n-\kappa+1}(\tilde\bX'),\dots,\mathfrak{f}_{\bi,\br,n}(\tilde\bX'))$
+b(X_{n-\kappa+1}-\mathfrak{f}_{n-\kappa+1,\bi,\br}(\tilde\bX')),\dots,b(X_{n}-\mathfrak{f}_{n,\bi,\br}(\tilde\bX'))
+$$ are in $I_p(\mathfrak{N}^H_{\balpha,q})$ as well.
+
+Similarly, for every $\kappa$-minor $\eta$ of the submatrix of
+$\mathfrak{N}^H_{\balpha,q}$ associated to $\bi$, the
+polynomial  $\mathfrak{l}^H_{\kappa+1,\kappa+1}\cdots \mathfrak{l}^H_{p,p}\, \eta$ belongs to
+$I_p(\mathfrak{N}^H_{\balpha,q})$. Thus, $b \,\eta$ is in $I_p(\mathfrak{N}^H_{\balpha,q})$
+as well.
+
+As a result, the polynomial $b\, \eta(\tilde\bX',\mathfrak{f}_{n-\kappa+1,\bi,\br}(\tilde\bX'),\dots,\mathfrak{f}_{n,\bi,\br}(\tilde\bX'))$
+belongs to $I_p(\mathfrak{N}^H_{\balpha,q})$. Now, 
+$\gamma=\eta(\tilde\bX',\mathfrak{f}_{n-\kappa+1,\bi,\br}(\tilde\bX'),\dots,\mathfrak{f}_{n,\bi,\br}(\tilde\bX'))$
 is one of the $\kappa$-minors of
 $\mathfrak{M}^H_{\balpha_\bi,n-1}(\mathfrak{H}_{\bi,\br},\tilde\bX')$,
 and all $\kappa$-minors of this matrix are obtained this way.
-
-To summarize, letting $a$ be the product of all polynomials $\tilde
-b_\eta$ seen so far, we have proved that 
-$$a \mathfrak{l}^H_{1,1,r_1},\dots,a
-\mathfrak{l}^H_{\kappa,\kappa,r_\kappa} \quad\text{and}\quad a \gamma,
+To summarize, we have proved that 
+$$b\, \mathfrak{l}^H_{1,1,r_1},\dots,b\,
+\mathfrak{l}^H_{\kappa,\kappa,r_\kappa} \quad\text{and}\quad b\, \gamma,
 \text{~for all $\kappa$-minors $\gamma$ of
   $\mathfrak{M}^H_{\balpha_\bi,n-1}(\mathfrak{H}_{\bi,\br},\tilde\bX')$}$$
-are in $I_p(\mathfrak{N}^H_{\balpha,q})$, with $a(\tilde\bx) \ne
+are in $I_p(\mathfrak{N}^H_{\balpha,q})$, with $b(\tilde\bx) \ne
 0$. The Jacobian matrix of these polynomials at $\tilde\bx$ is, up to
-the non-zero constant $a(\tilde\bx)$, equal to that of
+the non-zero constant $b(\tilde\bx)$, equal to that of
 $\mathfrak{l}^H_{1,1,r_1},\dots,
 \mathfrak{l}^H_{\kappa,\kappa,r_\kappa}$ (which is simply 
-a matrix of constants), and all $\kappa$-minors
+a matrix of constants), and of all $\kappa$-minors
 $\gamma$. Using our induction assumption, we know that the Jacobian
 matrix of the ideal of $\kappa$-minors $\gamma$ with respect to
 $\tilde\bX'$ has rank $n-\kappa$ at $\tilde\bx'$. As a result, 
@@ -2666,13 +2667,12 @@ we may simplify the discussion by assuming that $\bi=(1,\dots,n)$. In
 this case, the discussion is simpler: proceeding as above, but dealing
 only with the polynomials
 $\mathfrak{l}^H_{1,1},\dots,\mathfrak{l}^H_{n,n}$, we obtain the fact
-that equations of the form $a \mathfrak{l}^H_{1,1,r_1},\dots,a
+that equations of the form $b\, \mathfrak{l}^H_{1,1,r_1},\dots,b\,
 \mathfrak{l}^H_{n,n,r_n}$ belong to $I_p(\mathfrak{N}^H_{\balpha,q})$,
-with $a(\tilde\bx) \ne 0$. The conclusion follows directly.
+with $b(\tilde\bx) \ne 0$. The conclusion follows directly.
 
 
-\medskip
-
+\paragraph{An algorithm.}
 We conclude this section with an algorithm that applies the process
 in Lemma~\ref{lemma:union}, in the case $t=p$, to non-homogeneous 
 matrices. Indeed, while homogeneity is used at several steps in 
@@ -2690,10 +2690,11 @@ with but $X_0=1$. Explicitly, we have
 \end{align}
 where for all $i,j$, $\lambda_{i,j}$ is the product of $\alpha_i$
 linear forms $(\lambda_{i,j,k})_{1 \le k \le \alpha_i}$ with
-coefficients in $\KK$.  By Proposition~\ref{lemma:appendix}, we deduce
-that for a generic choice of the coefficients of these linear forms,
-$I_p(\mN) \subset \KKbar{}^n$ is a finite set, whose structure is
-given by Lemma~\ref{lemma:union}.
+coefficients in $\KK$, in variables $X_1,\dots,X_n$.  By
+Proposition~\ref{lemma:appendix}, we deduce that for a generic choice
+of the coefficients of these linear forms, $I_p(\mN) \subset
+\KKbar{}^n$ is a finite set, whose structure is given by
+Lemma~\ref{lemma:union}.
 
 Algorithm $\mathsf{RowDegreeDiagonal}$ below takes as input the linear
 forms $(\lambda_{i,j,k})$ and computes a zero-dimensional
@@ -2703,13 +2704,13 @@ input a straight-line program $\Gamma$ that computes a polynomial
 matrix $\mF$ and a system of equations $G$, and solves
 Problem~\ref{problem2} for this input using a row-degree homotopy. We
 give such an algorithm in the next section. We denote by $T_{\rm
-  row}(E,\bgamma,\balpha,q)$ the time spent by
+  row}(\sigma,\bgamma,\balpha,q)$ the time spent by
 $\mathsf{RowDegree}(\Gamma)$ on input a straight-line program of
-length $E$ that computes $\mF$ with row degrees
+length $\sigma$ that computes $\mF$ with row degrees
 $\balpha=(\alpha_1,\dots,\alpha_p)$ and $q$ columns, and
-$G=(g_1,\dots,g_s)$ of degrees $\gamma=(\gamma_1,\dots,\gamma_s)$.
+$G=(g_1,\dots,g_s)$ of degrees $\bgamma=(\gamma_1,\dots,\gamma_s)$.
 
-We will be interested in the particular case of subroutine
+We will be use here the particular case of subroutine
 $\mathsf{RowDegree}$ where the input matrix has the form
 \begin{align}\label{eqdef:type2aff}
   \mM= \left( \begin{matrix}
@@ -2730,25 +2731,26 @@ of Algorithm {\sf RowDegree} for such input by
 \begin{align}
 T_{M,{\rm row}}(\balpha,q)=T_{\rm row}(nq(\alpha_1+\cdots+\alpha_p),(),\balpha,q).
 \end{align}
-For convenience, if $p \ge q$,
-we write $T_{M,{\rm row}}(\balpha,q)=1$.
-
+% For convenience, if $p \ge q$,
+% we write $T_{M,{\rm row}}(\balpha,q)=1$.
+We conclude this section with the cost 
+analysis of Algorithm $\mathsf{RowDegreeDiagonal}$.
 \begin{algorithm}[!h]
 \caption{$\mathsf{RowDegreeDiagonal}((\lambda_{i,j,k})_{i,j,k})$}
 {\bf Input}: linear forms $(\lambda_{i,j,k})_{i,j,k}$ making up 
 the entries of 
-$\mN \in \KK[X_0, \ldots, X_n]^{p \times q}$ as in~\eqref{eqdef:type1aff}, with $p \leq q$ and $n = q-p+1$\\
+$\mN \in \KK[X_1, \ldots, X_n]^{p \times q}$ as in~\eqref{eqdef:type1aff}, with $p \leq q$ and $n = q-p+1$\\
 {\bf Output}: a zero-dimensional parametrization $\scrR$ of $V_p(\mN)$
 \begin{enumerate}
 \item for any subsequence $\bi = (i_1, \ldots, i_\kappa)$ of $(1, \ldots, p)$ with $1 \leq \kappa \leq\min(n-1,p)$
   \begin{enumerate}
-  \item for any sequence $\br = (r_1, \ldots, r_\kappa)$, with $r_k \in \{1,\dots,\alpha_k\}$ for all $k$
+  \item for any sequence $\br = (r_1, \ldots, r_\kappa)$, with $r_k$ in $\{1,\dots,\alpha_k\}$ for all $k$
     \begin{enumerate}
     \item apply Gaussian elimination to the system $\lambda_{i_1,i_1,r_1}=\dots=\lambda_{i_\kappa,i_\kappa,r_\kappa}=0$
-      to rewrite $(X_{n-\kappa+1}, \ldots, X_n)$ as linear forms $(f_{\bi,\br,j})_{n-\kappa+1 \le j \le n}$ in $(X_1, \ldots, X_{n-\kappa})$. \\
+      to rewrite $(X_{n-\kappa+1}, \ldots, X_n)$ as linear forms $(f_{j,\bi,\br})_{n-\kappa+1 \le j \le n}$ in $(X_1, \ldots, X_{n-\kappa})$. \\
 $\text{\sf{cost:~}} O(\sum_{\bi,\br} n^3)$
     \item\label{step:constSLP} construct a straight-line program $\Gamma_{\bi,\br}$ that computes the matrix $\mM_{\bi,\br} \in \KK[X_1, \dots, X_{n-\kappa}]^{\kappa \times (n-1)}$ obtained
-      by substituting $(f_{\bi,\br,j})_{n-\kappa+1 \le j \le n}$ into $\mN_{\bi,(p+1, \ldots, q)}$. The length of $\Gamma_{\bi,\br}$ is $O(\kappa n(\alpha_{i_1}+\cdots+\alpha_{i_\kappa}))$.\\
+      by substituting $(f_{j,\bi,\br})_{n-\kappa+1 \le j \le n}$ into $\mN_{\bi,(p+1, \ldots, q)}$. The length of $\Gamma_{\bi,\br}$ is $O(\kappa n(\alpha_{i_1}+\cdots+\alpha_{i_\kappa}))$.\\
       $\text{\sf{cost:~}} O(\sum_{\bi,\br} (\alpha_{i_1} + \cdots + \alpha_{i_\kappa}) n^3)$
     \item $\scrR_{\bi,\br}' \gets$ $\mathsf{RowDegree}(\Gamma_{\bi,\br})$  (points have coordinates $(X_1, \ldots, X_{n-\kappa})$)\\
 $\text{\sf{cost:~}} \sum_{\bi,\br} T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-1)$
@@ -2787,10 +2789,10 @@ $\text{\sf{cost:~}} \sum_{\bi,\br} T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i
   of time spent there, over all iterations (the sums in the first loop
   are for $\kappa \le \min(n-1,p)$, the ones in the second loop for
   $\kappa=n$ if $n \le p$). Several steps are straightforward to
-  analyze; we briefly comment on a few of them.
+  analyze; we briefly comment on a few others.
 
   Step~\ref{step:constSLP} uses the linear forms
-  $(f_{\bi,\br,j})_{n-\kappa+1 \le j \le n}$ to construct a
+  $(f_{j,\bi,\br})_{n-\kappa+1 \le j \le n}$ to construct a
   straight-line program $\Gamma_{\bi,\br}$ that computes the entries
   of $\mM_{\bi,\br}$. This is done by computing the coefficients
   of the linear forms in $(X_1,\dots,X_{n-\kappa})$ obtained after 
@@ -2799,16 +2801,17 @@ $\text{\sf{cost:~}} \sum_{\bi,\br} T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i
   whence a total of $O((\alpha_{i_1} + \cdots +\alpha_{i_\kappa})n^3)$
   for all entries.
 
-  Step~\ref{step:substdiag}, which consists in adding $\kappa$
-  coordinates $(X_{n-\kappa+1},\dots,X_n)$ to a zero-dimensional
-  parametrization, where $(X_{n-\kappa+1},\dots,X_n)$ are known as
-  linear forms $(f_{\bi,\br,j})_{n-\kappa+1 \le j \le n}$ in $(X_1,
-  \ldots, X_{n-\kappa})$: this is done by means of a matrix product in
-  size $(\kappa \times n-\kappa)$ by $(n-\kappa \times c_{\bi,\br})$,
-  where $c_{\bi,\br}$ is the cardinality of $V_\kappa(\mM_{\bi,\br})$,
-  for $\bi=(i_1,\dots,i_\kappa)$.  The cost is thus $O(n^2
-  c_{\bi,\br})$; the sum of these costs is thus $O(n^2 c)$, since the
-  sum of all $c_{\bi,\br}$ is by Remark~\ref{remark:disjoint}.
+  Step~\ref{step:substdiag} consists in adding $\kappa$ coordinates
+  $(X_{n-\kappa+1},\dots,X_n)$ to a zero-dimensional parametrization
+  in variables $X_1,\dots,X_{n-\kappa}$, where
+  $(X_{n-\kappa+1},\dots,X_n)$ are known as linear forms
+  $(f_{j,\bi,\br})_{n-\kappa+1 \le j \le n}$ in $(X_1, \ldots,
+  X_{n-\kappa})$: this is done by means of a matrix product in size
+  $(\kappa \times n-\kappa)$ by $(n-\kappa \times c_{\bi,\br})$, where
+  $c_{\bi,\br}$ is the cardinality of $V_\kappa(\mM_{\bi,\br})$, for
+  $\bi=(i_1,\dots,i_\kappa)$.  The cost is thus $O(n^2 c_{\bi,\br})$;
+  the sum of these costs is thus $O(n^2 c)$, since the sum of all
+  $c_{\bi,\br}$ is equal to $c$ by Remark~\ref{remark:disjoint}.
 
   The combination in the last step is done by fast Chinese Remaindering,
   in quasi-linear time $\softO(\sum_{\bi,\br} n c_{\bi,\br})$,
@@ -2879,7 +2882,7 @@ Similarly to what we did in Section~\ref{sec:columndegree}, we define
 \end{proposition}
 %% Remark that if all $\gamma_i$'s and $\delta_j$'s are at least equal to
 %% $2$, we have the inequality $e \le c^2$, and the runtime becomes
-%% $\softO\left (c^6 (E + c)\right)$.
+%% $\softO\left (c^6 (\sigma + c)\right)$.
 
 
 
@@ -3172,7 +3175,7 @@ Proposition~\ref{prop:compute_isolated} to compute the isolated points
 in $\VpFG{p}{\mF}{G}$. In the following paragraphs, we discuss the required
 properties $\assD_1,\assD_2,\assD_3$ in this context. In what follows,
 we assume that we are given a straight-line program $\Gamma$ of length
-$E$ that computes the input matrix $\mF$ and the input equations $G$.
+$\sigma$ that computes the input matrix $\mF$ and the input equations $G$.
 
 \paragraph{Property $\assD_1$.} To perform the homotopy, we need a zero-dimensional parametrization of
 $V(\bA)$. We now describe this process, which is based on Algorithm
@@ -3235,7 +3238,7 @@ with $\tilde\delta_{\rm row}(\mF)=S_{n-s}(\alpha_1 +1,\cdots,\alpha_p+1)$.
 \paragraph{Property $\assD_3$.} Finally, we need to give an estimate on
 the size of a straight-line program that computes the polynomials
 $\bB=(b_1,\dots,b_m)$, assuming that we are given a straight-line
-$\Gamma$ program of size $E$ that computes polynomials
+$\Gamma$ program of size $\sigma$ that computes polynomials
 $G=(g_1,\dots,g_s)$ and the entries of $\mF$. We already defined a
 straight-line program $\Delta$ that computes all entries of $\mN$; for
 an extra $O({q \choose p} n^3)$ operations, we can compute all entries
@@ -3245,24 +3248,24 @@ operations, we can also compute all polynomials $(a_1,\dots,a_s)$, and
 thus $(b_1,\dots,b_s)$.
 
 Altogether, we have obtained a straight-line program $\Gamma'$ that
-computes $\bB=(b_1,\dots,b_m)$ using $E'=O(E + {q \choose p} n^3 + n^2
+computes $\bB=(b_1,\dots,b_m)$ using $\sigma'=O(\sigma + {q \choose p} n^3 + n^2
 (\alpha_1+\cdots+\alpha_p) + n(\gamma_1 + \cdots + \gamma_s))$ operations.
 
 \paragraph{Completing the cost analysis.} We finally apply Proposition~\ref{prop:compute_isolated},
-which gives a runtime of $\softO(c^5 m n^2 + c(e+c^5 n)(E' + n^3))$
+which gives a runtime of $\softO(c^5 m n^2 + c(e+c^5 n)(\sigma' + n^3))$
 operations in~$\KK$ for the cost of calling the homotopy
 subroutine. Since $m \le n + {q \choose p}$, this can be simplified as
-$$\softO\left (c(e+c^5 n)\left(E + {q \choose p} n^3 +n \sum_i
+$$\softO\left (c(e+c^5 n)\left(\sigma + {q \choose p} n^3 +n \sum_i
     \gamma_i + n^2 \sum_j \alpha_j\right)\right).$$
 Since all of $ {q \choose p}, \sum_i \gamma_i$ and $\sum_j \delta_j$
 are at most $cn$, this becomes
-$\softO\left (c(e+c^5 n)(E + cn^4)\right),$ with
+$\softO\left (c(e+c^5 n)(\sigma + cn^4)\right),$ with
 $c=\gamma_1\cdots\gamma_sS_{n-s}(\alpha_1,\dots,\alpha_p)$  and
 $e=(\gamma_1+1)\cdots(\gamma_s+1)S_{n-s}(\alpha_1+1,\dots,\alpha_p+1)$.  This is also
-$\softO\left (c(e+c^5 )(E + cn^4)\right).$ To conclude, the 
+$\softO\left (c(e+c^5 )(\sigma + cn^4)\right).$ To conclude, the 
 total cost of the algorithm is
 \begin{align}\label{eq:recT}
-T_{\rm row}(E,\bgamma,(\alpha_1,\dots,\alpha_p),q)= \gamma_1 \cdots\gamma_s T + \softO( c(e+c^5 )(E + cn^4)),  
+T_{\rm row}(\sigma,\bgamma,(\alpha_1,\dots,\alpha_p),q)= \gamma_1 \cdots\gamma_s T + \softO( c(e+c^5 )(\sigma + cn^4)),  
 \end{align}
 with $T$ as in~\eqref{eqdef:T}. This relation will now allow us to
 write a recurrence relation on $T_{M,{\rm row}}$.
@@ -3277,8 +3280,8 @@ write a recurrence relation on $T_{M,{\rm row}}$.
   We apply the previous result in the case where $s=0$, so that
   $\gamma_1 \cdots \gamma_s=1$, and for a $p \times q$ input matrix
   $\mM$ as in~\eqref{eqdef:type2aff}. In this case, we can take
-  $E=O(nq(\alpha_1 + \cdots + \alpha_p))$; following our convention in
-  the previous section, the runtime $T_{\rm row}(E,\bgamma,(\alpha_1,\dots,\alpha_p),q)$
+  $\sigma=O(nq(\alpha_1 + \cdots + \alpha_p))$; following our convention in
+  the previous section, the runtime $T_{\rm row}(\sigma,\bgamma,(\alpha_1,\dots,\alpha_p),q)$
   is then written $T_{M,{\rm row}}((\alpha_1,\dots,\alpha_p),q)$.  Equation~\eqref{eq:recT},
   combined with the definition of $T$ in~\eqref{eqdef:T}, gives the 
   recursion
@@ -3309,7 +3312,7 @@ write a recurrence relation on $T_{M,{\rm row}}$.
   and this quantity is $ \softO( n^5 q c^3(e+c^5 )))$.
 \end{proof}
 
-%% $$\softO(c^5 m n^2  + c(e+c^5 n)(E + n^3))
+%% $$\softO(c^5 m n^2  + c(e+c^5 n)(\sigma + n^3))
 
 
 
@@ -3329,7 +3332,7 @@ write a recurrence relation on $T_{M,{\rm row}}$.
 
 \begin{algorithm}[!h]
 \caption{$\mathsf{RowDegree}(\Gamma)$}
-{\bf Input}:  a straight-line program $\Gamma$ of length $E$ that computes
+{\bf Input}:  a straight-line program $\Gamma$ of length $\sigma$ that computes
  $F \in \KK[X_1, \ldots, X_n]^{p \times q}$ with $\deg(f_{i,j}) \leq \delta_i$
 and $G = (g_1, \ldots, g_s)$ in $\KK[X_1, \ldots, X_n]$ with $p \leq q$, $n = q-p+s+1$\\
 {\bf Output}: a zero-dimensional parametrization of the isolated points of $\VpFG{p}{\mF}{G}$
@@ -3359,11 +3362,11 @@ length of $\Delta$ is $O(n^2(\alpha_1+\cdots+\alpha_p))$
   $\text{\sf{cost:~}} \softO(\gamma_1 \cdots \gamma_s n S_{n-s}(\alpha_1,\dots,\alpha_p))$
 
 \item construct a straight-line program $\Gamma'$ that computes all polynomials $\bB$\\
-  length of $\Gamma'$ is $E'=O(E + {q \choose p} n^3 + n^2
+  length of $\Gamma'$ is $\sigma'=O(\sigma + {q \choose p} n^3 + n^2
 (\alpha_1+\cdots+\alpha_p) + n(\gamma_1 + \cdots + \gamma_s))$
 
 \item return $\mathsf{Homotopy}(\Gamma',\scrR)$\\
- $\text{\sf{cost:~}} \softO( c(e+c^5 )(E + cn^4) )$
+ $\text{\sf{cost:~}} \softO( c(e+c^5 )(\sigma + cn^4) )$
 \end{enumerate}
 \label{Row}
 \end{algorithm}
