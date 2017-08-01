@@ -226,13 +226,13 @@ $\KK[X_1,\dots,X_n]/Q_i$. Our first result is then the following.
   $G=(g_1,\dots,g_s)$ be in $\KK[X_1,\dots,X_n]$, with $p \le q$ and
   $n=q-p+s+1$. Then, the sum of the multiplicities of the isolated
   points of $I_p(\mF) + \langle g_1,\dots,g_s \rangle$ is at most
-  $$\deg(g_1) \cdots \deg(g_s) \min\Big(E_{q-p+1}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q)), S_{q-p+1}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))\Big).$$
+  $$\deg(g_1) \cdots \deg(g_s) \min\Big(E_{n-s}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q)), S_{n-s}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))\Big).$$
 \end{theorem}
 When $\rdeg(\mG,i)=\cdeg(\mF,j)=d$ for all $i,j$, the two bounds given
 above coincide, with common value $\deg(g_1) \cdots \deg(g_s) d^{n-s}
 {q \choose {p-1}}$; otherwise, either of the two expressions
-$E_{q-p+1}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q))$ and
-$S_{q-p+1}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))$ can be the
+$E_{n-s}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q))$ and
+$S_{n-s}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))$ can be the
 minimum.
 
 Previous work by Miller and Sturmfels~\cite[Chapter~15]{MiSt04} proved
@@ -249,14 +249,14 @@ $n+1$ variables):
 \begin{itemize}
 \item when the entries of $\mF$ are generic and homogeneous, and
  such that $\deg(f_{i,j}) = \cdeg(\mF,j)$ for all $i,j$, the ideal
- $I_p(\mF)$ has degree $E_{q-p+1}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q))$;
+ $I_p(\mF)$ has degree $E_{n}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q))$;
 \item when the entries of $\mF$ are  generic and homogeneous, and
   such that $\deg(f_{i,j}) = \rdeg(\mF,i)$ for all $i,j$, the
-  ideal  $I_p(\mF)$ has degree $S_{q-p+1}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))$.
+  ideal  $I_p(\mF)$ has degree $S_{n}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))$.
 \end{itemize}
 From this, they deduce that the degree of the ideal $I_p(\mF) +
 \langle g_1,\dots,g_s \rangle$ is at most \sloppy $\deg(g_1) \cdots
-\deg(g_s) S_{q-p+1}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))$, for systems
+\deg(g_s) S_{n-s}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))$, for systems
 coming from optimization problems (the matrix $\mF$ is the Jacobian
 matrix of $G=(g_1,\dots,g_s)$, with one extra row of the form ${\rm
   gradient}(g)$), and assuming that this ideal has dimension zero.
@@ -1572,14 +1572,14 @@ of determinantal systems (as we mentioned in the introduction).
   $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$ and polynomials
   $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$ are given by a
   straight-line program of length $\sigma$. Then, there exist 
-an algorithm that computes the isolated points of
+  an algorithm that computes the isolated points of
   $\VpFG{p}{\mF}{G}$ using $$\softO\left (c(e+c^5 )(\sigma + cn^4)\right)$$
   operations in $\KK$, with
-  $c=\gamma_1\cdots\gamma_sE_{q-p+1}(\delta_1, \ldots, \delta_q)$ and
-  $e=(\gamma_1+1)\cdots(\gamma_s+1) E_{q-p+1}(\delta_1+1, \ldots,
+  $c=\gamma_1\cdots\gamma_sE_{n-s}(\delta_1, \ldots, \delta_q)$ and
+  $e=(\gamma_1+1)\cdots(\gamma_s+1) E_{n-s}(\delta_1+1, \ldots,
   \delta_q+1)$,
-  where $E_{q-p+1}(\cdots)$ is the elementary symmetric 
-  function of degree $q-p+1$.
+  where $E_{n-s}(\cdots)$ is the elementary symmetric 
+  function of degree $n-s$, and $n=q-p+s+1$.
 \end{proposition}
 Remark that if all $\gamma_i$'s and $\delta_j$'s are at least equal to
 $2$, we have the inequality $e \le c^2$, and the runtime becomes
@@ -1803,17 +1803,18 @@ $\bA$.
 
 \begin{lemma}\label{lemma:column:c_estimate}
   Under the above assumptions, $c=\gamma_1\cdots \gamma_s
-  E_{q-p+1}(\delta_1, \ldots, \delta_q)$.
+  E_{n-s}(\delta_1, \ldots, \delta_q)$.
 \end{lemma}
 \begin{proof}
-To estimate $c$, note first that there are $\gamma_1\cdots
-\gamma_s$ choices of $\bu$. For each choice of $\bu$, there are
-$E_{n-s}(\delta_1, \ldots, \delta_q)$ ways to
-choose $\bj$ and $\bv$, where $E_{n-s}$ denotes the elementary
-symmetric polynomials of degree $n-s=q-p+1$.   
+  To estimate $c$, note first that there are $\gamma_1\cdots
+  \gamma_s$ choices of $\bu$. For each choice of $\bu$, there are
+  $E_{n-s}(\delta_1, \ldots, \delta_q)$ ways to
+  choose $\bj$ and $\bv$, where $E_{n-s}$ denotes the elementary
+  symmetric polynomials of degree $n-s$.   
 \end{proof}
-We can now inspect assumptions $\assD_1,\dots,\assD_4$, which are needed
-to apply the algorithm of Proposition~\ref{prop:compute_isolated}.
+We can now inspect assumptions $\assD_1,\dots,\assD_4$, which are
+needed to apply the algorithm of
+Proposition~\ref{prop:compute_isolated}.
 
 \paragraph{Property $\assD_1$.} We know that $\assG_1(0),\assG_2(0),\assG_3(0)$
 hold, so we are going to compute a zero-dimensional parametrization of
@@ -1840,7 +1841,7 @@ one-dimensional irreducible components of $V(\bB) \subset
 
 \begin{lemma}\label{lemma:columndegree:e_estimate}
   Under the above assumptions and notation, $e$ is bounded above by
-  $(\gamma_1+1)\cdots(\gamma_s+1) E_{q-p+1}(\delta_1+1, \ldots, \delta_q+1)$.
+  $(\gamma_1+1)\cdots(\gamma_s+1) E_{n-s}(\delta_1+1, \ldots, \delta_q+1)$.
 \end{lemma}
 \begin{proof}
 Let us write $V(\bB)=V(J') \cup V' \cup V''$, where $V''$ is the union
@@ -1870,7 +1871,7 @@ are $\delta_1+1,\dots,\delta_q+1$.
 
 We can then apply Proposition~\ref{prop:degree_fiber}, which shows we
 can take for $e$ the integer $(\gamma_1+1)\cdots(\gamma_s+1)
-E_{q-p+1}(\delta_1+1, \ldots, \delta_q+1)$.  
+E_{n-s}(\delta_1+1, \ldots, \delta_q+1)$.  
 \end{proof}
 
 \paragraph{Property $\assD_3$.} Finally, we need to give an estimate on
@@ -1904,7 +1905,7 @@ $$\softO\left (c(e+c^5 n)\left(\sigma + {q \choose p} n^3
 Now, \todo{using the assumption that all $\gamma_j$'s and $\delta_i$'s are 
 at least equal to $1$}, we prove that $ {q \choose p}$ and
 $\gamma_1+\cdots+\gamma_s+\delta_1+\cdots+\delta_q$ are both
-$O(cn)$ (recall that $c=\gamma_1 \cdots \gamma_s E_{q-p+1}(\delta_1,\dots,\delta_q)$)
+$O(cn)$ (recall that $c=\gamma_1 \cdots \gamma_s E_{n-s}(\delta_1,\dots,\delta_q)$)
 \begin{itemize}
 \item $c$ is at least equal to $ {q \choose {q-p+1}}= \frac p{q-p+1}{q
   \choose p}$, so that ${q \choose p} \le c(q-p+1) \le cn$.
@@ -1948,7 +1949,7 @@ and $e+c^5 n$ is in $\softO(c^5)$.
 \begin{enumerate}\setlength\itemsep{0em}
  \item let $\scrR_{\bi,\bj,\bv}$ a zero-dimensional parametrization of the solution of the system 
 $$\mu_{1,u_1}=\cdots=\mu_{s,u_s}=\lambda_{j_1,v_1}=\cdots=\lambda_{j_{n-s},v_{n-s}}=0$$
-$\text{\sf{cost:~}} O(cn^3)$, with $c=\gamma_1\cdots\gamma_s E_{q-p+1}(\delta_1,\dots,\delta_q)$
+$\text{\sf{cost:~}} O(cn^3)$, with $c=\gamma_1\cdots\gamma_s E_{n-s}(\delta_1,\dots,\delta_q)$
 \end{enumerate}
 \end{enumerate}
 \end{enumerate}
@@ -1961,7 +1962,7 @@ $\text{\sf{cost:~}} \softO(cn)$
 
 \item return $\mathsf{Homotopy}(\Gamma',\scrR)$ \\
 $\text{\sf{cost:~}} \softO\left (c(e+c^5 )(\sigma + cn^4)\right)$, 
-with $e=(\gamma_1+1)\cdots(\gamma_s+1) E_{q-p+1}(\delta_1+1,\dots,\delta_q+1)$
+with $e=(\gamma_1+1)\cdots(\gamma_s+1) E_{n-s}(\delta_1+1,\dots,\delta_q+1)$
 \end{enumerate}
 \label{ColHom}
 \end{algorithm}
