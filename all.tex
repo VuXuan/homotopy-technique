@@ -1577,7 +1577,9 @@ an algorithm that computes the isolated points of
   operations in $\KK$, with
   $c=\gamma_1\cdots\gamma_sE_{q-p+1}(\delta_1, \ldots, \delta_q)$ and
   $e=(\gamma_1+1)\cdots(\gamma_s+1) E_{q-p+1}(\delta_1+1, \ldots,
-  \delta_q+1)$.
+  \delta_q+1)$,
+  where $E_{q-p+1}(\cdots)$ is the elementary symmetric 
+  function of degree $q-p+1$.
 \end{proposition}
 Remark that if all $\gamma_i$'s and $\delta_j$'s are at least equal to
 $2$, we have the inequality $e \le c^2$, and the runtime becomes
@@ -2869,16 +2871,28 @@ notation, $\deg(f_{i,j}) \leq \alpha_i$ holds for all $i,j$. As in
 Section~\ref{sec:columndegree}, we write
 $\gamma_1=\deg(g_1),\dots,\gamma_s=\deg(g_s)$.
 
-Similarly to what we did in Section~\ref{sec:columndegree}, we define
-\[
-\tilde\delta_{\rm row}(\mF)=S_{n-s}(\alpha_1 +1,\cdots,\alpha_p+1).
-\]
+% Similarly to what we did in Section~\ref{sec:columndegree}, we define
+% \[
+% \tilde\delta_{\rm row}(\mF)=S_{n-s}(\alpha_1 +1,\cdots,\alpha_p+1).
+% \]
 
 \begin{proposition}\label{prop:rowdegree}
-  There exists a randomized algorithm that computes the isolated
-  points of $\VpFG{p}{\mF}{G}$ using $\softO\left (\ \right)$ operations in
-  $\KK$, with $d=\gamma_1\cdots\gamma_s \delta_{\rm row}(\mF)$ and
-  $f=(\gamma_1+1)\cdots(\gamma_s+1) \tilde\delta_{\rm row}(\mF)$.
+  Suppose that $\KK$ has characteristic zero, and suppose that matrix
+  $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$ and polynomials
+  $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$ are given by a
+  straight-line program of length $\sigma$. Then, there exist 
+an algorithm that computes the isolated points of
+  $\VpFG{p}{\mF}{G}$ using $$\softO\left(  \right)$$
+  operations in $\KK$, with
+  $c=\gamma_1\cdots\gamma_s S_{q-p+1}(\delta_1, \ldots, \delta_q)$ and
+  $e=(\gamma_1+1)\cdots(\gamma_s+1) S_{q-p+1}(\delta_1+1, \ldots,
+  \delta_q+1)$,
+  where $S_{q-p+1}(\cdots)$ is the complete homogeneous symmetric 
+  function of degree $q-p+1$.
+  % There exists a randomized algorithm that computes the isolated
+  % points of $\VpFG{p}{\mF}{G}$ using $\softO\left (\ \right)$ operations in
+  % $\KK$, with $d=\gamma_1\cdots\gamma_s \delta_{\rm row}(\mF)$ and
+  % $f=(\gamma_1+1)\cdots(\gamma_s+1) \tilde\delta_{\rm row}(\mF)$.
 \end{proposition}
 %% Remark that if all $\gamma_i$'s and $\delta_j$'s are at least equal to
 %% $2$, we have the inequality $e \le c^2$, and the runtime becomes
