@@ -226,7 +226,10 @@ $\KK[X_1,\dots,X_n]/Q_i$. Our first result is then the following.
   $G=(g_1,\dots,g_s)$ be in $\KK[X_1,\dots,X_n]$, with $p \le q$ and
   $n=q-p+s+1$. Then, the sum of the multiplicities of the isolated
   points of $I_p(\mF) + \langle g_1,\dots,g_s \rangle$ is at most
-  $$\deg(g_1) \cdots \deg(g_s) \min\Big(E_{n-s}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q)), S_{n-s}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))\Big).$$
+  $\min(c,c')$ with
+$$c=\deg(g_1) \cdots \deg(g_s) E_{n-s}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q))$$
+and
+$$c'=\deg(g_1) \cdots \deg(g_s) S_{n-s}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p)).$$
 \end{theorem}
 When $\rdeg(\mG,i)=\cdeg(\mF,j)=d$ for all $i,j$, the two bounds given
 above coincide, with common value $\deg(g_1) \cdots \deg(g_s) d^{n-s}
@@ -287,15 +290,26 @@ in $\mF$ and $G$).
    algorithms that solve Problem~\ref{problem2} in either
  $$\softO\left (c(e+c^5 )(\sigma + c)\right)$$
   operations in $\KK$, with
-  $c=\gamma_1\cdots\gamma_sE_{n-s}(\delta_1, \ldots, \delta_q)$ and
-  $e=(\gamma_1+1)\cdots(\gamma_s+1) E_{n-s}(\delta_1+1, \ldots,
-  \delta_q+1)$
+  \begin{align*}
+  c&=\deg(g_1)\cdots\deg(g_s)E_{n-s}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q))\\
+  e&=(\deg(g_1)+1)\cdots(\deg(g_s)+1) E_{n-s}(\cdeg(\mF,1)+1, \ldots, \cdeg(\mF,q)+1)   
+  \end{align*}
 or 
 $$\softO\left( c'(e'+{c'}{}^5 )(\sigma + {c'}{}^2) \right)$$
-operations in $\KK$, with $c'=\gamma_1\cdots\gamma_s S_{n-s}(\delta_1,
-\ldots, \delta_q)$ and $e'=(\gamma_1+1)\cdots(\gamma_s+1)
-S_{n-s}(\delta_1+1, \ldots, \delta_q+1)$.
+operations in $\KK$, with 
+\begin{align*}
+c'&=\deg(g_1)\cdots\deg(g_s) S_{n-s}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))\\
+e'&=(\deg(g_1)+1)\cdots(\deg(g_s)+1)S_{n-s}(\rdeg(\mF,1)+1, \ldots, \rdeg(\mF,p)+1).
+\end{align*}
 \end{theorem}
+Remark that in the common situation where all degrees involved in the
+formulas above are at least equal to $2$, we have the inequalities $e
+\le c^2$ and $e' \le {c'}{}^2$; as a result, the runtimes become {\em
+  polynomial} in respectively $c,\sigma$ and $c',\sigma$. In view of Theorem~\ref{theo:1},
+this shows that 
+
+
+
 The probabilistic aspects are as follows: at several steps, the
 algorithms will draw elements from the base field at random. In all
 cases, there exists an algebraic hypersurface $\cal H$ of the parameter
@@ -1536,9 +1550,7 @@ of determinantal systems (as we mentioned in the introduction).
   function of degree $n-s$, and $n=q-p+s+1$.
 \end{proposition}
 This proposition establishes the first half of Theorems~\ref{theo:1}
-and~\ref{theo:2}. Remark that if all $\gamma_i$'s and $\delta_j$'s are
-at least equal to $2$, we have the inequality $e \le c^2$, and the
-runtime becomes $\softO\left (c^6 (\sigma + c)\right)$.
+and~\ref{theo:2}. 
 
 \medskip
 
