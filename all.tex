@@ -94,7 +94,13 @@
 In what follows, $\KK$ is a field and $\KKbar$ is an algebraic closure
 of $\KK$, $(X_1, \ldots, X_n)$ is a set of $n$ variables and
 $\KK[X_1,\dots,X_n]$ is the multivariate polynomial ring in $n$
-variables with coefficients in $\KK$. Let $\mF=[f_{i,j}] \in
+variables with coefficients in $\KK$. Throughout the paper, we 
+make the simplifying assumption that $\KK$ has characteristic zero;
+ most results could carry over to non-zero characteristic
+with suitable modifications.
+
+
+Let $\mF=[f_{i,j}] \in
 \KK[X_1,\dots,X_n]^{p \times q}$ be a polynomial matrix, with $p \leq
 q$. The first question which will interest us in this paper is to
 describe the set of points $\x \in \KKbar{}^n$ at which the evaluation
@@ -283,7 +289,7 @@ and polynomials $G$ can be computed by a straight-line program
 in $\mF$ and $G$).
 
 \begin{theorem}\label{theo:2}
-  Suppose that $\KK$ has characteristic zero, and suppose that matrix
+  Suppose that matrix
   $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$ and polynomials
   $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$ are given by a
   straight-line program of length $\sigma$. Then, there exist 
@@ -1534,7 +1540,7 @@ of~\cite{NieRan09}, where it was used to bound the number of solutions
 of determinantal systems (as we mentioned in the introduction).
 
 \begin{proposition}\label{prop:coldeg}
-  Suppose that $\KK$ has characteristic zero, and suppose that matrix
+  Suppose that matrix
   $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$ and polynomials
   $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$ are given by a
   straight-line program of length $\sigma$. Then, the multiplicities of
@@ -1616,11 +1622,20 @@ must be exactly $\gamma_i$.
 
 To each index $i=s+1,\dots,m$ corresponds a sequence
 $\bj_i=(j_{i,1},\dots,j_{i,p})$ such that $b_i$ and $a_i$ are the
-minors built with columns index by $\bj_i$ in respectively
+minors built with columns indexed by $\bj_i$ in respectively
 $\mU=(1-T)\cdot \mL + T \cdot \mF$ and $\mL$. In view of the shape of
 $\mL$, the polynomial $a_i$ is equal to $c_i\lambda_{j_{i,1}}\cdots
-\lambda_{j_{i,p}}$, where $c_i$ is a non-zero constant
-\todo{characteristic of $\KK$}, so it has degree $\delta_{j_{i,1}} +
+\lambda_{j_{i,p}}$, with
+$$c_i = \left | 
+\begin{matrix}
+j_{i,1} & j_{i,2} & \cdots & j_{i,p}\\
+j_{i,1}^2 & j_{i,2}^2 & \cdots & j_{i,p}^2\\
+\vdots & \vdots &  & \vdots \\
+j_{i,1}^p & j_{i,2}^p & \cdots & j_{i,p}^p
+\end{matrix}
+\right |.$$
+Because $\KK$ has characteristic zero,
+ $c_i$ is a non-zero constant, so that $a_i$ has degree $\delta_{j_{i,1}} +
 \cdots + \delta_{j_{i,p}}$.  Since the columns
 $(j_{i,1},\dots,j_{i,p})$ of $U$ have respective degrees at most
 $(\delta_{j_{i,1}},\dots,\delta_{j_{i,p}})$, $b_i$ has degree at most
@@ -1855,7 +1870,7 @@ forms in $n$ variables. This polynomial can be computed in $O(n
 (\gamma_1+\cdots+\gamma_s))$ operations for $(a_1,\dots,a_s)$, and $O(\sigma+n (\gamma_1+\cdots+\gamma_s))$ for $(b_1,\dots,b_s)$. 
 
 The polynomials $(b_{s+1},\dots,b_m)$ are the $p$-minors of
-$\mU=(1-T)\mL+T\mF$.  The polynomials $\lambda_1,\dots,\lambda_q$ can
+$\mU=(1-T)\cdot\mL+T\cdot\mF$.  The polynomials $\lambda_1,\dots,\lambda_q$ can
 be computed in $O(n (\delta_1+\cdots+\delta_q))$ operations, so that
 the entries of $\mU$ can be computed in $O(\sigma +
 n(\delta_1+\cdots+\delta_q))$ operations. From that, all $p$-minors of
@@ -1869,10 +1884,9 @@ whose runtime is $\softO(c^5 m n^2 + c(e+c^5 n)(\sigma' + n^3))$ operations
 in~$\KK$; since $m \le n + {q \choose p}$, this can be simplified as
 $$\softO\left (c(e+c^5 n)\left(\sigma + {q \choose p} n^3
 +n(\gamma_1+\cdots+\gamma_s+\delta_1+\cdots+\delta_q)\right)\right).$$
-Now, \todo{using the assumption that all $\gamma_j$'s and $\delta_i$'s are 
-at least equal to $1$}, we prove that $ {q \choose p}$ and
+We now prove that $ {q \choose p}$ and
 $\gamma_1+\cdots+\gamma_s+\delta_1+\cdots+\delta_q$ are both
-$O(cn)$ (recall that $c=\gamma_1 \cdots \gamma_s E_{n-s}(\delta_1,\dots,\delta_q)$)
+$O(cn)$; below, recall that $c=\gamma_1 \cdots \gamma_s E_{n-s}(\delta_1,\dots,\delta_q)$.
 \begin{itemize}
 \item $c$ is at least equal to $ {q \choose {q-p+1}}= \frac p{q-p+1}{q
   \choose p}$, so that ${q \choose p} \le c(q-p+1) \le cn$.
@@ -2843,7 +2857,7 @@ $\gamma_1=\deg(g_1),\dots,\gamma_s=\deg(g_s)$.
 % \]
 
 \begin{proposition}\label{prop:rowdegree}
-  Suppose that $\KK$ has characteristic zero, and suppose that matrix
+  Suppose that matrix
   $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$ and polynomials
   $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$ are given by a
   straight-line program of length $\sigma$. Then, 
