@@ -253,6 +253,7 @@ def lift(H1,l1,prec): #lift from zero-dimensional parametrization for s1 for sub
 	sol_half = lift(H1,l1,prec//2)
 	m = jacobian(H1,[FF.gen(3),FF.gen(4)])
     	n = m.substitute(x2 = sol[0],x3 = sol[1])
+	g = n.inverse() 
 	v = Matrix(FF,len(H1),1)
         for i in range(len(H1)):
             v[i,0] = H1[i].substitute(x2 = sol[0],x3 = sol[1])
@@ -338,7 +339,5 @@ def deldeno(a,b): ## delete denominatiors
 	    a2.append(a[i][j]*b[i])
         a1.append(a2)
     return a1
-
-
 
 

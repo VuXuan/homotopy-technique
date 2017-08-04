@@ -3394,6 +3394,98 @@ $\softO(\ )$, so that we can also write
 $$T_{\rm row}(\sigma,\bgamma,\balpha,q)= \softO(\rc(\re+\rc^5 )(\sigma + \rc^2)),$$
 thereby establishing Proposition~\ref{prop:rowdegree}.
 
+\section{Example}
+Let us consider an input matrix $\mF \in \mathbb{F}_{9001}[X_1, X_2, X_3, X_4]^{2 \times 5}$ with the row degrees are $\rdeg(\mF,1) = 2$ and $\rdeg(\mF,2) = 1$. So, we can take 
+
+\begin{align*}
+\mM= \left( \begin{matrix}
+\lambda_{1,1} & 0  & \lambda_{1,3} & \lambda_{1,4} & \lambda_{1, 5}\\
+0 & \lambda_{2,2}  & \lambda_{2,3} & \lambda_{2,4} & \lambda_{2, 5}
+\end{matrix} \right),
+\end{align*}
+with 
+\[
+\begin{cases}
+\lambda_{1,1} = (2079X_1 + 2631X_2 - 1908X_3 + 4492X_4 + 241)(-103X_1 - 869X_2 - 485X_3 - 4006X_4 - 835),\\
+\lambda_{1,3} = (3809X_1 - 3674X_2 + 3848X_3 - 397X_4 - 1663)(-264X_1 - 3694X_2 - 1764X_3 - 1111X_4 - 2645)\\
+\lambda_{1,4} = (3750X_1 - 4147X_2 - 3384X_3 - 2178X_4 + 3092)(-2090X_1 - 1844X_2 + 2266X_3 + 4180X_4 - 172)\\
+\lambda_{1,5} = (-3003X_1 + 3278X_2 - 1133X_3 + 3421X_4 + 2777)(-2870X_1 - 3369X_2 - 3864X_3 + 3912X_4 + 532)
+\end{cases}
+\]
+and
+\[
+\begin{cases}
+\lambda_{2,2} = -1839X_2 - 3560X_3 + 1141X_4 + 3690\\
+\lambda_{2,3} = -654X_1 - 2801X_2 + 72X_3 + 3252X_4 - 3363\\
+\lambda_{2,4} = 4029X_1 + 326X_2 - 514X_3 - 1787X_4 - 4162\\
+\lambda_{2,5} = 4495X_1 - 1666X_2 + 3990X_3 - 2909X_4 - 3666
+\end{cases}
+\]
+%-1953(4159X_1 - 3624X_2 - 2613X_3 + X_4 - 2550)(-1833X_1 - 839X_2 - 305X_3 + X_4 + 2619)
+as a start matrix. 
+
+The first case is $\lambda_{1,1} = \lambda_{1,3} = \lambda_{1,4} = \lambda_{1,5} = 0$ and the zero-dimesional parametrization is $\cdots$
+
+The second case is $\lambda_{2,2} = \lambda_{2,3} = \lambda_{2,4} = \lambda_{2,5} = 0$  and the zero-dimesional parametrization is $\cdots$
+
+The last case is $\lambda_{1,1} = \lambda_{2,2} = 0$ and the matrix $\mB$ has rank deficient, where $$\mB = \left( \begin{matrix}
+\lambda_{1,3} & \lambda_{1,4} & \lambda_{1, 5}\\
+\lambda_{2,3} & \lambda_{2,4} & \lambda_{2, 5}
+\end{matrix} \right)$$
+\begin{itemize}
+\item $
+\begin{cases}2079X_1 + 2631X_2 - 1908X_3 + 4492X_4 + 241 = 0 \\
+-1839X_2 - 3560X_3 + 1141X_4 + 3690 = 0
+\end{cases}$ and $\rank(\mB) < 2$ : 
+
+
+By writing $X_1$ and $X_2$ in the forms of $X_3, X_4, X_5$ and substituting them in the matrix $B$ we obtain  
+$C \in \mathbb{F}_{9001}[X_2,X_3]$ 
+with 
+$$
+\begin{cases}
+c_{1,1} = 2362X_3^2 + 352X_3X_4 + 4302X_4^2 + 203X_3 + 3798X_4 + 1170, \\
+c_{1,2} = -3760X_3^2 - 4011X_3X_4 + 4139X_4^2 + 3442X_3 - 3363X_4 + 226, \\
+c_{1,3} = -1719X_3^2 + 1378X_3X_4 + 1140X_4^2 + 2830X_3 + 3331X_4 + 4203,
+\end{cases}
+$$
+and 
+\[
+\begin{cases}
+c_{2,1} =  -697X_3 - 3413X_4- 2204,\\
+c_{2,2} =   -1401X_3 - 1381X_4 + 3311, \\
+c_{2,3} =   3220X_3 + 1772X_4 + 1665.\\
+\end{cases}
+\]
+The row degrees of the matrix $C$ are $\rdeg(C,1) = 2$ and $\rdeg(C,2) = 1$. In order to find the points in $\KKbar$, where $\KK = \mathbb{F}_{9001}$, at which the evaluation of the matrix $C$ has
+rank less than $2$, we construct a start matrix 
+\[
+\mM_C = \left( \begin{matrix}
+m_{1,1} & 0 & m_{1,3}\\
+0 & m_{2,2} & m_{2,3}
+\end{matrix}
+\right) \in \KK[X_3,X_4]^{2 \times 3}
+\]
+as 
+$$
+\begin{cases}
+m_{1,1} = (4327X_3 + 682X_4 + 3685)(-489X_3 + 3874X_4 - 4373),\\
+m_{1,3} = (3186X_3 + 3803X_4 - 2837)(-3934X_3 + 3860X_4 + 3147),
+\end{cases}
+$$
+and $\begin{cases}
+m_{2,2} = 2299X_3 - 2004X_4 - 1225,\\
+m_{2,3} = 3005X_3 - 923X_4 - 3389.
+\end{cases}
+$
+
+A zero-dimensional parametrization for the solutions of $m_{1,1} = m_{1,3} = 0$ is $\scrR_{0,1} = (t^4 - 1894t^3 - 909t^2 - 3055t + 2116,
+ t,
+ 809t^3 + 2084t^2 - 3753t - 2346)
+$, a zero-dimensional parametrization for the solutions of $m_{2,2} = m_{2,3} = 0$ is $\scrR_{0,2} = (t + 1766, t, 6934)$, while that of $m_{1,1} = m_{2,2} = 0$  is $\scrR_{0,3} = (t^2 - 882t - 2349, t, -2833t - 589)$. 
+
+A homotopy matrix is $\mU = (1-T)\cdot \mM_C + T\cdot C$. After the lifting step, we obtain the  zero-dimensional parametrizations of $V(I_C)$ are $\scrR_{1,1} = \cdots$, $\scrR_{1,2} = \cdots$ and $\scrR_{1,3} = \cdots$
+\end{itemize}
 
 
 \bibliographystyle{plain} \bibliography{roadmap}
