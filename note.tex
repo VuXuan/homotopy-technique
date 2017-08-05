@@ -1,0 +1,129 @@
+\documentclass[12pt]{article}
+\usepackage{bbm,fullpage}
+\usepackage{bm}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{algorithm, pseudocode}
+\usepackage{mathrsfs}
+\usepackage{enumitem}
+\usepackage[titles]{tocloft}
+\usepackage{yfonts}
+\usepackage{xcolor}
+\usepackage[pdftex,                %
+%    pagebackref,                %
+    bookmarks         = true,%     % Signets
+    bookmarksnumbered = true,%     % Signets numérotés
+    pdfpagemode       = None,%     % Signets/vignettes fermé à l'ouverture
+    pdfstartview      = FitH,%     % La page prend toute la largeur
+    pdfpagelayout     = SinglePage,% Vue par page
+    colorlinks        = true,%     % Liens en couleur
+%    linkcolor= monvert, %    % couleur des liens internes
+%    anchorcolor= blue, %    % couleur des liens internes
+   citecolor         =blue,
+    urlcolor          = magenta,%  % Couleur des liens externes
+    pdfborder         = {0 0 0}%   % Style de bordure : ici, pas de bordure
+    ]{hyperref}%                   % Utilisation de HyperTeX
+
+\usepackage{amsmath}
+\usepackage{easybmat}
+\usepackage{multirow,bigdelim}
+
+\newcommand*\hexbrace[2]{%
+  \underset{#2}{\underbrace{\rule{#1}{0pt}}}}
+
+\usepackage[indexonlyfirst,ucmark,toc]{glossaries}
+\renewcommand*{\glstextformat}[1]{\textcolor{black}{#1}}
+%\glsdisablehyper %pour enlever les liens hypertexte
+
+
+\input{macros.tex}
+
+
+
+\def\NOTE#1#2{{\begin{quote}\marginpar[\hfill{#1}]{{#1}}{{\textsf{[\![{#2}]\!]}}}\end{quote}}}
+\def\respond#1{\NOTE{\textcircled{\textsc{a}}}{Note:~{#1}}}
+
+
+
+\newtheorem{pbm}{Problem}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{remark}[definition]{Remark}
+
+\begin{document}
+
+This is a short note to study the maximum degree of intermediate
+algebraic sets studied during the incremental solving process of
+systems defining polar varieties through the geometric resolution
+algorithm due to \cite{GiLeSa01}. This is not so restrictive ; all
+what is written below does not really depend on the fact that the
+entries of the rank defective matrix are partial derivatives of some
+input polynomials which also vanish on the algebraic set under study.
+
+We start by fixing notations. We let $\K$ be a field and polynomials
+$\f=(f_1, \ldots, f_p)\subset \K[X_1, \ldots, X_n]$ with $D_i=\deg(f_i)$.
+
+We want to solve the system of equations
+$f_1=\cdots=f_p=M_1=\cdots=M_N=0$ where the $M_i$'s are the maximal
+minors of the matrix $\jac(\f, 1)$ (the truncated jacobian matrix
+associated to $\f$ obtained by removing the first column).
+
+We assume in the sequel that
+\begin{itemize}
+\item the solution set of this system is
+finite; 
+\item the sequence $\f$ is in generic coordinates; 
+\item the sequence $\f$ is reduced and regular.
+\end{itemize}
+
+
+We focus on the solutions of that system at which $\jac(\f, 1)$ have
+rank $p-1$. Hence at these solutions at least one of the $(p-1, p-1)$
+minors of $\jac(\f, 1)$ does not vanish; let us take w.l.o.g. the
+upper left such minor and let $M_1, \ldots, M_{n-p}$ be the
+$p\times p$ minors of $\jac(\f, 1)$ obtained by adding the missing row
+and the successive missing $n-p$ columns to the upper left submatrix
+of size $p(-1,p-1)$ of $\jac(\f, 1)$.
+
+We look at the intermediate degrees of the solution sets defined as
+the Zariski closures of the sets defined by
+$f_1=\cdots=f_p=0, M_1=\cdots=M_i=0, m\neq 0$.  These sets are the
+union of irreducible components of the polar varieties $W(\pi_i, V)$
+(associated to the restriction of the projection
+$(x_1, \ldots, x_n)\to (x_1, \ldots, x_i)$ to $V$). This statement
+comes from the equidimensionality of these polar varieties (which are
+consequences of the assumption on the genericity of our system of
+coordinates).
+
+Since we are in generic coordinates, some result in \cite{SaSc03}
+establishes that $W(\pi_i, V)$ is in Noether position w.r.t.
+$(X_1, \ldots, X_{i-1})$. Using some other result in [Krick, Pardo,
+Sombra and maybe other colleagues] one concludes that for any
+$x\in \bar{\K}^{i-1}$, the degree of the fiber
+$\pi_{i-1}^{-1}(x)\cap W(\pi_i, V)$ (which is what is computed by
+\cite{GiLeSa01}) equals that of $W(\pi_i, V)$.
+
+Now, observe that $W(\pi_{i}, V\cap \pi_{i-1}^{-1}(x))$ coincides with
+$W(\phi_i, V\cap \pi_{i-1}^{-1}(x))$ where $\phi_i$ is the projection
+$(x_1, \ldots, x_n)\to x_i$. This statement is not immediate but can
+be smoothly established by writing the systems of equations defining
+both sets ; up to substitution of the variables $X_1, \ldots, X_{i-1}$
+by the coordinates in $x$, in some polynomials, these systems
+coincide.
+
+Now, one can apply the result bounding the degrees of critical loci in
+the current homotopy paper to bound the degree of the varieties
+$W(\varphi_i, V\cap \pi_{i-1}^{-1}(x))$ (we already established that
+this degree is also the one of $W(\pi_i, V)$). Immediate computations
+show that the intermediate bounds are less than the final one.
+
+
+
+
+
+ \bibliographystyle{plain} \bibliography{roadmap}
+
+
+\end{document}
