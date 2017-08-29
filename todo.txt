@@ -1,0 +1,19 @@
+* abstract (mentionner la crypto pas clair a cause de la carac. finie?)
+
+* reread the intro.
+
+* in the introduction, "most results could carry over to non-zero
+characteristic with suitable modifications."  not clear enough ;
+discuss what we should do.
+
+* in the introduction, shouldn't we say that the degree bounds are
+  optimal (in the sense that they are reached in generic situations)?
+  [just after the sentence starting with Spaenlehauer gave in xxx or
+  after the maint theorems?]
+
+* complete complexity statements for in the intro. 
+
+* Prop. prop:compute_regular to be completed
+
+* in the intro, shouldn't we draw some explicit applications and consequences
+of the results?

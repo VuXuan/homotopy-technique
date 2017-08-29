@@ -57,6 +57,9 @@
 \maketitle
 
 \begin{abstract}
+{  \todo{\bf To be modified. Should reflect ina better way the content
+    of the paper.}
+}
   Let $\KK$ be a field of characteristic $0$ and $\KKbar$ be an
   algebraic closure of $\KK$. Consider a sequence of polynomials
   $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$, a polynomial matrix
@@ -128,7 +131,7 @@ an algebraic set $V$ is the largest integer $d$ such that intersecting
 $V$ with $d$ generic hyperplanes yields finitely many points; those
 algebraic sets with all irreducible components of the same dimension
 are called {\em equidimensional}. We refer to
-e.g.~\cite{Shafarevich77} for these notions.
+e.g.~\cite[Chap. I and II]{Shafarevich77} for these notions.
 
 For the problem above, it is natural to consider the case where $n =
 q-p+1$.  Indeed, results due to Macaulay~\cite{Macaulay16} and Eagon
@@ -137,7 +140,7 @@ $\VpF{p}{\mF}$ have dimension at least $n-(q-p+1)$; furthermore, in
 the case $n = q-p+1$, $\VpF{p}{\mF}$ has dimension zero for a generic
 choice of the entries of $\mF$ (this is proved for instance
 in~\cite{Spa14}). Of course, even if we assume $n = q-p+1$,
-$\VpF{p}{\mF}$, $\VpF{p}{\mF}$ may have components of positive
+$\VpF{p}{\mF}$ may have components of positive
 dimension; in this case, we will be interested in describing only its
 {\em isolated points}, that is, the points in the irreducible
 components of $\VpF{p}{\mF}$ of dimension zero (this notion makes
@@ -167,35 +170,52 @@ g_1,\dots,g_s\rangle$.  Our main problem is then the following.
   $n = q-p+s+1$, compute the isolated points of $\VpFG{p}{\mF}{G}$.
 \end{pbm}
 This problem appears in a variety of context; prominent examples are
-optimization problems~\cite{xxx}, and related questions in real
-algebraic geometry~\cite{xxx}, where $\mF$ consists of the Jacobian
-matrix of $G$, together with one extra row, corresponding to the
-gradient of a function $g$ that we want to optimize on $V(G)$.
+optimization problems~\cite{GSZ10,JP14,BGHS14,GS14,NDS06}, and related
+questions in real algebraic
+geometry~\cite{ARS,BaGiHeMb01,SaSc03,BaGiHePa05,BGHSS,SaSc11,BRSS,SaSc17},
+where $\mF$ consists of the Jacobian matrix of $G$, together with one
+extra row, corresponding to the gradient of a function $g$ that we
+want to optimize on $V(G)$.
+
+In several of these situations, the system which consists of
+$G, M_p(\mF)$ (recall that we assume $p \leq q$) is radical and
+zero-dimensional ; see e.g. \cite{BGHSS}. In that case, the Jacobian
+matrix associated to $G, M_p(F)$ has maximal rank at any point of
+$\VpFG{p}{\mF}{G}$. Hence, it also makes sense to look at the
+following slight variant of Problem~\ref{problem2}.
+
+\begin{pbm} \label{problem3} Given a field $\KK$, a matrix
+  $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$ and polynomials
+  $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$, with $p \leq q$ and
+  $n = q-p+s+1$, compute the subset of $\VpFG{p}{\mF}{G}$ at
+  which the Jacobian Matrix of $G, M_p(F)$ has maximal rank.
+\end{pbm}
+
 
 We will represent the output of our algorithm using univariate
 polynomials. Let $V \subset \KKbar{}^n$ be a zero-dimensional
 algebraic set defined over $\KK$. A \emph{zero-dimensional
   parametrization} $\scrR = ((w,v_1, \ldots, v_n), \lambda)$ of $V$
 consists in polynomials $(w,v_1, \ldots, v_n)$ such that $w \in
-\KK[X]$ is monic and squarefree, all $v_i$ are in $\KK[X]$ and satisfy
+\KK[X]$ is monic and squarefree, all $v_i$'s are in $\KK[X]$ and satisfy
 $\deg(v_i) < \deg(w)$, and $\lambda$ is a $\KK$-linear form in $n$
 variables, such that
 \begin{itemize}
-\item $\lambda(v_1, \ldots, v_n) = Xw'$ mod $w$;
-\item we have $V = Z(\scrR)$, with $$Z(\scrR)= \left\{\left(\frac{v_1(\tau)}{w'(\tau)}, \ldots, \frac{v_n(\tau)}{w'(\tau)}\right) \ | \ w(\tau) = 0\right\};$$
+\item $\lambda(v_1, \ldots, v_n) = Xw'$ mod $w$ with $w'=\frac{\partial w}{\partial X}$;
+\item we have $V = Z(\scrR)$, with $$Z(\scrR)= \left\{\left(\frac{v_1(\tau)}{w'(\tau)}, \ldots, \frac{v_n(\tau)}{w'(\tau)}\right) \ | \ w(\tau) = 0\right\}.$$
 \end{itemize}
-the constraint on $\lambda$ then says that the root of $w$ are the values
-taken by $\lambda$ on $V$. This representation was introduced
+The constraint on $\lambda$ then says that the root of $w$ are the
+values taken by $\lambda$ on $V$. This representation was introduced
 in~\cite{Kronecker82,Macaulay16}, and has been used in a variety of
-algorithms, such
-as those in~\cite{GiMo89,GiHeMoPa95,ABRW,GiHeMoMoPa98,Rouillier99,GiLeSa01}.
+algorithms, such as those
+in~\cite{GiMo89,GiHeMoPa95,ABRW,GiHeMoMoPa98,Rouillier99,GiLeSa01}.
 The reason we use a rational parametrization, with $w'$ as a
 denominator, goes back to~\cite{ABRW, Rouillier99, GiLeSa01}: when
 $\KK=\Q$, this allows us to control precisely the bit-size of the
 coefficients, using bounds such as those
-in~\cite{Schost03,DaSc04}. (The same phenomenon holds with $\KK=k(T)$,
-in which case we want to control degrees in $T$ of the numerators and
-denominators of the coefficients of $\scrR$.)
+in~\cite{Schost03,DaSc04}. (The same phenomenon holds with $\KK=k(T)$
+-- $k$ is field --, in which case we want to control degrees in $T$ of
+the numerators and denominators of the coefficients of $\scrR$.)
 
 Our first result gives a bound on the multiplicities of the solutions
 of $\VpFG{p}{\mF}{G}$. To state it, we need the following notation.
@@ -208,24 +228,25 @@ $i$th row of $\mF$, that is, $\rdeg(\mF,i)=\max(\deg(f_{i,j}))_{1 \le
   j \le q}$; similarly, for $j=1,\dots,q$, we write $\cdeg(\mF,j)$ for
 the degree of the $j$th column of $\mF$, that is,
 $\cdeg(\mF,j)=\max(\deg(f_{i,j}))_{1 \le i \le p}$. For $k \ge 0$,
-$E_k(\delta_1,\dots,\delta_q)$ is the elementary symmetric polynomial
-of degree $k$ in $(\delta_1, \ldots, \delta_q)$ and
-$S_k(\alpha_1,\dots,\alpha_p)$ is the $k$th complete symmetric
-polynomial in $(\alpha_1,\dots,\alpha_p)$.
+$E_k(A_1,\dots,A_q)$ is the elementary symmetric polynomial
+of degree $k$ in $(A_1, \ldots, A_q)$ and
+$S_k(B_1,\dots,B_p)$ is the $k$th complete symmetric
+polynomial in $(B_1,\dots,B_p)$.
 
 Finally, recall the notion of multiplicity of a point $\bx$ with
 respect to an ideal $I \subset\KK[X_1,\dots,X_n]$ (we refer to
-\cite{Eisenbud95} for more details on the following notions).  The
-ideal $I$ can be written as the intersection of finitely many primary
-components, that is, $I=Q_1\cap\cdots \cap Q_r$ for some primary
-ideals $Q_1,\dots,Q_r$; this decomposition is said to be minimal when
-$V(Q_i)\neq V(Q_j)$ for $i\neq j$. For $\bx$  isolated in $V(I)$, there
-exists a unique primary component $Q_i$ (which has dimension zero)
-such that $\bx$ is in $V(Q_i)$; although minimal primary decompositions
-are not unique, the fact that $\bx$ is isolated implies that $Q_i$
-does not depend on the primary decomposition of $I$ we consider; then,
-the \emph{multiplicity} of $\bx$ is defined as the dimension of
-$\KK[X_1,\dots,X_n]/Q_i$. Our first result is then the following.
+\cite[Chap. 3]{Eisenbud95} for more details on the following notions).
+The ideal $I$ can be written as the intersection of finitely many
+primary components, that is, $I=Q_1\cap\cdots \cap Q_r$ for some
+primary ideals $Q_1,\dots,Q_r$; this decomposition is said to be
+minimal when $V(Q_i)\neq V(Q_j)$ for $i\neq j$. For $\bx$ isolated in
+$V(I)$, there exists a unique primary component $Q_i$ (which has
+dimension zero) such that $\bx$ is in $V(Q_i)$; although minimal
+primary decompositions are not unique, the fact that $\bx$ is isolated
+implies that $Q_i$ does not depend on the primary decomposition of $I$
+we consider; then, the \emph{multiplicity} of $\bx$ is defined as the
+dimension of $\KK[X_1,\dots,X_n]/Q_i$. Our first result is then the
+following.
 
 \begin{theorem}\label{theo:1}
   Let $\mF$ be in $\KK[X_1,\dots,X_n]^{p \times q}$ and let
@@ -263,16 +284,18 @@ $n+1$ variables):
   such that $\deg(f_{i,j}) = \rdeg(\mF,i)$ for all $i,j$, the
   ideal  $I_p(\mF)$ has degree $S_{n}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))$.
 \end{itemize}
-From this, they deduce that the degree of the ideal $I_p(\mF) +
-\langle g_1,\dots,g_s \rangle$ is at most \sloppy $\deg(g_1) \cdots
-\deg(g_s) S_{n-s}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))$, for systems
-coming from optimization problems (the matrix $\mF$ is the Jacobian
-matrix of $G=(g_1,\dots,g_s)$, with one extra row of the form ${\rm
-  gradient}(g)$), and assuming that this ideal has dimension zero.
-For generic choices of such $G=(g_1,\dots,g_s)$ and $g$,
-Spaenlehauer gave in~\cite{Spa14} an explicit expression for the
-Hilbert function of the ideal $I_p(\mF) + \langle g_1,\dots,g_s
-\rangle$.
+From this, they deduce that the degree of the ideal
+$I_p(\mF) + \langle g_1,\dots,g_s \rangle$ is at most \sloppy
+$\deg(g_1) \cdots \deg(g_s) S_{n-s}(\rdeg(\mF,1), \ldots,
+\rdeg(\mF,p))$,
+for systems coming from optimization problems (the matrix $\mF$ is the
+Jacobian matrix of $G=(g_1,\dots,g_s)$, with one extra row of the form
+${\rm gradient}(g)$ where $g$ is a polynomial to be optimized under
+the constraints $g_1=\cdots=g_s=0$), and assuming that this ideal has
+dimension zero.  For generic choices of such $G=(g_1,\dots,g_s)$ and
+$g$, Spaenlehauer gave in~\cite{Spa14} an explicit expression for the
+Hilbert function of the ideal
+$I_p(\mF) + \langle g_1,\dots,g_s \rangle$.
 
 \medskip
 
@@ -322,12 +345,42 @@ entries in the $i$th column, except at most one, are non-zero without
 changing the column degrees. The $i$th column of $\mF$ (and the row of
 the non-zero entry, if there is one) can then be discarded.
 
-Remark further that in the common situation where all degrees involved in the
-formulas above are at least equal to $2$, we have the inequalities $e
-\le c^2$ and $e' \le {c'}{}^2$; as a result, the runtimes become {\em
-  polynomial} in respectively $c,\sigma$ and $c',\sigma$. This is to be 
-compared with Theorem~\ref{theo:1}, which shows that 
-$\min(c,c')$ is a natural upper bound for the output size of such algorithms.
+Remark further that in the common situation where all degrees involved
+in the formulas above are at least equal to $2$, we have the
+inequalities $e \le c^2$ and $e' \le {c'}{}^2$; as a result, the
+runtimes become {\em polynomial} in respectively $c,\sigma$ and
+$c',\sigma$. This is to be compared with Theorem~\ref{theo:1}, which
+shows that $\min(c,c')$ is a natural upper bound for the output size
+of such algorithms.
+
+For solving Problem~\ref{problem3}, one obtains slightly better
+complexity estimates.
+
+\begin{theorem}\label{theo:3}
+  Suppose that matrix
+  $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$ and polynomials
+  $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$ are given by a
+  straight-line program of length $\sigma$. Assume that 
+  $\deg(g_1),\dots,\deg(g_s)$, as well as $\cdeg(\mF,1), \ldots, \cdeg(\mF,q)$
+  and $\rdeg(\mF,1), \ldots, \rdeg(\mF,p)$ are all at least equal to $1$.
+
+  Then, there exist 
+   algorithms that solve Problem~\ref{problem3} in either
+ $$\softO\left ( xxx\right)$$
+  operations in $\KK$, with
+  \begin{align*}
+  c&=\deg(g_1)\cdots\deg(g_s)E_{n-s}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q))\\
+  e&=(\deg(g_1)+1)\cdots(\deg(g_s)+1) E_{n-s}(\cdeg(\mF,1)+1, \ldots, \cdeg(\mF,q)+1)   
+  \end{align*}
+or 
+$$\softO\left( xxx \right)$$
+operations in $\KK$, with 
+\begin{align*}
+c'&=\deg(g_1)\cdots\deg(g_s) S_{n-s}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))\\
+e'&=(\deg(g_1)+1)\cdots(\deg(g_s)+1)S_{n-s}(\rdeg(\mF,1)+1, \ldots, \rdeg(\mF,p)+1).
+\end{align*}  
+\end{theorem}
+
 
 The probabilistic aspects are as follows: at several steps, the
 algorithms will draw elements from the base field at random. In all
@@ -341,7 +394,7 @@ in~$\cal H$.
 %% instance, when all isolated solutions of $I_\mF$ are known to have
 %% multiplicity one.
 
-\todo{previous GB work; more detail on previous homotopy work}
+%\todo{previous GB work; more detail on previous homotopy work}
 Our algorithm is based on a {\em symbolic homotopy continuation}.
 Homotopy continuation algorithms have become a foundational tools for
 numerical algorithms, either in continuation of Shub and Smale's early
@@ -358,9 +411,43 @@ Most algorithms in the previous references have in common that they
 solve {\em square} systems, that is, systems with as many equations as
 unknowns (extensions may deal with systems of positive dimension, but
 those are essentially variants of the algorithm for square systems).
+
+In~\cite{SaSc16}, these techniques are used to solve
+Problem~\ref{problem3} but the obtained complexity estimates depend on
+multi-homogeneous B\'ezout bounds involving the maxima of
+$\rdeg(\mF, 1), \ldots, \rdeg(\mF, p)$ or
+$\cdeg(\mF,1), \ldots, \cdeg(\mF, q)$.
+
 One of the novelties in this paper is to deal with determinantal
 systems of equations, which are in essence over-determined; this is
 made possible by the algebraic properties of determinantal ideals.
+
+The complexity of solving determinantal polynomial systems has also
+been studied through Gr\"obner bases. Starting from the determination
+of the Hilbert function of a determinantal ring due to Conca and
+Herzog \cite{CH94}, complexity estimates are given in \cite{FSS13,
+  FSS12} for computing Gr\"obner basis of ideals generated by either
+$M_r(\mF)$ when $r\leq p\leq q$ or $G, M_{p}(\mF)$ where $\mF$ is the
+Jacobian matrix associated to $G$ with one extra row) but under some
+genericity assumptions on the entries of $\mF$ or $G$. Besides, they
+are assumed to all have the same degree. This latter assumption is
+removed by Spaenlehauer in \cite{Spa14} where this series of works
+culminate with sharp complexity statements but still under genericity
+assumptions.
+
+
+Overdetermined systems encoding rank defects in polynomial matrices
+have also been studied in the scope of the so-called geometric
+resolution algorithm in \cite{BaGiHeLeMaSo15} with a slight
+generalization in \cite{SaSp16} assuming that the dimension of the
+degeneracy locus is as expected. As our algorithm here, these
+algorithms take as input straight-line programs but instead of using
+deformation techniques to build a global homotopy, determinantal
+systems are solved incrementally in some chart. Hence, the complexity
+of these algorithms depends here on the maximum degrees of the
+varieties defined by the considered intermediate systems and, even
+without taking into account the dimension assumption, it is not clear
+how this compares to the above results.
 
 In the following paragraphs, we describe our results in more detail.
 As a preliminary, we will need an algorithm which takes as input
@@ -437,7 +524,8 @@ algebraic closure of $\LL$.  Let $\bC=(c_1,\dots,c_m)$ be polynomials
 in $\KK[\bX]$, with $\bX=(X_1,\dots,X_n)$. Given a point $\bx$ with
 coordinates in $\LL$ in the zero-set $V(\bC)\subset \LLbar{}^n$, we
 discuss here how to decide whether $\bx$ is an isolated point in
-$V(\bC)$. We make the following assumption:
+$V(\bC)$. We make the following assumption in the rest of this
+section:
 \begin{description}[leftmargin=*]
 \item [$\assH.$] We are given as input an integer $\mu$ such that
  either $\bx$ belongs to a positive-dimensional component of $V(\bC)$,
@@ -480,7 +568,7 @@ following remark.
   This follows from the following
   result~\cite[Theorem~A.1]{BaHaPeSo09}.  For $k \ge 1$, let $I_k$ be
   the zero-dimensional ideal $\langle \bC \rangle + \m^{k}$, and let
-  $\nu_k$ be multiplicity of the origin with respect to this
+  $\nu_k$ be the multiplicity of the origin with respect to this
   ideal. Then, the reference above proves that the sequence
   $(\nu_k)_{k \ge 1}$ is non-decreasing, and that $0$ is isolated in
   $V(\bC)$ if and only if there exists $k\ge 1$ such that
@@ -817,7 +905,8 @@ For $\tau$ in $\KKbar$, we further denote by $\assG(\tau)$ the
 following three properties.
 \begin{description}[leftmargin=*]
 \item[$\assG_1(\tau).$] For $k=1,\dots,m$,
-  $\deg_\bX(b_k)=\deg_\bX(b_{\tau,k})$.
+  $\deg_\bX(b_k)=\deg_\bX(b_{\tau,k})$ (where $\deg_\bX$ denotes the
+  degree in $\bX$).
 \item[$\assG_2(\tau).$] The only common solution to
   $b_{\tau,1}^H(\tau,\bX)=\cdots=b_{\tau,m}^H(\tau,\bX)=0$ is
   $(0,\dots,0)\in\KKbar{}^n$, where for $k=1,\dots,m$, $b_{\tau,k}^H$ is
@@ -862,8 +951,18 @@ Then, the second main result in this section is the following.
   using
 $$\softO(c^5 m n^2  + c(e+c^5 n)(\sigma + n^3)) \subset (e\,\sigma\,m)^{O(1)}$$ operations in~$\KK$.
 \end{proposition}
-
+The next proposition will be used further when solving Problem~\ref{problem3}.
+\begin{proposition}\label{prop:compute_regular}
+  Under the previous assumptions and letting $c$ be as in
+  Proposition~\ref{prop:degree_fiber}, we can compute a
+  zero-dimensional parametrization of the isolated points of $V(\bC)$
+  using
+$$\softO() \subset (e\,\sigma\,m)^{O(1)}$$ operations in~$\KK$.  
+\end{proposition}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 
 \subsection{Proof of Proposition~\ref{prop:degree_fiber}}
 
@@ -884,7 +983,7 @@ $V(J)\subset \KKbar{}^{n+1}$. By $\assA_1$, these irreducible
 components all have dimension at least one. Refining further, we
 assume that $t \le s$ is such that $V(P_1),\dots,V(P_t)$ are the
  irreducible components of $V(J)$ of dimension one whose
-image by $\pi_T: (\tau,x_1,\dots,x_n) \mapsto \tau$ is dense in
+image by $\pi_T: (\tau,x_1,\dots,x_n) \mapsto \tau$ is Zariski dense in
 $\KKbar$.
 
 \begin{lemma}\label{lemma:vPi}
@@ -1025,7 +1124,7 @@ in Proposition~\ref{prop:degree_fiber}.
   $e_i$'s (this is well-defined, since not all $e_i$'s vanish) so that
   we can rewrite the above as $(T-\tau)^r (f_1 m_1 +\cdots+ f_k
   m_k) \in J'$, with $f_i=e_i/(T-\tau)^r \in \KKbar[T]$ for all $i$.
-  In particular, our definition of $e$ implies that the values
+  In particular, our definition of $e_i$ implies that the values
   $f_i(\tau)$ are not all zero.
 
   Recall that the ideal $J'$ has the form $J'=Q_1 \cap \cdots \cap
@@ -1187,7 +1286,7 @@ we now assume that property $\assG(0)$ holds.
   (Lemma~\ref{lemma:dimJprime}), so it is enough to prove that for
   $i=1,\dots,c'$, the localization of
   $\KKbar\langle\langle T \rangle\rangle[\bX]/\frak{J}'$ at the
-  maximal ideal $\mathfrak{m}_{\Phi_i}$ is a field, or equivalently
+  maximal ideal $\mathfrak{m}_{\Phi_i}$ is a field, or equi\-valently
   that the localization of
   $\KKbar\langle\langle T \rangle\rangle[\bX]/\frak{J}$ at
   $\mathfrak{m}_{\Phi_i}$ is a field.  By the Jacobian
@@ -1245,7 +1344,7 @@ used above also implies that all $\Phi_i$ are actually power series.)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Proof of Proposition~\ref{prop:compute_isolated}} \label{proof:prop2}
+\subsection{Proof of Propositions~\ref{prop:compute_isolated} and~\ref{prop:compute_regular}} \label{proof:prop2}
 
 Let $\scrR_0 =((w_{0},v_{0,1},\dots,v_{0,n}),\lambda)$ be a
 zero-dimensional parametrization of $V(\bB_{0})$ obtained by means of
@@ -1271,7 +1370,7 @@ Gaussian elimination. The total time, under the assumption that $w_0$
 is irreducible, is thus $O(mn^2 + n\sigma)$ operations in $\LL$, that is,
 $\softO( (mn^2 + n\sigma) c)$ operations in $\KK$.
 
-When $w_0$ is not invertible, $\LL=\KK[Y]/\langle w_0 \rangle$ is a
+When $w_0$ is not irreducible, $\LL=\KK[Y]/\langle w_0 \rangle$ is a
 product of fields. We can still apply the same process as in the
 irreducible case; if the algorithm goes through, we have obtained our
 answer. In general, one workaround would be to factor $w_0$, but we do
@@ -1328,6 +1427,7 @@ most $e$~\cite[Theorem~1]{Schost03}.  This is done by applying
 rational function reconstruction to all coefficients of $\scrR$, as
 in~\cite{Schost03}, and takes time $\softO(c\,e\,n)$.
 
+All in all, the total cost of this step is $\softO(c\,e (\sigma+n^2)n)$.
 
 \paragraph{A finite set containing the isolated points of $V(\bC)$.}
 As we did in the previous subsection for $T=0$, we let
@@ -1351,12 +1451,12 @@ Following~\cite{RRS} and~\cite{SaSc16}, we ask that $\lambda$ is a
  the $T'$-adic valuation.
 \end{enumerate}
 These conditions are satisfied for a generic choice of $\lambda$, as
-showed in~\cite{SaSc16}. When this is the case, Lemma~4.4
+showed in~\cite[Section 3]{SaSc16}. When this is the case, Lemma~4.4
 in~\cite{RRS} shows how to recover a zero-dimensional parametrization
 $\scrR_1=((w_1,v_{1,1},\dots,v_{1,n}),\lambda)$ with coefficients in
-$\KK$ for the limit set $V(J' + \langle T-1\rangle) =\{\varphi'_i \mid i=1,\dots,{\kappa'}\}$
-starting from $\scrS$, in time 
-$\softO(c\,e\,n)$.
+$\KK$ for the limit set
+$V(J' + \langle T-1\rangle) =\{\varphi'_i \mid i=1,\dots,{\kappa'}\}$
+starting from $\scrS$, in time $\softO(c\,e\,n)$.
 
 \paragraph{Cleaning.}
 Lemma~\ref{lemma:vPi} implies that for any isolated solution $\bx$ of
