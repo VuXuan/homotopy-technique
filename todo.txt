@@ -26,6 +26,10 @@ done
 done
 
 * preciser fin de section 3.
+done but to be checked -> update statement of Proposition~\ref{prop:compute_regular}
+
+* when we use Prop. 4 in sec. 3, we declare an overhead O(c) but we
+  actually apply an overhead O(c^2). Why? 
 
 * changer noms de J_2(\balpha, q), K_2 et J_4 K_4
 (numeration etrange)?
