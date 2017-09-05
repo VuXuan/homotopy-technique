@@ -1516,9 +1516,10 @@ on the multiplicity of isolated solutions of $\bC$.
 
 Using the same dynamic evaluation techniques as in the first paragraph
 above, we can use the algorithm of Section~\ref{sec:isolated} as if
-$Z(\scrR_1)$ were an irreducible variety, with an overhead 
-$O(c)$. {\todo{check with \'Eric ; issue with the overhead?}} 
-The runtime deduced from Proposition~\ref{prop:testisolated} is
+$Z(\scrR_1)$ were an irreducible variety, with an overhead
+$O(c)$. Since the number of splittings is bounded by $c$ also, the
+total overhead is $O(c^2)$.  The runtime deduced from
+Proposition~\ref{prop:testisolated} is
 $$O(n^4 c^6 + n^2 m c^5 + n \sigma c^6)$$ operations in~$\KK$. Adding all
 costs seen so far, we prove
 Proposition~\ref{prop:compute_isolated}. The resulting algorithm,
