@@ -1721,6 +1721,9 @@ primary decomposition of $J_\m$, and $J_\m$ is unmixed.
 
 \section{The column-degree homotopy}\label{sec:columndegree}
 
+{\todo{\bf reread while having in mind to fix issues related to the
+    characteristic of the field.}}
+
 Consider an input to Problem~\ref{problem2} or~\ref{problem3}: we are
 given a matrix $\mF =[f_{i,j}]\in \KK[X_1,\dots,X_n]^{p \times q}$ and
 polynomials $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$, with
@@ -1778,12 +1781,13 @@ $(\delta_1, \ldots, \delta_q)$.
   $$\softO\left (c(e+c^5 )(\sigma + c)\right)$$
   operations in $\KK$.
 
-  Besides, letting $\gamma=\max(\gamma_1, \ldots, \gamma_s)$ and
-  $\delta=\max(\delta_1, \ldots, \delta_q)$ there exists randomized
-  algorithm that computes these simple isolated points using 
+  Besides, letting $\gamma=\max(\gamma_1, \ldots, \gamma_s)$,
+  $\delta=\max(\delta_1, \ldots, \delta_q)$ and $N=n+ {q \choose p}$,
+  there exists randomized algorithm that computes these simple
+  isolated points using
 $$ \softO\left ( 
-  \left (n+{q \choose p}\right )n^2\, c^2\, +\, 
-  n\left (\left (n+{q \choose p}\right ) \sigma+
+  Nn^2\, c^2\, +\, 
+  n\left (N \sigma+
     {q \choose p} n^3 (s\, \gamma+q\, \delta)\right ) c\, e\right ) 
 $$ 
 operations in $\KK$. 
@@ -2680,15 +2684,15 @@ By $\assI_2(\balpha,q-1)$, we deduce that
 $V_p(\mathfrak{M}^H_{\balpha,q-1}) \subset \P^{n-1}(\KKCbar)$ is
 finite. For all other points $\tilde\bx$ in $\P^{n-1}(\KKCbar)$,
 $\mathfrak{M}^H_{\balpha,q-1}$ has full rank $p$ at $\tilde\bx$, and
-thus so does $\mathfrak{m}^H_{\balpha,q}$. Hence, we can we can focus
-on the points in $V_p(\mathfrak{M}^H_{\balpha,q-1})$.  Consider a point
+thus so does $\mathfrak{m}^H_{\balpha,q}$. Hence, we can focus on the
+points in $V_p(\mathfrak{M}^H_{\balpha,q-1})$.  Consider a point
 $\tilde\bx$ in this set; in particular, by $\assI_2(\balpha,q-1)$, we
-can take it first coordinate $x_0$ equal to $1$. Using
-$\assI_1(\balpha,q-1)$, together with our remark on the $(p-1)$-minors of
-$\mathfrak{M}^H_{\balpha,q-1}$, we deduce that not all minors
-$(c_{i,j})_{i \in I, 1 \le j \le p}$ vanish at
-$\tilde\bx$. Suppose thus that $c_{i_0,j_0}(\tilde\bx) \ne 0$; we
-prove that $c_{i_0}(\tilde\bx) \ne 0$, which is enough to conclude.
+can take its first coordinate $x_0$ equal to $1$. Using
+$\assI_1(\balpha,q-1)$, together with our remark on the $(p-1)$-minors
+of $\mathfrak{M}^H_{\balpha,q-1}$, we deduce that not all minors
+$(c_{i,j})_{i \in I, 1 \le j \le p}$ vanish at $\tilde\bx$. Suppose
+thus that $c_{i_0,j_0}(\tilde\bx) \ne 0$; we prove that
+$c_{i_0}(\tilde\bx) \ne 0$, which is enough to conclude.
 
 Let us split the ${\cal B}$ indeterminates $\mathfrak{G}$ into
 $\mathfrak{G}_1$ and $\mathfrak{G}_2$, where $\mathfrak{G}_1$ has
@@ -2754,7 +2758,7 @@ $Z''_{\balpha,q}$ in $\KKbar{}^{\cal A} \times \P^n(\KKbar)$, and we let
 $\Delta''_{\balpha,q} \subset \KKbar{}^{\cal A}$ be its projection on the
 first factor. By construction, for $\Lambda$ in
 $\KKbar{}^{\cal A}-\Delta''_{\balpha,q}$, the Jacobian matrix of
-$I_p(\mathfrak{M}^H_{\balpha,q}(\Lambda,\tilde\bX))$ has rank $n$ at
+$M_p(\mathfrak{M}^H_{\balpha,q}(\Lambda,\tilde\bX))$ has rank $n$ at
 any $\tilde\bx$ in
 $V_p(\mathfrak{M}^H_{\balpha,q}(\Lambda,\tilde\bX))$. As before,
 because the source is a projective space, $\Delta''_{\balpha,q}$ is closed
@@ -2944,9 +2948,10 @@ parametrization of $V_p(\mN)$. In the algorithm, we assume the
 existence of a subroutine $\mathsf{RowDegree}(\Gamma)$ which takes as
 input a straight-line program $\Gamma$ that computes a polynomial
 matrix $\mF$ and a system of equations $G$, and solves
-Problem~\ref{problem2} for this input using a row-degree homotopy. We
-give such an algorithm in the next section. We denote by $T_{\rm
-  row}(\sigma,\bgamma,\balpha,q)$ the time spent by
+Problem~\ref{problem2} for this input using a row-degree homotopy (its
+counterpart for solving Problem~\ref{problem3} is immediate). We give
+such an algorithm in the next section. We denote by
+$T_{\rm row}(\sigma,\bgamma,\balpha,q)$ the time spent by
 $\mathsf{RowDegree}(\Gamma)$ on input a straight-line program of
 length $\sigma$ that computes $\mF$ with row degrees
 $\balpha=(\alpha_1,\dots,\alpha_p)$ and $q$ columns, and
@@ -3278,10 +3283,10 @@ where $\phi_{k,\bu}(X_1,\dots,X_{n-s})=\Phi_{k,\bu}(1,X_1,\dots,X_{n-s})$ for
 all $k$, and such that
 and $\mN^H_\bu$ has rank less than $p$ at $\tilde\bx'=(1,x_1,\dots,x_{n-s})$.  The second item of
 Lemma~\ref{lemma:appendix} shows that the Jacobian matrix of
-$I_p(\mN^H_\bu)$ with respect to $X_0,\dots,X_{n-s}$ has rank $n-s$
+$M_p(\mN^H_\bu)$ with respect to $X_0,\dots,X_{n-s}$ has rank $n-s$
 at $\tilde \bx'$. Since the first coordinate of $\tilde\bx'$ is non-zero,
 and all generating polynomials of $I_p(\mN^H_\bu)$ are homogeneous,
-Euler's relation implies that the Jacobian matrix of $I_p(\mN_\bu)$
+Euler's relation implies that the Jacobian matrix of $M_p(\mN_\bu)$
 with respect to $X_1,\dots,X_{n-s}$
 has full rank $n-s$ at $\bx'=(x_1,\dots,x_{n-s})$, where  
 \begin{align}\label{eqdef:Lu}
