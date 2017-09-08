@@ -970,7 +970,7 @@ points.
   Propositon~\ref{prop:compute_isolated}, we can compute a
   zero-dimensional parametrization of the simple isolated points of
   $V(\bC)$ using
-$$O(m \,n^2 c^2 + n\, (m \sigma+n^2)\,c\,e )\subset (e\,\sigma\,m)^{O(1)}$$ operations in~$\KK$.
+$$\softO(m \,n^2 c^2 + n\, (m \sigma+n^2)\,c\,e )\subset (e\,\sigma\,m)^{O(1)}$$ operations in~$\KK$.
 \end{proposition}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1554,7 +1554,10 @@ $e\geq c$ (Lemma~\ref{lemma:e-geq-c}) this simplifies to
 $$
 \softO( mn^2c^2  + c\, e (m\sigma+n^2) n )
 $$
-which ends to prove Proposition~\ref{prop:compute_regular}.
+which ends to prove Proposition~\ref{prop:compute_regular}. In the
+sequel, the resulting algorithm is called
+$\mathsf{Homotopy\_regular}$. Recall that the only difference with
+algorithm $\mathssf{Homotopy}$ below is the cleaning step.
 
 
 %Algorithm~\ref{DetSys}
