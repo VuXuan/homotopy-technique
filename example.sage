@@ -245,7 +245,6 @@ def lift(H1,l1,prec): #lift from zero-dimensional parametrization for s1 for sub
 ###TODO: finish
 
     sol = [l1[1],l1[2]]
-    #J.<T,t> = PowerSeriesRing(bF,2)
     FF.<T,x0,x1,x2,x3,t> = PolynomialRing(bF,6)
     if prec == 1:
 	return sol
@@ -261,6 +260,45 @@ def lift(H1,l1,prec): #lift from zero-dimensional parametrization for s1 for sub
 	for i in range(len(H1)):
 	    w[i,0] = sol[i]
     return n
+
+
+n = lift(H1,l1,2)
+
+
+
+
+P.<T> = PolynomialRing(bF)
+I.<t> = PowerSeriesRing(bF,1)
+J.<T> = PolynomialRing(I)
+#S.<t> = PolynomialRing(bF,1)
+
+fR = FractionField(J)
+
+def randpow(d): 
+    return sum(I.random_element(3)*((J.gen())^i) for i in range(d+1))
+
+
+d = [1,2]
+
+def mat(J,p,d):
+    M = Matrix(J, p, p)
+    for i in range(p):	
+	for j in range(p):
+	    M[i,j] = randpow(d[i])
+    return M
+    
+M = mat(J,2,d)
+
+
+def inver(fR,M,p):
+    a = M.det()
+    B = Matrix(fR, p, p)
+    for i in range(p):
+	for j in range(p):
+	    N = M.delete_columns([j])
+	    K = N.delete_rows([i])
+	    B[i,j] = (-1)^(i+j)*(K.det())/a
+    return B.transpose()
 
 
 
