@@ -1,9 +1,14 @@
 R.<x0,x1,x2,x3>=PolynomialRing(GF(9001),4)
 k.<t>=PolynomialRing(GF(9001))
-FF.<T,x0,x1,x2,x3,t> = PolynomialRing(GF(9001),6)
+MYFIELD = GF(9001)
+AA.<t> = PolynomialRing(MYFIELD)
+BB.<T> = PolynomialRing(AA)
+#FF.<T,x0,x1,x2,x3,t> = PolynomialRing(GF(9001),6)
+FF.<x0,x1,x2,x3> = PolynomialRing(BB,4)
 bF = GF(9001)
-z = PowerSeriesRing(bF,'z').gen()
-
+#z = PowerSeriesRing(bF,'z').gen()
+fR = FractionField(BB)
+JJ.<T,t> = PolynomialRing(bF,2)
 
 
 D = [2,1]
@@ -137,13 +142,20 @@ def sol21(A): ##g_00 = g_11 = 0 (1st case)
     return E
 
 
-E = sol21(A)
-
+EE = sol21(A)
+E = Matrix(FF, 2,3)
+for i in (0..1):
+    for j in (0..2):
+      E[i,j] = EE[i,j]
 
 
 S.<x2,x3>=PolynomialRing(bF,2)
 ld1 = listrandom(S, D, 2, 2, 3)
-G = startmat(S,D,ld1,2,3)
+GG = startmat(S,D,ld1,2,3)
+G = Matrix(FF, 2,3)
+for i in (0..1):
+    for j in (0..2):
+      G[i,j] = GG[i,j]
 
 
 def condict(a): ##convert to dictionary
@@ -170,13 +182,13 @@ def start231(D,2,3,G,ld1):     ## zero-dimensional parametrization for s1 for su
     s1 = condict(s11)
     f = []
     for m in range(len(s1)):
-	f.append(s1[m][1]*(prod((x2-s1[l][0])/(s1[m][0] - s1[l][0]) for l in range(len(s1)) if l !=m)))
+    	f.append(s1[m][1]*(prod((x2-s1[l][0])/(s1[m][0] - s1[l][0]) for l in range(len(s1)) if l !=m)))
     f1 = sum(f[m] for m in range(len(f)))
     z1 = prod(x2 - s1[m][0] for m in range(len(s1)))
     l1 = [z1,f1]
-    q = z1.substitute(x2 = FF.gen(5))
-    w1 = x2.substitute(x2 = FF.gen(5))
-    v1 = f1.substitute(x2 = FF.gen(5))
+    q = z1.substitute(x2 = AA.gen(0))
+    w1 = x2.substitute(x2 = AA.gen(0))
+    v1 = f1.substitute(x2 = AA.gen(0))
     l = [q,w1,v1] 
     return l
 
@@ -196,9 +208,9 @@ def start232(D,2,3,G,ld1):     ## zero-dimensional parametrization for s1 for su
     f1 = sum(f[m] for m in range(len(f)))
     z1 = prod(x2 - s1[m][0] for m in range(len(s1)))
     l1 = [z1,f1]
-    q = z1.substitute(x2 = FF.gen(5))
-    w1 = x2.substitute(x2 = FF.gen(5))
-    v1 = f1.substitute(x2 = FF.gen(5))
+    q = z1.substitute(x2 = AA.gen(0))
+    w1 = x2.substitute(x2 = AA.gen(0))
+    v1 = f1.substitute(x2 = AA.gen(0))
     l = [q,w1,v1] 
     return l
 
@@ -221,9 +233,9 @@ def start233(D,2,3,G,ld1): ## zero-dimensional parametrization for s1 for substa
     f1 = sum(f[m] for m in range(len(f)))
     z1 = prod(x2 - s1[m][0] for m in range(len(s1)))
     l1 = [z1,f1]
-    q = z1.substitute(x2 = FF.gen(5))
-    w1 = x2.substitute(x2 = FF.gen(5))
-    v1 = f1.substitute(x2 = FF.gen(5))
+    q = z1.substitute(x2 = AA.gen(0))
+    w1 = x2.substitute(x2 = AA.gen(0))
+    v1 = f1.substitute(x2 = AA.gen(0))
     l = [q,w1,v1] 
     return l
 
@@ -232,10 +244,11 @@ l3 = start233(D,2,3,G,ld1)
 
 
 
-H = (1-T)*G+T*E
+H = (1-BB.gen())*G+BB.gen()*E
 H1 = [H[0,0]*H[1,1] - H[1,0]*H[0,1],H[0,1]*H[1,2]-H[1,1]*H[0,2]] #square system for substart_00 = substart_02 = 0
 H2 = [H[0,0]*H[1,1] - H[1,0]*H[0,1],H[0,0]*H[1,2] - H[1,0]*H[0,2]] #square system for substart_11 = substart_12 = 0
 H3 = [H[0,0]*H[1,2] - H[1,0]*H[0,2],H[0,0]*H[1,2]-H[1,1]*H[0,2]] #square system for substart_00 = substart_11 = 0
+
 
 
 def lift(H1,l1,prec): #lift from zero-dimensional parametrization for s1 for substart_00 = substart_02 = 0 to zero-dimensional parametrization for 2*3 dense matrix 
@@ -244,50 +257,73 @@ def lift(H1,l1,prec): #lift from zero-dimensional parametrization for s1 for sub
 
 ###TODO: finish
 
+    
     sol = [l1[1],l1[2]]
-    FF.<T,x0,x1,x2,x3,t> = PolynomialRing(bF,6)
+    JJ.<T,t> = PolynomialRing(bF,2)
+    
     if prec == 1:
 	return sol
     else:
+	Q = l1[0]
 	sol_half = lift(H1,l1,prec//2)
-	m = jacobian(H1,[FF.gen(3),FF.gen(4)])
-    	n = m.substitute(x2 = sol[0],x3 = sol[1])
-	g = n.inverse() 
-	v = Matrix(FF,len(H1),1)
+	m = jacobian(H1,[FF.gen(2),FF.gen(3)])
+    	#nn = m.substitute(x2 = sol[0],x3 = sol[1])
+	nn = m.substitute(x2 = sol_half[0],x3 = sol_half[1])
+
+	n = Matrix(BB,2,2)
+	for i in range(2):
+	    for j in range(2):
+		n[i,j] = nn[i,j]
+
+	g = inver(fR,n,2) 
+	
+	v = Matrix(BB,len(H1),1)
         for i in range(len(H1)):
-            v[i,0] = H1[i].substitute(x2 = sol[0],x3 = sol[1])
-	w = Matrix(FF,len(H1),1)
+	    #v[i,0] = H1[i].substitute(x2 = sol[0],x3 = sol[1])
+	    v[i,0] = H1[i].substitute(x2 = sol_half[0],x3 = sol_half[1])
+	
+        w = Matrix(BB,len(H1),1)
 	for i in range(len(H1)):
-	    w[i,0] = sol[i]
-    return n
+	    #w[i,0] = sol[i]
+	    w[i,0] = sol_half[i]
 
+	new = w-g*v
+		 
+        new_sol1 =  [new[0,0].numerator(),new[1,0].numerator()]
 
-n = lift(H1,l1,2)
+	new_sol2 = []
+	for i in range(len(new_sol1)):
+	    new_sol2.append(new_sol1[i].substitute(T = JJ.gen(0), t = JJ.gen(1)))
 
+	new_sol3 = []
+	for i in range(len(new_sol2)):
+	    new_sol3.append(new_sol2[i].mod(T**(prec)))
 
+	new_sol4 = []
+	for i in range(len(new_sol3)):
+	    new_sol4.append(new_sol3[i].mod(Q))
 
+	delta = new_sol4[1] - t
+	
+	delta1 = []
+	for i in range(len(new_sol4)):
+	    delta1.append(derivative(new_sol4[i],t))	
+		    
+	result1 = []
+	for i in range(len(new_sol1)):
+	    result1.append(new_sol4[i] - (delta1[i]*delta).mod(Q))
+		
+	Qr = Q - derivative(Q,AA.gen())
 
-P.<T> = PolynomialRing(bF)
-I.<t> = PowerSeriesRing(bF,1)
-J.<T> = PolynomialRing(I)
-#S.<t> = PolynomialRing(bF,1)
+	result = [Qr]
+	for i in range(len(new_sol4)):
+	    result.append(new_sol4[i].substitute(T = 0))
 
-fR = FractionField(J)
+	return result
+	
 
-def randpow(d): 
-    return sum(I.random_element(3)*((J.gen())^i) for i in range(d+1))
+nn = lift(H1,l1,2)
 
-
-d = [1,2]
-
-def mat(J,p,d):
-    M = Matrix(J, p, p)
-    for i in range(p):	
-	for j in range(p):
-	    M[i,j] = randpow(d[i])
-    return M
-    
-M = mat(J,2,d)
 
 
 def inver(fR,M,p):
@@ -301,81 +337,78 @@ def inver(fR,M,p):
     return B.transpose()
 
 
+# def sol22(A): ##g_00 = g_11 = 0 (2nd case) 
+#     (x0, x1, x2, x3) = R.gens()
+#     k.<t>=PolynomialRing(bF)
+#     J.<t,x0,x1,x2,x3>=PolynomialRing(bF,5)
+#     G = copy(A)
+#     s01 = []
+#     m = x0 - 1/ld[1].coefficients()[0]*ld[1]
+#     ld[8] = ld[8].substitute(x0 = m)
+#     x12 = x1 - 1/ld[8].coefficients()[0]*ld[8]
+#     x02 = m.substitute(x1 = x12)
+#     for j in (p..q-1):
+# 	for i in range(p):
+# 	    G[i,j] = G[i,j].substitute(x0 = x02, x1 = x12)
+#     E = G[0:2,2:5]
+#     return E
+
+
+# E1 = sol22(A)
+
+
+# ### Use the same G as the 1st case
+# #HH = (1-T)*G+T*E1
+# #HH1 = [HH[0,0]*HH[1,1] - HH[1,0]*HH[0,1],HH[0,1]*HH[1,2]-HH[1,1]*HH[0,2]] #square system for substart_00 = substart_02 = 0
+# #HH2 = [HH[0,0]*HH[1,1] - HH[1,0]*HH[0,1],HH[0,0]*HH[1,2] - HH[1,0]*HH[0,2]] #square system for substart_11 = substart_12 = 0
+# #HH3 = [HH[0,0]*HH[1,2] - HH[1,0]*HH[0,2],HH[0,0]*HH[1,2]-HH[1,1]*HH[0,2]] #square system for substart_00 = substart_11 = 0
 
 
 
-def sol22(A): ##g_00 = g_11 = 0 (2nd case) 
-    (x0, x1, x2, x3) = R.gens()
-    k.<t>=PolynomialRing(bF)
-    J.<t,x0,x1,x2,x3>=PolynomialRing(bF,5)
-    G = copy(A)
-    s01 = []
-    m = x0 - 1/ld[1].coefficients()[0]*ld[1]
-    ld[8] = ld[8].substitute(x0 = m)
-    x12 = x1 - 1/ld[8].coefficients()[0]*ld[8]
-    x02 = m.substitute(x1 = x12)
-    for j in (p..q-1):
-	for i in range(p):
-	    G[i,j] = G[i,j].substitute(x0 = x02, x1 = x12)
-    E = G[0:2,2:5]
-    return E
-
-
-E1 = sol22(A)
-
-
-### Use the same G as the 1st case
-HH = (1-T)*G+T*E1
-HH1 = [HH[0,0]*HH[1,1] - HH[1,0]*HH[0,1],HH[0,1]*HH[1,2]-HH[1,1]*HH[0,2]] #square system for substart_00 = substart_02 = 0
-HH2 = [HH[0,0]*HH[1,1] - HH[1,0]*HH[0,1],HH[0,0]*HH[1,2] - HH[1,0]*HH[0,2]] #square system for substart_11 = substart_12 = 0
-HH3 = [HH[0,0]*HH[1,2] - HH[1,0]*HH[0,2],HH[0,0]*HH[1,2]-HH[1,1]*HH[0,2]] #square system for substart_00 = substart_11 = 0
-
-
-
-def ratrec(sol2,e): ## rational reconstruction for sol2(A) at degree(e,e)
-    rsol1 = []
-    for i in range(len(sol2)):
-	rsol2 = []
-	for j in range(len(sol2[i])):
-	    rsol2.append(sol2[i][j].substitute(t = z))
-	rsol1.append(rsol2)
-    rsol = []
-    for i in range(len(rsol1)):
-	rsol3 = []
-	for j in range(len(rsol1[i])):
-	    rsol3.append(rsol1[i][j].pade(e,e))
-	rsol.append(rsol3)
-    return rsol
+# def ratrec(sol2,e): ## rational reconstruction for sol2(A) at degree(e,e)
+#     rsol1 = []
+#     for i in range(len(sol2)):
+# 	rsol2 = []
+# 	for j in range(len(sol2[i])):
+# 	    rsol2.append(sol2[i][j].substitute(t = z))
+# 	rsol1.append(rsol2)
+#     rsol = []
+#     for i in range(len(rsol1)):
+# 	rsol3 = []
+# 	for j in range(len(rsol1[i])):
+# 	    rsol3.append(rsol1[i][j].pade(e,e))
+# 	rsol.append(rsol3)
+#     return rsol
 
 
 
 
-def deno(rsol): ## denominators list
-    deno1 = []
-    for i in range(len(rsol)): 
-        deno2 = []
-	for j in range(len(rsol[i])): 
-	    deno2.append(denominator(rsol[i][j]))
-        deno1.append(deno2) 
-    return deno1
+# def deno(rsol): ## denominators list
+#     deno1 = []
+#     for i in range(len(rsol)): 
+#         deno2 = []
+# 	for j in range(len(rsol[i])): 
+# 	    deno2.append(denominator(rsol[i][j]))
+#         deno1.append(deno2) 
+#     return deno1
 
 
 
-def ss(deno): ## lcm list
-    a = []
-    for i in range(len(deno)):
-	a.append(lcm(deno[i][j] for j in range(len(deno[i])))) 
-    return a
+# def ss(deno): ## lcm list
+#     a = []
+#     for i in range(len(deno)):
+# 	a.append(lcm(deno[i][j] for j in range(len(deno[i])))) 
+#     return a
 
 
 
-def deldeno(a,b): ## delete denominatiors
-    a1 = []
-    for i in range(len(a)): 
-	a2 = []
-	for j in range(len(a[i])):
-	    a2.append(a[i][j]*b[i])
-        a1.append(a2)
-    return a1
+# def deldeno(a,b): ## delete denominatiors
+#     a1 = []
+#     for i in range(len(a)): 
+# 	a2 = []
+# 	for j in range(len(a[i])):
+# 	    a2.append(a[i][j]*b[i])
+#         a1.append(a2)
+#     return a1
 
 
