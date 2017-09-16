@@ -262,7 +262,7 @@ def lift(H1,l1,prec): #lift from zero-dimensional parametrization for s1 for sub
     JJ.<T,t> = PolynomialRing(bF,2)
     
     if prec == 1:
-	return sol
+	return l1
     else:
 	Q = l1[0]
 	sol_half = lift(H1,l1,prec//2)
