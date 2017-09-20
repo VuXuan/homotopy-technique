@@ -254,21 +254,20 @@ H3 = [H[0,0]*H[1,2] - H[1,0]*H[0,2],H[0,0]*H[1,2]-H[1,1]*H[0,2]] #square system 
 def lift(H1,l1,prec): #lift from zero-dimensional parametrization for s1 for substart_00 = substart_02 = 0 to zero-dimensional parametrization for 2*3 dense matrix 
 
 #prec = 64???
-
 ###TODO: finish
 
     
-    sol = [l1[1],l1[2]]
+    #sol = [l1[1],l1[2]]
     JJ.<T,t> = PolynomialRing(bF,2)
     
     if prec == 1:
 	return l1
     else:
-	Q = l1[0]
+	#Q = l1[0]
 	sol_half = lift(H1,l1,prec//2)
 	m = jacobian(H1,[FF.gen(2),FF.gen(3)])
     	#nn = m.substitute(x2 = sol[0],x3 = sol[1])
-	nn = m.substitute(x2 = sol_half[0],x3 = sol_half[1])
+	nn = m.substitute(x2 = sol_half[1],x3 = sol_half[2])
 
 	n = Matrix(BB,2,2)
 	for i in range(2):
@@ -280,12 +279,12 @@ def lift(H1,l1,prec): #lift from zero-dimensional parametrization for s1 for sub
 	v = Matrix(BB,len(H1),1)
         for i in range(len(H1)):
 	    #v[i,0] = H1[i].substitute(x2 = sol[0],x3 = sol[1])
-	    v[i,0] = H1[i].substitute(x2 = sol_half[0],x3 = sol_half[1])
+	    v[i,0] = H1[i].substitute(x2 = sol_half[1],x3 = sol_half[2])
 	
         w = Matrix(BB,len(H1),1)
 	for i in range(len(H1)):
 	    #w[i,0] = sol[i]
-	    w[i,0] = sol_half[i]
+	    w[i,0] = sol_half[i+1]
 
 	new = w-g*v
 		 
@@ -301,7 +300,7 @@ def lift(H1,l1,prec): #lift from zero-dimensional parametrization for s1 for sub
 
 	new_sol4 = []
 	for i in range(len(new_sol3)):
-	    new_sol4.append(new_sol3[i].mod(Q))
+	    new_sol4.append(new_sol3[i].mod(sol_half[0]))
 
 	delta = new_sol4[1] - t
 	
@@ -311,18 +310,29 @@ def lift(H1,l1,prec): #lift from zero-dimensional parametrization for s1 for sub
 		    
 	result1 = []
 	for i in range(len(new_sol1)):
-	    result1.append(new_sol4[i] - (delta1[i]*delta).mod(Q))
+	    result1.append(new_sol4[i] - (delta1[i]*delta).mod(sol_half[0]))
 		
-	Qr = Q - derivative(Q,AA.gen())
+	Q = sol_half[0] - derivative(sol_half[0],AA.gen())
 
-	result = [Qr]
+	result2 = [Q]
 	for i in range(len(new_sol4)):
-	    result.append(new_sol4[i].substitute(T = 0))
+	    result2.append(new_sol4[i].substitute(T = 0))
+
+	result3 = Matrix(AA,3,1)
+	result3[0,0] = result2[0]
+	result3[1,0] = result2[1]
+	result3[2,0] = result2[2]
+
+	result = []
+	for i in range(3):
+	    result.append(result3[i,0])
+	
 
 	return result
 	
 
 nn = lift(H1,l1,2)
+
 
 
 
@@ -335,6 +345,11 @@ def inver(fR,M,p):
 	    K = N.delete_rows([i])
 	    B[i,j] = (-1)^(i+j)*(K.det())/a
     return B.transpose()
+
+
+
+
+
 
 
 # def sol22(A): ##g_00 = g_11 = 0 (2nd case) 
