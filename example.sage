@@ -263,7 +263,6 @@ def lift(H1,l1,prec): #lift from zero-dimensional parametrization for s1 for sub
     if prec == 1:
 	return l1
     else:
-	#Q = l1[0]
 	sol_half = lift(H1,l1,prec//2)
 	m = jacobian(H1,[FF.gen(2),FF.gen(3)])
     	#nn = m.substitute(x2 = sol[0],x3 = sol[1])
@@ -310,13 +309,11 @@ def lift(H1,l1,prec): #lift from zero-dimensional parametrization for s1 for sub
 		    
 	result1 = []
 	for i in range(len(new_sol1)):
-	    result1.append(new_sol4[i] - (delta1[i]*delta).mod(sol_half[0]))
+	    result1.append(new_sol4[i] - ((delta1[i]*delta).mod(sol_half[0])))
 		
-	Q = sol_half[0] - derivative(sol_half[0],AA.gen())
-
-	result2 = [Q]
-	for i in range(len(new_sol4)):
-	    result2.append(new_sol4[i].substitute(T = 0))
+	Q = sol_half[0] - (((derivative(sol_half[0],AA.gen()))*delta).mod(sol_half[0]))
+	
+	result2 = [Q.substitute(T = 0), new_sol4[0].substitute(T = 0), new_sol4[1].substitute(T = 0)]
 
 	result3 = Matrix(AA,3,1)
 	result3[0,0] = result2[0]
@@ -331,10 +328,6 @@ def lift(H1,l1,prec): #lift from zero-dimensional parametrization for s1 for sub
 	return result
 	
 
-nn = lift(H1,l1,2)
-
-
-
 
 def inver(fR,M,p):
     a = M.det()
@@ -345,7 +338,6 @@ def inver(fR,M,p):
 	    K = N.delete_rows([i])
 	    B[i,j] = (-1)^(i+j)*(K.det())/a
     return B.transpose()
-
 
 
 
