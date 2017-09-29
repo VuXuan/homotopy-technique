@@ -44,6 +44,9 @@ def HenselLift(F, param, polelim, u, myprec):
     V = param
    # print prec
 
+    qq = Matrix(A,1,1)
+    qq[0,0] = polelim
+    q = qq[0,0]
 
     while prec <= myprec:
 
@@ -57,21 +60,17 @@ def HenselLift(F, param, polelim, u, myprec):
 
         dd1 = Matrix(A,1,1)
         dd1[0,0] = d
-        dd = dd1[0,0]
+        dd0 = dd1[0,0]
 	
-        
-        qq = Matrix(A,1,1)
-        qq[0,0] = polelim
-        q = qq[0,0]
+	print "dd = ", dd0, "\n"
 	
-  
-        sJ = JJ.inverse()
+	s = gc(dd0,q, 2*prec)
+	
+	print "s = ", s, "\n"
+
+	sJ = JJ.inverse()
  	
 	print "sJ = ", sJ, "\n"
-
-        #sF = Matrix(R,2,1)
-        #sF[0,0] =F[0].substitute(x1 = V[0,0], x2 = V[1,0])
-        #sF[1,0] =F[1].substitute(x1 = V[0,0], x2 = V[1,0])
 
 	sF = Matrix(R,1,2)
         sF[0,0] =F[0].substitute(x1 = V[0,0], x2 = V[1,0])
@@ -86,6 +85,8 @@ def HenselLift(F, param, polelim, u, myprec):
  
         dd2 = NEW[0,0].denominator()
 
+	print "dd2 = ", dd2, "\n"
+
         dd3 = Matrix(A,1,1)
         dd3[0,0] = dd2
         dd = dd3[0,0]
@@ -99,6 +100,8 @@ def HenselLift(F, param, polelim, u, myprec):
 	print "s = ", s, "\n"
 
 	ddd2 = NEW[1,0].denominator()
+
+	print "ddd2 = ", ddd2, "\n"
 
         ddd3 = Matrix(A,1,1)
         ddd3[0,0] = ddd2
@@ -134,17 +137,24 @@ def HenselLift(F, param, polelim, u, myprec):
         q = q1[0,0]
 
 	NEWq = (q - (delta*derivative(q,R.gen(2))).mod(q)).mod(t^(2*prec))
-
+	
+	
         V[0,0] = VERYNEWV[0]
         V[1,0] = VERYNEWV[1]
-   
-        q = NEWq
+
+	NEWqq = Matrix(A,1,1)
+	NEWqq[0,0] = NEWq
+
+        q = NEWqq[0,0]
+
         prec = 2*prec
 
 	print "V = ", V, "\n"
 	print "q = ", q, "\n"
 
-    return V,q
+    return (V,q)
+
+
 
 
 #c = HenselLift(F, param, polelim, u, 8)
@@ -157,7 +167,7 @@ def gc(p,q,prec):
     for i in range(len(L)): 
         a.append((L[i].subs(t=t).O(prec)).truncate(prec))
 
-    m = sum(a[i]*T^(d-i) for i in range(len(a)))
+    m = sum(a[i]*T^(i) for i in range(len(a)))
 
     return m
 
