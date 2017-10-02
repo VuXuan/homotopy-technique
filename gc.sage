@@ -4,7 +4,6 @@ S.<T> = PolynomialRing(bF)
 k.<t> = PolynomialRing(bF);
 K = FractionField(k);
 A.<T> = PolynomialRing(K)
-#RR.<t> = PowerSeriesRing(bF)
 
 
 q = T^2-1
@@ -12,7 +11,6 @@ p = t^2+T*t-1
 
 
 
-#bF = QQ
 R.<x1,x2,T,t> = PolynomialRing(bF,4)
 
 f1 = (x1-1)^2+(x2-1)^2-4-t-t^2
@@ -165,32 +163,10 @@ def HenselLift(F, param, polelim, u, myprec):
 	r11 = NEWW[0,1]
 
 	NEWV = [r01,r11]
-	
-	#I = Ideal(q)
-
-	#r0 = NEWV1[0].reduce(I)
-	#r1 = NEWV1[1].reduce(I)
-
-	#(g0,r0) = NEWV1[0].quo_rem(q)
-	#(g1,r1) = NEWV1[1].quo_rem(q)
-
-	#(g00,r00) = r0.quo_rem(t^(2*prec))
-	#(g11,r11) = r1.quo_rem(t^(2*prec))
-	
-	
-
-	#NEWV2 = [ r0,r1] 
-
-	#print "NEWV2 = ", NEWV2, "\n"
-
-
-	#NEWV = [ r01,r11]
-	#NEWV = [ r0.mod(t^(2*prec)), r1.mod(t^(2*prec)) ] 
 
         #NEWV = [ (NEWV1[0].mod(q)).mod(t^(2*prec)), (NEWV1[1].mod(q)).mod(t^(2*prec)) ] 
 	
-	print "NEWV = ", NEWV, "\n"
-	#print prec	
+	print "NEWV = ", NEWV, "\n"	
 
         B = Matrix(R,1,1)
         B[0,0] = T
@@ -201,8 +177,6 @@ def HenselLift(F, param, polelim, u, myprec):
         
 	#VERYNEWV = [ (NEWV[0] - (delta*derivative(V[0,0],R.gen(2))).mod(q)).mod(t^(2*prec)), (NEWV[1] - (delta*derivative(V[1,0],R.gen(2))).mod(q)).mod(t^(2*prec)) ]
 
-
-	#VERYNEWV = [ (NEWV[0] - (delta*derivative(NEWV[0],R.gen(2))).mod(q100)).mod(t^(2*prec)), (NEWV[1] - (delta*derivative(NEWV[1],R.gen(2))).mod(q100)).mod(t^(2*prec)) ]
 
 	Y01 = delta*derivative(NEWV[0],R.gen(2))
 
