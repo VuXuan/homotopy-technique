@@ -14,8 +14,10 @@ S.<x2,x3> = PolynomialRing(bF,2)
 
 R1.<x2,x3,t,T> = PolynomialRing(bF,4)
 
+
 u = x2
 
+R2.<x0,x1,x2,x3,t,T> = PolynomialRing(bF,6)
 
 k.<T> = PolynomialRing(bF)
 k1.<t> = PolynomialRing(k)
@@ -62,8 +64,8 @@ def inputmat(D): ## Input matrix F - random
     for i in range(p): 
 	for j in range(q):
 	    m[i,j] = randpoly(D[i])
-    C = transpose(m)
-    return C
+    #C = transpose(m)
+    return m
 
 
 
@@ -107,6 +109,8 @@ def startmat(R, D,ld, p, q):  ## start matrix - p∗q polynomial matrix with the
 AM = startmat(R,D,ld,2,5)
 
 C = inputmat(D)
+
+Hmat = (1-R2.gen(5))*AM+R2.gen(5)*C
 
 def sol21(A): ##g_00 = g_11 = 0 (1st case) 
     (x0, x1, x2, x3) = R.gens()
@@ -219,6 +223,7 @@ def ch(AA,S,D,ld1,G):  #### substart_00 = substart_02 = 0
     param1 = Matrix(R1,2,1)
     param1[0,0] = w
     param1[1,0] = v
+
     return param1, polelim1
 
 #l1 = ch(AA,S,D,ld1,G)
@@ -316,25 +321,36 @@ def soll(H,prec): ##ld[0] = ld[8] = 0
 
     l1 = HenselLift(H1, param1, polelim1, u, prec) 
 
+    ll1 = []
+    for i in range(len(l1)):
+	ll1.append(l1[i].substitute(T = 1))
 
     H2 = [H[0,0]*H[1,1] - H[1,0]*H[0,1],H[0,0]*H[1,2]-H[1,0]*H[0,2]]
 
     (param2, polelim2) = ch2(AA,S,D,ld1,G)
   
     l2 = HenselLift(H2, param2, polelim2, u, prec)
-
+    
+    ll2 = []
+    for i in range(len(l2)):
+	ll2.append(l2[i].substitute(T = 1))
+	
     H3 = [H[0,0]*H[1,2] - H[1,0]*H[0,2],H[0,1]*H[1,2]-H[1,1]*H[0,2]]
 
     (param3, polelim3) = ch3(AA,S,D,ld1,G)
 
     l3 = HenselLift(H3, param3, polelim3, u, prec)
 
-    l = Matrix(R1,2,1) ## TODO: Check l[0,0] (i.e. x2)
-    l[0,0] = l1[0][0,0]
-    l[1,0] = l1[0][1,0]*l2[0][1,0]*l3[0][1,0]
+    ll3 = []
+    for i in range(len(l3)):
+	ll3.append(l3[i].substitute(T = 1))
 
-    q = l1[1]*l2[1]*l3[1]
-    return l,q
+    l = Matrix(R1,2,1) ## TODO: Check l[0,0] (i.e. x2)
+    l[0,0] = ll1[0][0,0]
+    l[1,0] = ll1[0][1,0]*ll2[0][1,0]*ll3[0][1,0]
+
+    q = ll1[1]*ll2[1]*ll3[1]
+    return ll1,ll2,ll3#l,q
 
 
 
@@ -350,12 +366,27 @@ def subb(AM,H,prec): ## FINAL SOLUTION  am_00 = am_11 = 0 (1st case)
     x12 = x1 - 1/ld[8].coefficients()[0]*ld[8]
     x02 = m.substitute(x1 = x12)
 
-    (l,q) = soll(H,prec)
+#    (ll1,ll2,ll3) = soll(H,prec)
 
-    v0 = x02.substitute(x2 = l[0,0], x3 = l[1,0])
-    v1 = x12.substitute(x2 = l[0,0], x3 = l[1,0])
-    return [(v0,v1,l[0],l[1]), q]
+    (ll1,ll2,ll3) = soll(H,prec)
 
+    
+
+    v01 = x02.substitute(x2 = ll1[0][0,0], x3 = ll1[0][1,0])
+    v11 = x12.substitute(x2 = ll1[0][0,0], x3 = ll1[0][1,0])
+
+    a1 = [(v01,v11,ll1[0][0,0],ll1[0][1,0]),ll1[1]]
+
+    v02 = x02.substitute(x2 = ll2[0][0,0], x3 = ll2[0][1,0])
+    v12 = x12.substitute(x2 = ll2[0][0,0], x3 = ll2[0][1,0])
+
+    a2 = [(v02,v12,ll2[0][0,0],ll2[0][1,0]),ll2[1]]
+
+    v03 = x02.substitute(x2 = ll3[0][0,0], x3 = ll3[0][1,0])
+    v13 = x12.substitute(x2 = ll3[0][0,0], x3 = ll3[0][1,0])
+
+    a3 = [(v03,v13,ll3[0][0,0],ll3[0][1,0]),ll3[1]]
+    return [a1,a2,a3]
 
 
 def sol2(HH,prec): ##ld[1] = ld[8]
@@ -365,18 +396,19 @@ def sol2(HH,prec): ##ld[1] = ld[8]
 
     l12 = HenselLift(HH1, param1, polelim1, u, prec) 
 
-
     HH2 = [HH[0,0]*HH[1,1] - HH[1,0]*HH[0,1],HH[0,0]*HH[1,2]-HH[1,0]*HH[0,2]]
 
     (param2, polelim2) = ch2(AA,S,D,ld1,G)
   
     l22 = HenselLift(HH2, param2, polelim2, u, prec)
 
+
     HH3 = [HH[0,0]*HH[1,2] - HH[1,0]*HH[0,2],HH[0,1]*HH[1,2]-HH[1,1]*HH[0,2]]
 
     (param3, polelim3) = ch3(AA,S,D,ld1,G)
 
     l32 = HenselLift(HH3, param3, polelim3, u, prec)
+
 
     lll2 = Matrix(R1,2,1)
     lll2[0,0] = l12[0][0,0]
@@ -649,13 +681,384 @@ def gc(p5,q5,prec):
     return m
 
 
-prec = 2
 
-aa1 = subb(AM,H,prec)
 
-print "1st component zero-dim para for start matrix  is aa1 =  ", aa1, "\n"
 
-aa2 = subb(AM,HH,prec)
 
-print "2nd component zero-dim para for start matrix  is aa2 =  ", aa2, "\n"
+ll1 = soll1(H,2)
+
+l1 = []
+for i in range(len(ll1)):
+    l1.append(ll1[i].substitute(T = 1))
+
+
+ll2 = soll2(H,2)
+
+l2 = []
+
+for i in range(len(ll2)):
+    l2.append(ll2[i].substitute(T = 1))
+
+ll3 = soll3(H,2)
+
+l3 = []
+for i in range(len(ll3)):
+    l3.append(ll3[i].substitute(T = 1))
+
+
+def uni(p1,p2):
+    q1 = p1[1]
+    q2 = p2[1]
+    d = gcd(q1,q2)
+    if d.degree() == 0:
+	q = q1*q2
+    else:
+	q = 1
+	a1 = list(q1.factor())
+	a2 = list(q2.factor())
+    return q
+
+
+#prec = 2
+
+#aa1 = subb(AM,H,prec)
+
+#print "1st component zero-dim para for start matrix  is aa1 =  ", aa1, "\n"
+
+#aa2 = subb(AM,HH,prec)
+
+#print "2nd component zero-dim para for start matrix  is aa2 =  ", aa2, "\n"
+
+
+
+
+a100 = subb(AM,H,2)
+
+uu = x2
+
+
+
+
+def HenselLift4(F, param, polelim, uu, myprec): 
+    
+    prec = 1
+    V = param
+    print "V = ", V, "\n"
+
+    qq = Matrix(A,1,1)
+    qq[0,0] = polelim
+    q = qq[0,0]
+    
+    print "q = ", q, "\n"
+
+    while prec <= myprec:
+
+        print "prec = ", prec, "\n"
+	
+	J = jacobian(F,(x0,x1,x2,x3))
+	JJ = J.substitute(x0 = V[0,0], x1 = V[1,0], x2 = V[2,0], x3 = V[3,0])
+	d = JJ.det()
+
+	dd1 = Matrix(A,1,1)
+	dd1[0,0] = d
+	dd0 = dd1[0,0]
+	
+	print "dd0 = ", dd0, "\n"
+
+	s = gc(dd0,q, 2*prec)
+	
+	print "s = ", s, "\n"
+	
+	sJ = JJ.inverse()
+ 	
+	print "sJ = ", sJ, "\n"
+	
+	sF = Matrix(R2,1,4)
+    
+	for i in range(4):
+	    sF[0,i] = F[i].substitute(x0 = V[0,0], x1 = V[1,0], x2 = V[2,0], x3 = V[3,0])
+   
+	print "sF = ", sF, "\n"
+	
+	NEW = sJ*(sF.transpose())
+
+	print "NEW = ", NEW, "\n"
+
+	deno1 = []
+	for i in range(4):
+	    deno1.append(NEW[i,0].denominator())
+    
+
+	deno2 = []
+	for i in range(len(deno1)):
+	    deno2.append(Matrix(A,1,1))
+	for i in range(len(deno1)):
+	    deno2[i][0,0] = deno1[i]
+
+        deno = []
+	for i in range(len(deno1)):
+	    deno.append(deno2[i][0,0])    
+       
+
+	print "deno = ", deno, "\n"
+
+
+	nume = [] ##numerator of NEW
+	for i in range(4):
+	    nume.append(NEW[i,0].numerator())
+
+        print "nume = ",nume, "\n"
+
+
+	lis1 = [] ##list of gcd between deno.NEW and q
+	for i in range(4):
+	    lis1.append(gc(deno[i],q,prec))
+
+
+	lis = []
+	for i in range(4):
+	    lis.append(lis1[i].substitute(t = R2.gen(4), T = R2.gen(5)))
+
+	print "lis = ",lis, "\n"
+
+	NEWV1 = []
+	for i in range(4): 
+	    NEWV1.append(V[i,0] - lis[i]*nume[i])
+
+	print "NEWV1 = ", NEWV1, "\n"
+
+    
+	nn1 = []
+	for i in range(len(NEWV1)):
+	    nn1.append(Matrix(k1,1,1))
+
+	for i in range(len(NEWV1)):
+	    nn1[i][0,0] = NEWV1[i]
+
+	print "nn1 = ", nn1, "\n"
+
+	nn2 = []
+	for i in range(len(NEWV1)):
+	    nn2.append(nn1[i][0,0])
+
+	q12 = Matrix(k1,1,1)
+	q12[0,0] = q
+	q100 = q12[0,0]
+
+	print "q100 = ", q100, "\n"
+
+	nn3 = []
+	for i in range(len(nn1)):
+	    nn3.append(nn2[i].mod(q100))
+
+	print "nn3 = ", nn3, "\n"    
+
+### take prec T^(2*prec) for any nn3[i]
+
+	nn4 = []
+	for i in range(len(nn3)): 
+	    nn4.append(nn3[i]//(T^(2*prec)))
+
+	nn = []
+	for i in range(len(nn4)):
+	    nn.append(nn3[i] - nn4[i]*(T^(2*prec)))
+
+	print "nn = ", nn, "\n"
+
+	pNEWV = []
+	for i in range(len(nn)):
+	    pNEWV.append(Matrix(R2,1,1))
+
+	for i in range(len(nn)): 
+	    pNEWV[i][0,0] = nn[i]
+
+	NEWV = []
+	for i in range(len(nn)):
+	    NEWV.append(pNEWV[i][0,0])
+
+	print "NEWV = ", NEWV, "\n"
+
+	B = Matrix(R2,1,1)
+        B[0,0] = t
+
+        delta = u.substitute(x0 = NEWV[0], x1 = NEWV[1], x2 = NEWV[2], x3 = NEWV[3]) - B[0,0]
+    
+        print "delta = ", delta, "\n"
+
+        der = []
+        for i in range(len(NEWV)): 
+	    der.append(delta*(derivative(NEWV[i],R2.gen(4))))
+   
+        print "der = ", der, "\n"
+
+        Y0 = []
+        for i in range(len(der)): 
+	    Y0.append(Matrix(k1,1,1))
+        for i in range(len(der)): 
+	    Y0[i][0,0] = der[i]
+
+        print "Y0 = ", Y0, "\n"
+
+        Y1 = []
+        for i in range(len(Y0)): 
+	    Y1.append(Y0[i][0,0].mod(q100))
+
+        print "Y1 = ", Y1, "\n"
+
+        Y000 = []
+        for i in range(len(Y1)): 
+	    Y000.append(Y1[i]//(T^(2*prec)))
+   
+        Y00 = []
+        for i in range(len(Y1)):
+	    Y00.append(Y1[i] - Y000[i]*T^(2*prec)) 
+
+        print "Y00 = ", Y00, "\n"
+
+        X01 = []
+        for i in range(len(Y00)): 
+	    X01.append(Matrix(R2,1,1))
+        for i in range(len(Y00)):
+	    X01[i][0,0] = Y00[i]
+
+        Y01 = []
+        for i in range(len(X01)):
+	    Y01.append(X01[i][0,0])
+
+        VERYNEWV  = []
+        for i in range(len(Y01)): 
+	    VERYNEWV .append(NEWV[i] - Y01[i])
+
+        print "VERYNEWV  = ", VERYNEWV , "\n"
+
+
+        del1 = Matrix(k1,1,1)
+        del1[0,0] = delta
+        delta1 = del1[0,0]
+
+        print "delta1 = ", delta1, "\n"
+
+        q01 = q100 - (delta1*derivative(q100)).mod(q100)
+
+        q11 = q01//(T^(2*prec))
+        NEWq = q01-q11*(T^(2*prec))
+
+
+        NEWqq = Matrix(A,1,1)
+        NEWqq[0,0] = NEWq
+
+        q = NEWqq[0,0]
+    
+        print "q = ", q, "\n"
+  
+        V = Matrix(R2,4,1)
+        for i in range(4): 
+	    V[i,0] = VERYNEWV[i]
+	
+	prec = 2*prec
+    	
+	print "V = ", V, "\n"
+
+    return V,q
+
+
+def qua(Hmat,AM,a100):
+    H = copy(Hmat)
+    G = copy(AM)
+    ll = copy(a100)
+
+    l = []
+    for i in range(len(ll)):
+	l.append(ll[i][0])
+
+
+    J = []      ## List of all p*q matrices over K after evaluating in G = AM
+    for i in range(len(l)): 
+    	J.append(G.substitute(x0 = l[i][0], x1 = l[i][1], x2 = l[i][2], x3 = l[i][3]))
+	
+
+    E = []      ## row echelon form
+    for i in range(len(J)):
+    	E.append(J[i].rref())
+
+
+
+    """
+    For x∗ be a solution of IG, we  construct the system of n equations from H
+
+    The list Q: with Q[i] is the set of index, namely C, for H¯
+    for each x∗=l[i]
+
+    """
+
+
+
+    Q = [] 
+    for k in range(len(E)):
+    	A = []
+    	for i in range(p):
+            for j in range(q):
+            	if E[k][i, j] != 0:
+                    A.append(j)
+                    break
+        
+        Q.append(A)
+    
+    A1 = range(q)
+
+
+    
+    N = []
+    for i in range(len(Q)):
+    	N.append(diff(A1,Q[i])) 
+    
+
+    """
+    For each k, the construction of C[k] contains all of the indices of p×p-minors (equations in the systems)
+
+    C[k] for the solution l[k] of I_G
+    """
+
+    C = []
+    for k in range(len(Q)): 
+    	B = []
+    	for i in range(len(N[k])):
+            B.append(Q[k]+[N[k][i]])
+        C.append(B)
+
+    """
+    Z[k] is the system of n equations for the solution l[k]
+    """
+    #aa = H.matrix_from_columns(C[0][i]).det()
+
+    
+    return C,N,Q,E
+
+
+
+    Z = []
+    for k in range(len(C)):
+    	W = []
+    	for i in range(len(C[k])):
+    	    W.append(H.matrix_from_columns(C[k][i]).det())
+	Z.append(W)
+	    
+    return C
+
+
+
+def diff(first, second): ## compute list difference
+        second = set(second)
+        return [item for item in first if item not in second]
+
+
+
+
+
+
+
+
+
+
+
 
