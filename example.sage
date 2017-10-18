@@ -1108,6 +1108,8 @@ def soll3(H,prec):
 
 
 ####################################################################
+### Using the Chinese Remainder Theorem ti combine R_j into a single zer0-dim para R. ###
+
 a1 = ch(AA,S,D,ld1,G)
 H1 = chek1(H,GG,EE,a1)[0]
 
@@ -1117,11 +1119,22 @@ H2 = chek1(H,GG,EE,a2)[0]
 a3 = ch3(AA,S,D,ld1,G)
 H3 = chek1(H,GG,EE,a3)[0]
 
-v1,q1 = HenselLift(H1,a1[0],a1[1],u,4)
 
-v2,q2 = HenselLift(H2,a2[0], a2[1], u, 4)
 
-v3,q3 = HenselLift(H3,a3[0],a3[1], u,4)
+def CRT(a1,H1,a2,H2,a3,H3,prec):
+    v1,q1 = HenselLift(H1,a1[0],a1[1],u,prec)
+    v2,q2 = HenselLift(H2,a2[0], a2[1], u, prec)
+    v3,q3 = HenselLift(H3,a3[0],a3[1], u,prec)
+    
+    vv1 = emph(v1,q1)
+    vv2 = emph(v2,q2)
+    vv3 = emph(v3,q3)
+
+
+    aa,nq = com1(vv1,q1,vv2,q2,vv3,q3,prec)
+    
+    return aa,nq
+
 
 
 def emph(v1,q1):
@@ -1129,15 +1142,6 @@ def emph(v1,q1):
     for i in range(2):
     	v11[i,0] = v1[i,0]	
     return v11
-
-vv1 = emph(v1,q1)
-
-vv2 = emph(v2,q2)
-
-vv3 = emph(v3,q3)
-
-q12 = q1*q2
-
 
 
 
@@ -1172,6 +1176,7 @@ def crth(vv1,q1,vv2,q2,prec):
     aa[1,0] = aa1
 
     q12 = q1*q2
+    
     dq = q12.degree()
     Lq = q12.coefficients(sparse = False)
 
@@ -1210,3 +1215,36 @@ def gmm(q1,q2,prec):
     n2 = sum(a2[i]*t^(i) for i in range(len(a2)))
     
     return n1,n2
+
+
+#####################################################################
+### reconstruct a zero-dim para S with coeffs in K(T), deg(num) <= e, deg(denum) <=e ###
+
+def PaS(a1,H1,a2,H2,a3,H3,prec):
+    aa,nq = CRT(a1,H1,a2,H2,a3,H3,prec)
+    mq = ratrec(nq,prec//2)
+
+    dq = nq.degree()
+
+    sq = sum(mq[i]*t^(i) for i in (0..dq))
+    
+    mv0 = ratrecvv(aa[0,0],prec//2)
+
+    dv0 = aa[0,0].degree()
+
+    sv0 = sum(mv0[i]*t^(i) for i in (0..dv0))
+
+    mv1 = ratrecvv(aa[1,0], prec//2)
+
+    dv1 = aa[1,0].degree()
+
+    sv1 = sum(mv1[i]*t^(i) for i in (0..dv1))
+    
+    mv = Matrix(parent(sq),2,1)
+    mv[0,0] = sv0
+    mv[1,0] = sv1
+    
+    return mv,sq
+
+
+##TODO: When deg(gcd(q1,q2)) > 0
