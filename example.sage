@@ -535,7 +535,7 @@ def ad00(H11,v1,qq):
 
 
 def ratrec(sol,e): ## for q
-    P.<T> = PowerSeriesRing(bF)
+    P.<T> = PowerSeriesRing(bF, default_prec = e+1)
     m = sol.coefficients()
 
     m1 = []
@@ -565,7 +565,7 @@ def ratrec(sol,e): ## for q
 
 
 def ratrecvv(solv,e): ## for v1
-    P.<T> = PowerSeriesRing(bF)
+    P.<T> = PowerSeriesRing(bF, default_prec = e+1)
 
     soll = Matrix(A1,1,1)
     soll[0,0] = solv
@@ -1146,7 +1146,7 @@ def emph(v1,q1):
 
 
 def crth(vv1,q1,vv2,q2,prec):
-    RR.<T> = PowerSeriesRing(bF)
+    RR.<T> = PowerSeriesRing(bF, default_prec = prec)
     n1,n2 = gmm(q1,q2,prec)
     
     c = Matrix(parent(q1),2,1)
@@ -1195,7 +1195,7 @@ def com1(vv1,q1,vv2,q2,vv3,q3,prec):
 
 
 def gmm(q1,q2,prec):
-    RR.<T> = PowerSeriesRing(bF)
+    RR.<T> = PowerSeriesRing(bF, default_prec = prec)
     (g,m1,m2) = xgcd(q1,q2)
     
     d1 = m1.degree()
@@ -1247,4 +1247,3 @@ def PaS(a1,H1,a2,H2,a3,H3,prec):
     return mv,sq
 
 
-##TODO: When deg(gcd(q1,q2)) > 0
