@@ -148,19 +148,6 @@ def HenselLift(F, param, polelim, u, myprec):
     return NEWV
 
 
-c = HenselLift(F, param, polelim, u, 4)
-
-
-
-
-
-
-
-
-
-
-
-#diff( f, x1, 4)
 
 
 

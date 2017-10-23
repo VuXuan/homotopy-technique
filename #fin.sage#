@@ -1,6 +1,4 @@
 bF = GF(9001)
-#bF = QQ
-
 
 R.<x0,x1,x2,x3>=PolynomialRing(bF,4)
 
@@ -108,6 +106,7 @@ def startmat(R, D,ld, p, q):  ## start matrix - p∗q polynomial matrix with the
 
 
 
+
 AM = startmat(R,D,ld,2,5)
 
 
@@ -144,6 +143,7 @@ E1 = sol21(AM)
 
 
 
+
 def sol22(AM): ##am_00 = am_11 = 0 (2nd case)
     G = copy(AM)
     s01 = []
@@ -162,7 +162,10 @@ def sol22(AM): ##am_00 = am_11 = 0 (2nd case)
 
 E2 = sol22(AM)
 
-	########## Define 2*3 start matrix for E1,E2 ##########
+
+
+	########## Define start matrix for E1,E2 ##########
+
 
 
 def star1(S,D):
@@ -196,7 +199,9 @@ def star1(S,D):
 
 ld1,G = star1(S,D)
 
- #### zero-dim para components for 2*3 start matrix G ####
+
+
+      #### zero-dim para components for 2*3 start matrix G ####
 
 
 
@@ -212,12 +217,6 @@ def condict(a): ##convert to dictionary
     return l11
 
 
-def c(AA,S,D,ld1,G):
-    s11 = [ideal(ld1[0],ld1[4]).variety()]
-    s1 = condict(s11)
-    return s1
-
-
 def ch(AA,S,D,ld1,G):  #### substart_00 = substart_02 = 0
     s11 = []   
     for m in range(D[0]):
@@ -225,7 +224,7 @@ def ch(AA,S,D,ld1,G):  #### substart_00 = substart_02 = 0
 	    s11.append(ideal(ld1[m], ld1[t]).variety()) 
     s1 = condict(s11)
     
-    v = AA.lagrange_polynomial(s1)
+    v = AA.lagrange_polynomial(s1);
     
     z = prod(x2 - s1[m][0] for m in range(len(s1)))
     w = x2.substitute(x2 = AA.gen(0))
@@ -241,6 +240,59 @@ def ch(AA,S,D,ld1,G):  #### substart_00 = substart_02 = 0
     param1[1,0] = v
 
     return param1, polelim1
+
+
+
+def ch2(AA,S,D,ld1,G):  ###substart_11 = substart_12 = 0
+    s12 = []
+    s12.append(ideal(ld1[4], ld1[5]).variety())
+
+    s2 = condict(s12)
+
+    v2 = AA.lagrange_polynomial(s2);
+    
+    z2 = prod(x2 - s2[m][0] for m in range(len(s2)))
+    w2 = x2.substitute(x2 = AA.gen(0))
+    q2 = z2.substitute(x2 = AA.gen(0))
+
+    polelim22 = Matrix(R1,1,1)
+    polelim22[0,0] = q2
+
+    polelim2 = polelim22[0,0]
+
+    param2 = Matrix(R1,2,1)
+    param2[0,0] = w2
+    param2[1,0] = v2
+    
+    return param2,polelim2
+
+
+
+def ch3(AA,S,D,ld1,G): ###substart_00 = substart_11 = 0
+    s13 = []
+    for m in range(D[0]):
+	for t in (2*D[0]..2*D[0]+D[1]-1):
+	    s13.append(ideal(ld1[m], ld1[t]).variety()) 
+
+    s3 = condict(s13)
+
+    v3 = AA.lagrange_polynomial(s3);
+    
+    z3 = prod(x2 - s3[m][0] for m in range(len(s3)))
+    w3 = x2.substitute(x2 = AA.gen(0))
+    q3 = z3.substitute(x2 = AA.gen(0))
+
+    polelim33 = Matrix(R1,1,1)
+    polelim33[0,0] = q3
+
+    polelim3 = polelim33[0,0]
+
+    param3 = Matrix(R1,2,1)
+    param3[0,0] = w3
+    param3[1,0] = v3
+    
+    return param3, polelim3
+
 
 
 ######## ### Hensel Lifting for 2 variables x2,x3 ########## ###
@@ -463,7 +515,8 @@ def gc(p5,q5,prec):
 
     return m
 
-##### #### lift from solutions of G to solution of E1 #### #####
+
+ ##### #### lift from solutions of G to solution of E1 #### #####
 
 GG = Matrix(R1,2,3)
 for i in  range(2):
@@ -476,226 +529,67 @@ EE = E1.substitute(x2 = R1.gen(0), x3 = R1.gen(1))
 H = (1-R1.gen(3))*GG+R1.gen(3)*EE
 
 
-
-####################################################################
-
-
-
 def soll1(H,prec): 
-    #H1 = [H[0,0]*H[1,1] - H[1,0]*H[0,1],H[0,1]*H[1,2]-H[1,1]*H[0,2]]
-    a1  = ch(AA,S,D,ld1,G)
-
-    ck1 = chek1(H,GG,EE,a1)
-
-    param1 = a1[0]
-
-    polelim1 = a1[1]
-     
-    l1 = HenselLift(ck1[0], param1, polelim1, u, prec) 
+    H1 = [H[0,0]*H[1,1] - H[1,0]*H[0,1],H[0,1]*H[1,2]-H[1,1]*H[0,2]]
+    (param1, polelim1) = ch(AA,S,D,ld1,G)
+    l1 = HenselLift(H1, param1, polelim1, u, prec) 
 
 
     ll1 = []
     for i in range(len(l1)):
 	ll1.append(l1[i].substitute(T = 1))
 	
-    return ck1, ll1
+    return ll1
 
 
-#####################################################################
+def soll2(H,prec): ### TODO: Check the solution
 
-def ad0(F,v0,q0):
+    H2 = [H[0,0]*H[1,1] - H[1,0]*H[0,1],H[0,0]*H[1,2]-H[1,0]*H[0,2]]
+
+    (param2, polelim2) = ch2(AA,S,D,ld1,G)
+
+    l2 = HenselLift(H2, param2, polelim2, u, prec)
+
+    ll2 = []
+    for i in range(len(l2)):
+    	ll2.append(l2[i].substitute(T = 1))
+	
+    return ll2
+
+
+def soll3(H,prec):
+
+    H3 = [H[0,0]*H[1,2] - H[1,0]*H[0,2],H[0,1]*H[1,2]-H[1,1]*H[0,2]]
     
-    F1 = []
-    for i in range(len(F)):
-    	F1.append(F[i].substitute(T=0, x2 = v0[0,0], x3 = v0[1,0]))
-
+    (param3, polelim3) = ch3(AA,S,D,ld1,G)
     
-    F0 = []
-    for i in range(len(F1)):
-    	F2.append(F1[i].mod(q0))
+    l3 = HenselLift(H3, param3, polelim3, u, prec)
 
-    print "F0 = ", F2, "\n"
+    ll3 = []
+    for i in range(len(l3)):
+    	ll3.append(l3[i].substitute(T = 1))
 
-    return F0
-
-
-def ad00(H11,v1,qq):
-    v0 = v1.substitute(T=0)
-    q0 = qq.substitute(T=0)
-
-    F0 = []
-    for i in range(len(H11)):
-    	F0.append(H11[i].substitute(T=0, x2 = v0[0,0], x3 = v0[1,0]))
-    
-    F00 =[]
-    for i in range(len(F0)):
-    	F00.append(F0[i].mod(q0))
-
-    print "F00 = ", F00, "\n"
-    
-    return F00
-
-
-def ratrec(sol,e): ## for q
-    P.<T> = PowerSeriesRing(bF, default_prec = e+1)
-    m = sol.coefficients()
-
-    m1 = []
-    for i in range(len(m)):
-    	m1.append(Matrix(k,1,1))
-
-    for i in range(len(m1)):
-    	m1[i][0,0] = m[i]
-
-    m2 = []
-    for i in range(len(m1)):
-    	m2.append(m1[i][0,0])
-
-    m3 = []
-    for i in range(len(m2)):
-    	m3.append( m2[i].substitute(T = P.gen()))
-
-    m4 = []
-    for i in range(len(m3) - 1):
-    	m4.append(m3[i].pade(e,e))
-
-    a = Matrix(parent(m4[0]),1,1)
-    a[0,0] = 1
-    
-    m4.append(a[0,0])
-    return m4
-
-
-def ratrecvv(solv,e): ## for v1
-    P.<T> = PowerSeriesRing(bF, default_prec = e+1)
-
-    soll = Matrix(A1,1,1)
-    soll[0,0] = solv
-
-    sol = soll[0,0]
-    
-    m = sol.coefficients()
-    
-    m1 = []
-    for i in range(len(m)):
-    	m1.append(Matrix(k,1,1))
-
-    for i in range(len(m1)):
-    	m1[i][0,0] = m[i]
-
-    m2 = []
-    for i in range(len(m1)):
-    	m2.append(m1[i][0,0])
-
-    m3 = []
-    for i in range(len(m2)):
-    	m3.append( m2[i].substitute(T = P.gen()))
-    
-    m4 = []
-    for i in range(len(m3)):
-    	m4.append(m3[i].pade(e,e))
-   
-    return m4
+    return ll3
 
 
 
-def deno(m4): ## denominators list
-    deno1 = []
-    for i in range(len(m4)):
-    	deno1.append(denominator(m4[i]))
-    return deno1
+ ##### #### lift from solutions of G to solution of E2 #### #####
+ 
+   ### Use soll1(HH,prec), soll2(HH,prec), soll3(HH,prec) ###
 
 
-def deldeno(q1,m4,deno):
-    d = lcm(deno[i] for i in range(len(deno)))
-    a = []
-    for i in range(len(m4)):
-    	a.append(m4[i]*d)
-
-    soll = Matrix(A1,1,1)
-    soll[0,0] = q1
-
-    sol = soll[0,0]
-    de = sol.degree()
-
-    q11 = sum(a[i]*t^(i) for i in (0..de))
-    return q11
+EE2 = E2.substitute(x2 = R1.gen(0), x3 = R1.gen(1))
+HH = (1-R1.gen(3))*GG+R1.gen(3)*EE2
 
 
-#####################################################################
+####################################################################
+	### From sol of E1&E2, come back to sol of AM ###
 
 
+	    	    	 ### FROM E1###
 
-
-
-######### prec = 64??? #TODO: check prec for 2*3 dense matrix ####
-#
-
-def chek1(H,GG,EE,a):
-
-    p1 = GG.nrows()
-    q1 = GG.ncols()
-
-    #G = GG[0:p1,p1:q1]
-
-    l = a[0]
-    q = a[1]
-
-    J = GG.substitute(x2 = l[0,0], x3 = l[1,0])
-    
-    p2 = J.nrows()
-    q2 = J.ncols()
-
-    J1 = Matrix(R1,p2,q2)
-    for i in range(p2):
-    	for j in range(q2):
-	    J1[i,j] = J[i,j].mod(q)
-
-    E = J1.rref()
-    
-    Q = []
-    for i in range(p2):
-    	for j in range(q2):
-            if E[i, j] != 0:
-               Q.append(j)
-	       break
-    A1 = range(q1)
-
-    
-    N = diff(A1,Q)
-    
-    B = []
-    
-    for i in range(len(N)):
-    	B.append(sorted(Q+[N[i]]))
-
-    W = []
-    for i in range(len(B)):
-    	W.append(H.matrix_from_columns(B[i]).det())
-
-    WG = []
-    for i in range(len(B)):
-    	WG.append(GG.matrix_from_columns(B[i]).det())
-
-
-    W1 = []
-    for i in range(len(B)):
-    	W1.append(EE.matrix_from_columns(B[i]).det())
-    return W,WG,W1
-
-def diff(first, second): ## compute list difference
-        second = set(second)
-        return [item for item in first if item not in second]
-
-
-
-#####################################################################
-### Come back to solution of 2*5 start matrix ####
 
 def subb(AM,H,prec): ## FINAL SOLUTION  am_00 = am_11 = 0 (1st case) 
-    (x0, x1, x2, x3) = R.gens()
-    k.<t>=PolynomialRing(bF)
-    J.<t,x0,x1,x2,x3>=PolynomialRing(bF,5)
     	
     G5 = copy(AM)
     s01 = []
@@ -703,22 +597,17 @@ def subb(AM,H,prec): ## FINAL SOLUTION  am_00 = am_11 = 0 (1st case)
     ld[8] = ld[8].substitute(x0 = m)
     x12 = x1 - 1/ld[8].coefficients()[0]*ld[8]
     x02 = m.substitute(x1 = x12)
-    ll1 = soll1(H,prec)[1]
 
-    ll2 = soll2(H,prec)[1]
+    ll1 = soll1(H,prec)
+    ll2 = soll2(H,prec)
+    ll3 = soll3(H,prec)
 
-    ll3 = soll3(H,prec)[1]
-    
-#    (ll1,ll2,ll3) = soll(H,prec)
-
-#    (ll1,ll2,ll3) = soll(H,prec)
-
-    
 
     v01 = x02.substitute(x2 = ll1[0][0,0], x3 = ll1[0][1,0])
     v11 = x12.substitute(x2 = ll1[0][0,0], x3 = ll1[0][1,0])
 
     a1 = [(v01,v11,ll1[0][0,0],ll1[0][1,0]),ll1[1]]
+
 
     v02 = x02.substitute(x2 = ll2[0][0,0], x3 = ll2[0][1,0])
     v12 = x12.substitute(x2 = ll2[0][0,0], x3 = ll2[0][1,0])
@@ -729,17 +618,16 @@ def subb(AM,H,prec): ## FINAL SOLUTION  am_00 = am_11 = 0 (1st case)
     v13 = x12.substitute(x2 = ll3[0][0,0], x3 = ll3[0][1,0])
 
     a3 = [(v03,v13,ll3[0][0,0],ll3[0][1,0]),ll3[1]]
-
+    
     return [a1,a2,a3]
 
 
-####################################################################
 
-EE2 = E2.substitute(x2 = R1.gen(0), x3 = R1.gen(1))
-HH = (1-R1.gen(3))*GG+R1.gen(3)*EE2
+	    	    	 ### FROM E2###
 
-def subb2(AM,HH,prec): ##FINAL SOLUTION am_00 = am_11 = 0 (2nd case) 
-    (x0, x1, x2, x3) = R.gens()
+
+
+def subb2(AM,HH,prec): ##FINAL SOLUTION am_00 = am_11 = 0 (2nd case)
 
     G = copy(AM)
     s01 = []
@@ -749,19 +637,16 @@ def subb2(AM,HH,prec): ##FINAL SOLUTION am_00 = am_11 = 0 (2nd case)
     x02 = m.substitute(x1 = x12)
 
 
-    ll1 = soll1(HH,prec)[1]
+    ll1 = soll1(HH,prec)
+    ll2 = soll2(HH,prec)
+    ll3 = soll3(HH,prec)
 
-    ll2 = soll2(HH,prec)[1]
-
-    ll3 = soll3(HH,prec)[1]
-    
-
-    
 
     v01 = x02.substitute(x2 = ll1[0][0,0], x3 = ll1[0][1,0])
     v11 = x12.substitute(x2 = ll1[0][0,0], x3 = ll1[0][1,0])
 
     a1 = [(v01,v11,ll1[0][0,0],ll1[0][1,0]),ll1[1]]
+
 
     v02 = x02.substitute(x2 = ll2[0][0,0], x3 = ll2[0][1,0])
     v12 = x12.substitute(x2 = ll2[0][0,0], x3 = ll2[0][1,0])
@@ -772,16 +657,21 @@ def subb2(AM,HH,prec): ##FINAL SOLUTION am_00 = am_11 = 0 (2nd case)
     v13 = x12.substitute(x2 = ll3[0][0,0], x3 = ll3[0][1,0])
 
     a3 = [(v03,v13,ll3[0][0,0],ll3[0][1,0]),ll3[1]]
+    
+    return  [a1,a2,a3]
 
-   
-    return [a1,a2,a3]
 
 
 
 #####################################################################
 
+######## ### Hensel Lifting for 4 variables x0,x1,x2,x3 ########## ###
 
-### HenselLift for 4 vars ######
+
+uu = x2
+
+
+
 
 def HenselLift4(F, param, polelim, uu, myprec): 
     
@@ -1005,247 +895,109 @@ def HenselLift4(F, param, polelim, uu, myprec):
 
     return V,q
 
-#####################################################################
-
-def ch2(AA,S,D,ld1,G):  ###substart_11 = substart_12 = 0
-    s12 = []
-    s12.append(ideal(ld1[4], ld1[5]).variety())
-
-    s2 = condict(s12)
-
-    v2 = AA.lagrange_polynomial(s2);
-    
-    z2 = prod(x2 - s2[m][0] for m in range(len(s2)))
-    w2 = x2.substitute(x2 = AA.gen(0))
-    q2 = z2.substitute(x2 = AA.gen(0))
-
-    polelim22 = Matrix(R1,1,1)
-    polelim22[0,0] = q2
-
-    polelim2 = polelim22[0,0]
-
-    param2 = Matrix(R1,2,1)
-    param2[0,0] = w2
-    param2[1,0] = v2
-    
-    return param2,polelim2
-
-
-
-
-def ch3(AA,S,D,ld1,G): ###substart_00 = substart_11 = 0
-    s13 = []
-    for m in range(D[0]):
-	for t in (2*D[0]..2*D[0]+D[1]-1):
-	    s13.append(ideal(ld1[m], ld1[t]).variety()) 
-
-    s3 = condict(s13)
-
-    v3 = AA.lagrange_polynomial(s3);
-    
-    z3 = prod(x2 - s3[m][0] for m in range(len(s3)))
-    w3 = x2.substitute(x2 = AA.gen(0))
-    q3 = z3.substitute(x2 = AA.gen(0))
-
-    polelim33 = Matrix(R1,1,1)
-    polelim33[0,0] = q3
-
-    polelim3 = polelim33[0,0]
-
-    param3 = Matrix(R1,2,1)
-    param3[0,0] = w3
-    param3[1,0] = v3
-    
-    return param3, polelim3
-
-
-
-def soll2(H,prec): ### TODO: Check the solution
-
-    #H2 = [H[0,0]*H[1,1] - H[1,0]*H[0,1],H[0,0]*H[1,2]-H[1,0]*H[0,2]]
-
-#    (param2, polelim2) = ch2(AA,S,D,ld1,G)
-
-    a2 = ch2(AA,S,D,ld1,G) 
-
-    chk2 = chek1(H,GG,EE,a2)
-
-    param2 = a2[0]
-
-    polelim2 = a2[1]
-
-    l2 = HenselLift(chk2[0], param2, polelim2, u, prec)
-
-    ll2 = []
-    for i in range(len(l2)):
-    	ll2.append(l2[i].substitute(T = 1))
-	
-    return ll2
-
-
-def soll3(H,prec):
-
-    #H3 = [H[0,0]*H[1,2] - H[1,0]*H[0,2],H[0,1]*H[1,2]-H[1,1]*H[0,2]]
-    
-    #(param3, polelim3) = ch3(AA,S,D,ld1,G)
-
-    a3 = ch3(AA,S,D,ld1,G)
-
-    chk3 = chek1(H,GG,EE,a3)
-
-
-    param3 = a3[0]
-    polelim3 = a3[1]
-
-
-    l3 = HenselLift(chk3[0], param3, polelim3, u, prec)
-
-    ll3 = []
-    for i in range(len(l3)):
-    	ll3.append(l3[i].substitute(T = 1))
-
-    return ll3
-
-
 
 
 ####################################################################
-### Using the Chinese Remainder Theorem ti combine R_j into a single zer0-dim para R. ###
 
-a1 = ch(AA,S,D,ld1,G)
-H1 = chek1(H,GG,EE,a1)[0]
-
-a2 = ch2(AA,S,D,ld1,G)
-H2 = chek1(H,GG,EE,a2)[0]
-
-a3 = ch3(AA,S,D,ld1,G)
-H3 = chek1(H,GG,EE,a3)[0]
+##### Find square system (4 equs) for Lifting sol AM to sol of C ####
 
 
+a100 = subb(AM,H,2)
 
-def CRT(a1,H1,a2,H2,a3,H3,prec):
-    v1,q1 = HenselLift(H1,a1[0],a1[1],u,prec)
-    v2,q2 = HenselLift(H2,a2[0], a2[1], u, prec)
-    v3,q3 = HenselLift(H3,a3[0],a3[1], u,prec)
+a101 = subb(AM,HH,2)
+
+#ab = [ch(AA,S,D,ld1,G),ch2(AA,S,D,ld1,G),ch3(AA,S,D,ld1,G)]
+
+
+
+
+def diff(first, second): ## compute list difference
+        second = set(second)
+        return [item for item in first if item not in second]
+
+
+def qua(Hmat,AM,a100):
+    H = copy(Hmat)
+    G1 = copy(AM)
+    ll = copy(a100)
+    p1 = G1.nrows()
+    q1 = G1.ncols()
+
+    l = []
+    for i in range(len(ll)):
+	l.append(ll[i][0])
     
-    vv1 = emph(v1,q1)
-    vv2 = emph(v2,q2)
-    vv3 = emph(v3,q3)
-
-
-    aa,nq = com1(vv1,q1,vv2,q2,vv3,q3,2*prec)
+    G = G1[0:p1,p1:q1]
     
-    return aa,nq
+    J = []      ## List of all p*q matrices over K after evaluating in G = AM
+    for i in range(len(l)): 
+    	J.append(G.substitute(x0 = l[i][0], x1 = l[i][1], x2 = l[i][2], x3 = l[i][3]))
+	
+   
+    E = []      ## row echelon form
+    for i in range(len(J)):
+    	E.append(J[i].rref())
+
+    return E
+
+    """
+    For x∗ be a solution of IG, we  construct the system of n equations from H
+
+    The list Q: with Q[i] is the set of index, namely C, for H¯
+    for each x∗=l[i]
+
+    """
 
 
 
-def emph(v1,q1):
-    v11 = Matrix(parent(q1),2,1)
-    for i in range(2):
-    	v11[i,0] = v1[i,0]	
-    return v11
-
-
-
-def crth(vv1,q1,vv2,q2,prec):
-    RR.<T> = PowerSeriesRing(bF, default_prec = 2*prec+1)
-    n1,n2 = gmm(q1,q2,prec)
+    Q = [] 
+    for k in range(len(E)):
+    	A = []
+    	for i in range(p):
+            for j in range(q):
+            	if E[k][i, j] != 0:
+                    A.append(j)
+                    break
+        
+        Q.append(A)
     
-    c = Matrix(parent(q1),2,1)
-    c[0,0] = vv1[0,0]*n2*q2 + vv2[0,0]*n1*q1
-    c[1,0] = vv1[1,0]*n2*q2 + vv2[1,0]*n1*q1
+    A1 = range(q)
 
-    dd0 = c[0,0].degree()
-    LL0 = c[0,0].coefficients(sparse = False)
 
-    aa0 = []
-    for i in range(len(LL0)):
-    	aa0.append((LL0[i].subs(T=T).O(2*prec)).truncate(2*prec))
-
-    nn0 = sum(aa0[i]*t^(i) for i in range(len(aa0)))
-
-    dd1 = c[1,0].degree()
-    LL1 = c[1,0].coefficients(sparse = False)
-
-    aa1 = []
-    for i in range(len(LL1)):
-    	aa1.append((LL1[i].subs(T=T).O(2*prec)).truncate(2*prec))
-
-    nn1 = sum(aa1[i]*t^(i) for i in range(len(aa1)))
-
-    aa = Matrix(parent(q1),2,1)
-    aa[0,0] = aa0
-    aa[1,0] = aa1
-
-    q12 = q1*q2
     
-    dq = q12.degree()
-    Lq = q12.coefficients(sparse = False)
-
-    aq = []
-    for i in range(len(Lq)):
-    	aq.append((Lq[i].subs(T=T).O(2*prec)).truncate(2*prec))
-
-    nq = sum(aq[i]*t^(i) for i in range(len(aq)))
-    return  aa,nq
+    N = []
+    for i in range(len(Q)):
+    	N.append(diff(A1,Q[i])) 
     
 
-def com1(vv1,q1,vv2,q2,vv3,q3,prec):
-    c12,q12 =  crth(vv1,q1,vv2,q2,prec)
-    c,qq = crth(c12,q12,vv3,q3,prec)
-    return c,qq
+    """
+    For each k, the construction of C[k] contains all of the indices of p×p-minors (equations in the systems)
 
+    C[k] for the solution l[k] of I_G
+    """
 
-def gmm(q1,q2,prec):
-    RR.<T> = PowerSeriesRing(bF, default_prec =2*prec +1)
-    (g,m1,m2) = xgcd(q1,q2)
+    C = []
+    for k in range(len(Q)): 
+    	B = []
+    	for i in range(len(N[k])):
+            B.append(Q[k]+[N[k][i]])
+        C.append(B)
+
+    """
+    Z[k] is the system of n equations for the solution l[k]
+    """
+    #aa = H.matrix_from_columns(C[0][i]).det()
+
     
-    d1 = m1.degree()
-    L1 = m1.coefficients(sparse=False)
-    a1 = []
-    for i in range(len(L1)): 
-        a1.append((L1[i].subs(T=T).O(2*prec)).truncate(2*prec))
-
-    n1 = sum(a1[i]*t^(i) for i in range(len(a1)))
-
-    d2 = m2.degree()
-    L2 = m2.coefficients(sparse=False)
-    a2 = []
-    for i in range(len(L2)):
-    	a2.append((L2[i].subs(T=T).O(2*prec)).truncate(2*prec))
-
-    n2 = sum(a2[i]*t^(i) for i in range(len(a2)))
-    
-    return n1,n2
+    return C,N,Q,E
 
 
-#####################################################################
-### reconstruct a zero-dim para S with coeffs in K(T), deg(num) <= e, deg(denum) <=e ###
 
-def PaS(a1,H1,a2,H2,a3,H3,prec):
-    aa,nq = CRT(a1,H1,a2,H2,a3,H3,prec)
-    mq = ratrec(nq,prec//2)
-
-    dq = nq.degree()
-
-    sq = sum(mq[i]*t^(i) for i in (0..dq))
-    
-    mv0 = ratrecvv(aa[0,0],prec//2)
-
-    dv0 = aa[0,0].degree()
-
-    sv0 = sum(mv0[i]*t^(i) for i in (0..dv0))
-
-    mv1 = ratrecvv(aa[1,0], prec//2)
-
-    dv1 = aa[1,0].degree()
-
-    sv1 = sum(mv1[i]*t^(i) for i in (0..dv1))
-    
-    mv = Matrix(parent(sq),2,1)
-    mv[0,0] = sv0
-    mv[1,0] = sv1
-    
-    return mv,sq
-
-
+    Z = []
+    for k in range(len(C)):
+    	W = []
+    	for i in range(len(C[k])):
+    	    W.append(H.matrix_from_columns(C[k][i]).det())
+	Z.append(W)
+	    
+    return C

@@ -1,0 +1,309 @@
+\begin{thebibliography}{10}
+
+\bibitem{ABRW}
+M.~E. Alonso, E.~Becker, M.-F. Roy, and T.~W{\"o}rmann.
+\newblock Zeroes, multiplicities and idempotents for zerodimensional systems.
+\newblock In {\em Algorithms in algebraic geometry and applications.
+  Proceedings of MEGA'94}, volume 142 of {\em Progress in Mathematics}, pages
+  1--15. Birkha\"user, 1996.
+
+\bibitem{AtMc}
+M.~Atiyah and I.~MacDonald.
+\newblock {\em Introduction to Commutative Algebra}.
+\newblock Addison-Wesley Series in Mathematics. Addison-Wesley, 1969.
+
+\bibitem{ARS}
+P.~Aubry, F.~Rouillier, and M.~{Safey El Din}.
+\newblock Real solving for positive dimensional systems.
+\newblock {\em Journal of Symbolic Computation}, 34(6):543--560, 2002.
+
+\bibitem{BaGiHeLeMaSo15}
+B.~Bank, M.~Giusti, J.~Heintz, G.~Lecerf, G.~Matera, and P.~Solern\'o.
+\newblock Degeneracy loci and polynomial equation solving.
+\newblock {\em Foundations of Computational Mathematics}, 15(1):159--184, 2015.
+
+\bibitem{BaGiHeMb01}
+B.~Bank, M.~Giusti, J.~Heintz, and G.-M. Mbakop.
+\newblock Polar varieties and efficient real elimination.
+\newblock {\em Mathematische Zeitschrift}, 238(1):115--144, 2001.
+
+\bibitem{BaGiHePa05}
+B.~Bank, M.~Giusti, J.~Heintz, and L.-M. Pardo.
+\newblock Generalized polar varieties: geometry and algorithms.
+\newblock {\em Journal of Complexity}, 21(4):377--412, 2005.
+
+\bibitem{BGHS14}
+B.~Bank, M.~Giusti, J.~Heintz, and M.~{Safey El Din}.
+\newblock Intrinsic complexity estimates in polynomial optimization.
+\newblock {\em Journal of Complexity}, 30(4):430--443, 2014.
+
+\bibitem{BGHSS}
+B.~Bank, M.~Giusti, J.~Heintz, M.~{Safey El Din}, and \'E. Schost.
+\newblock On the geometry of polar varieties.
+\newblock {\em Applicable Algebra in Engineering, Communication and Computing},
+  pages 33--83, 2010.
+
+\bibitem{BRSS}
+S.~Basu, M.-F. Roy, M.~{Safey El Din}, and {\'E}.~Schost.
+\newblock A baby-step giant-step roadmap algorithm for general real algebraic
+  sets.
+\newblock {\em Foundations of Computational Mathematics}, 14(6):1117--1172,
+  2014.
+
+\bibitem{BaHaPeSo09}
+Daniel~J. Bates, Jonathan~D. Hauenstein, Chris Peterson, and Andrew~J. Sommese.
+\newblock A numerical local dimension test for points on the solution set of a
+  system of polynomial equations.
+\newblock {\em SIAM Journal on Numerical Analysis}, 47(5):3608--3623, 2009.
+
+\bibitem{BaurStrassen}
+W.~Baur and V.~Strassen.
+\newblock The complexity of partial derivatives.
+\newblock {\em Theoretical Computer Science}, 22:317--330, 1983.
+
+\bibitem{BoMaWaWa04}
+A.~Bompadre, G.~Matera, R.~Wachenchauzer, and A.~Waissbein.
+\newblock Polynomial equation solving by lifting procedures for ramified
+  fibers.
+\newblock {\em Theoretical Computer Science}, 315(2):335 -- 369, 2004.
+
+\bibitem{CH94}
+Aldo Conca and Jürgen Herzog.
+\newblock On the hilbert function of determinantal rings and their canonical
+  module.
+\newblock {\em Proceedings of the American Mathematical Society},
+  122(3):677--681, 1994.
+
+\bibitem{DaSc04}
+X.~Dahan and {\'E}.~Schost.
+\newblock Sharp estimates for triangular sets.
+\newblock In {\em ISSAC}, pages 103--110. ACM, 2004.
+
+\bibitem{D5}
+J.~{Della Dora}, C.~Discrescenzo, and D.~Duval.
+\newblock About a new method for computing in algebraic number fields.
+\newblock In {\em EUROCAL'85}, volume 204 of {\em LNCS}, pages 289--290.
+  Springer, 1985.
+
+\bibitem{EN62}
+J.~Eagon and D.~Northcott.
+\newblock Ideals defined by matrices and a certain complex associated with
+  them.
+\newblock {\em Proceedings of the Royal Society of London. Series A.
+  Mathematical and Physical Sciences}, 269(1337):188--204, 1962.
+
+\bibitem{Eisenbud95}
+D.~Eisenbud.
+\newblock {\em Commutative algebra with a view toward algebraic geometry},
+  volume 150 of {\em Graduate Texts in Mathematics}.
+\newblock Springer-Verlag, 1995.
+
+\bibitem{FSS12}
+J.-C. Faug\`{e}re, M.~{Safey El Din}, and P.-J. Spaenlehauer.
+\newblock Critical points and gr\"{O}bner bases: The unmixed case.
+\newblock In {\em Proceedings of the 37th International Symposium on Symbolic
+  and Algebraic Computation}, ISSAC '12, pages 162--169, New York, NY, USA,
+  2012. ACM.
+
+\bibitem{FSS13}
+{J.-C.} {Faug\`ere}, M.~{Safey El Din}, and {P.-J.} Spaenlehauer.
+\newblock On the complexity of the generalized minrank problem.
+\newblock {\em Journal of Symbolic Computation}, 55:30 -- 58, 2013.
+
+\bibitem{GaGe03}
+{J. von zur} Gathen and J.~Gerhard.
+\newblock {\em Modern Computer Algebra}.
+\newblock Cambridge University Press, 2003.
+
+\bibitem{GiMo89}
+P.~Gianni and T.~Mora.
+\newblock Algebraic solution of systems of polynomial equations using
+  {G}roebner bases.
+\newblock In {\em AAECC}, volume 356 of {\em LNCS}, pages 247--257. Springer,
+  1989.
+
+\bibitem{GiHeMoMoPa98}
+M.~Giusti, J.~Heintz, J.-E. Morais, J.~Morgenstern, and L.-M. Pardo.
+\newblock Straight-line programs in geometric elimination theory.
+\newblock {\em J. of Pure and Applied Algebra}, 124:101--146, 1998.
+
+\bibitem{GiHeMoPa95}
+M.~Giusti, J.~Heintz, J.-E. Morais, and L.-M. Pardo.
+\newblock When polynomial equation systems can be solved fast?
+\newblock In {\em AAECC-11}, volume 948 of {\em LNCS}, pages 205--231.
+  Springer, 1995.
+
+\bibitem{GiLeSa01}
+M.~Giusti, G.~Lecerf, and B.~Salvy.
+\newblock A {G}r{\"o}bner-free alternative for polynomial system solving.
+\newblock {\em Journal of Complexity}, 17(1):154--211, 2001.
+
+\bibitem{GS14}
+A.~Greuet and M.~{Safey El Din}.
+\newblock Probabilistic algorithm for polynomial optimization over a real
+  algebraic set.
+\newblock {\em {SIAM} Journal on Optimization}, 24(3):1313--1343, 2014.
+
+\bibitem{GSZ10}
+F.~Guo, M.~{Safey El Din}, and L.~Zhi.
+\newblock Global optimization of polynomials using generalized critical values
+  and sums of squares.
+\newblock In {\em Proceedings of the 2010 International Symposium on Symbolic
+  and Algebraic Computation}, ISSAC '10, pages 107--114, New York, NY, USA,
+  2010. ACM.
+
+\bibitem{HeJeSaSo02}
+J.~Heintz, G.~Jeronimo, J.~Sabia, and P.~Solerno.
+\newblock Intersection theory and deformation algorithms: the multi-homogeneous
+  case, 2002.
+
+\bibitem{HeKrPuSaWa99}
+J.~Heintz, T.~Krick, S.~Puddu, J.~Sabia, and A.~Waissbein.
+\newblock Deformation techniques for efficient polynomial equation solving.
+\newblock {\em Journal of Complexity}, 16(1):70--109, 2000.
+
+\bibitem{HeJeSa14}
+Mar{\'i}a~Isabel Herrero, Gabriela Jeronimo, and Juan Sabia.
+\newblock Elimination for generic sparse polynomial systems.
+\newblock {\em Discrete {\&} Computational Geometry}, 51(3):578--599, 2014.
+
+\bibitem{HeJeSa10}
+María~Isabel Herrero, Gabriela Jeronimo, and Juan Sabia.
+\newblock Computing isolated roots of sparse polynomial systems in affine
+  space.
+\newblock {\em Theoretical Computer Science}, 411(44):3894 -- 3904, 2010.
+
+\bibitem{HeJeSa13}
+María~Isabel Herrero, Gabriela Jeronimo, and Juan Sabia.
+\newblock Affine solution sets of sparse polynomial systems.
+\newblock {\em Journal of Symbolic Computation}, 51:34 -- 54, 2013.
+
+\bibitem{JeMaSoWa09}
+G.~Jeronimo, G.~Matera, P.~Solerno, and A.~Waissbein.
+\newblock Deformation techniques for sparse systems.
+\newblock {\em Foundations of Computational Mathematics}, 9(1):1--50, 2009.
+
+\bibitem{JP14}
+G.~Jeronimo and D.~Perrucci.
+\newblock A probabilistic symbolic algorithm to find the minimum of a
+  polynomial function on a basic closed semialgebraic set.
+\newblock {\em Discrete \& Computational Geometry}, 52(2):260--277, 2014.
+
+\bibitem{Kronecker82}
+L.~Kronecker.
+\newblock Grundz{\"u}ge einer arithmetischen {T}heorie der algebraischen
+  {G}r{\"o}ssen.
+\newblock {\em Journal f\"ur die reine und angewandte Mathematik}, 92:1--122,
+  1882.
+
+\bibitem{Macaulay16}
+F.~S. Macaulay.
+\newblock {\em The Algebraic Theory of Modular Systems}.
+\newblock Cambridge University Press, 1916.
+
+\bibitem{Matsumura86}
+H.~Matsumura.
+\newblock {\em Commutative Ring Theory}.
+\newblock Cambridge studies in advanced mathematics. Cambridge University
+  Press, 1986.
+
+\bibitem{MiSt04}
+Ezra Miller and Bernd Sturmfels.
+\newblock {\em Combinatorial Commutative Algebra}.
+\newblock Springer Verlag, New York, 2005.
+
+\bibitem{Mourrain97}
+B.~Mourrain.
+\newblock Isolated points, duality and residues.
+\newblock {\em Journal of Pure and Applied Algebra}, 117/118:469--493, 1997.
+\newblock Algorithms for algebra (Eindhoven, 1996).
+
+\bibitem{NDS06}
+J.~Nie, J.~Demmel, and B.~Sturmfels.
+\newblock Minimizing polynomials via sum of squares over the gradient ideal.
+\newblock {\em Mathematical programming}, 106(3):587--606, 2006.
+
+\bibitem{NieRan09}
+Jiawang Nie and Kristian Ranestad.
+\newblock Algebraic degree of polynomial optimization.
+\newblock {\em SIAM J. on Optimization}, 20(1):485--502, April 2009.
+
+\bibitem{Rouillier99}
+F.~Rouillier.
+\newblock Solving zero-dimensional systems through the {R}ational {U}nivariate
+  {R}epresentation.
+\newblock {\em Applicable Algebra in Engineering, Communication and Computing},
+  9(5):433--461, 1999.
+
+\bibitem{RRS}
+F.~Rouillier, M.-F. Roy, and M.~{Safey El Din}.
+\newblock {Finding at least one point in each connected component of a re al
+  algebraic set defined by a single equation}.
+\newblock {\em Journal of Complexity}, 16:716--750, 2000.
+
+\bibitem{SaSc03}
+M.~{Safey El Din} and \'E. Schost.
+\newblock Polar varieties and computation of one point in each connected
+  component of a smooth real algebraic set.
+\newblock In {\em ISSAC'03}, pages 224--231. ACM, 2003.
+
+\bibitem{SaSc11}
+M.~{Safey El Din} and {\'E}.~{Schost}.
+\newblock A baby steps/giant steps probabilistic algorithm for computing
+  roadmaps in smooth bounded real hypersurface.
+\newblock {\em Discrete and Computational Geometry}, 45(1):181--220, 2011.
+
+\bibitem{SaSc16}
+M.~{Safey El Din} and {\'{E}.}~Schost.
+\newblock Bit complexity for multi-homogeneous polynomial system solving
+  application to polynomial minimization.
+\newblock {\em Journal of Symbolic Computation}, 2017.
+
+\bibitem{SaSc17}
+M.~{Safey El Din} and \'{E}. Schost.
+\newblock A nearly optimal algorithm for deciding connectivity queries in
+  smooth and bounded real algebraic sets.
+\newblock {\em J. ACM}, 63(6):48:1--48:37, January 2017.
+
+\bibitem{SaSp16}
+M.~{Safey El Din} and P.-J. Spaenlehauer.
+\newblock Critical point computations on smooth varieties: Degree and
+  complexity bounds.
+\newblock In {\em Proceedings of the ACM on International Symposium on Symbolic
+  and Algebraic Computation}, ISSAC '16, pages 183--190, New York, NY, USA,
+  2016. ACM.
+
+\bibitem{Schost03}
+{\'E}.~Schost.
+\newblock Computing parametric geometric resolutions.
+\newblock {\em Appl. Algebra Engrg. Comm. Comput.}, 13(5):349--393, 2003.
+
+\bibitem{Shafarevich77}
+I.~Shafarevich.
+\newblock {\em Basic Algebraic Geometry 1}.
+\newblock Springer Verlag, 1977.
+
+\bibitem{ShSm93}
+Michael Shub and Steve Smale.
+\newblock Complexity of bezout's theorem i: Geometric aspects.
+\newblock {\em Journal of the American Mathematical Society}, 6(2):459--501,
+  1993.
+
+\bibitem{SoWa05}
+{A. J.} Sommese and {C. W.} Wampler.
+\newblock {\em The numerical solution of systems of polynomials arising in
+  engineering and science}.
+\newblock World Scientific, 2005.
+
+\bibitem{Spa14}
+P.-J. Spaenlehauer.
+\newblock On the complexity of computing critical points with {G}r\"obner
+  bases.
+\newblock {\em SIAM Journal on Optimization}, 24(3):1382--1401, 2014.
+
+\bibitem{ZaSa58}
+O.~Zariski and P.~Samuel.
+\newblock {\em Commutative Algebra}.
+\newblock Van Nostrand, 1958.
+
+\end{thebibliography}
