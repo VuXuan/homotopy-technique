@@ -309,45 +309,4 @@ def chekcrq(q1,q2, q3,q12,prec):
 
     return d
 
-#def crth(vv1,q1,vv2,q2,prec):
- #   RR.<T> = PowerSeriesRing(bF, default_prec = 64)
-  #  n1,n2 = gmm(q1,q2,prec)
-    
-  #  c = Matrix(parent(q1),2,1)
-   # c[0,0] = vv1[0,0]*n2*q2 + vv2[0,0]*n1*q1
-   # c[1,0] = vv1[1,0]*n2*q2 + vv2[1,0]*n1*q1
 
-   # dd0 = c[0,0].degree()
-   # LL0 = c[0,0].coefficients(sparse = False)
-
-   # aa0 = []
-   # for i in range(len(LL0)):
-    #	aa0.append((LL0[i].subs(T=T).O(prec)).truncate(prec))
-
-   # nn0 = sum(aa0[i]*t^(i) for i in range(len(aa0)))
-
-   # dd1 = c[1,0].degree()
-   # LL1 = c[1,0].coefficients(sparse = False)
-
-   # aa1 = []
-   # for i in range(len(LL1)):
-   # 	aa1.append((LL1[i].subs(T=T).O(prec)).truncate(prec))
-
- #   nn1 = sum(aa1[i]*t^(i) for i in range(len(aa1)))
-
-  #  aa = Matrix(parent(q1),2,1)
-   # aa[0,0] = nn0
-  #  aa[1,0] = nn1
-
-    #q12 = q1*q2
-    
-
-   # dq = q12.degree()
-   # Lq = q12.coefficients(sparse = False)
-
-#    aq = []
- #   for i in range(len(Lq)):
-  #  	aq.append((Lq[i].subs(T=T).O(prec)).truncate(prec))
-
-  #  nq = sum(aq[i]*t^(i) for i in range(len(aq)))
-  #  return  aa,nq
