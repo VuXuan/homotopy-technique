@@ -36,7 +36,7 @@ n = q-p+1
 
 ## rational reconstruction for coefficients of q and v1
 
-def ratrec(solv,e): ## for q
+def ratrec1(solv,e): ## for q
     P.<T> = PowerSeriesRing(bF, default_prec = 64)
 
     soll = Matrix(A1,1,1)
@@ -44,7 +44,7 @@ def ratrec(solv,e): ## for q
 
     sol = soll[0,0]
 
-    m = sol.coefficients()
+    m = sol.coefficients(sparse = False)
 
     m1 = []
     for i in range(len(m)):
@@ -57,19 +57,50 @@ def ratrec(solv,e): ## for q
     for i in range(len(m1)):
     	m2.append(m1[i][0,0])
 
-    m3 = []
-    for i in range(len(m2)):
-    	m3.append( m2[i].substitute(T = P.gen()))
+    return m2
+    #m3 = []
+    #for i in range(len(m2)):
+    	#m3.append( m2[i].substitute(T = P.gen()))
 
+def ratrec2(m2,e):
     m4 = []
-    for i in range(len(m3) - 1):
-    	m4.append(m3[i].pade(e,e))
-
-    a = Matrix(parent(m4[0]),1,1)
+    for i in range(len(m2) - 1):
+    	m4.append(m2[i].rational_reconstruct(T^(2*e+1),e,e))
+ 
+    a = Matrix(k,1,1)
     a[0,0] = 1
     
-    m4.append(a[0,0])
+    m4.append(a[0,0].rational_reconstruct(T^(2*e+1),e,e))
+
+    
     return m4
+
+
+#def ratrecc(nq,)
+
+
+def ratrec(nq,e):
+    m2 = ratrec1(nq,e)
+    m4 = ratrec2(m2,e)
+    m51 = []
+    for i in range(len(m4)):
+	m51.append(m4[i][0].substitute(T=1))
+
+    m52 = []
+    for i in range(len(m4)):
+	m52.append(m4[i][1].substitute(T=1))
+
+    m5 = []
+    for i in range(len(m4)):
+	m5.append(m51[i]/m52[i])
+    
+    nc = sum(m5[i]*t^(i) for i in range(len(m5)))
+    
+    return nc
+  
+
+
+########################################################################
 
 
 def ratrecvv(solv,e): ## for v1
@@ -80,7 +111,7 @@ def ratrecvv(solv,e): ## for v1
 
     sol = soll[0,0]
     
-    m = sol.coefficients()
+    m = sol.coefficients(sparse = False)
     
     m1 = []
     for i in range(len(m)):
@@ -105,15 +136,64 @@ def ratrecvv(solv,e): ## for v1
 
 
 
+def ratrecv1(solv,e):
+    m4 = ratrecvv(solv,e)
+
+    #mc4 = sum(m4[i]*t^(i) for i in range(len(m4)))
+
+    #return mc4
+    
+    m51 = []
+    for i in range(len(m4)):
+	m51.append(m4[i].numerator())
+
+    m52 = []
+    for i in range(len(m4)):
+	m52.append(m4[i].denominator())
+	
+    #m5 = []
+   # for i in range(len(m5)):
+    #	m5.append(m51[i]/m52[i])
+
+    #mc = sum(m5[i]*t^(i) for i in range(len(m5)))
+    #return mc
+    
+    m61 = []
+    for i in range(len(m51)):
+	m61.append(m51[i].substitute(T=1))
+
+    m62 = []
+    for i in range(len(m52)):
+	m62.append(m52[i].substitute(T=1))
+
+    m6 = []
+    for i in range(len(m61)):
+	m6.append(m61[i]/m62[i])
+
+    nc = sum(m6[i]*t^(i) for i in range(len(m6)))
+    return nc
+
 ##################################################################
 
 
 
 
 
-def CRT(a1,H1,a2,H2,a3,H3,prec):
+def CRT(H, prec, prec2):
+    a1 = ch(AA,S,D,ld1,G)
+    H1 = chek1(H,GG,EE,a1)[0]
+    
     v1,q1 = HenselLift(H1,a1[0],a1[1],u,prec)
+    
+    a2 = ch2(AA,S,D,ld1,G)
+    H2 = chek1(H,GG,EE,a2)[0]
+
     v2,q2 = HenselLift(H2,a2[0], a2[1], u, prec)
+
+    a3 = ch3(AA,S,D,ld1,G)
+    H3 = chek1(H,GG,EE,a3)[0]
+    
+
     v3,q3 = HenselLift(H3,a3[0],a3[1], u,prec)
 
 
@@ -122,7 +202,7 @@ def CRT(a1,H1,a2,H2,a3,H3,prec):
     vv3 = emph(v3,q3)
 
 
-    aa,nq = com1(vv1,q1,vv2,q2,vv3,q3,prec)
+    aa,nq = com1(vv1,q1,vv2,q2,vv3,q3,prec2)
     
     return aa,nq
 
@@ -136,13 +216,27 @@ def emph(v1,q1):
 
 
 
+########## Chinese Remainder Theorem
+## Input v1, v2
+## Output v s.t v = v1 mod q1, v = v2 = q1
 
-def c1(v1,q1,v2,q2, prec):
+
+def crmth2(v1,q1,v2,q2):
+    (s,n1,n2) = xgcd(q1,q2)
+    v = (v1*n2*q2 + v2*n1*q1).mod(q1*q2)
+    return v
+
+###############
+
+
+
+def c1(v1,q1,v2,q2,prec):
     P.<T> = PowerSeriesRing(bF,default_prec = 64)
     n1,n2 = gmm(q1,q2,prec)
- 
-    c = v2*n1*q1 + v1*n2*q2
-
+    cc = v2*n1*q1 + v1*n2*q
+    q12 = q1*q2
+    c = cc.mod(q12)
+    
     dc = c.degree()
     lc1 = c.coefficients(sparse = False)
 
@@ -168,9 +262,9 @@ def c1(v1,q1,v2,q2, prec):
 def crth(vv1,q1,vv2,q2,prec):
     RR.<T> = PowerSeriesRing(bF, default_prec = 64)
     
-    vv = Matrix(parent(q1), 2,1)
-    vv[0,0] = c1(vv1[0,0],q1,vv2[0,0],q2, prec)
-    vv[1,0] = c1(vv1[1,0],q1,vv2[1,0],q2, prec)
+    ww = Matrix(parent(q1), 2,1)
+    ww[0,0] = c1(vv1[0,0],q1,vv2[0,0],q2, prec)
+    ww[1,0] = c1(vv1[1,0],q1,vv2[1,0],q2, prec)
 
     q12 = q1*q2
     
@@ -183,7 +277,7 @@ def crth(vv1,q1,vv2,q2,prec):
     	aq.append((Lq[i].subs(T=T).O(prec)).truncate(prec))
 
     nq = sum(aq[i]*t^(i) for i in range(len(aq)))
-    return  vv,nq
+    return  ww,nq
 
     
 
@@ -193,17 +287,18 @@ def com1(vv1,q1,vv2,q2,vv3,q3,prec):
     return c,qq
 
 
+
 def gmm(q1,q2,prec):
     RR.<T> = PowerSeriesRing(bF, default_prec = 64)
     (g,m1,m2) = xgcd(q1,q2)
     
     d1 = m1.degree()
     L1 = m1.coefficients(sparse=False)
-    a1 = []
+    a11 = []
     for i in range(len(L1)): 
-        a1.append((L1[i].subs(T=T).O(prec)).truncate(prec))
+        a11.append((L1[i].subs(T=T).O(prec)).truncate(prec))
 
-    n1 = sum(a1[i]*t^(i) for i in range(len(a1)))
+    n1 = sum(a11[i]*t^(i) for i in range(len(a11)))
 
     d2 = m2.degree()
     L2 = m2.coefficients(sparse=False)
@@ -219,94 +314,41 @@ def gmm(q1,q2,prec):
 #####################################################################
 ### reconstruct a zero-dim para S with coeffs in K(T), deg(num) <= e, deg(denum) <=e ###
 
-def PaS(a1,H1,a2,H2,a3,H3,prec):
-    aa,nq = CRT(a1,H1,a2,H2,a3,H3,prec)
-    mq = ratrec(nq,prec//2)
-
-    dq = nq.degree()
-
-    sq = sum(mq[i]*t^(i) for i in (0..dq))
+def ratrecvv2(m4, e):
+    mv = sum(m4[i]*t^i for i in range(len(m4)))
+    return mv
     
-    mv0 = ratrecvv(aa[0,0],prec//2)
+aa, nq = CRT(H,32, 40)
 
-    dv0 = aa[0,0].degree()
+def par(aa,nq):
+    dq = nq.derivative()
+    v = (aa[0,0]*dq).mod(nq)
+    w = (aa[1,0]*dq).mod(nq)
+    return v,w
 
-    sv0 = sum(mv0[i]*t^(i) for i in (0..dv0))
+vv, ww =  par(aa,nq)
 
-    mv1 = ratrecvv(aa[1,0], prec//2)
+qq = ratrec(nq, 19)
+aa1 = ratrecv1(vv, 19)
+aa2 = ratrecv1(ww, 19)
 
-    dv1 = aa[1,0].degree()
+qdev = qq.derivative()
 
-    sv1 = sum(mv1[i]*t^(i) for i in (0..dv1))
-    
-    mv = Matrix(parent(sq),2,1)
-    mv[0,0] = sv0
-    mv[1,0] = sv1
-    
-    return mv,sq
+#Matt = Matrix(AA,3,1)
+#Matt[0,0] = qq
+#Matt[1,0] = aa1
+#Matt[2,0] = aa2
 
-
-
-
-#######################################################################
-
-#### Chekck###
-
-
-def chekcrv(w1,qq1,w12, prec):
-    ww1 = w1.mod(qq1)
-    cww1 = ww1.coefficients(sparse = False)
-
-    cw12 = w12.coefficients(sparse = False)
-
-    dv1 = []
-    for i in range(len(cww1)):
-	dv1.append(Matrix(k,1,1))
-    for i in range(len(cww1)):
-	dv1[i][0,0] = cww1[i]
-
-    dc = []
-    for i in range(len(cw12)):
-	dc.append(Matrix(k,1,1))
-
-    for i in range(len(cw12)):
-	dc[i][0,0] = cw12[i]
-
-    dvv = []
-    for i in range(len(dc)):
-	dvv.append(dv1[i][0,0] - dc[i][0,0])
-
-    dv = [dvv[i].mod(T^prec) for i in range(len(dvv))]
-
-    return dv
+#qfin = Matt[0,0]
+#vfin = Matt[1,0]
+#wfin = Matt[2,0]
 
 
-def chekcrq(q1,q2, q3,q12,prec):
-    qq = q1*q2*q3
-    cqq = qq.coefficients(sparse = False)
-    
-    cq12 = q12.coefficients(sparse = False)
-    
-    dq = []
-    for i in range(len(cqq)):
-	dq.append(Matrix(k,1,1))
-    for i in range(len(cqq)):
-	dq[i][0,0] = cqq[i]
+qfin = qq
+vfin = aa1/qdev
+wfin = aa2/qdev
 
-    dcq = []
-    for i in range(len(cq12)):
-	dcq.append(Matrix(k,1,1))
-    for i in range(len(cq12)):
-	dcq[i][0,0] = cq12[i]
 
-    dv = []
-    for i in range(len(dcq)):
-	dv.append(dq[i][0,0] - dcq[i][0,0])
 
-    d = []
-    for i in range(len(dv)):
-	d.append(dv[i].mod(T^prec))  
-
-    return d
 
 

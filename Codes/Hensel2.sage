@@ -1,3 +1,4 @@
+
 bF = GF(9007)
 
 R.<x0,x1,x2,x3>=PolynomialRing(bF,4)
@@ -38,17 +39,17 @@ def HenselLift(F, param, polelim, u, myprec):
     
     prec = 1
     V = param
-    print "V = ", V, "\n"
+    #print "V = ", V, "\n"
 
     qq = Matrix(A1,1,1)
     qq[0,0] = polelim
     q = qq[0,0]
     
-    print "q = ", q, "\n"
+    #print "q = ", q, "\n"
 
     while prec <= myprec:
 
-    	print "prec = ", prec, "\n"
+    #	print "prec = ", prec, "\n"
 	
         J = jacobian(F,(R1.gen(0),R1.gen(1)))
         JJ = J.substitute(x2 = V[0,0], x3 = V[1,0])
@@ -231,8 +232,8 @@ def HenselLift(F, param, polelim, u, myprec):
 
         prec = 2*prec
 
-	print "V = ", V, "\n"
-	print "q = ", q, "\n"
+#	print "V = ", V, "\n"
+#	print "q = ", q, "\n"
 	
     return V,q
 
