@@ -287,7 +287,6 @@ def com1(vv1,q1,vv2,q2,vv3,q3,prec):
     return c,qq
 
 
-
 def gmm(q1,q2,prec):
     RR.<T> = PowerSeriesRing(bF, default_prec = 64)
     (g,m1,m2) = xgcd(q1,q2)

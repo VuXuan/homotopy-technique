@@ -53,7 +53,7 @@ print "testq1 = ", testq1.minors(2), "\n"
 
 print "testq2 = ", testq2.minors(2), "\n"
 
-te.minors(2)
+
 
 
 ##################################################################
@@ -70,6 +70,7 @@ te3 = teststart(d3, e3, q3, G)
 print "te3 = ", te3.minors(2), "\n"
 
 d123 = crmth2(dd,zz,d3,q3)
+
 e123 = crmth2(ee, zz, e3, q3)
 
 
