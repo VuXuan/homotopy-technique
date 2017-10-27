@@ -144,45 +144,10 @@ def teststart(v,w,q,G): ### test for start matrix after lifting
     return G4
 
 
-####################################################################
-
-def teststartT(v1,w1,q1,G): ### test for start matrix after lifting 
-    nr = G.nrows()
-    nd = G.ncols()
-
-    v = v1.substitute(T=0)
-    w = w1.substitute(T=0)
-    q = q1.substitute(T=0)
-    
-    G1 = G.substitute(x2 = v, x3 = w)
-    
-    G2 = Matrix(parent(q), nr,nd)
-    for i in range(nr):
-    	for j in range(nd):
-	    G2[i,j] = G1[i,j]
-
-    G3 = Matrix(parent(q), nr, nd)
-    for i in range(nr):
-    	for j in range(nd):
-	    G3[i,j] = G2[i,j].mod(q)
-
-    #G4 = G3.substitute(T=0)
-    return G3
-
-
 #####################################################################
 
 
-def testwithoutdeno(E1, v, w, nq): ### test the rank of the matrix after substitution
-    nr = G.nrows()
-    nd = G.ncols()
-    F1 = E1.substitute(x2 = v, x3 = w)
-    F2 = Matrix(parent(nq), nr, nd)
-    
-    return F2.minors(nr)
-
-
-def testwithdono(E1,v,w,nq):
+def testwithdeno(v,w, E1):  ### test the rank of the matrix after substitution
     F1 = E1.substitute(x2 = v, x3 = w)
 
     listminor = F1.minors(2)
@@ -217,6 +182,83 @@ def testwithdono(E1,v,w,nq):
 
     return listnumAA, listdenoAA
 
+
+#######################################################"
+
+### Check the modulo
+
+def testmod(num, deno, qdeno):
+    ckdeno = []
+    for i in range(len(deno)):
+    	ckdeno.append(gcd(deno[i], qdeno))
+
+    cknum = []
+    for i in range(len(num)):
+    	cknum.append(num[i].mod(qdeno))
+    return cknum, ckdeno
+#########################################################################################
+
+def testwithoutdeno(v, w, nq, E1): ### test the rank of the matrix after substitution
+    nr = G.nrows()
+    nd = G.ncols()
+    F1 = E1.substitute(x2 = v, x3 = w)
+    F2 = Matrix(parent(nq), nr, nd)
+    for i in range(nr):
+    	for j in range(nd):
+	    F2[i,j] = F1[i,j].mod(nq)
+    return F2
+
+#### without denominator in parametrizations
+
+def testfinal1(vfin, wfin, qfin, E1):
+    nr = G.nrows()
+    nd = G.ncols()
+    
+    E11 = G.substitute(x2 = vfin, x3 = wfin)
+    
+    E12 = Matrix(parent(qfin), nr,nd)
+    for i in range(nr):
+    	for j in range(nd):
+	    E12[i,j] = E11[i,j]
+
+    E13 = Matrix(parent(qfin), nr, nd)
+    for i in range(nr):
+    	for j in range(nd):
+	    E13[i,j] = E12[i,j].mod(qfin)
+
+    E14 = E13.substitute(T=1)
+    
+    return E14
+
+
+####################################################################
+
+def teststartT(v1,w1,q1,G): ### test for start matrix after lifting 
+    nr = G.nrows()
+    nd = G.ncols()
+
+    v = v1.substitute(T=0)
+    w = w1.substitute(T=0)
+    q = q1.substitute(T=0)
+    
+    G1 = G.substitute(x2 = v, x3 = w)
+    
+    G2 = Matrix(parent(q), nr,nd)
+    for i in range(nr):
+    	for j in range(nd):
+	    G2[i,j] = G1[i,j]
+
+    G3 = Matrix(parent(q), nr, nd)
+    for i in range(nr):
+    	for j in range(nd):
+	    G3[i,j] = G2[i,j].mod(q)
+
+    #G4 = G3.substitute(T=0)
+    return G3
+
+
+
+#####################################################################
 #num1 = test2(E1, vfin, wfin, qfin)[0]
 #deno1 = test2(E1, vfin, wfin, qfin)[1]
 

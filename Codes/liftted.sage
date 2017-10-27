@@ -160,7 +160,7 @@ def rat(sol, prec1): ##### should take prec1 = 40
 ### Rational reconstruction at prec = e, e = 19
 
 
-def rat_recons1(nsol, e):
+def rat_recons1(nsol, e):  ### nsol = ratv123, ratw123
     P.<T> = PowerSeriesRing(bF,default_prec = 64)
 
     soll = Matrix(A1,1,1)
@@ -180,11 +180,12 @@ def rat_recons1(nsol, e):
     m2 = []
     for i in range(len(m1)):
     	m2.append(m1[i][0,0])
+
     return m2
 
 def rat_recons2(m2, e):
     m4 = []
-    for i in range(len(m2) - 1):
+    for i in range(len(m2)):
     	m4.append(m2[i].rational_reconstruct(T^(2*e+1),e,e))
  
     m51 = []
@@ -205,12 +206,27 @@ def rat_recons2(m2, e):
 
 def rat_recons(sol, e):
     m = rat_recons1(sol, e)
+    #print "m = ", m, "\n"
     mm = rat_recons2(m, e)
+    #print "mm = ", mm, "\n"
     return mm
 
-##############################
+###############################
+### Construct a zero_dimensional para with denominator is dereivative of q
 
 
+def para(rat_reconsv123,rat_reconw123,rat_reconq123):
+    dq = rat_reconq123.derivative()
+    v = (rat_reconsv123*dq).mod(rat_reconq123)
+    w = (rat_reconw123*dq).mod(rat_reconq123)
+
+    vv = v/dq
+    ww = v/dq
+    return vv,ww
+
+
+
+################################
 def c1(v1,q1,v2,q2,prec):
     P.<T> = PowerSeriesRing(bF,default_prec = 64)
     n1,n2 = gmm(q1,q2,prec)
