@@ -942,10 +942,12 @@ following three properties.
 
 The first result in this section is the following.
 \begin{proposition}\label{prop:degree_fiber}
-  Suppose that assumptions $\assA_1$ and $\assA_2$ hold. Then, there
-  exists an integer $c$ such that for all $\tau$ in $\KKbar$, the sum
-  of the multiplicities of the isolated solutions of $\bB_\tau$ is at
-  most $c$, and is equal to $c$ if $\assG(\tau)$ holds.
+  {\bf xxx -- The proof uses the Jacobian criterion, so there must be
+    some assumptions on the characteristic of $\KK$.} Suppose that
+  assumptions $\assA_1$ and $\assA_2$ hold. Then, there exists an
+  integer $c$ such that for all $\tau$ in $\KKbar$, the sum of the
+  multiplicities of the isolated solutions of $\bB_\tau$ is at most
+  $c$, and is equal to $c$ if $\assG(\tau)$ holds.
 \end{proposition}
 
 
@@ -979,7 +981,8 @@ Then, the second main result in this section is the following.
   Proposition~\ref{prop:degree_fiber}, we can compute a
   zero-dimensional parametrization of the isolated points of $V(\bC)$
   using
-$$\softO(c^5 m n^2  + c(e+c^5 n)(\sigma + n^3)) \subset (e\,\sigma\,m)^{O(1)}$$ operations in~$\KK$.
+  $$\softO(c^5 m n^2  + c(e+c^5 n)(\sigma + n^3)) \subset (e\,\sigma\,m)^{O(1)}$$
+  operations in~$\KK$. {\bf xxx check probabilistic aspects.}
 \end{proposition}
 The variant below focuses on the computation of simple isolated
 points.
@@ -993,7 +996,8 @@ points.
   Reusing the notations of Propositon~\ref{prop:compute_isolated}, we
   can compute a zero-dimensional parametrization of the simple
   isolated points of $V(\bC)$ using
-$$\softO(m \,n^2 c^2 + n\, (m \sigma+n^2)\,c\,e )\subset (e\,\sigma\,m)^{O(1)}$$ operations in~$\KK$.
+  $$\softO(m \,n^2 c^2 + n\, (m \sigma+n^2)\,c\,e )\subset (e\,\sigma\,m)^{O(1)}$$
+  operations in~$\KK$. {\bf xxx check probabilistic aspects.}
 \end{proposition}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1326,17 +1330,19 @@ we now assume that property $\assG(0)$ holds.
   that the localization of
   $\KKbar\langle\langle T \rangle\rangle[\bX]/\frak{J}$ at
   $\mathfrak{m}_{\Phi_i}$ is a field.  By the Jacobian
-  criterion~\cite[Theorem~16.19.b]{Eisenbud95}, this is the case if
-  and only if the Jacobian matrix of $\bB$ with respect to $\bX$ has
-  full rank $n$ at $\Phi_i$. We know that $\varphi_i=\lim_0(\Phi_i)$
-  is a root of $\bB_0$ (Lemma~\ref{lemma:Z1}), and the Jacobian criterion conversely implies
-  that since the ideal $\langle \bB_0 \rangle$ is radical (by
+  criterion~\cite[Theorem~16.19.b]{Eisenbud95} {\bf xxx -- Here there
+    should be some restriction on the characteristic of the field},
+  this is the case if and only if the Jacobian matrix of $\bB$ with
+  respect to $\bX$ has full rank $n$ at $\Phi_i$. We know that
+  $\varphi_i=\lim_0(\Phi_i)$ is a root of $\bB_0$
+  (Lemma~\ref{lemma:Z1}), and the Jacobian criterion conversely
+  implies that since the ideal $\langle \bB_0 \rangle$ is radical (by
   assumption $\assG_3(0)$) and zero-dimensional (by assumption
   $\assG_2(0)$), the Jacobian matrix of $\bB_0(\bX)=\bB(0,\bX)$ has
-  full rank $n$ at $\varphi_i$. Since this matrix is the limit at zero of the
-  Jacobian matrix of $\bB$ with respect to $\bX$, taken at $\Phi_i$,
-  the latter must have full rank $n$, and our claim that $\frak{J}'$
-  is radical is proved.
+  full rank $n$ at $\varphi_i$. Since this matrix is the limit at zero
+  of the Jacobian matrix of $\bB$ with respect to $\bX$, taken at
+  $\Phi_i$, the latter must have full rank $n$, and our claim that
+  $\frak{J}'$ is radical is proved.
 \end{proof}
 
 To finish the proof of Proposition~\ref{prop:degree_fiber}, we have to
@@ -1519,6 +1525,10 @@ $V(J' + \langle T-1\rangle) =\{\varphi'_i \mid i=1,\dots,{\kappa'}\}$
 starting from the previously computed rational parametrization
 $\scrS$, in time $\softO(c\,e\,n)$.
 
+{\bf xxx -- the existence of a well-separating element $\lambda$
+  depends on the characteristic of $\KK$. If it is too small, such an
+  element cannot exist.}
+
 \paragraph{Cleaning.}
 Finally, summing all the previous costs, one performs
 $$
@@ -1570,8 +1580,8 @@ $\text{\sf{cost:~}} \softO(c\,e\,n)$
 $\text{\sf{cost:~}} \softO(c\,e\,n)$
 \item deduce a zero-dimensional parametrization $\scrR_1$ with coefficients in $\KK$ from $\scrS$\\
 $\text{\sf{cost:~}} \softO(c\,e\,n)$
-\item\label{step:final} remove from $Z(\scrR_1)$ points that are not isolated in $V(\bC)$ \\
-$\text{\sf{cost:~}} O(n^4 c^6 + n^2 m c^5 + n \sigma c^6)$
+\item\label{step:homot:final} remove from $Z(\scrR_1)$ points that are not isolated in $V(\bC)$ \\
+  $\text{\sf{cost:~}} O(n^4 c^6 + n^2 m c^5 + n \sigma c^6)$
 \end{enumerate}
 \label{DetSys}
 \end{algorithm}
@@ -1608,7 +1618,7 @@ $$
 which ends to prove Proposition~\ref{prop:compute_regular}. In the
 sequel, the resulting algorithm is called
 $\mathsf{Homotopy\_regular}$. It differs from algorithm
-$\mathsf{Homotopy}$ at \ref{step:final} where the cleaning step we
+$\mathsf{Homotopy}$ at Step \ref{step:homot:final} where the cleaning step we
 just described replaces the one of $\mathsf{Homotopy}$.
 
 
