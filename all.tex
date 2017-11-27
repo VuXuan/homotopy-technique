@@ -1569,9 +1569,9 @@ $O(c)$. Since the number of splittings is bounded by $c$ also, the
 total overhead is $O(c^2)$.  The runtime deduced from
 Proposition~\ref{prop:testisolated} is
 $$O(n^4 c^6 + n^2 m c^5 + n \sigma c^6)$$ operations in~$\KK$. Adding all
-costs seen so far, we prove
-Proposition~\ref{prop:compute_isolated}. The resulting algorithm,
-which we simply name $\mathsf{Homotopy}$, is described hereafter.
+costs seen so far, we prove Proposition~\ref{prop:compute_isolated}
+\xxx \check. The resulting algorithm, which we simply name
+$\mathsf{Homotopy}$, is described hereafter.
 
 
 
@@ -1832,28 +1832,35 @@ $(\delta_1, \ldots, \delta_q)$.
   points
   $$\softO\left (c(e+c^5 )(\sigma + c)\right)$$
   operations in $\KK$.
+\end{proposition}
 
-  Also, there exists a randomized algorithm that computes the simple
+The next proposition states a better complexity estimate when one only
+computes isolated simple points of $\VpFG{p}{\mF}{G}$.
+\begin{proposition}\label{prop:coldeg_simple}
+  Reusing the notations introduced above, and letting
+  $\gamma=\max(\gamma_1, \ldots, \gamma_s)$,
+  $\delta=\max(\delta_1, \ldots, \delta_q)$ and $N=n+ {q \choose p}$,
+  there exists a randomized algorithm that computes the simple
   isolated points of $\VpFG{p}{\mF}{G}$ using
   $$ \softO\left ( 
     Nn^2\, c^2\, +\, 
     n\left (N \sigma+
       {q \choose p} n^3 (s\, \gamma+q\, \delta)\right ) c\, e\right ) 
   $$ 
-  operations in $\KK$, letting
-  $\gamma=\max(\gamma_1, \ldots, \gamma_s)$,
-  $\delta=\max(\delta_1, \ldots, \delta_q)$ and $N=n+ {q \choose p}$,
+  operations in $\KK$, 
 \end{proposition}
-This proposition establishes the first half of
+
+These propositions establish the first half of
 Theorems~\ref{theo:1},~\ref{theo:2} and~\ref{theo:3}.
 
 \medskip
 
-We use the algorithm of Section~\ref{sec:homotopy}. To match the
+We use the algorithms of Section~\ref{sec:homotopy}. To match the
 notation of that section, we let $\bC=(c_1,\dots,c_{s},\dots,c_m)$ be
 polynomials defined as follows: $(c_1,\dots,c_{s})=(g_1,\dots,g_s)$,
-and $(c_{s+1},\dots,c_{m})$ are the $p$-minors of $\mF$, so that 
-$m=s+{q \choose p}$. Thus, $\VpFG{p}{\mF}{G}$ is the zero-set of~$\bC$.
+and $(c_{s+1},\dots,c_{m})$ are the $p$-minors of $\mF$, so that
+$m=s+{q \choose p}$. Thus, $\VpFG{p}{\mF}{G}$ is the zero-set
+of~$\bC$.
 
 Using the degrees $\gamma_1,\dots,\gamma_s$ and
 $\delta_1,\dots,\delta_q$, we construct a polynomial matrix
@@ -2199,16 +2206,16 @@ $O(cn)$; below, recall that $c=\gamma_1 \cdots \gamma_s E_{n-s}(\delta_1,\dots,\
   $(\delta_1,\dots,\delta_q)$, it also holds for
   $(\delta_1+1,\delta_2,\dots,\delta_q)$.
 \end{itemize}
-As a result, our bound becomes $\softO\left (c(e+c^5 n)(\sigma +
-cn^4)\right).$  This can also be rewritten as $\softO\left
-(c(e+c^5 )(\sigma + cn^4)\right)$, by means of a 
- case discussion between $e$ and $c^5 n$. If $c^5 n \le e$,
-then $e+c^5 n$ is in $O(e)$. Else,
-we have $e \le c^5 n$; since $e \ge 2^n$, this implies 
-that $c \ge 2^n/n$, so that $n$ is in $O(\log(c))$, 
-and $e+c^5 n$ is in $\softO(c^5)$. For the same reasons, 
-this can further be simplified as  $\softO\left
-(c(e+c^5 )(\sigma + c)\right)$.
+As a result, our bound becomes
+$\softO\left (c(e+c^5 n)(\sigma + cn^4)\right).$ This can also be
+rewritten as $\softO\left (c(e+c^5 )(\sigma + cn^4)\right)$, by means
+of a case discussion between $e$ and $c^5 n$. If $c^5 n \le e$, then
+$e+c^5 n$ is in $O(e)$. Else, we have $e \le c^5 n$; since
+$e \ge 2^n$, this implies that $c \ge 2^n/n$, so that $n$ is in
+$O(\log(c))$, and $e+c^5 n$ is in $\softO(c^5)$. For the same reasons,
+this can further be simplified as
+$\softO\left (c(e+c^5 )(\sigma + c)\right)$. This ends the proof of
+Proposition~\ref{prop:coldeg}.
 
 The resulting algorithm, called $\mathsf{ColumnDegree}$ is described
 below.
@@ -2255,8 +2262,9 @@ with $e=(\gamma_1+1)\cdots(\gamma_s+1) E_{n-s}(\delta_1+1,\dots,\delta_q+1)$
 \end{algorithm}
 
 
-Finally, applying Proposition~\ref{prop:compute_regular} yields a
-runtime $\softO(m \,n^2 c^2 + n\, (m\sigma'+n^2)\,c\,e )$ operations in
+Finally, to prove Proposition~\ref{prop:coldeg_simple}, one applies
+Proposition~\ref{prop:compute_regular} yields a runtime
+$\softO(m \,n^2 c^2 + n\, (m\sigma'+n^2)\,c\,e )$ operations in
 $\KK$. Using as above $m \le n + {q \choose p}$, and letting
 $\gamma=\max(\gamma_1, \ldots, \gamma_s)$ and
 $\delta=\max(\delta_1, \ldots, \delta_q$, we easily deduce that this
@@ -2265,7 +2273,7 @@ $$\softO\left (
   \left (n+{q \choose p}\right )n^2\, c^2\, +\, n\left (\left (n+{q
         \choose p}\right ) \sigma + {q \choose p} n^3
     (s\,\gamma+q\,\delta)\right ) c\, e \right ).$$ This concludes the
-proof of Proposition~\ref{prop:coldeg}. The resulting algorithm,
+proof of Proposition~\ref{prop:coldeg_simple}. The resulting algorithm,
 called $\mathsf{ColumnDegree\_regular}$ differs from
 $\mathsf{ColumnDegree\_regular}$ only at the last step where Algorithm
 $\mathsf{Homotopy\_regular}$ is called instead.
