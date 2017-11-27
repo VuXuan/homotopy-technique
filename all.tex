@@ -1117,7 +1117,7 @@ $\bB_\tau$ at all its isolated roots, for any $\tau$ in $\KKbar$.
 
 To achieve this, we need to first introduce the field
 $\SS = \KKbar(( T^\Q ))$ of generalized power series ring (also known
-as Hahn series ? {\bf xxx}): all elements of $\SS$ can be written as
+as Hahn series): all elements of $\SS$ can be written as
 $f = \sum_{i\in \Q} c_i T^i$ with $c_i \in \KKbar$ and the set
 $\iota(f) = \{i \mid c_i \neq 0\}$ is well-ordered (this set is called
 exponent support set of $f$). In contrast to Puiseux series,
@@ -1127,7 +1127,7 @@ not bounded). The interest of considering $\SS$ is only for dealing
 with situations where $\KK$ has positive characteristic (else, one can
 work with Puiseux series which constitute a perfect field). Besides,
 since $\KKbar$ is algebraically closed, $\SS$ is algebraically closed
-too \cite[Theorem 1]{Mclane39} {\bf xxx check}. Actually, it is an
+too \cite[Theorem 1]{Mclane39}. Actually, it is an
 algebraic closure of $\KKbar(T)$ and hence is a perfect field too.
 
 Also, as for Puiseux series, one can define naturally a valuation over
@@ -1287,7 +1287,7 @@ $i=1,\dots,\kappa$.
   is also the extension of $\sqrt{\mathfrak{J}'}$ to $\LL(T)[\bX]$, 
   so $C/\ell$ factors as
   $$\frac C\ell = \prod_{1\le i \le c'}(T_0-T_1 \Phi_{i,1} - \cdots - T_n \Phi_{i,n})$$
-  in $\LL' \rangle\rangle[T_0]$ where $\LL'$ is the generalized Power
+  in $\LL' [T_0]$ where $\LL'$ is the generalized Power
   series ring in $T$ with coefficients in $\LL$.  This gives the
   equality
   $$C =\ell \prod_{1\le i \le  c'}(T_0-T_1 \Phi_{i,1} - \cdots - T_n
@@ -1367,12 +1367,12 @@ we now assume that property $\assG(0)$ holds.
   We know that $\frak{J}'$ has dimension zero
   (Lemma~\ref{lemma:dimJprime}), so it is enough to prove that for
   $i=1,\dots,c'$, the localization of
-  $\KKbar\langle\langle T \rangle\rangle[\bX]/\frak{J}'$ at the
+  $\SS[\bX]/\frak{J}'$ at the
   maximal ideal $\mathfrak{m}_{\Phi_i}$ is a field, or equi\-valently
   that the localization of
-  $\KKbar\langle\langle T \rangle\rangle[\bX]/\frak{J}$ at
-  $\mathfrak{m}_{\Phi_i}$ is a field.  Observe that
-  $\KKbar\langle\langle T \rangle\rangle$ is a perfect field. By the Jacobian
+  $\SS[\bX]/\frak{J}$ at
+  $\mathfrak{m}_{\Phi_i}$ is a field.  Recall that
+  $\SS$ is algebraically closed, hence a perfect field. By the Jacobian
   criterion~\cite[Theorem~16.19.b]{Eisenbud95}, this is the case if
   and only if the Jacobian matrix of $\bB$ with respect to $\bX$ has
   full rank $n$ at $\Phi_i$. We know that $\varphi_i=\lim_0(\Phi_i)$
@@ -1560,7 +1560,7 @@ Following~\cite{RRS} and~\cite{SaSc16}, we ask that $\lambda$ is a
 Applying Lemma~14 in~\cite[Section 3]{SaSc16}, these conditions are
 satisfied for a generic choice of $\lambda$ when $\KK$ has
 characteristic $0$, or with probability at least $7/8$ when $\KK$ has
-characteristic greater than $n \ c^2$. When this is the case,
+characteristic greater than $n \ c^2$ \xxx. When this is the case,
 Lemma~4.4 in~\cite{RRS} shows how to recover a zero-dimensional
 parametrization $\scrR_1=((w_1,v_{1,1},\dots,v_{1,n}),\lambda)$ with
 coefficients in $\KK$ for the limit set
@@ -1859,9 +1859,9 @@ $(\delta_1, \ldots, \delta_q)$.
   $$\softO\left (c(e+c^5 )(\sigma + c)\right)$$
   operations in $\KK$.
 
-  When $\KK$ has characteristic $0$ or larger than $8 \ n c^2$, there
-  exists a randomized algorithm that computes the simple isolated
-  points of $\VpFG{p}{\mF}{G}$ using
+  When $\KK$ has characteristic $0$ or larger than $8 \ n c^2$ \xxx,
+  there exists a randomized algorithm that computes the simple
+  isolated points of $\VpFG{p}{\mF}{G}$ using
   $$ \softO\left ( 
     Nn^2\, c^2\, +\, 
     n\left (N \sigma+
