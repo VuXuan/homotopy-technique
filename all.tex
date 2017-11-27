@@ -94,10 +94,11 @@
 
 \section{Introduction}\label{sec:intro}
 
-In what follows, $\KK$ is a field and $\KKbar$ is an algebraic closure
-of $\KK$, $(X_1, \ldots, X_n)$ is a set of $n$ variables and
-$\KK[X_1,\dots,X_n]$ is the multivariate polynomial ring in $n$
-variables with coefficients in $\KK$. % {\todo{\bf to be clarified.}}
+In what follows, $\KK$ is a field of characteristic $0$ and $\KKbar$
+is an algebraic closure of $\KK$, $(X_1, \ldots, X_n)$ is a set of $n$
+variables and $\KK[X_1,\dots,X_n]$ is the multivariate polynomial ring
+in $n$ variables with coefficients in
+$\KK$. % {\todo{\bf to be clarified.}}
 % Throughout the paper, we make the simplifying assumption that $\KK$
 % has characteristic zero; most results could carry over to non-zero
 % characteristic with suitable modifications.
@@ -306,9 +307,8 @@ $I_p(\mF) + \langle g_1,\dots,g_s \rangle$.
 
 \medskip
 
-Our second result assumes that $\KK$ has characteristic $0$ and then
-gives bounds on the cost of computing a zero-dimensional
-parametrization of the isolated solutions of
+Our second result gives bounds on the cost of computing a
+zero-dimensional parametrization of the isolated solutions of
 $\VpFG{p}{\mF}{G}=V(I_p(\mF) + \langle g_1,\dots,g_s \rangle)$. Our
 algorithms take as input a \emph{straight-line program} (that is, a
 sequence of elementary operations $+, -, \times$) that computes the
@@ -320,10 +320,9 @@ naive solution would consist in computing and adding all monomials in
 $\mF$ and $G$).
 
 \begin{theorem}\label{theo:2}
-  Assume that $\KK$ has characteristic $0$. Suppose that matrix
-  $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$ and polynomials
-  $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$ are given by a
-  straight-line program of length $\sigma$. Assume that
+  Suppose that matrix $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$ and
+  polynomials $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$ are given by
+  a straight-line program of length $\sigma$. Assume that
   $\deg(g_1),\dots,\deg(g_s)$, as well as
   $\cdeg(\mF,1), \ldots, \cdeg(\mF,q)$ and
   $\rdeg(\mF,1), \ldots, \rdeg(\mF,p)$ are all at least equal to $1$.
@@ -363,16 +362,12 @@ shows that $\min(c,c')$ is a natural upper bound for the output size
 of such algorithms.
 
 For solving Problem~\ref{problem3}, one obtains slightly better
-complexity estimates. {\bf Below, we let $\chi = \max()$ xxx;
-  $\chi$ will be used for the minimum possible characteristic,
-  i.e. the max of the degrees and stg like the square of the
-  max. number of solutions. }
+complexity estimates. 
 
 \begin{theorem}\label{theo:3}
-  Suppose that $\KK$ has characteristic greater than $\chi$ and
-  that the matrix $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$ and
-  polynomials $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$ are given by
-  a straight-line program of length $\sigma$. Assume that
+  Suppose that the matrix $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$
+  and polynomials $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$ are
+  given by a straight-line program of length $\sigma$. Assume that
   $\deg(g_1),\dots,\deg(g_s)$, as well as
   $\cdeg(\mF,1), \ldots, \cdeg(\mF,q)$ and
   $\rdeg(\mF,1), \ldots, \rdeg(\mF,p)$ are all at least equal to $1$.
@@ -464,11 +459,11 @@ be needed to prove that these intermediate degrees are not larger than
 the quantities involved in our complexity estimates.
 
 \medskip In the following paragraphs, we describe our results in more
-detail.  As a preliminary, when $\KK$ has characteristic $0$, we will
-need an algorithm which takes as input polynomials
-$\bC=(c_1,\dots,c_m)$ and a point $\bx$ in the zero-set of $\bC$, and
-which decides whether $\bx$ is an isolated points of $V(\bC)$. This
-one will be used to solve Problem~\eqref{problem2}.
+detail.  As a preliminary, we will need an algorithm which takes as
+input polynomials $\bC=(c_1,\dots,c_m)$ and a point $\bx$ in the
+zero-set of $\bC$, and which decides whether $\bx$ is an isolated
+points of $V(\bC)$. This one will be used to solve
+Problem~\eqref{problem2}.
 
 Without any other information, this decision problem is difficult to
 solve in a good complexity. However, when a bound $\mu$ is known on
@@ -539,16 +534,14 @@ well as the degree of the homotopy curve.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{A local dimension test} \label{sec:isolated}
-% {\todo{\bf section read and validated but the issue on the characteristic of the field must be tackled.}}
 
-In this whole section, we assume that $\KK$ has characteristic
-$0$. Let $\LL$ be a field containing the field $\KK$ and $\LLbar$ be
-an algebraic closure of $\LL$.  Let $\bC=(c_1,\dots,c_m)$ be
-polynomials in $\KK[\bX]$, with $\bX=(X_1,\dots,X_n)$. Given a point
-$\bx$ with coordinates in $\LL$ in the zero-set
-$V(\bC)\subset \LLbar{}^n$, we discuss here how to decide whether
-$\bx$ is an isolated point in $V(\bC)$. We make the following
-assumption in the rest of this section:
+Let $\LL$ be a field containing the field $\KK$ and $\LLbar$ be an
+algebraic closure of $\LL$.  Let $\bC=(c_1,\dots,c_m)$ be polynomials
+in $\KK[\bX]$, with $\bX=(X_1,\dots,X_n)$. Given a point $\bx$ with
+coordinates in $\LL$ in the zero-set $V(\bC)\subset \LLbar{}^n$, we
+discuss here how to decide whether $\bx$ is an isolated point in
+$V(\bC)$. We make the following assumption in the rest of this
+section:
 \begin{description}[leftmargin=*]
 \item [$\assH.$] We are given as input an integer $\mu$ such that
  either $\bx$ belongs to a positive-dimensional component of $V(\bC)$,
@@ -981,11 +974,10 @@ Then, the second main result in this section is the following.
   % using
   % $$\softO(c^5 m n^2  + c(e+c^5 n)(\sigma + n^3)) \subset (e\,\sigma\,m)^{O(1)}$$
   % operations in~$\KK$. {\bf xxx check probabilistic aspects.}
-  Assume that $\KK$ has characteristic zero and that
-  ${\assD}_1, {\assD}_2$ and ${\assD}_3$ hold. Letting $c$ be as in
-  Proposition~\ref{prop:degree_fiber}. There exists a probabilistic
-  algorithm which computes a zero-dimensional parametrization of the
-  isolated points of $V(\bC)$ using
+  Assume that ${\assD}_1, {\assD}_2$ and ${\assD}_3$ hold. Letting $c$
+  be as in Proposition~\ref{prop:degree_fiber}. There exists a
+  probabilistic algorithm which computes a zero-dimensional
+  parametrization of the isolated points of $V(\bC)$ using
   $$\softO(c^5 m n^2  + c(e+c^5 n)(\sigma + n^3)) \subset (e\,\sigma\,m)^{O(1)}$$
   operations in~$\KK$. 
 \end{proposition}
@@ -995,15 +987,13 @@ points. We reuse the notations introduced above.
   % Assume that $\KK$ has characteristic zero or larger than \todo{xxx}
   % and that ${\assD}_1, {\assD}_2$ and ${\assD}_3$ hold. Letting $c$ be
   % as in Proposition~\ref{prop:degree_fiber}
-  Assume that $\KK$ has either characteristic $0$ or characteristic
-  greater than $8\ n \ c^2$ and that ${\assD}_1, {\assD}_2$ and
-  ${\assD}_3$ hold.
+  Assume that ${\assD}_1, {\assD}_2$ and ${\assD}_3$ hold.
 
   There exists a probabilistic algorithm which computes a
   zero-dimensional parametrization of the simple isolated points of
   $V(\bC)$ using
   $$\softO(m \,n^2 c^2 + n\, (m \sigma+n^2)\,c\,e )\subset (e\,\sigma\,m)^{O(1)}$$
-  operations in~$\KK$ with probability at least $7 / 8$.
+  operations in~$\KK$. 
 \end{proposition}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1115,24 +1105,11 @@ and similarly for $J'_\tau$ and $ J''_\tau$.
 Our goal is now to give a bound on the sum of the multiplicites of
 $\bB_\tau$ at all its isolated roots, for any $\tau$ in $\KKbar$.
 
-To achieve this, we need to first introduce the field
-$\SS = \KKbar(( T^\Q ))$ of generalized power series ring (also known
-as Hahn series): all elements of $\SS$ can be written as
-$f = \sum_{i\in \Q} c_i T^i$ with $c_i \in \KKbar$ and the set
-$\iota(f) = \{i \mid c_i \neq 0\}$ is well-ordered (this set is called
-exponent support set of $f$). In contrast to Puiseux series,
-$\sum_{k\in \N-\{0\}} T^{-1/p^k}$ is a generalized power series while
-it is not a Puiseux series over $\KKbar$ (because the denominators are
-not bounded). The interest of considering $\SS$ is only for dealing
-with situations where $\KK$ has positive characteristic (else, one can
-work with Puiseux series which constitute a perfect field). Besides,
-since $\KKbar$ is algebraically closed, $\SS$ is algebraically closed
-too \cite[Theorem 1]{Mclane39}. Actually, it is an
-algebraic closure of $\KKbar(T)$ and hence is a perfect field too.
-
-Also, as for Puiseux series, one can define naturally a valuation over
-$\SS$ since the sets of exponent supports of its elements are
-well-ordered ones. We give more details on this further.
+To achieve this, we consider the Puiseux series field
+$\SS = \KKbar\langle \langle T\rangle \rangle$ in $T$ with
+coefficients in $\KKbar$.  Since $\KKbar$ is algebraically closed and
+of characteristic $0$, $\SS$ is algebraically closed (actually, it is
+an algebraic closure of $\KKbar(T)$) and hence a perfect field.
 
 Next, we consider the extension $\frak{J}$ of $J$ in $\SS[\bX]$, and
 similarly $\frak{J}'$ and ${\frak J}''$.
@@ -1158,7 +1135,6 @@ Let us write $c=\dim_{\SS}(\SS[\bX]/{\frak J}')$. Because $\SS$ is an
 algebraic closure of $\KKbar(T)$, one has
 $\dim_{\KKbar(T)} ( \KKbar(T)[\bX]/\tilde{J'} ) = c$ where
 $\tilde{J'}$ is the extension of $J'$ in $\KKbar(T)[\bX]$.
-
 
 The following lemma relates this quantity to the multiplicities of the
 solutions in any fiber $\bB_\tau$. This proves the first statement in
@@ -1558,9 +1534,7 @@ Following~\cite{RRS} and~\cite{SaSc16}, we ask that $\lambda$ is a
  the $T'$-adic valuation.
 \end{enumerate}
 Applying Lemma~14 in~\cite[Section 3]{SaSc16}, these conditions are
-satisfied for a generic choice of $\lambda$ when $\KK$ has
-characteristic $0$, or with probability at least $7/8$ when $\KK$ has
-characteristic greater than $n \ c^2$ \xxx. When this is the case,
+satisfied for a generic choice of $\lambda$. When this is the case,
 Lemma~4.4 in~\cite{RRS} shows how to recover a zero-dimensional
 parametrization $\scrR_1=((w_1,v_{1,1},\dots,v_{1,n}),\lambda)$ with
 coefficients in $\KK$ for the limit set
@@ -1854,13 +1828,12 @@ $(\delta_1, \ldots, \delta_q)$.
   $e=(\gamma_1+1)\cdots(\gamma_s+1) E_{n-s}(\delta_1+1, \ldots,
   \delta_q+1)$.
 
-  When $\KK$ has characteristic $0$, there exists a
-  randomized algorithm that computes these isolated points
+  There exists a randomized algorithm that computes these isolated
+  points
   $$\softO\left (c(e+c^5 )(\sigma + c)\right)$$
   operations in $\KK$.
 
-  When $\KK$ has characteristic $0$ or larger than $8 \ n c^2$ \xxx,
-  there exists a randomized algorithm that computes the simple
+  Also, there exists a randomized algorithm that computes the simple
   isolated points of $\VpFG{p}{\mF}{G}$ using
   $$ \softO\left ( 
     Nn^2\, c^2\, +\, 
