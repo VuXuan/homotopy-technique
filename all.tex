@@ -942,12 +942,10 @@ following three properties.
 
 The first result in this section is the following.
 \begin{proposition}\label{prop:degree_fiber}
-  {\bf xxx -- The proof uses the Jacobian criterion, so there must be
-    some assumptions on the characteristic of $\KK$.} Suppose that
-  assumptions $\assA_1$ and $\assA_2$ hold. Then, there exists an
-  integer $c$ such that for all $\tau$ in $\KKbar$, the sum of the
-  multiplicities of the isolated solutions of $\bB_\tau$ is at most
-  $c$, and is equal to $c$ if $\assG(\tau)$ holds.
+  Suppose that assumptions $\assA_1$ and $\assA_2$ hold. Then, there
+  exists an integer $c$ such that for all $\tau$ in $\KKbar$, the sum
+  of the multiplicities of the isolated solutions of $\bB_\tau$ is at
+  most $c$, and is equal to $c$ if $\assG(\tau)$ holds.
 \end{proposition}
 
 
@@ -976,32 +974,40 @@ following assumptions.
 \end{description}
 Then, the second main result in this section is the following.
 \begin{proposition}\label{prop:compute_isolated}
+  % Assume that $\KK$ has characteristic zero and that
+  % ${\assD}_1, {\assD}_2$ and ${\assD}_3$ hold. Letting $c$ be as in
+  % Proposition~\ref{prop:degree_fiber}, we can compute a
+  % zero-dimensional parametrization of the isolated points of $V(\bC)$
+  % using
+  % $$\softO(c^5 m n^2  + c(e+c^5 n)(\sigma + n^3)) \subset (e\,\sigma\,m)^{O(1)}$$
+  % operations in~$\KK$. {\bf xxx check probabilistic aspects.}
   Assume that $\KK$ has characteristic zero and that
   ${\assD}_1, {\assD}_2$ and ${\assD}_3$ hold. Letting $c$ be as in
-  Proposition~\ref{prop:degree_fiber}, we can compute a
-  zero-dimensional parametrization of the isolated points of $V(\bC)$
-  using
+  Proposition~\ref{prop:degree_fiber}. There exists a probabilistic
+  algorithm which computes a zero-dimensional parametrization of the
+  isolated points of $V(\bC)$ using
   $$\softO(c^5 m n^2  + c(e+c^5 n)(\sigma + n^3)) \subset (e\,\sigma\,m)^{O(1)}$$
-  operations in~$\KK$. {\bf xxx check probabilistic aspects.}
+  operations in~$\KK$. 
 \end{proposition}
 The variant below focuses on the computation of simple isolated
-points.
+points. We reuse the notations introduced above.
 \begin{proposition}\label{prop:compute_regular}
   % Assume that $\KK$ has characteristic zero or larger than \todo{xxx}
   % and that ${\assD}_1, {\assD}_2$ and ${\assD}_3$ hold. Letting $c$ be
   % as in Proposition~\ref{prop:degree_fiber}
-  Assume that $\KK$ has characteristic greater than {\bf xxx} and that
-  ${\assD}_1, {\assD}_2$ and ${\assD}_3$ hold.
+  Assume that $\KK$ has either characteristic $0$ or characteristic
+  greater than $8\ n \ c^2$ and that ${\assD}_1, {\assD}_2$ and
+  ${\assD}_3$ hold.
 
-  Reusing the notations of Propositon~\ref{prop:compute_isolated}, we
-  can compute a zero-dimensional parametrization of the simple
-  isolated points of $V(\bC)$ using
+  There exists a probabilistic algorithm which computes a
+  zero-dimensional parametrization of the simple isolated points of
+  $V(\bC)$ using
   $$\softO(m \,n^2 c^2 + n\, (m \sigma+n^2)\,c\,e )\subset (e\,\sigma\,m)^{O(1)}$$
-  operations in~$\KK$. {\bf xxx check probabilistic aspects.}
+  operations in~$\KK$ with probability at least $7 / 8$.
 \end{proposition}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+{\bf xxx -- Should we discuss what happens in case of failure?}
 
 
 \subsection{Proof of Proposition~\ref{prop:degree_fiber}}
@@ -1094,26 +1100,50 @@ and similarly for $J'_\tau$ and $ J''_\tau$.
 \begin{proof}
   Without loss of generality, assume that $\tau=0 \in \KKbar$ and
   $\bx=0 \in \KKbar{}^n$. We start from the equality $J=J' \cap J''$,
-  which holds in $\KKbar[T,\bX]$, and we see it in $\KKbar[[T,\bX]]$.  The
-  previous lemma implies that there exists a polynomial in $J''$ that
-  does not vanish at $(\tau,\bx)=0 \in \KKbar{}^{n+1}$.  This polynomial
-  is a unit in $\KKbar[[T,\bX]]$, which implies that the extension of
-  $J''$ in $\KKbar[[T,\bX]]$ is the trivial ideal $\langle 1 \rangle$, and
+  which holds in $\KKbar[T,\bX]$, and we see it in the formal power
+  series ring $\KKbar[[T,\bX]]$.  The previous lemma implies that
+  there exists a polynomial in $J''$ that does not vanish at
+  $(\tau,\bx)=0 \in \KKbar{}^{n+1}$.  This polynomial is a unit in
+  $\KKbar[[T,\bX]]$, which implies that the extension of $J''$ in
+  $\KKbar[[T,\bX]]$ is the trivial ideal $\langle 1 \rangle$, and
   finally that the equality of extended ideals $J=J'$ holds in
-  $\KKbar[[T,\bX]]$. This implies the equality $J+\langle T \rangle
-  =J'+\langle T \rangle $ in $\KKbar[[T,\bX]]$, and the conclusion
-  follows.
+  $\KKbar[[T,\bX]]$. This implies the equality
+  $J+\langle T \rangle =J'+\langle T \rangle $ in $\KKbar[[T,\bX]]$,
+  and the conclusion follows.
 \end{proof}
 
 Our goal is now to give a bound on the sum of the multiplicites of
-$\bB_\tau$ at all its isolated roots, for any $\tau$ in $\KKbar$.  To
-achieve this, we introduce $\frak{J}$, the extension of $J$ in
-$\KKbar(T)[\bX]$, and similarly $\frak{J}'$ and ${\frak J}''$.
+$\bB_\tau$ at all its isolated roots, for any $\tau$ in $\KKbar$.
+
+To achieve this, we need to first introduce the field
+$\SS = \KKbar(( T^\Q ))$ of generalized power series ring (also known
+as Hahn series ? {\bf xxx}): all elements of $\SS$ can be written as
+$f = \sum_{i\in \Q} c_i T^i$ with $c_i \in \KKbar$ and the set
+$\iota(f) = \{i \mid c_i \neq 0\}$ is well-ordered (this set is called
+exponent support set of $f$). In contrast to Puiseux series,
+$\sum_{k\in \N-\{0\}} T^{-1/p^k}$ is a generalized power series while
+it is not a Puiseux series over $\KKbar$ (because the denominators are
+not bounded). The interest of considering $\SS$ is only for dealing
+with situations where $\KK$ has positive characteristic (else, one can
+work with Puiseux series which constitute a perfect field). Besides,
+since $\KKbar$ is algebraically closed, $\SS$ is algebraically closed
+too \cite[Theorem 1]{Mclane39} {\bf xxx check}. Actually, it is an
+algebraic closure of $\KKbar(T)$ and hence is a perfect field too.
+
+Also, as for Puiseux series, one can define naturally a valuation over
+$\SS$ since the sets of exponent supports of its elements are
+well-ordered ones. We give more details on this further.
+
+Next, we consider the extension $\frak{J}$ of $J$ in $\SS[\bX]$, and
+similarly $\frak{J}'$ and ${\frak J}''$.
 
 \begin{lemma}\label{lemma:dimJprime}
   The ideal $\frak{J}'$ has dimension zero and $V(\frak{J}') \subset
-  \overline{\KK(T)}{}^n$ is the set of isolated solutions of
-  $V(\frak{J}) \subset \overline{\KK(T)}{}^n$.
+  \SS^n$ is the set of isolated solutions of
+  $V(\frak{J}) \subset \SS^n$.
+  % The ideal $\frak{J}'$ has dimension zero and $V(\frak{J}') \subset
+  % \overline{\KK(T)}{}^n$ is the set of isolated solutions of
+  % $V(\frak{J}) \subset \overline{\KK(T)}{}^n$.
 \end{lemma}
 \begin{proof}
  From the equality $J=J' \cap J''$ and Corollary~3.4 in~\cite{AtMc},
@@ -1124,10 +1154,20 @@ $\KKbar(T)[\bX]$, and similarly $\frak{J}'$ and ${\frak J}''$.
 \end{proof}
 
 
-Let us write $c=\dim_{\KKbar(T)}(\KKbar(T)[\bX]/{\frak J}')$.  The
-following lemma relates this quantity to the multiplicities of the
-solutions in any fiber $\bB_\tau$. This proves the first statement
-in Proposition~\ref{prop:degree_fiber}.
+Let us write $c=\dim_{\SS}(\SS[\bX]/{\frak J}')$. Because $\SS$ is an
+algebraic closure of $\KKbar(T)$, one has
+$\dim_{\KKbar(T)} ( \KKbar(T)[\bX]/\tilde{J'} ) = c$ where
+$\tilde{J'}$ is the extension of $J'$ in $\KKbar(T)[\bX]$.
+
+
+The following lemma relates this quantity to the multiplicities of the
+solutions in any fiber $\bB_\tau$. This proves the first statement in
+Proposition~\ref{prop:degree_fiber}.
+
+% Let us write $c=\dim_{\KKbar(T)}(\KKbar(T)[\bX]/{\frak J}')$.  The
+% following lemma relates this quantity to the multiplicities of the
+% solutions in any fiber $\bB_\tau$. This proves the first statement
+% in Proposition~\ref{prop:degree_fiber}.
 
 \begin{lemma}\label{lemma:19}
   Let $\tau$ be in $\KKbar$. The sum of the multiplicities of the
@@ -1150,7 +1190,7 @@ in Proposition~\ref{prop:degree_fiber}.
   $\KKbar[T,\bX]/J'_\tau$; since $T-\tau$ is in $J'_\tau$, these
   monomials can be assumed not to involve $T$.  We will prove that
   they are still $\KKbar(T)$-linearly independent in
-  $\KKbar(T)[\bX]/{\frak J}'$; this will imply that $k \le c$,
+  $\KKbar(T)[\bX]/\tilde{J'}$; this will imply that $k \le c$,
   and finish the proof.
   
   Suppose that there exists a linear combination $A_1 m_1 + \cdots +
@@ -1182,19 +1222,17 @@ in Proposition~\ref{prop:degree_fiber}.
 
 
 We now take $\tau$ in $\KKbar$ and we discuss the geometry of $V(J)$
-near $\tau$; without loss of generality, we suppose that $\tau=0$.
-The field of Puiseux series $\KKbar\langle\langle T \rangle\rangle$
-contains an algebraic closure of $\KKbar(T)$; we thus let
-$\Phi_1,\dots,\Phi_{c'}$ be the points of $V(\mathfrak{J}')$, with
-coordinates taken in $\KKbar\langle\langle T \rangle\rangle$. In
-particular, we see that $c' \le c$; we prove below that if $\assG(0)$
-holds, we actually have $c'=c$ (that is, that $\mathfrak{J}'$ is radical).
+near $\tau$; without loss of generality, we suppose that $\tau=0$.  We
+already emphasized that the field $\SS$ is an algebraic closure of
+$\KKbar(T)$; we thus let $\Phi_1,\dots,\Phi_{c'}$ be the points of
+$V(\mathfrak{J}')$, with coordinates taken in $\SS$. In particular, we
+see that $c' \le c$; we prove below that if $\assG(0)$ holds, we
+actually have $c'=c$ (that is, that $\mathfrak{J}'$ is radical).
 
-Any Puiseux series $\varphi$ in $\KKbar\langle\langle T
-\rangle\rangle$ admits a well-defined {\em valuation} $\nu(\varphi)$,
-which is the smallest exponent that appears in its expansion; the
-valuation $\nu(\Phi)$, for a vector $\Phi=(\varphi_1,\dots,\varphi_s)$
-with entries in $\KKbar\langle\langle T \rangle\rangle$, is the
+Any series $\varphi$ in $\SS$ admits a well-defined {\em valuation}
+$\nu(\varphi)$, which is the smallest exponent that appears in its
+expansion support; the valuation $\nu(\Phi)$, for a vector
+$\Phi=(\varphi_1,\dots,\varphi_s)$ with entries in $\SS$, is the
 minimum of the valuations of its exponents. We say that $\Phi$ is {\em
   bounded} if it has non-negative valuation; in this case,
 $\lim_0(\Phi)$ is defined as the vector
@@ -1212,17 +1250,18 @@ $i=1,\dots,\kappa$.
   The equality $V(J' +\langle T \rangle)=\{\varphi_i \mid i=1,\dots,\kappa\}$ holds.
 \end{lemma}
 \begin{proof}
-  Let $(s_1,\dots,s_h)$ be generators  of the ideal $J'$ in $\KKbar[T,\bX]$;
-  they also generate $\mathfrak{J}'$ in
-  $\KKbar(T)[\bX]$. Then, the polynomials $s_{0,i}=s_i(0,\bX) \in \KKbar[\bX]$,
-  for $i=1,\dots,h$, are such that $J'+\langle T\rangle = \langle
-  T,s_{0,1},\dots,s_{0,h} \rangle$.  Consider $i \le \kappa$, and the
-  corresponding vector of Puiseux series $\Phi_i$. We know that for
-  $j=1,\dots,h$, we have $s_j(\Phi_i)=0$.  Since all elements involved
-  have non-negative valuation, we can take the coefficient of degree
-  $0$ in $T$ in this equality and deduce $s_{0,j}(\varphi_i)=0$, as
-  claimed. Hence, each $\varphi_i$, for $i \le \kappa$, is in $V(J' +
-  \langle T \rangle)$.
+  Let $(s_1,\dots,s_h)$ be generators of the ideal $J'$ in
+  $\KKbar[T,\bX]$; they also generate $\mathfrak{J}'$ in
+  $\KKbar(T)[\bX]$. Then, the polynomials
+  $s_{0,i}=s_i(0,\bX) \in \KKbar[\bX]$, for $i=1,\dots,h$, are such
+  that
+  $J'+\langle T\rangle = \langle T,s_{0,1},\dots,s_{0,h} \rangle$.
+  Consider $i \le \kappa$, and the corresponding vector of series
+  $\Phi_i$. We know that for $j=1,\dots,h$, we have $s_j(\Phi_i)=0$.
+  Since all elements involved have non-negative valuation, we can take
+  the coefficient of degree $0$ in $T$ in this equality and deduce
+  $s_{0,j}(\varphi_i)=0$, as claimed. Hence, each $\varphi_i$, for
+  $i \le \kappa$, is in $V(J' + \langle T \rangle)$.
 
   Conversely, take indeterminates $T_1,\dots,T_n$, and let $\LL$ be
   the algebraic closure of the field $\KKbar(T_1,\dots,T_n)$; let
@@ -1248,20 +1287,24 @@ $i=1,\dots,\kappa$.
   is also the extension of $\sqrt{\mathfrak{J}'}$ to $\LL(T)[\bX]$, 
   so $C/\ell$ factors as
   $$\frac C\ell = \prod_{1\le i \le c'}(T_0-T_1 \Phi_{i,1} - \cdots - T_n \Phi_{i,n})$$
-  in $\LL\langle\langle T \rangle\rangle[T_0]$.
-  This gives the equality 
+  in $\LL' \rangle\rangle[T_0]$ where $\LL'$ is the generalized Power
+  series ring in $T$ with coefficients in $\LL$.  This gives the
+  equality
   $$C =\ell \prod_{1\le i \le  c'}(T_0-T_1 \Phi_{i,1} - \cdots - T_n
-  \Phi_{i,n})$$ over $\KKbar\langle\langle T \rangle\rangle[T_1,\dots,T_n,T_0]$. 
+  \Phi_{i,n})$$ over $\SS[T_1,\dots,T_n,T_0]$. 
 
-  Let us extend the valuation $\nu$ on $\KKbar\langle\langle T\rangle\rangle$
-to $\KKbar\langle\langle T \rangle\rangle[T_1,\dots,T_n,T_0]$ in the
-  direct manner, by setting $\nu(\sum_\alpha f_\alpha T_0^{\alpha_0}
-  \cdots T_n^{\alpha_n}) = \min_\alpha \nu(f_\alpha)$. The fact that
-  $C$ has no factor in $\KKbar[T]$ implies that
-  $\nu(C)=0$. Using Gauss' Lemma, we see that the valuation of the
-  right-hand side is $\nu(\ell) + \sum_{\kappa < i \le c}\mu_i$, with $\mu_i= \nu(\Phi_i)$ for all $i$;
-  note that $\mu_i < 0$ for $i > \kappa$. Thus, we can
-  rewrite
+  Let us extend the valuation $\nu$ on
+  % $\KKbar\langle\langle T\rangle\rangle$ to
+  $\SS$ to
+  $\SS[T_1,\dots,T_n,T_0]$ in the
+  direct manner, by setting
+  $\nu(\sum_\alpha f_\alpha T_0^{\alpha_0} \cdots T_n^{\alpha_n}) =
+  \min_\alpha \nu(f_\alpha)$. The fact that $C$ has no factor in
+  $\KKbar[T]$ implies that $\nu(C)=0$. Using Gauss' Lemma, we see that
+  the valuation of the right-hand side is
+  $\nu(\ell) + \sum_{\kappa < i \le c}\mu_i$, with
+  $\mu_i= \nu(\Phi_i)$ for all $i$; note that $\mu_i < 0$ for
+  $i > \kappa$. Thus, we can rewrite
   $$C =\left ({T}^{-\nu(\ell)} \ell\right ) 
   \prod_{1 \le i \le \kappa}(T_0-T_1 \Phi_{i,1} - \cdots - T_n  \Phi_{i,n} )
   \prod_{\kappa < i \le c'} ({T}^{-\mu_i}T_0-{T}^{-\mu_i}T_1 \Phi_{i,1} - \cdots - {T}^{-\mu_i}T_n  \Phi_{i,n} ),$$
@@ -1289,25 +1332,24 @@ we now assume that property $\assG(0)$ holds.
 
   For $i=1,\dots,c'$, write
   $\Phi_i=1/T^{e_i} (\Psi_{i,1},\dots,\Psi_{i,n})$, for a vector
-  $(\Psi_{i,1},\dots,\Psi_{i,n})$ of Puiseux series of valuation zero,
+  $(\Psi_{i,1},\dots,\Psi_{i,n})$ of generalized power  series of valuation zero,
   that is, such that all $\Psi_{i,j}$ are bounded and
   $(\psi_{i,1},\dots,\psi_{i,n})=\lim_0(\Psi_{i,1},\dots,\Psi_{i,n})$
   is non-zero. Hence, $e_i=-\nu(\Phi_i)$, and we have to prove that
   $e_i \le 0$.  By way of contradiction, we assume that $e_i > 0$.
 
-  The Puiseux series $\Phi_i$ cancels $b_1,\dots,b_m$. For
-  $k=1,\dots,m$, let $b_k^H \in \KKbar[T][X_0,\bX]$ be the homogenization
-  of $b_k$ with respect to $\bX$. From the equality
-  $b_k^H(T^{e_i},\Psi_{i,1},\dots,\Psi_{i,n})=
-  T^{e_i}b_k(\Phi_i)$, we deduce that
-  $b_k^H(T^{e_i},\Psi_{i,1},\dots,\Psi_{i,n})=0$ for all $k$. We
-  can write $b_k = b_{0,k} + T \tilde b_k$, for some polynomial
-  $\tilde b_k$ in $\KKbar[T,\bX]$, and $\assG_1(0)$ implies that
-  $\deg_\bX(\tilde b_k) \le \deg_\bX(b_{0,k})$. As a result, the
-  homogenizations (with respect to $\bX$) of $b_{k},b_{0,k}$ and $\tilde
-  b_k$ satisfy a relation of the form $b^H_k = b_{0,k}^H +
-  X_0^{\delta_k} T \tilde b^H_k$, for some $\delta_k \ge 0$. This
-  implies the equality
+  The series $\Phi_i$ cancels $b_1,\dots,b_m$. For $k=1,\dots,m$, let
+  $b_k^H \in \KKbar[T][X_0,\bX]$ be the homogenization of $b_k$ with
+  respect to $\bX$. From the equality
+  $b_k^H(T^{e_i},\Psi_{i,1},\dots,\Psi_{i,n})= T^{e_i}b_k(\Phi_i)$, we
+  deduce that $b_k^H(T^{e_i},\Psi_{i,1},\dots,\Psi_{i,n})=0$ for all
+  $k$. We can write $b_k = b_{0,k} + T \tilde b_k$, for some
+  polynomial $\tilde b_k$ in $\KKbar[T,\bX]$, and $\assG_1(0)$ implies
+  that $\deg_\bX(\tilde b_k) \le \deg_\bX(b_{0,k})$. As a result, the
+  homogenizations (with respect to $\bX$) of $b_{k},b_{0,k}$ and
+  $\tilde b_k$ satisfy a relation of the form
+  $b^H_k = b_{0,k}^H + X_0^{\delta_k} T \tilde b^H_k$, for some
+  $\delta_k \ge 0$. This implies the equality
   $$b_{0,k}^H(T^{e_i},\Psi_{i,1},\dots,\Psi_{i,n}) + T^{\delta_k
     e_i+1}\tilde b_k^H(T^{e_i},\Psi_{i,1},\dots,\Psi_{i,n})=0.$$
   The second term has positive valuation, so that
@@ -1329,20 +1371,19 @@ we now assume that property $\assG(0)$ holds.
   maximal ideal $\mathfrak{m}_{\Phi_i}$ is a field, or equi\-valently
   that the localization of
   $\KKbar\langle\langle T \rangle\rangle[\bX]/\frak{J}$ at
-  $\mathfrak{m}_{\Phi_i}$ is a field.  By the Jacobian
-  criterion~\cite[Theorem~16.19.b]{Eisenbud95} {\bf xxx -- Here there
-    should be some restriction on the characteristic of the field},
-  this is the case if and only if the Jacobian matrix of $\bB$ with
-  respect to $\bX$ has full rank $n$ at $\Phi_i$. We know that
-  $\varphi_i=\lim_0(\Phi_i)$ is a root of $\bB_0$
-  (Lemma~\ref{lemma:Z1}), and the Jacobian criterion conversely
-  implies that since the ideal $\langle \bB_0 \rangle$ is radical (by
-  assumption $\assG_3(0)$) and zero-dimensional (by assumption
-  $\assG_2(0)$), the Jacobian matrix of $\bB_0(\bX)=\bB(0,\bX)$ has
-  full rank $n$ at $\varphi_i$. Since this matrix is the limit at zero
-  of the Jacobian matrix of $\bB$ with respect to $\bX$, taken at
-  $\Phi_i$, the latter must have full rank $n$, and our claim that
-  $\frak{J}'$ is radical is proved.
+  $\mathfrak{m}_{\Phi_i}$ is a field.  Observe that
+  $\KKbar\langle\langle T \rangle\rangle$ is a perfect field. By the Jacobian
+  criterion~\cite[Theorem~16.19.b]{Eisenbud95}, this is the case if
+  and only if the Jacobian matrix of $\bB$ with respect to $\bX$ has
+  full rank $n$ at $\Phi_i$. We know that $\varphi_i=\lim_0(\Phi_i)$
+  is a root of $\bB_0$ (Lemma~\ref{lemma:Z1}), and the Jacobian
+  criterion conversely implies that since the ideal
+  $\langle \bB_0 \rangle$ is radical (by assumption $\assG_3(0)$) and
+  zero-dimensional (by assumption $\assG_2(0)$), the Jacobian matrix
+  of $\bB_0(\bX)=\bB(0,\bX)$ has full rank $n$ at $\varphi_i$. Since
+  this matrix is the limit at zero of the Jacobian matrix of $\bB$
+  with respect to $\bX$, taken at $\Phi_i$, the latter must have full
+  rank $n$, and our claim that $\frak{J}'$ is radical is proved.
 \end{proof}
 
 To finish the proof of Proposition~\ref{prop:degree_fiber}, we have to
@@ -1361,28 +1402,27 @@ non-zero minor. Let $\bB'=(b_1,\dots,b_n)$.
 
 Let $z=\nu(\Phi_i-\Phi_{i'})$; since $\varphi_i = \varphi_{i'}$, we
 have $z > 0$; it is finite else we would have $\Phi_i=\Phi_{i'}$ which
-contradicts $i\neq i'$. We can thus write $\Phi_i=f + T^z
-\delta_i$ and $\Phi_{i'}=f + T^z
-\delta_{i'}$, for some vectors of bounded Puiseux series $f, \delta_i,
-\delta_{i'}$ such that all terms in $f$ have valuation less
-than~$z$;
-in addition, $\lim_0(\delta_i)
-\ne \lim_0(\delta_{i'})$. Write the Taylor expansion of $\bB'$ at
-$f$ as
+contradicts $i\neq i'$. We can thus write $\Phi_i=f + T^z \delta_i$
+and $\Phi_{i'}=f + T^z \delta_{i'}$, for some vectors of bounded
+series $f, \delta_i, \delta_{i'}$ such that all terms in $f$ have
+valuation less than~$z$; in addition,
+$\lim_0(\delta_i) \ne \lim_0(\delta_{i'})$. Write the Taylor expansion
+of $\bB'$ at $f$ as
 $$\bB'(\Phi_i) = \bB'(f) + \jac_f(\bB',\bX) T^z \delta_i + T^{2z} r_i =0$$
 and
 $$\bB'(\Phi_{i'}) = \bB'(f) + \jac_f(\bB',\bX) T^z \delta_{i'} + T^{2z}
-r_{i'} =0,$$ for some vectors of bounded Puiseux series $r_i,r_{i'}$.
-By subtraction and division by $T^z$, we obtain $\jac_f(\bB',\bX)
-(\delta_i-\delta_{i'}) = T^z r$, for some vector of bounded Puiseux
-series $r$.  Since $\jac_f(\bB',\bX)$ is invertible, this further gives
-$\delta_i-\delta_{i'} = T^z r'$, where again $r'$ is a vector of
-bounded Puiseux series.  However, by construction the left-hand side
+r_{i'} =0,$$ for some vectors of bounded series $r_i,r_{i'}$.  By
+subtraction and division by $T^z$, we obtain
+$\jac_f(\bB',\bX) (\delta_i-\delta_{i'}) = T^z r$, for some vector of
+bounded series $r$.  Since $\jac_f(\bB',\bX)$ is invertible, this
+further gives $\delta_i-\delta_{i'} = T^z r'$, where again $r'$ is a
+vector of bounded series.  However, by construction the left-hand side
 has valuation zero, while the right-hand side has positive valuation
 (since $z > 0$). Hence, we derived a contradiction to our assumption
-that $\varphi_i = \varphi_{i'}$. The proof of Proposition~\ref{prop:degree_fiber} is
-complete. (Although we do not need it now, the linearization
-used above also implies that all $\Phi_i$ are actually power series.)
+that $\varphi_i = \varphi_{i'}$. The proof of
+Proposition~\ref{prop:degree_fiber} is complete. (Although we do not
+need it now, the linearization used above also implies that all
+$\Phi_i$ are actually power series.)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 We end this section with the proof that $e\geq c$. 
@@ -1410,7 +1450,8 @@ Under the above notations and assumptions, the inequality $e\geq c$ holds.
   these points lie in $V(J')_0$ which allows us to deduce $c\leq e$.
 \end{proof}
 
-\subsection{Proofs of Propositions~\ref{prop:compute_isolated} and~\ref{prop:compute_regular}} \label{proof:prop2}
+\subsection{Proofs of Propositions~\ref{prop:compute_isolated}
+  and~\ref{prop:compute_regular}} \label{proof:prop2}
 
 Let $\scrR_0 =((w_{0},v_{0,1},\dots,v_{0,n}),\lambda)$ be a
 zero-dimensional parametrization of $V(\bB_{0})$ obtained by means of
@@ -1498,13 +1539,13 @@ All in all, the total cost of this step is $\softO(c\,e (\sigma+n^2)n)$.
 \paragraph{A finite set containing the isolated points of $V(\bC)$.}
 As we did in the previous subsection for $T=0$, we let
 $\Phi'_1,\dots,\Phi'_c$ be the roots of $\mathfrak{J}'$ in the field
-of Puiseux series $\KKbar\langle\langle T'\rangle\rangle$ at $T=1$,
-with $T'=T-1$. Without loss of generality, we assume that
+of generalized power series in $T'$ with coefficients in $\KKbar$ at
+$T=1$, with $T'=T-1$. Without loss of generality, we assume that
 $\Phi'_1,\dots,\Phi'_{\kappa'}$ are bounded, and
 $\Phi'_{\kappa'+1},\dots,\Phi'_c$ are not, for some $\kappa'$ in
-$\{0,\dots,c\}$, and we define $\varphi'_1,\dots,\varphi'_{\kappa'}$ by
-$\varphi'_i=\lim_0(\Phi'_i)\in\KKbar{}^n$ for $i=1,\dots,\kappa'$.  By
-Lemma~\ref{lemma:Z1},
+$\{0,\dots,c\}$, and we define $\varphi'_1,\dots,\varphi'_{\kappa'}$
+by $\varphi'_i=\lim_0(\Phi'_i)\in\KKbar{}^n$ for $i=1,\dots,\kappa'$.
+By Lemma~\ref{lemma:Z1},
 $V(J' + \langle T-1\rangle) = \{ \varphi'_i \mid i=1,\dots,\kappa'\}$.
 
 We can now specify our requirements on the linear form $\lambda$.
@@ -1516,18 +1557,17 @@ Following~\cite{RRS} and~\cite{SaSc16}, we ask that $\lambda$ is a
 \item $\nu(\lambda(\Phi_i)) = \mu_i$ for all $i=1,\dots,c$, where $\nu$ denotes
  the $T'$-adic valuation.
 \end{enumerate}
-These conditions are satisfied for a generic choice of $\lambda$, as
-showed in~\cite[Section 3]{SaSc16}. When this is the case, Lemma~4.4
-in~\cite{RRS} shows how to recover a zero-dimensional parametrization
-$\scrR_1=((w_1,v_{1,1},\dots,v_{1,n}),\lambda)$ with coefficients in
-$\KK$ for the limit set
+Applying Lemma~14 in~\cite[Section 3]{SaSc16}, these conditions are
+satisfied for a generic choice of $\lambda$ when $\KK$ has
+characteristic $0$, or with probability at least $7/8$ when $\KK$ has
+characteristic greater than $n \ c^2$. When this is the case,
+Lemma~4.4 in~\cite{RRS} shows how to recover a zero-dimensional
+parametrization $\scrR_1=((w_1,v_{1,1},\dots,v_{1,n}),\lambda)$ with
+coefficients in $\KK$ for the limit set
 $V(J' + \langle T-1\rangle) =\{\varphi'_i \mid i=1,\dots,{\kappa'}\}$
 starting from the previously computed rational parametrization
 $\scrS$, in time $\softO(c\,e\,n)$.
 
-{\bf xxx -- the existence of a well-separating element $\lambda$
-  depends on the characteristic of $\KK$. If it is too small, such an
-  element cannot exist.}
 
 \paragraph{Cleaning.}
 Finally, summing all the previous costs, one performs
@@ -1819,7 +1859,7 @@ $(\delta_1, \ldots, \delta_q)$.
   $$\softO\left (c(e+c^5 )(\sigma + c)\right)$$
   operations in $\KK$.
 
-  When $\KK$ has characteristic $0$ or larger than ${\bf xxx}$, there
+  When $\KK$ has characteristic $0$ or larger than $8 \ n c^2$, there
   exists a randomized algorithm that computes the simple isolated
   points of $\VpFG{p}{\mF}{G}$ using
   $$ \softO\left ( 

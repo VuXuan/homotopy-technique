@@ -201,6 +201,12 @@ F.~S. Macaulay.
 \newblock {\em The Algebraic Theory of Modular Systems}.
 \newblock Cambridge University Press, 1916.
 
+\bibitem{Mclane39}
+Saunders MacLane.
+\newblock The universality of formal power series fields.
+\newblock {\em Bulletin of the American Mathematical Society}, 45(12):888--890,
+  1939.
+
 \bibitem{Matsumura86}
 H.~Matsumura.
 \newblock {\em Commutative Ring Theory}.
@@ -224,7 +230,7 @@ J.~Nie, J.~Demmel, and B.~Sturmfels.
 \newblock {\em Mathematical programming}, 106(3):587--606, 2006.
 
 \bibitem{NieRan09}
-Jiawang Nie and Kristian Ranestad.
+J.~Nie and K.~Ranestad.
 \newblock Algebraic degree of polynomial optimization.
 \newblock {\em SIAM J. on Optimization}, 20(1):485--502, April 2009.
 
