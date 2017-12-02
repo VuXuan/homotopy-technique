@@ -333,8 +333,8 @@ $\mF$ and $G$).
   $\cdeg(\mF,1), \ldots, \cdeg(\mF,q)$ and
   $\rdeg(\mF,1), \ldots, \rdeg(\mF,p)$ are all at least equal to $1$.
 
-  Then, there exist 
-   algorithms that solve Problem~\ref{problem2} in either
+  Then, there exists a probabilistic algorithm that solves
+  Problem~\ref{problem2} in either
    $$\softO\left (
      {q \choose p} n^3 c(e+c^5 )(\sigma +\chi)
 %     c(e+c^5 )(\sigma + c)
@@ -385,8 +385,8 @@ complexity estimates.
   $\cdeg(\mF,1), \ldots, \cdeg(\mF,q)$ and
   $\rdeg(\mF,1), \ldots, \rdeg(\mF,p)$ are all at least equal to $1$.
 
-  Then, there exist algorithms that solve Problem~\ref{problem3} in
-  either
+  Then, there exists a probabilistic algorithm that solves
+  Problem~\ref{problem3} in either
   $$\softO\left ( {q \choose p}^2\,n^3\,c (c + e (\sigma+\chi))\right)$$
   operations in $\KK$, with
   \begin{align*}
@@ -403,7 +403,6 @@ operations in $\KK$, with
   \chi' &= n\ q\ p \max(\rdeg(\mF, i), 1\leq i \leq p)+ \max(\deg(g_i),1\leq i \leq s) + n^3.
 \end{align*}  
 \end{theorem}
-
 
 The probabilistic aspects are as follows: at several steps, the
 algorithms on which Theorems~\ref{theo:2} and~\ref{theo:3} rely will
@@ -982,13 +981,6 @@ following assumptions.
 \end{description}
 Then, the second main result in this section is the following.
 \begin{proposition}\label{prop:compute_isolated}
-  % Assume that $\KK$ has characteristic zero and that
-  % ${\assD}_1, {\assD}_2$ and ${\assD}_3$ hold. Letting $c$ be as in
-  % Proposition~\ref{prop:degree_fiber}, we can compute a
-  % zero-dimensional parametrization of the isolated points of $V(\bC)$
-  % using
-  % $$\softO(c^5 m n^2  + c(e+c^5 n)(\sigma + n^3)) \subset (e\,\sigma\,m)^{O(1)}$$
-  % operations in~$\KK$. {\bf xxx check probabilistic aspects.}
   Assume that ${\assD}_1, {\assD}_2$ and ${\assD}_3$ hold. Letting $c$
   be as in Proposition~\ref{prop:degree_fiber}. There exists a
   probabilistic algorithm which computes a zero-dimensional
@@ -999,11 +991,6 @@ Then, the second main result in this section is the following.
 The variant below focuses on the computation of simple isolated
 points. We reuse the notations introduced above.
 \begin{proposition}\label{prop:compute_regular}
-  % Assume that $\KK$ has characteristic zero or larger than \todo{xxx}
-  % and that ${\assD}_1, {\assD}_2$ and ${\assD}_3$ hold. Letting $c$ be
-  % as in Proposition~\ref{prop:degree_fiber}
-  % Assume that ${\assD}_1, {\assD}_2$ and ${\assD}_3$ hold.
-
   Under the assumptions of Proposition~\ref{prop:compute_isolated},
   there exists a probabilistic algorithm which computes a
   zero-dimensional parametrization of the simple isolated points of
@@ -1013,8 +1000,14 @@ points. We reuse the notations introduced above.
 \end{proposition}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-{\bf xxx -- Should we discuss what happens in case of failure?}
-
+\begin{remark}
+These algorithms rely on the choice of a {\em generic} $\KK$-linear
+form. This form is used in the returned rational parametrization and
+must satisfy some properties which are described further (see
+Subsection~\ref{proof:prop2}). When the chosen form does not fulfill
+these requirements, either the algorithm fails or the output
+parametrization encodes a subset of the simple isolated $V(\bC)$.   
+\end{remark}
 
 \subsection{Proof of Proposition~\ref{prop:degree_fiber}}
 
@@ -1558,6 +1551,10 @@ $V(J' + \langle T-1\rangle) =\{\varphi'_i \mid i=1,\dots,{\kappa'}\}$
 starting from the previously computed rational parametrization
 $\scrS$, in time $\softO(c\,e\,n)$.
 
+When the chosen form is not generic enough, the algorithm may fail or
+it will output a parametrization of a subset of the zero-dimensional
+set we aim to compute. We refer to \cite[Remark 14]{SaSc16} for a
+discussion on probabilistic aspects.
 
 \paragraph{Cleaning.}
 Finally, summing all the previous costs, one performs
@@ -1586,7 +1583,7 @@ total overhead is $O(c^2)$.  The runtime deduced from
 Proposition~\ref{prop:testisolated} is
 $$O(n^4 c^6 + n^2 m c^5 + n \sigma c^6)$$ operations in~$\KK$. Adding all
 costs seen so far, we prove Proposition~\ref{prop:compute_isolated}
-\xxx \check. The resulting algorithm, which we simply name
+. The resulting algorithm, which we simply name
 $\mathsf{Homotopy}$, is described hereafter.
 
 
