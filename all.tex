@@ -42,7 +42,8 @@
 \def\NOTE#1#2{{\begin{quote}\marginpar[\hfill{#1}]{{#1}}{{\textsf{[\![{#2}]\!]}}}\end{quote}}}
 \def\respond#1{\NOTE{\textcircled{\textsc{a}}}{Note:~{#1}}}
 
-\title{Solving determinantal systems using homotopy techniques}
+\title{Solving determinantal systems using \\
+homotopy techniques}
 
 \author{J.D. Hauenstein$^{1}$, M. {Safey El Din}$^{2}$, \'E. Schost$^{3}$, T. X. Vu$^{2,3}$}
 
@@ -78,8 +79,9 @@ University of Notre Dame, USA}
   (resp. columns) of $\mF$. Next, we design homotopy algorithms for
   computing those points. These algorithms take advantage of the
   determinantal structure of the system defining
-  $\VpFG{p}{\mF}{G}$. In particular, they run in time polynomial in
-  the bound on the number of isolated points.
+  $\VpFG{p}{\mF}{G}$. In particular, the algorithms 
+  run in time that is 
+  polynomial in the bound on the number of isolated points.
   % For $i=1,\dots,p$, we write $\rdeg(\mF,i)$ for the degree of the
   % $i$th row of $\mF$ and let
   % $\delta_{\rm row}(\mF) = S_{q-p+1}(\rdeg(\mF,1), \ldots,
@@ -105,15 +107,13 @@ University of Notre Dame, USA}
 
 \section{Introduction}\label{sec:intro}
 
-In what follows, $\KK$ is a field of characteristic $0$ and $\KKbar$
-is an algebraic closure of $\KK$, $(X_1, \ldots, X_n)$ is a set of $n$
-variables and $\KK[X_1,\dots,X_n]$ is the multivariate polynomial ring
+Throughout, let $\KK$ be a field of characteristic $0$ with
+algebraic closure $\KKbar$,
+$(X_1, \ldots, X_n)$ is a set of $n$
+variables, and $\KK[X_1,\dots,X_n]$ is the multivariate polynomial ring
 in $n$ variables with coefficients in
-$\KK$.
-
-Let $\mF=[f_{i,j}] \in \KK[X_1,\dots,X_n]^{p \times q}$ be a
-polynomial matrix, with $p \leq q$. The first question which will
-interest us in this paper is to describe the set of points
+$\KK$.  With this setup, let $\mF=[f_{i,j}] \in \KK[X_1,\dots,X_n]^{p \times q}$ be a polynomial matrix, with $p \leq q$. The first question 
+which will interest us in this paper is to describe the set of points
 $\x \in \KKbar{}^n$ at which the evaluation of the matrix $\mF$ has
 rank less than $p$.  In the particular case $p=1$, this simply means
 finding all common solutions of $f_{1,1},\dots,f_{1,q}$.
@@ -170,16 +170,18 @@ $n=q-p+s+1$. Then, we define the algebraic set
 $$\VpFG{p}{\mF}{G} = \{\bx \in \KKbar{}^n \mid
 \mathrm{rank}(\mF({\bx})) < p \text{~and~} g_1(\bx)=\cdots=g_s(\bx)=0
 \};$$ this is thus the zero-set of the ideal $I_p(\mF) + \langle
-g_1,\dots,g_s\rangle$.  Our main problem is then the following.
+g_1,\dots,g_s\rangle$.  Our main problem is the following.
 \begin{pbm} \label{problem2} 
-  Given a field $\KK$, a matrix $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$ and
-  polynomials $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$, with $p \leq q$ and
-  $n = q-p+s+1$, compute the isolated points of $\VpFG{p}{\mF}{G}$.
+  For a field $\KK$, a matrix $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$ and
+  polynomials $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$ such that 
+  $p \leq q$ and   $n = q-p+s+1$, compute the isolated points of $\VpFG{p}{\mF}{G}$.
 \end{pbm}
 This problem appears in a variety of context; prominent examples are
 optimization problems~\cite{GSZ10,JP14,BGHS14,GS14,NDS06}, and related
 questions in real algebraic
-geometry~\cite{ARS,BaGiHeMb01,SaSc03,BaGiHePa05,BGHSS,SaSc11,BRSS,SaSc17},
+geometry~\cite{ARS,BaGiHeMb01,BaGiHePa05,BGHSS,BRSS,RealDecompICMS,
+CellDecompSurface,BertiniReal,RealNumerical,
+SaSc03,SaSc11,SaSc17},
 where $\mF$ consists of the Jacobian matrix of $G$, together with one
 extra row, corresponding to the gradient of a function $g$ that we
 want to optimize on $V(G)$.
@@ -198,11 +200,10 @@ of algorithms in real algebraic geometry ; see e.g. \cite{BGHSS}.
 Hence, it also makes sense to look at the following slight variant of
 Problem~\ref{problem2}.
 
-\begin{pbm} \label{problem3} Given a field $\KK$, a matrix
+\begin{pbm} \label{problem3} For a field $\KK$, a matrix
   $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$ and polynomials
-  $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$, with $p \leq q$ and
-  $n = q-p+s+1$, compute the simple isolated points of
-  $\VpFG{p}{\mF}{G}$.
+  $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$ with $p \leq q$ and
+  $n = q-p+s+1$, compute the simple isolated points of~$\VpFG{p}{\mF}{G}$.
 \end{pbm}
 
 
@@ -210,7 +211,7 @@ We will represent the output of our algorithm using univariate
 polynomials. Let $V \subset \KKbar{}^n$ be a zero-dimensional
 algebraic set defined over $\KK$. A \emph{zero-dimensional
   parametrization} $\scrR = ((w,v_1, \ldots, v_n), \lambda)$ of $V$
-consists in polynomials $(w,v_1, \ldots, v_n)$ such that $w \in
+consists of polynomials $(w,v_1, \ldots, v_n)$ such that $w \in
 \KK[X]$ is monic and squarefree, all $v_i$'s are in $\KK[X]$ and satisfy
 $\deg(v_i) < \deg(w)$, and $\lambda$ is a $\KK$-linear form in $n$
 variables, such that
@@ -248,7 +249,7 @@ $S_k(\alpha_1,\dots,\alpha_p)$ is the $k$th complete symmetric
 polynomial in $(\alpha_1,\dots,\alpha_p)$.
 
 Finally, recall the notion of multiplicity of a point $\bx$ with
-respect to an ideal $I \subset\KK[X_1,\dots,X_n]$ (we refer to
+respect to an ideal $I$ in $\KK[X_1,\dots,X_n]$ (we refer to
 \cite[Chap. 3]{Eisenbud95} for more details on the following notions).
 The ideal $I$ can be written as the intersection of finitely many
 primary components, that is, $I=Q_1\cap\cdots \cap Q_r$ for some
@@ -260,7 +261,7 @@ $V(Q_i)$; although minimal primary decompositions are not unique, the
 fact that $\bx$ is isolated implies that $Q_i$ does not depend on the
 primary decomposition of $I$ we consider; then, the
 \emph{multiplicity} of $\bx$ is defined as the dimension of
-$\KK[X_1,\dots,X_n]/Q_i$. Our first result is then the following.
+$\KK[X_1,\dots,X_n]/Q_i$. The following is our first~result.
 
 \begin{theorem}\label{theo:1}
   Let $\mF$ be in $\KK[X_1,\dots,X_n]^{p \times q}$ and let
@@ -291,10 +292,10 @@ Theorem~\ref{theo:1} are equalities for two families of polynomials
 (in a similar context where the polynomials are homogeneous in
 $n+1$ variables):
 \begin{itemize}
-\item when the entries of $\mF$ are generic and homogeneous, and
+\item when entries of $\mF$ are generic and homogeneous, and
  such that $\deg(f_{i,j}) = \cdeg(\mF,j)$ for all $i,j$, the ideal
  $I_p(\mF)$ has degree $E_{n}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q))$;
-\item when the entries of $\mF$ are  generic and homogeneous, and
+\item when entries of $\mF$ are  generic and homogeneous, and
   such that $\deg(f_{i,j}) = \rdeg(\mF,i)$ for all $i,j$, the
   ideal  $I_p(\mF)$ has degree $S_{n}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))$.
 \end{itemize}
@@ -372,7 +373,7 @@ inequalities $e \le c^2$ and $e' \le {c'}{}^2$; as a result, the
 runtimes become {\em polynomial} in respectively $c,\sigma$ and
 $c',\sigma$. This is to be compared with Theorem~\ref{theo:1}, which
 shows that $\min(c,c')$ is a natural upper bound for the output size
-of such algorithms.
+of such~algorithms.
 
 For solving Problem~\ref{problem3}, one obtains slightly better
 complexity estimates. 
@@ -422,7 +423,7 @@ Our algorithm is based on a {\em symbolic homotopy continuation}.
 Homotopy continuation algorithms have become a foundational tools for
 numerical algorithms, either in continuation of Shub and Smale's early
 work~\cite{ShSm93}, or along the lines of work by Morgan, Sommese,
-Wampler (as summarized for instance in~\cite{SoWa05}), with an emphasis
+Wampler (as summarized, for instance, in~\cite{BertiniBook,SoWa05}), with an emphasis
 on the algebraic geometry underlying these techniques. By contrast,
 their usage in symbolic contexts is more recent. Early references
 are~\cite{HeKrPuSaWa99,BoMaWaWa04}, which deal with systems with no
@@ -432,8 +433,9 @@ and multihomogeneous systems~\cite{HeJeSaSo02,SaSc16}.
 
 Most algorithms in the previous references have in common that they
 solve {\em square} systems, that is, systems with as many equations as
-unknowns (extensions may deal with systems of positive dimension, but
-those are essentially variants of the algorithm for square systems).
+unknowns.  Extensions of these methods can 
+deal with systems of positive dimension by
+essentially using variants of the algorithm for square systems.
 
 In~\cite{SaSc16}, these techniques are used to solve
 Problem~\ref{problem3} but the obtained complexity estimates depend on
@@ -456,7 +458,7 @@ assumptions on the entries of $\mF$ or $G$. Besides, they are assumed
 to all have the same degree. This series of works culminates with the
 result obtained by Spaenlehauer in \cite{Spa14} where he removes this
 latter degree assumption and provides sharp complexity statements but
-still under genericity assumptions.
+still under genericity~assumptions.
 
 Overdetermined systems encoding rank defects in polynomial matrices
 have also been studied in the scope of the so-called geometric
@@ -470,7 +472,7 @@ algorithms depends here on the maximum degrees of the varieties
 defined by the considered intermediate systems and, even without
 taking into account the dimension assumption, additional results would
 be needed to prove that these intermediate degrees are not larger than
-the quantities involved in our complexity estimates.
+the quantities involved in our complexity~estimates.
 
 \medskip In the following paragraphs, we describe our results in more
 detail.  As a preliminary, we will need an algorithm which takes as
@@ -792,9 +794,10 @@ describe what the entries of $T_\ell$ are:
   $\lambda^{(k)}_{i,j}$ previously computed (we refer to~\cite[Section~4.4]{Mourrain97} for details of how exactly 
 these entries are distributed in $T_\ell$, as we do not need such details here).
 \item each of the other $m'$ equations has coefficient vector
+{\small
 $$v_f = \big (\
  (X_k^{-1} \cdot \beta_1)(f(X_1,\dots,X_k,0,\dots,0)),\dots,\ (X_k^{-1} \cdot \beta_{e_\ell})(f(X_1,\dots,X_k,0,\dots,0))\
-\big )_{1 \le k \le n},$$
+\big )_{1 \le k \le n},$$}
 where $f$ is a generator of $I=\langle \bC \rangle +\m^{\mu+1}$.
 \end{itemize}
 We claim that only those equations corresponding to generators
@@ -993,8 +996,8 @@ points. We reuse the notations introduced above.
 \begin{proposition}\label{prop:compute_regular}
   Under the assumptions of Proposition~\ref{prop:compute_isolated},
   there exists a probabilistic algorithm which computes a
-  zero-dimensional parametrization of the simple isolated points of
-  $V(\bC)$ using
+  zero-dimensional parametrization of the simple isolated points 
+  of~$V(\bC)$ using
   $$\softO(m \,n^2 c^2 + n\, (m \sigma+n^2)\,c\,e )\subset (e\,\sigma\,m)^{O(1)}$$
   operations in~$\KK$. 
 \end{proposition}
@@ -1136,7 +1139,7 @@ similarly $\frak{J}'$ and ${\frak J}''$.
  we deduce that $\frak{J}=\frak{J'} \cap \frak{J''}$; the properties
  of $J'$ (the irreducible components of $V(J')$ are precisely those
  irreducible components of $V(J)$ that have dimension one and with a
- dense image by $\pi_T$) imply our claim.
+ dense image by $\pi_T$) imply~our~claim.
 \end{proof}
 
 
@@ -1907,8 +1910,9 @@ above for $i=1,\dots,s$, and where $(a_{s+1},\dots,a_{m})$ are the
 $p$-minors of $\mL$ (taken in the same order as those in the system
 $\bC$).
 
-Finally, we let $T$ be a new variable, we define the matrix
-$\mU=(1-T)\cdot \mL + T \cdot \mF \in \KK[T,\bX]^{p\times q}$, and we let $\bB$ be the polynomials in
+Let $T$ be a new variable and define the matrix
+\mbox{$\mU=(1-T)\cdot \mL + T \cdot \mF \in \KK[T,\bX]^{p\times q}$}.
+We let $\bB$ be the polynomials in
 $\KK[T,\bX]$ given by $\bB=(b_1,\dots,b_s,\dots,b_m)$, where
 \begin{itemize}
 \item $b_i=(1-T) a_i + T g_i$ for $i=1,\dots,s$
@@ -3488,7 +3492,7 @@ $V_p(\mN)$ and $V_p(\mM)$ have
   Proposition~\ref{prop:degree_fiber} to the specializations of
   $(1-T)\cdot\mN + T\cdot\mM$ at $T=0$ and $T=1$, and conclude that $V_p(\mN)$
   and $V_p(\mM)$ have the same cardinality, for generic choices of
-  the coefficients of $\mN$ and $\mM$.
+  the coefficients of~$\mN$~and~$\mM$.
 
   We finish the proof by induction. If $p=q$, then $t=1$, $\mN$ is diagonal, and
   its determinant has degree $\alpha_1 + \cdots + \alpha_p =
@@ -3968,6 +3972,7 @@ take
 \end{matrix} \right),
 \end{align*}
 with 
+{\scriptsize
 \[
 \begin{cases}
 \lambda_{1,1} = (2079X_1 + 2631X_2 - 1908X_3 + 4492X_4 + 241)(-103X_1 - 869X_2 - 485X_3 - 4006X_4 - 835),\\
@@ -3975,7 +3980,7 @@ with
 \lambda_{1,4} = (3750X_1 - 4147X_2 - 3384X_3 - 2178X_4 + 3092)(-2090X_1 - 1844X_2 + 2266X_3 + 4180X_4 - 172)\\
 \lambda_{1,5} = (-3003X_1 + 3278X_2 - 1133X_3 + 3421X_4 + 2777)(-2870X_1 - 3369X_2 - 3864X_3 + 3912X_4 + 532)
 \end{cases}
-\]
+\]}
 and
 \[
 \begin{cases}
@@ -3987,6 +3992,8 @@ and
 \]
 %-1953(4159X_1 - 3624X_2 - 2613X_3 + X_4 - 2550)(-1833X_1 - 839X_2 - 305X_3 + X_4 + 2619)
 as a start matrix. 
+
+\marginpar{\begin{color}{red}Need to finish the example\end{color}}
 
 The first case is $\lambda_{1,1} = \lambda_{1,3} = \lambda_{1,4} = \lambda_{1,5} = 0$ and the zero-dimesional parametrization is $\cdots$
 
