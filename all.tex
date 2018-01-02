@@ -254,19 +254,30 @@ $S_k(\alpha_1,\dots,\alpha_p) = \sum_{i_1+\cdots+i_p=k, i_j \geq
 symmetric polynomial in $(\alpha_1,\dots,\alpha_p)$.
 
 Finally, recall the notion of multiplicity of a point $\bx$ with
-respect to an ideal $I$ in $\KK[X_1,\dots,X_n]$ (we refer to
-\cite[Chap. 3]{Eisenbud95} for more details on the following notions).
-The ideal $I$ can be written as the intersection of finitely many
-primary components, that is, $I=Q_1\cap\cdots \cap Q_r$ for some
-primary ideals $Q_1,\dots,Q_r$; this decomposition is said to be
-minimal when $V(Q_i)\neq V(Q_j)$ for $i\neq j$. For $\bx\in V(I)$, one
-says that $\bx$ is isolated in $V(I)$ when there exists a unique
-primary component $Q_i$ (which has dimension zero) such that $\bx$ is
-in $V(Q_i)$; although minimal primary decompositions are not unique,
-the fact that $\bx$ is isolated implies that $Q_i$ does not depend on
-the primary decomposition of $I$ we consider; then, the
+respect to an ideal $I$ in $\KKbar[X_1,\dots,X_n]$ (we refer to
+\cite[Chap. 3]{Eisenbud95} for more details on the following notions)
+-- this notion extends to ideals in $\KK[X_1, \ldots, X_n]$ by
+considering their extension in $\KKbar[X_1, \ldots, X_n]$.  The ideal
+$I$ can be written as the intersection of finitely many primary
+components, that is, $I=Q_1\cap\cdots \cap Q_r$ for some primary
+ideals $Q_1,\dots,Q_r$; this decomposition is said to be minimal when
+$V(Q_i)\neq V(Q_j)$ for $i\neq j$. For $\bx\in V(I)$, one says that
+$\bx$ is isolated in $V(I)$ when there exists a unique primary
+component $Q_i$ (which has dimension zero) such that $\bx$ is in
+$V(Q_i)$; although minimal primary decompositions are not unique, the
+fact that $\bx$ is isolated implies that $Q_i$ does not depend on the
+primary decomposition of $I$ we consider; then, the
 \emph{multiplicity} of $\bx$ is defined as the dimension of
-$\KK[X_1,\dots,X_n]/Q_i$. The following is our first~result.
+$\KKbar[X_1,\dots,X_n]/Q_i$. Besides, when $V(Q_i)=\{\mathbf{0}\}$,
+the dimension of $\KKbar[X_1,\dots,X_n]/Q_i$ is the same as the one of
+$\KKbar[[X_1, \ldots, X_n]]/I$ where $\KK[[X_1, \ldots, X_n]]$ denotes
+the formal power series ring in $X_1, \ldots, X_n$ with coefficients
+in $\KKbar$ (to see this we use
+$\KK[X_1,\dots,X_n]/Q_i = \KKbar[[X_1, \ldots, X_n]]/Q_i$
+\cite[Theorem 2.2, Chap. 4]{CLO_UAG} and the straightforward equality
+$Q_i. \KKbar[[X_1, \ldots, X_n]] = I. \KKbar[[X_1, \ldots, X_n]]$).
+
+The following is our first~result.
 
 \begin{theorem}\label{theo:1}
   Let $\mF$ be in $\KK[X_1,\dots,X_n]^{p \times q}$ and let
