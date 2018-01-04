@@ -65,10 +65,10 @@ University of Notre Dame, USA}
 \footnotetext[3]{David Cheriton School of Computer Science, University of Waterloo, ON, Canada}
 
 \begin{abstract}
-  Let $\KK$ be a field of characteristic $0$ and $\KKbar$ be an
+  Let $\KK$ be a field of characteristic zero and $\KKbar$ be an
   algebraic closure of $\KK$. Consider a sequence of polynomials
   $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$, a polynomial matrix
-  $\mF=[f_{i,j}] \in \KK[X_1,\dots,X_n]^{p \times q}$, with $p \leq q$
+  $\mF=[f_{i,j}] \in \KK[X_1,\dots,X_n]^{p \times q}$, with $p \leq q$,
   and the algebraic set $\VpFG{p}{\mF}{G}$ of points in $\KKbar$ at
   which all polynomials in $\mG$ and all $p$-minors of $\mF$
   vanish. Such polynomial systems appear naturally in e.g. polynomial
@@ -82,41 +82,20 @@ University of Notre Dame, USA}
   $\VpFG{p}{\mF}{G}$. In particular, the algorithms 
   run in time that is 
   polynomial in the bound on the number of isolated points.
-  % For $i=1,\dots,p$, we write $\rdeg(\mF,i)$ for the degree of the
-  % $i$th row of $\mF$ and let
-  % $\delta_{\rm row}(\mF) = S_{q-p+1}(\rdeg(\mF,1), \ldots,
-  % \rdeg(\mF,p))$
-  % where for $k\ge 0$, $S_k(C_1,\dots,C_p)$ is the $k$th complete
-  % symmetric polynomial in variables $C_1,\dots,C_p$.
-
-  % Assume that a straight-line program of length $\sigma$ evaluating $G$ and
-  % $\mF$ is given.  We describe a probabilistic algorithm for computing
-  % \emph{all} isolated points of $S_{\mF, G}$. When $S_{\mF, G}$ is
-  % consists of finitely many solutions of multiplicty one, the
-  % algorithm runs in time essentially linear in $\sigma$, quadratic in
-  % $\bdelta= \deg(g_1)\cdots \deg(g_s)\delta_{{\rm row}}(\mF)$.  This
-  % latter quantity is the generic (and maximum) number of solutions
-  % which somewhat reflects the optimality of our algorithm.
-
-  % Variants of this algorithm handling the more general situations
-  % where no assumption is made on the dimension of $S_{\mF, G}$ and the
-  % multiplicities of its isolated points are given. Then, the extra
-  % cost consists of an extra factor ${{q}\choose{p}}$ and a runtime
-  % which is polynomial in $\bdelta$.
 \end{abstract}
 
 \section{Introduction}\label{sec:intro}
 
-Throughout, let $\KK$ be a field of characteristic $0$ with
-algebraic closure $\KKbar$,
-$(X_1, \ldots, X_n)$ is a set of $n$
-variables, and $\KK[X_1,\dots,X_n]$ is the multivariate polynomial ring
-in $n$ variables with coefficients in
-$\KK$.  With this setup, let $\mF=[f_{i,j}] \in \KK[X_1,\dots,X_n]^{p \times q}$ be a polynomial matrix, with $p \leq q$. The first question 
-which will interest us in this paper is to describe the set of points
-$\x \in \KKbar{}^n$ at which the evaluation of the matrix $\mF$ has
-rank less than $p$.  In the particular case $p=1$, this simply means
-finding all common solutions of $f_{1,1},\dots,f_{1,q}$.
+Throughout, $\KK$ is a field of characteristic zero with algebraic
+closure $\KKbar$, $(X_1, \ldots, X_n)$ is a set of $n$ variables, and
+$\KK[X_1,\dots,X_n]$ is the multivariate polynomial ring in $n$
+variables with coefficients in $\KK$.  With this setup, let
+$\mF=[f_{i,j}] \in \KK[X_1,\dots,X_n]^{p \times q}$ be a polynomial
+matrix, with $p \leq q$. The first question which will interest us in
+this paper is to describe the set of points $\x \in \KKbar{}^n$ at
+which the evaluation of the matrix $\mF$ has rank less than $p$.  In
+the particular case $p=1$, this simply means finding all common
+solutions of $f_{1,1},\dots,f_{1,q}$.
 
 For any matrix $\mF$ over a ring $R$, and for any integer $r$,
 $M_r(\mF)$ will denote the set of $r$-minors of $\mF$, and $I_r(\mF)$
@@ -139,7 +118,7 @@ an algebraic set $V$ is the largest integer $d$ such that intersecting
 $V$ with $d$ generic hyperplanes yields finitely many points; those
 algebraic sets with all irreducible components of the same dimension
 are called {\em equidimensional}. We refer to
-e.g.~\cite[Chap. I and II]{Shafarevich77} for these notions.
+e.g.~\cite[Chap.\ I and II]{Shafarevich77} for these notions.
 
 For the problem above, it is natural to consider the case where $n =
 q-p+1$.  Indeed, results due to Macaulay~\cite{Macaulay16} and Eagon
@@ -186,26 +165,27 @@ geometry~\cite{ARS,BaGiHeMb01,BaGiHePa05,BGHSS,BRSS,RealDecompICMS,
   CellDecompSurface,BertiniReal,RealNumerical, SaSc03,SaSc11,SaSc17},
 where $\mF$ consists of the Jacobian matrix of $G$, together with one
 extra row, corresponding to the gradient of a function that we want to
-optimize on $V(G)$.
+optimize on $V(G)$. Because they show up several times in this introduction, we will refer to this particular class of inputs 
+as systems {\em coming from optimization}.
 
 In several of these situations, we are only interested in the
-solutions of the system which consists of $G, M_p(\mF)$ at which its
-associated Jacobian matrix is full rank. This subset of solutions is
-finite and is always a subset of the set of isolated points of
-$\VpFG{p}{\mF}{G}$ \cite[Theorem 16.19]{Eisenbud95} ; we call these
-points {\em simple isolated points}. 
+solutions of the system made of minors $M_p(\mF)$ and
+$G=(g_1,\dots,g_s)$ at which the associated Jacobian matrix has full
+rank. This subset of solutions is finite and is always a subset of the
+set of isolated points of $\VpFG{p}{\mF}{G}$ \cite[Theorem
+  16.19]{Eisenbud95}; we call these points {\em simple 
+  points}. The set of simple  points coincides with
+$\VpFG{p}{\mF}{G}$ when the system $M_p(\mF),G$ generates a radical
+ideal of dimension zero; this case appears frequently in the context of
+algorithms in real algebraic geometry~\cite{BGHSS}.  
 
-The set of simple isolated points also coincides with
-$\VpFG{p}{\mF}{G}$ when the system $G, M_p(\mF)$ generates a radical
-ideal of dimension $0$ -- that case appears frequently in the context
-of algorithms in real algebraic geometry ; see e.g. \cite{BGHSS}.
 Hence, it also makes sense to look at the following slight variant of
 Problem~\eqref{problem2}.
 
 \begin{pbm} \label{problem3} For a field $\KK$, a matrix
   $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$ and polynomials
   $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$ with $p \leq q$ and
-  $n = q-p+s+1$, compute the simple isolated points of~$\VpFG{p}{\mF}{G}$.
+  $n = q-p+s+1$, compute the simple  points of~$\VpFG{p}{\mF}{G}$.
 \end{pbm}
 
 
@@ -214,11 +194,11 @@ polynomials. Let $V \subset \KKbar{}^n$ be a zero-dimensional
 algebraic set defined over $\KK$. A \emph{zero-dimensional
   parametrization} $\scrR = ((w,v_1, \ldots, v_n), \lambda)$ of $V$
 consists of polynomials $(w,v_1, \ldots, v_n)$ such that $w \in
-\KK[X]$ is monic and squarefree, all $v_i$'s are in $\KK[X]$ and satisfy
+\KK[Y]$ is monic and squarefree, all $v_i$'s are in $\KK[Y]$ and satisfy
 $\deg(v_i) < \deg(w)$, and $\lambda$ is a $\KK$-linear form in $n$
 variables, such that
 \begin{itemize}
-\item $\lambda(v_1, \ldots, v_n) = Xw'$ mod $w$ with $w'=\frac{\partial w}{\partial X}$;
+\item $\lambda(v_1, \ldots, v_n) = Yw'$ mod $w$ with $w'=\frac{\partial w}{\partial Y}$;
 \item we have $V = Z(\scrR)$, with $$Z(\scrR)= \left\{\left(\frac{v_1(\tau)}{w'(\tau)}, \ldots, \frac{v_n(\tau)}{w'(\tau)}\right) \ | \ w(\tau) = 0\right\}.$$
 \end{itemize}
 The constraint on $\lambda$ then says that the root of $w$ are the
@@ -230,52 +210,57 @@ The reason why we use a rational parametrization, with $w'$ as a
 denominator, goes back to~\cite{ABRW, Rouillier99, GiLeSa01}: when
 $\KK=\Q$, this allows us to control precisely the bit-size of the
 coefficients, using bounds such as those
-in~\cite{Schost03,DaSc04}. (The same phenomenon holds with $\KK=k(T)$
--- $k$ is field --, in which case we want to control degrees in $T$ of
-the numerators and denominators of the coefficients of $\scrR$.)
+in~\cite{Schost03,DaSc04}. The same phenomenon holds with $\KK=k(T)$,
+for a field $k$, in which case we want to control degrees in $T$ of
+the numerators and denominators of the coefficients of $\scrR$.
 
 Our first result gives a bound on the multiplicities of the solutions
 of $\VpFG{p}{\mF}{G}$. To state it, we need the following notation.
 Take $\mF=[f_{i,j}]_{1 \le i \le p, 1 \le j \le q}$ in
 $\KK[X_1,\dots,X_n]^{p \times q}$.  We will consider two degree
-measures for matrix $\mF$ (these have been used before for
-determinantal ideals, see for instance~\cite{NieRan09,MiSt04}). For
+measures for matrix $\mF$; these have been used before for
+determinantal ideals, see for instance~\cite{NieRan09,MiSt04}. For
 $i=1,\dots,p$, we will write $\rdeg(\mF,i)$ for the degree of the
 $i$th row of $\mF$, that is,
 $\rdeg(\mF,i)=\max(\deg(f_{i,j}))_{1 \le j \le q}$; similarly, for
 $j=1,\dots,q$, we write $\cdeg(\mF,j)$ for the degree of the $j$th
 column of $\mF$, that is,
 $\cdeg(\mF,j)=\max(\deg(f_{i,j}))_{1 \le i \le p}$. For $k \ge 0$,
-$E_k(\delta_1,\dots,\delta_q)=\sum_{1\leq i_1 < \cdots < i_k \leq
-  n}\delta_{i_1} \cdots \delta_{i_k}$ is the elementary symmetric
+$$E_k(\delta_1,\dots,\delta_q)=\sum_{1\leq i_1 < \cdots < i_k \leq
+  n}\delta_{i_1} \cdots \delta_{i_k}$$ is the elementary symmetric
 polynomial of degree $k$ in $(\delta_1, \ldots, \delta_q)$ and
-$S_k(\alpha_1,\dots,\alpha_p) = \sum_{i_1+\cdots+i_p=k, i_j \geq
-  0}\alpha_1^{i_1}\cdots\alpha_p^{i_p}$ is the $k$th complete
+$$S_k(\alpha_1,\dots,\alpha_p) = \sum_{i_1+\cdots+i_p=k, i_j \geq
+  0}\alpha_1^{i_1}\cdots\alpha_p^{i_p}$$ is the $k$th complete
 symmetric polynomial in $(\alpha_1,\dots,\alpha_p)$.
 
-Finally, recall the notion of multiplicity of a point $\bx$ with
-respect to an ideal $I$ in $\KKbar[X_1,\dots,X_n]$ (we refer to
-\cite[Chap. 3]{Eisenbud95} for more details on the following notions)
--- this notion extends to ideals in $\KK[X_1, \ldots, X_n]$ by
-considering their extension in $\KKbar[X_1, \ldots, X_n]$.  The ideal
-$I$ can be written as the intersection of finitely many primary
-components, that is, $I=Q_1\cap\cdots \cap Q_r$ for some primary
-ideals $Q_1,\dots,Q_r$; this decomposition is said to be minimal when
-$V(Q_i)\neq V(Q_j)$ for $i\neq j$. For $\bx\in V(I)$, one says that
-$\bx$ is isolated in $V(I)$ when there exists a unique primary
-component $Q_i$ (which has dimension zero) such that $\bx$ is in
-$V(Q_i)$; although minimal primary decompositions are not unique, the
-fact that $\bx$ is isolated implies that $Q_i$ does not depend on the
-primary decomposition of $I$ we consider; then, the
+Finally, we recall the notion of multiplicity of a point $\bx$ with
+respect to an ideal $I$ in $\KKbar[X_1,\dots,X_n]$; this notion
+extends to ideals in $\KK[X_1, \ldots, X_n]$ by considering their
+extension in $\KKbar[X_1, \ldots, X_n]$. We refer
+to~\cite[Chap.\ 3]{Eisenbud95} and~\cite[Chap.\ 4]{CLO_UAG} for more
+details on the following notions.
+
+The ideal $I$ can be written as the intersection of finitely many
+primary components, that is, $I=Q_1\cap\cdots \cap Q_r$ for some
+primary ideals $Q_1,\dots,Q_r$; this decomposition is said to be
+minimal when $V(Q_i)\neq V(Q_j)$ for $i\neq j$. Take $\bx$ isolated in
+$V(I)$; then there exists a unique primary component $Q_i$, which must
+has dimension zero, such that $\bx$ is in $V(Q_i)$; because we take
+a primary decomposition over $\KKbar$, we actually have
+$V(Q_i)=\{\bx\}$. Although minimal primary decompositions are not
+unique, the fact that $\bx$ is isolated implies that $Q_i$ does not
+depend on the primary decomposition of $I$ we consider; then, the
 \emph{multiplicity} of $\bx$ is defined as the dimension of
-$\KKbar[X_1,\dots,X_n]/Q_i$. Besides, when $V(Q_i)=\{\mathbf{0}\}$,
-the dimension of $\KKbar[X_1,\dots,X_n]/Q_i$ is the same as the one of
-$\KKbar[[X_1, \ldots, X_n]]/I$ where $\KK[[X_1, \ldots, X_n]]$ denotes
+$\KKbar[X_1,\dots,X_n]/Q_i$. When $\bx=0\in\KKbar{}^n$,
+the dimension of $\KKbar[X_1,\dots,X_n]/Q_i$ is the same as that of
+$\KKbar[[X_1, \ldots, X_n]]/I$, where $\KK[[X_1, \ldots, X_n]]$ denotes
 the formal power series ring in $X_1, \ldots, X_n$ with coefficients
-in $\KKbar$ (to see this we use
-$\KK[X_1,\dots,X_n]/Q_i = \KKbar[[X_1, \ldots, X_n]]/Q_i$
-\cite[Theorem 2.2, Chap. 4]{CLO_UAG} and the straightforward equality
-$Q_i. \KKbar[[X_1, \ldots, X_n]] = I. \KKbar[[X_1, \ldots, X_n]]$).
+in $\KKbar$ (this follows from~\cite[Theorem 4.2.2]{CLO_UAG}). 
+
+%%  (to see this we use $\KK[X_1,\dots,X_n]/Q_i = \KKbar[[X_1,
+%%     \ldots, X_n]]/Q_i$ \cite[Theorem 2.2, Chap. 4]{CLO_UAG} and the
+%% straightforward equality $Q_i. \KKbar[[X_1, \ldots, X_n]] =
+%% I. \KKbar[[X_1, \ldots, X_n]]$).
 
 The following is our first~result.
 
@@ -290,11 +275,31 @@ and
 $$c'=\deg(g_1) \cdots \deg(g_s) S_{n-s}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p)).$$
 \end{theorem}
 When $\rdeg(\mG,i)=\cdeg(\mF,j)=d$ for all $i,j$, the two bounds given
-above coincide, with common value $\deg(g_1) \cdots \deg(g_s) d^{n-s}
-{q \choose {p-1}}$; otherwise, either of the two expressions
+above coincide, with common value $\deg(g_1) \cdots \deg(g_s) {q \choose {p-1}} d^{n-s}$; otherwise, either of the two expressions
 $E_{n-s}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q))$ and
-$S_{n-s}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))$ can be the
-minimum.
+$S_{n-s}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))$ can be the minimum. For 
+instance, consider the case $s=0$ (so there are no equations $G$),
+and where the degrees of the entries in $\mF$ are 
+$$ \begin{bmatrix}
+    2 & 1 & 5 & 7 \\
+    2 & 1 & 5 & 7 \\
+    2 & 1 & 5 & 7 
+  \end{bmatrix}.$$
+Here, we have $p=3, q=4, s=0$ and $n=2$. Then, 
+the quantity $c$ is $c=E_2(2,1,5,7) = 2\cdot1+2\cdot5+2\cdot7+1\cdot5+1\cdot7+5\cdot7 = {73}$,
+whereas $c'=6 \cdot 7^2=294.$ On the other hand, if we 
+take $\mF$ with degree profile
+$$ \begin{bmatrix}
+    2 & 2 & 2 & 2 \\
+    1 & 1 & 1 & 1 \\
+    5 & 5 & 5 & 5 
+  \end{bmatrix},$$
+with the same values of $p,q,s,n$, we get $c=6 \cdot 7^2=294$ and
+$c'=S_2(2,1,5) = 2^2+2\cdot 1 + 2\cdot 5 + 1^2 + 1 \cdot 5 + 5^2 =
+{47}$.  For systems coming from optimization, where $F$ is a
+Jacobian matrix, we are in a
+situation similar to the second example, where the $i$th row degree of
+$F$ is simply the degree of the corresponding equation, minus one.
 
 Previous work by Miller and Sturmfels~\cite[Chapter~15]{MiSt04} proved
 very general results on the multi-degrees of determinantal ideals
@@ -315,18 +320,13 @@ $n+1$ variables):
   such that $\deg(f_{i,j}) = \rdeg(\mF,i)$ for all $i,j$, the
   ideal  $I_p(\mF)$ has degree $S_{n}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))$.
 \end{itemize}
-From this, they deduce that the degree of the ideal
-$I_p(\mF) + \langle g_1,\dots,g_s \rangle$ is at most \sloppy
-$\deg(g_1) \cdots \deg(g_s) S_{n-s}(\rdeg(\mF,1), \ldots,
-\rdeg(\mF,p))$,
-for systems coming from optimization problems (here, the matrix $\mF$ is the
-Jacobian matrix of $G=(g_1,\dots,g_s)$, with one extra row of the form
-${\rm gradient}(g)$ where $g$ is a polynomial to be optimized under
-the constraints $g_1=\cdots=g_s=0$), and assuming that this ideal has
-dimension zero.  For generic choices of such $G=(g_1,\dots,g_s)$ and
-$g$, Spaenlehauer gave in~\cite{Spa14} an explicit expression for the
-Hilbert function of the ideal
-$I_p(\mF) + \langle g_1,\dots,g_s \rangle$.
+From this, they deduce that the degree of the ideal $I_p(\mF) +
+\langle g_1,\dots,g_s \rangle$ is at most \sloppy $\deg(g_1) \cdots
+\deg(g_s) S_{n-s}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))$, for systems
+coming from optimization problems, assuming that this ideal has
+dimension zero. In this context, Spaenlehauer gave in~\cite{Spa14} an
+explicit expression for the Hilbert function of the ideal $I_p(\mF) +
+\langle g_1,\dots,g_s \rangle$, for a generic input.
 
 \medskip
 
@@ -335,7 +335,7 @@ zero-dimensional parametrization of the isolated solutions of
 $\VpFG{p}{\mF}{G}=V(I_p(\mF) + \langle g_1,\dots,g_s \rangle)$. Our
 algorithms take as input a \emph{straight-line program} (that is, a
 sequence of elementary operations $+, -, \times$) that computes the
-entries of $\mF$ and $G$ from the input variables $X_1,\dots,X_n$. The
+entries of $\mF$ and $G$ from the input variables $X_1,\dots,X_n$; the
 \emph{length $\sigma$} of the input is the number of operations it
 performs. This assumption is not restrictive, since any matrix $\mF$
 and polynomials $G$ can be computed by a straight-line program (a
@@ -383,9 +383,10 @@ entries in the $i$th column, except at most one, are non-zero without
 changing the column degrees. The $i$th column of $\mF$ (and the row of
 the non-zero entry, if there is one) can then be discarded.
 
-Remark further that in the common situation where all degrees involved
+Remark further that in the common situation where all degrees 
+$\deg(g_i)$, $\rdeg(\mF,i)$ and $\cdeg(\mF,j)$ involved
 in the formulas above are at least equal to $2$, we have the
-inequalities $e \le c^2$, $e' \le {c'}{}^2$ and $\binom{q}{p}\leq \c$,
+inequalities $e \le c^2$, $e' \le {c'}{}^2$ and $\binom{q}{p}\leq c$,
 $\binom{q}{p}\leq c'$; as a result, the runtimes become {\em
   polynomial} in respectively $c,\sigma$ and $c',\sigma$. This is to
 be compared with Theorem~\ref{theo:1}, which shows that $\min(c,c')$
@@ -420,9 +421,9 @@ operations in $\KK$, with
   \chi' &= n\ q\ p \max(\rdeg(\mF, i), 1\leq i \leq p)+ \max(\deg(g_i),1\leq i \leq s) + n^3.
 \end{align*}  
 \end{theorem}
-As above, observe that in the common situation where all degrees
-involved are at least $2$, similar inequalities can be deduced so that
-the runtimes become {\it polynomial} in $c, \sigma$ and $c',\sigma'$.
+As above, in the common situation where all degrees involved are at
+least $2$, the runtimes become {\it polynomial} in $c, \sigma$ and
+$c',\sigma'$.
 
 
 The probabilistic aspects are as follows: at several steps, the
@@ -438,68 +439,66 @@ in~$\cal H$.
 %% instance, when all isolated solutions of $I_\mF$ are known to have
 %% multiplicity one.
 
-%\todo{previous GB work; more detail on previous homotopy work}
-Our algorithm is based on a {\em symbolic homotopy continuation}.
+
+Our algorithms are based on a {\em symbolic homotopy continuation}.
 Homotopy continuation algorithms have become a foundational tools for
 numerical algorithms, either in continuation of Shub and Smale's early
 work~\cite{ShSm93}, or along the lines of work by Morgan, Sommese,
-Wampler (as summarized, for instance, in~\cite{BertiniBook,SoWa05}), with an emphasis
-on the algebraic geometry underlying these techniques. By contrast,
-their usage in symbolic contexts is more recent. Early references
-are~\cite{HeKrPuSaWa99,BoMaWaWa04}, which deal with systems with no
-particular structure; further work extended this idea to sparse
-systems (in the polyhedral sense)~\cite{JeMaSoWa09,HeJeSa10,HeJeSa13,HeJeSa14}
-and multihomogeneous systems~\cite{HeJeSaSo02,SaSc16}.
+Wampler (as summarized, for instance, in~\cite{BertiniBook,SoWa05}),
+with an emphasis on the algebraic geometry underlying these
+techniques. By contrast, their usage in symbolic contexts is more
+recent. Early references are~\cite{HeKrPuSaWa99,BoMaWaWa04}, which
+deal with systems with no particular structure; further work extended
+this idea to sparse systems (in the polyhedral
+sense)~\cite{JeMaSoWa09,HeJeSa10,HeJeSa13,HeJeSa14} and
+multihomogeneous systems~\cite{HeJeSaSo02,SaSc16}.  In~\cite{SaSc16},
+these techniques are used to solve Problem~\eqref{problem3}, but the
+complexity estimates obtained there depend on multi-homogeneous
+B\'ezout bounds involving the maxima of $\rdeg(\mF, 1), \ldots,
+\rdeg(\mF, p)$ or $\cdeg(\mF,1), \ldots, \cdeg(\mF, q)$.
 
 Most algorithms in the previous references have in common that they
 solve {\em square} systems, that is, systems with as many equations as
-unknowns.  Extensions of these methods can 
+unknowns; extensions of these methods can 
 deal with systems of positive dimension by
 essentially using variants of the algorithm for square systems.
-
-In~\cite{SaSc16}, these techniques are used to solve
-Problem~\eqref{problem3} but the obtained complexity estimates depend on
-multi-homogeneous B\'ezout bounds involving the maxima of
-$\rdeg(\mF, 1), \ldots, \rdeg(\mF, p)$ or
-$\cdeg(\mF,1), \ldots, \cdeg(\mF, q)$.
-
-One of the novelties in this paper is to deal with determinantal
+One of the contributions in this paper is to deal with determinantal
 systems of equations, which are in essence over-determined; this is
 made possible by the algebraic properties of determinantal ideals.
 
 It is well-known that Gr\"obner bases behave rather well on
 over-determined systems. Starting from the determination of the
-Hilbert function of a determinantal ring due to Conca and Herzog
-\cite{CH94}, complexity estimates are given in \cite{FSS13, FSS12} for
-computing Gr\"obner basis of ideals generated by either $M_r(\mF)$
-when $r\leq p\leq q$ or $G, M_{p}(\mF)$ where $\mF$ is the Jacobian
-matrix associated to $G$ with one extra row) but under some genericity
-assumptions on the entries of $\mF$ or $G$. Besides, they are assumed
-to all have the same degree. This series of works culminates with the
-result obtained by Spaenlehauer in \cite{Spa14} where he removes this
-latter degree assumption and provides sharp complexity statements but
-still under genericity~assumptions.
+Hilbert function of a determinantal ring due to Conca and
+Herzog~\cite{CH94}, complexity estimates are given in \cite{FSS13,
+  FSS12} for computing Gr\"obner basis of ideals generated by either
+$M_r(\mF)$ when $r\leq p\leq q$, or $G, M_{p}(\mF)$ (for inputs coming
+from optimization problems), but under some genericity assumptions on
+the entries of $\mF$ or $G$, which are also assumed to all have the
+same degree. This series of works culminated with the result obtained
+by Spaenlehauer in \cite{Spa14}, where he removes this latter degree
+assumption and provides sharp complexity statements, still under
+genericity~assumptions.
 
-Overdetermined systems encoding rank defects in polynomial matrices
-have also been studied in the scope of the so-called geometric
-resolution algorithm in \cite{BaGiHeLeMaSo15} with a slight
-generalization in \cite{SaSp16} computing simple isolated solutions to
-the input system (those isolated solutions which are not simple are
-not considered in this line of work). As our algorithm here, these
-algorithms take as input straight-line programs but instead of using
-deformation techniques to build a global homotopy, determinantal
-systems are solved incrementally in some chart.  Hence, the complexity
-of these algorithms depends here on the maximum degrees of the
-varieties defined by the considered intermediate systems. Even without
-taking into account the dimension assumption, additional results are
-needed to compare these intermediate degrees with the quantities
-involved in our complexity estimates.
+Systems encoding rank defects in polynomial matrices have also been
+studied in the scope of the so-called geometric resolution algorithm
+in \cite{BaGiHeLeMaSo15}, with a slight generalization in \cite{SaSp16}
+computing simple  solutions (those isolated solutions which
+are not simple are not considered in this line of work). As our
+algorithm here, these algorithms take as input straight-line programs
+but instead of using deformation techniques to build a global
+homotopy, determinantal systems are solved incrementally in some
+chart.  Hence, the complexity of these algorithms depends here on the
+maximum degrees of the varieties defined by the considered
+intermediate systems. Even without taking into account the dimension
+assumption, additional results are needed to compare these
+intermediate degrees with the quantities involved in our complexity
+estimates.
 
 \medskip In the following paragraphs, we describe our results in more
 detail.  As a preliminary, we will need an algorithm which takes as
 input polynomials $\bC=(c_1,\dots,c_m)$ and a point $\bx$ in the
 zero-set of $\bC$, and which decides whether $\bx$ is an isolated
-points of $V(\bC)$. This one will be used to solve
+points of $V(\bC)$. This  will be used to solve
 Problem~\eqref{problem2}.
 
 Without any other information, this decision problem is difficult to
@@ -535,10 +534,10 @@ points. The complexity we obtain depends linearly on the complexity of
 evaluating $\bC$ and polynomially on a bound on the sum of the
 multiplicites of the isolated points of $V(\bC)$ and the degree of the
 homotopy curve. When one only wants to compute simple solutions, a
-variant of the homotopy algorithm is given: this one is actually
-simpler since we substitute the algorithm of
-Section~\ref{sec:isolated} with a simple criterion allowing to
-identify the simple solutions we aim at computing.
+variant of the homotopy algorithm is given: this is actually
+simpler since we replace the algorithm of
+Section~\ref{sec:isolated} with a simple criterion allowing us to
+identify the simple solutions.
 
 We will apply these results to our determinantal problems as
 follows. Given $\mF \in \KK[\bX]^{p \times q}$ and $G=(g_1,\dots,g_s)$,
@@ -575,10 +574,10 @@ well as the degree of the homotopy curve.
 Let $\LL$ be a field containing the field $\KK$ and $\LLbar$ be an
 algebraic closure of $\LL$.  Let $\bC=(c_1,\dots,c_m)$ be polynomials
 in $\KK[\bX]$, with $\bX=(X_1,\dots,X_n)$. Given a point $\bx$ with
-coordinates in $\LL$ in the zero-set $V(\bC)\subset \LLbar{}^n$, we
-discuss here how to decide whether $\bx$ is an isolated point in
-$V(\bC)$. We make the following assumption in the rest of this
-section:
+coordinates in $\LL$ that belongs to the zero-set $V(\bC)\subset
+\LLbar{}^n$, we discuss here how to decide whether $\bx$ is an
+isolated point in $V(\bC)$. We make the following assumption in the
+rest of this section:
 \begin{description}[leftmargin=*]
 \item [$\assH.$] We are given as input an integer $\mu$ such that
   either $\bx$ is isolated in $V(\bC)$, with multiplicity at most
@@ -590,7 +589,7 @@ cannot be an isolated solution).
 \begin{proposition}\label{prop:testisolated}
   Suppose that $\bC$ is given by a straight-line program of length $\sigma$.
   If assumption $\assH$ is satisfied, we can decide whether $\bx$ is an
-  isolated root of $V(\bC)$ using 
+  isolated point of $V(\bC)$ using 
 $$O(n^4 \mu^4 + n^2 m \mu^3 + n \sigma \mu^4) \subset (\mu\,\sigma\,m)^{O(1)}$$ operations in~$\LL$.
 \end{proposition}
 Reference~\cite{BaHaPeSo09} gives an algorithm to compute the
@@ -603,12 +602,14 @@ detailed proofs for new ingredients that are specific to our context,
 a key difference being the cost analysis in the straight-line program
 model: Mourrain's original result depends on the number of monomials
 appearing when we expand $\bC$, which would be too high for the
-applications we will make of this result.
+applications we will make of this result. Remark that the assumption
+that $\KK$ (and thus $\LL$) have characteristic zero is needed for 
+Mourrain's algorithm.
 
-We assume henceforth that $\bx=0$; this is
-done by replacing $\bC$ by the polynomials $\bC(\bX+\bx)$, which have
-complexity of evaluation $\sigma'=\sigma+n$.  The basis of our algorithm is the
-following remark.
+We assume henceforth that $\bx=0$; this is done by replacing $\bC$ by
+the polynomials $\bC(\bX+\bx)$, which have complexity of evaluation
+$\sigma'=\sigma+n$.  The basis of our algorithm is the following
+remark.
 
 \begin{lemma}
   Let $I$ be the zero-dimensional ideal
@@ -927,10 +928,10 @@ Proposition~\ref{prop:testisolated} is proved.
 
 \section{Symbolic homotopies}\label{sec:homotopy}
 
-In this section, we work over a field $\KK$, still using $n$ variables
+In this section, we work over our field $\KK$, still using $n$ variables
 $\bX=(X_1,\dots,X_n)$. Given polynomials $\bC=(c_1,\dots,c_m)$ in
 $\KK[\bX]^m$, we give algorithms to compute a zero-dimensional
-parametrization of the isolated points (or simple isolated points) of
+parametrization of the isolated points (or simple  points) of
 $V(\bC)$, assuming the existence of a suitable {\em homotopy
   deformation} of $\bC$. We assume $m\ge n$, otherwise no isolated
 point exists in $V(\bC)$.
@@ -1000,40 +1001,43 @@ following assumptions.
   Subsection~\ref{proof:prop2}.
 \item[${\assD}_2$.] We know an integer $e$ such that the union of the
   one-dimensional components of $V(J)$ in $\KKbar{}^{n+1}$ has degree
-  at most $e$ (further, we prove that $e \ge c$ in Lemma~\ref{lemma:e-geq-c}).
+  at most $e$ (we prove that $e \ge c$ in Lemma~\ref{lemma:e-geq-c}).
 \item[${\assD}_3$.] We can compute $\bB$ using a straight-line program
   of length $\sigma$.
 \end{description}
 Then, the second main result in this section is the following.
 \begin{proposition}\label{prop:compute_isolated}
-  Assume that ${\assD}_1, {\assD}_2$ and ${\assD}_3$ hold. Letting $c$
+  Assume that ${\assD}_1, {\assD}_2$ and ${\assD}_3$ hold. Let $c$
   be as in Proposition~\ref{prop:degree_fiber}. There exists a
   probabilistic algorithm which computes a zero-dimensional
   parametrization of the isolated points of $V(\bC)$ using
   $$\softO(c^5 m n^2  + c(e+c^5 n)(\sigma + n^3)) \subset (e\,\sigma\,m)^{O(1)}$$
   operations in~$\KK$. 
 \end{proposition}
-The variant below focuses on the computation of simple isolated
+The variant below focuses on the computation of simple 
 points. We reuse the notations introduced above.
 \begin{proposition}\label{prop:compute_regular}
   Under the assumptions of Proposition~\ref{prop:compute_isolated},
   there exists a probabilistic algorithm which computes a
-  zero-dimensional parametrization of the simple isolated points 
+  zero-dimensional parametrization of the simple  points 
   of~$V(\bC)$ using
   $$\softO( c^2\, m \,n^2 + \,c\,e (m \sigma+n^2)\,n )\subset (e\,\sigma\,m)^{O(1)}$$
   operations in~$\KK$.
 \end{proposition}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{remark}
-  These algorithms rely on the choice of a {\em generic} $\KK$-linear
-  form. As already said, this form is used in the returned rational
-  parametrization and must satisfy some properties which are described
-  further (see Subsection~\ref{proof:prop2}). When the chosen form
-  does not fulfill these requirements, either the algorithm fails or
-  the output parametrization encodes a subset of the simple isolated
-  $V(\bC)$.
-\end{remark}
+
+%%%%%%%%%%%%% TODO: check that
+%% \begin{remark}
+%%   These algorithms rely on the choice of a {\em generic} $\KK$-linear
+%%   form. As already said, this form is used in the returned rational
+%%   parametrization and must satisfy some properties which are described
+%%   further (see Subsection~\ref{proof:prop2}). When the chosen form
+%%   does not fulfill these requirements, either the algorithm fails or
+%%   the output parametrization encodes a subset of the simple isolated
+%%   $V(\bC)$.
+%% \end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Proof of Proposition~\ref{prop:degree_fiber}}
 
@@ -1072,7 +1076,7 @@ $\KKbar$.
   We first deal with indices $i$ in $\{t+1,\dots,s\}$. These are those
   primary components with minimal associated primes $P_i$ that either
   have dimension at least two, or have dimension one but whose image
-  by $\pi$ is a single point. In both cases, all irreducible
+  by $\pi_T$ is a single point. In both cases, all irreducible
   components of the intersection $V(P_i)\cap V(T-\tau)$ have dimension
   at least one. Since $\bx$ is isolated in $V(\bB_\tau)$, $(\tau,\bx)$ is
   isolated in $V(\bB)\cap V(T-\tau)$, so it cannot belong to
@@ -1160,10 +1164,10 @@ $J''$ in $\SS[\bX]$.
 \end{lemma}
 \begin{proof}
  From the equality $J=J' \cap J''$ and Corollary~3.4 in~\cite{AtMc},
- we deduce that $\frak{J}=\frak{J'} \cap \frak{J''}$; the properties
- of $J'$ (the irreducible components of $V(J')$ are precisely those
+ we deduce that $\frak{J}=\frak{J'} \cap \frak{J''}$. The properties
+ of $J'$ (that the irreducible components of $V(J')$ are precisely those
  irreducible components of $V(J)$ that have dimension one and with a
- dense image by $\pi_T$) imply~our~claim.
+ dense image by $\pi_T$) imply our claim.
 \end{proof}
 
 
@@ -1241,13 +1245,13 @@ $V(\mathfrak{J}')$, with coordinates taken in $\SS$. In particular, we
 see that $c' \le c$; we prove below that if $\assG(0)$ holds, we
 actually have $c'=c$ (that is, that $\mathfrak{J}'$ is radical).
 
-Any series $\varphi$ in $\SS$ admits a well-defined {\em valuation}
-$\nu(\varphi)$, which is the smallest exponent that appears in its
-expansion support; the valuation $\nu(\Phi)$, for a vector
-$\Phi=(\varphi_1,\dots,\varphi_s)$ with entries in $\SS$, is the
-minimum of the valuations of its exponents. We say that $\Phi$ is {\em
-  bounded} if it has non-negative valuation; in this case,
-$\lim_0(\Phi)$ is defined as the vector
+Any non-zero series $\varphi$ in $\SS$ admits a well-defined {\em
+  valuation} $\nu(\varphi)$, which is the smallest exponent that
+appears in its expansion support; we also set $\nu(0)=\infty$. The
+valuation $\nu(\Phi)$, for a vector $\Phi=(\varphi_1,\dots,\varphi_s)$
+with entries in $\SS$, is the minimum of the valuations of its
+exponents. We say that $\Phi$ is {\em bounded} if it has non-negative
+valuation; in this case, $\lim_0(\Phi)$ is defined as the vector
 $(\lim_0(\varphi_1),\dots,\lim_0(\varphi_s))$, with
 $\lim_0(\varphi_i)={\rm coeff}(\varphi_i,T^0)$ for all $i$.
 
@@ -1305,18 +1309,14 @@ $i=1,\dots,\kappa$.
   $$C =\ell \prod_{1\le i \le  c'}(T_0-T_1 \Phi_{i,1} - \cdots - T_n
   \Phi_{i,n})$$ over $\SS[T_1,\dots,T_n,T_0]$. 
 
-  Let us extend the valuation $\nu$ on
-  % $\KKbar\langle\langle T\rangle\rangle$ to
-  $\SS$ to
-  $\SS[T_1,\dots,T_n,T_0]$ in the
-  direct manner, by setting
+  Let us extend the valuation $\nu$ on $\SS$ to
+  $\SS[T_1,\dots,T_n,T_0]$ in the direct manner, by setting
   $\nu(\sum_\alpha f_\alpha T_0^{\alpha_0} \cdots T_n^{\alpha_n}) =
   \min_\alpha \nu(f_\alpha)$. The fact that $C$ has no factor in
   $\KKbar[T]$ implies that $\nu(C)=0$. Using Gauss' Lemma, we see that
-  the valuation of the right-hand side is
-  $\nu(\ell) + \sum_{\kappa < i \le c}\mu_i$, with
-  $\mu_i= \nu(\Phi_i)$ for all $i$; note that $\mu_i < 0$ for
-  $i > \kappa$. Thus, we can rewrite
+  the valuation of the right-hand side is $\nu(\ell) + \sum_{\kappa <
+    i \le c}\mu_i$, with $\mu_i= \nu(\Phi_i)$ for all $i$; note that
+  $\mu_i < 0$ for $i > \kappa$. Thus, we can rewrite
   $$C =\left ({T}^{-\nu(\ell)} \ell\right ) 
   \prod_{1 \le i \le \kappa}(T_0-T_1 \Phi_{i,1} - \cdots - T_n  \Phi_{i,n} )
   \prod_{\kappa < i \le c'} ({T}^{-\mu_i}T_0-{T}^{-\mu_i}T_1 \Phi_{i,1} - \cdots - {T}^{-\mu_i}T_n  \Phi_{i,n} ),$$
@@ -1339,8 +1339,9 @@ we now assume that property $\assG(0)$ holds.
    $\Phi_1,\dots,\Phi_{c'}$ are bounded; equivalently, $\kappa=c'$.
 \end{lemma}
 \begin{proof}
-  We want to prove that $\Phi_1,\dots,\Phi_{c'}$ are bounded. Up to
-  performing a translation, one can assume that they are all non-zero.
+  We want to prove that $\Phi_1,\dots,\Phi_{c'}$ are bounded. Without
+  loss of generality, one can assume that they are all non-zero (a
+  zero vector is bounded).
 
   For $i=1,\dots,c'$, write
   $\Phi_i=1/T^{e_i} (\Psi_{i,1},\dots,\Psi_{i,n})$, for a vector
@@ -1445,22 +1446,24 @@ Under the above notations and assumptions, the inequality $e\geq c$ holds.
 
 
 \begin{proof}
-  By definition of the integer $e$ and the ideal $J'$ previously
-  defined, $e$ is greater than or equal to the degree of $V(J')$ which
-  is an algebraic curve.
+  By definition of the integer $e$ given in ${\assD}_2$, and of the
+  ideal $J'$, $e$ is greater than or equal to the degree of $V(J')$,
+  which is an algebraic curve.
 
   The degree of this curve is greater than or equal to the cardinality
-  of any fiber $V(J')_\tau$ ; in particular, we have
+  of any fiber $V(J'_\tau)$; in particular, we have
   \[
-  \sharp V(J')_0 \leq \deg(V(J')) \leq e.
+  \sharp V(J'_0) \leq \deg(V(J')) \leq e.
   \]
 
   Besides, Proposition~\ref{prop:degree_fiber} establishes that the
-  number of isolated points of $V(\bB)_0$ equals $c$ (because the
+  number of isolated points of $V(\bB_0)$ equals $c$ (because the
   ideal generated by $\langle \bB, T\rangle$ is radical,
   multiplicities are equal to $1$). By Lemma~\ref{lemma:vPi}, all
-  these points lie in $V(J')_0$ which allows us to deduce $c\leq e$.
+  these points lie in $V(J'_0)$ which allows us to deduce $c\leq e$.
 \end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Proofs of Propositions~\ref{prop:compute_isolated}
   and~\ref{prop:compute_regular}} \label{proof:prop2}
@@ -1483,7 +1486,7 @@ If $w_0$ were irreducible, we would simply evaluate the Jacobian
 matrix of $\bB_0$ at the point $(v_{0,1}/w_0',\dots,v_{0,n}/w_0')$,
 which has coordinates in the field $\LL=\KK[Y]/\langle w_0 \rangle$,
 and find a non-zero minor of size $n$ in this matrix. It takes
-$O(n \sigma)$ oeprations in $\LL$ to compute this Jacobian matrix, and
+$O(n \sigma)$ operations in $\LL$ to compute this Jacobian matrix, and
 $O(mn^2)$ operations in $\LL$ to find an invertible minor, e.g. using
 Gaussian elimination. The total time, under the assumption that $w_0$
 is irreducible, is thus $O(mn^2 + n\sigma)$ operations in $\LL$, that is,
@@ -1521,10 +1524,11 @@ $(b_i)_{i \in \bi_j}$ to lift
 $\scrR_{0,j}=((w_{0,j},v_{0,j,1},\dots,v_{0,j,n}),\lambda)$ into a
 zero-dimensional parametrization
 $\scrR_{j}=((w_{j},v_{j,1},\dots,v_{j,n}),\lambda)$ with coefficients
-in $\KK[[T]]/\langle T^{2e}\rangle$, for $e$ as in ${\assD}_2$.  Note
-that $c \le e$: we saw in the last paragraphs of the previous
-subsection that $c$ is the cardinality of $V(J' + \langle T \rangle)$,
-so that $c \le \deg(V(J'))$, and the latter quantity is at most $e$.
+in $\KK[[T]]/\langle T^{2e}\rangle$, for $e$ as in ${\assD}_2$. 
+%%  Note
+%% that $c \le e$: we saw in the last paragraphs of the previous
+%% subsection that $c$ is the cardinality of $V(J' + \langle T \rangle)$,
+%% so that $c \le \deg(V(J'))$, and the latter quantity is at most $e$.
 
 As explained in~\cite[Section~2.2]{SaSc16}, using the algorithm
 of~\cite{GiLeSa01}, this can be done using $\softO(c\,e (\sigma+n^2)n)$
@@ -1578,10 +1582,10 @@ $V(J' + \langle T-1\rangle) =\{\varphi'_i \mid i=1,\dots,{\kappa'}\}$
 starting from the previously computed rational parametrization
 $\scrS$, in time $\softO(c\,e\,n)$.
 
-When the chosen form is not generic enough, the algorithm may fail or
-it will output a parametrization of a subset of the zero-dimensional
-set we aim to compute. We refer to \cite[Remark 14]{SaSc16} for a
-discussion on probabilistic aspects.
+When the chosen form is not generic enough, the algorithm may fail, or
+output a parametrization of a subset of the zero-dimensional set we
+aim to compute. We refer to \cite[Remark 14]{SaSc16} for a discussion
+on probabilistic aspects.
 
 \paragraph{Cleaning.}
 Finally, summing all the previous costs, one performs
@@ -1592,6 +1596,7 @@ operations in $\KK$ for the first three steps (decomposition of
 $\scrR_0$, lifting and rational reconstruction and getting a finite
 set containing the isolated points of $V(\bC)$).
 
+Let us first show how to prove Proposition~\ref{prop:compute_isolated}.
 Lemma~\ref{lemma:vPi} implies that for any isolated solution $\bx$ of
 $\bC$, $(1,\bx)$ is in $V(J' + \langle T-1\rangle)$, so in a second
 time, we discard from $V(J' + \langle T-1\rangle)$ those points that
@@ -1603,11 +1608,12 @@ on the multiplicity of isolated solutions of $\bC$.
 
 Using the same dynamic evaluation techniques as in the first paragraph
 above, we can use the algorithm of Section~\ref{sec:isolated} as if
-$Z(\scrR_1)$ were an irreducible variety, with an overhead
-$O(c)$. Since the number of splittings is bounded by $c$ also, the
-total overhead is $O(c^2)$.  The runtime deduced from
-Proposition~\ref{prop:testisolated} is
-$$O(n^4 c^6 + n^2 m c^5 + n \sigma c^6)$$ operations in~$\KK$. Adding all
+$Z(\scrR_1)$ were an irreducible variety, with an overhead $\softO(c)$
+to account for the cost of operations in $\KK[Y]/\langle w_1 \rangle$.
+Since the number of splittings is bounded by $c$ also, the total
+overhead is $\softO(c^2)$.  The runtime deduced from
+Proposition~\ref{prop:testisolated} is then
+$$\softO(n^4 c^6 + n^2 m c^5 + n \sigma c^6)$$ operations in~$\KK$. Adding all
 costs seen so far, we prove
 Proposition~\ref{prop:compute_isolated}. The resulting algorithm,
 which we simply name $\mathsf{Homotopy}$, is described hereafter.
@@ -1634,7 +1640,7 @@ $\text{\sf{cost:~}} \softO(c\,e\,n)$
 \item deduce a zero-dimensional parametrization $\scrR_1$ with coefficients in $\KK$ from $\scrS$\\
 $\text{\sf{cost:~}} \softO(c\,e\,n)$
 \item\label{step:homot:final} remove from $Z(\scrR_1)$ points that are not isolated in $V(\bC)$ \\
-  $\text{\sf{cost:~}} O(n^4 c^6 + n^2 m c^5 + n \sigma c^6)$
+  $\text{\sf{cost:~}} \softO(n^4 c^6 + n^2 m c^5 + n \sigma c^6)$
 \end{enumerate}
 \label{DetSys}
 \end{algorithm}
@@ -1647,16 +1653,16 @@ that we now need to discard from $V(J' + \langle T-1\rangle)$ those
 points at which the Jacobian matrix associated to $\bC$ is not full
 rank. Doing that is easier than discarding those points which are not
 isolated. It suffices to construct a straight-line program evaluating
-that Jacobian matrix ; this can be done using Baur-Strassen's
-algorithm \cite{BaurStrassen} which yields a straight-line program of
-length $\sigma'\in O(m \, \sigma)$ operations in $\KK$. Next, one
-evaluates this matrix as done previously when we were decomposing
-$\scrR_0$ and use Gaussian elimination to identify divisors of $w_1$ that
-need to be removed. This Gaussian elimnation takes
-$\softO((mn^2+n\sigma')c)$ operations in $\KK$ which simplifies to
-$\softO(nm(n+ \sigma)c)$. The final cleaning step is done using
-Algorithm $\mathsf{Clean}$ of \cite{GiLeSa01} whose cost is dominated
-by the previous computations. 
+that Jacobian matrix; this yields a straight-line program of length
+$\sigma'\in O(n \, \sigma)$. Next, one evaluates this matrix modulo
+$w_1$, as done
+previously when we were decomposing $\scrR_0$, using $\softO(\sigma' c)$ 
+operations in $\KK$, \todo{from here} and use Gaussian
+elimination to identify divisors of $w_1$ that need to be
+removed. This Gaussian elimnation takes $\softO((mn^2+n\sigma')c)$
+operations in $\KK$ which simplifies to $\softO(nm(n+ \sigma)c)$. The
+final cleaning step is done using Algorithm $\mathsf{Clean}$ of
+\cite{GiLeSa01} whose cost is dominated by the previous computations.
 
 All in all, the total cost is
 $$
