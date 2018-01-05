@@ -350,7 +350,7 @@ $\mF$ and $G$).
   $\cdeg(\mF,1), \ldots, \cdeg(\mF,q)$ and
   $\rdeg(\mF,1), \ldots, \rdeg(\mF,p)$ are all at least equal to $1$.
 
-  Then, there exists a probabilistic algorithm that solves
+  Then, there exists a randomized algorithm that solves
   Problem~\eqref{problem2} in either
    $$\softO\left (
      {q \choose p} n^3 c(e+c^5 )(\sigma +\chi)
@@ -403,7 +403,7 @@ complexity estimates.
   $\cdeg(\mF,1), \ldots, \cdeg(\mF,q)$ and
   $\rdeg(\mF,1), \ldots, \rdeg(\mF,p)$ are all at least equal to $1$.
 
-  Then, there exists a probabilistic algorithm that solves
+  Then, there exists a randomized algorithm that solves
   Problem~\eqref{problem3} in either
   $$\softO\left ( {q \choose p}^2\,n^3\,c (c + e (\sigma+\chi))\right)$$
   operations in $\KK$, with
@@ -1009,7 +1009,7 @@ Then, the second main result in this section is the following.
 \begin{proposition}\label{prop:compute_isolated}
   Assume that ${\assD}_1, {\assD}_2$ and ${\assD}_3$ hold. Let $c$
   be as in Proposition~\ref{prop:degree_fiber}. There exists a
-  probabilistic algorithm which computes a zero-dimensional
+  randomized algorithm which computes a zero-dimensional
   parametrization of the isolated points of $V(\bC)$ using
   $$\softO(c^5 m n^2  + c(e+c^5 n)(\sigma + n^3)) \subset (e\,\sigma\,m)^{O(1)}$$
   operations in~$\KK$. 
@@ -1018,10 +1018,10 @@ The variant below focuses on the computation of simple
 points. We reuse the notations introduced above.
 \begin{proposition}\label{prop:compute_regular}
   Under the assumptions of Proposition~\ref{prop:compute_isolated},
-  there exists a probabilistic algorithm which computes a
+  there exists a randomized algorithm which computes a
   zero-dimensional parametrization of the simple  points 
   of~$V(\bC)$ using
-  $$\softO( c^2\, m \,n^2 + \,c\,e (m \sigma+n^2)\,n )\subset (e\,\sigma\,m)^{O(1)}$$
+  $$\softO( c^2\, m \,n^2 + \,c\,e\,n (\sigma+n^2) )\subset (e\,\sigma\,m)^{O(1)}$$
   operations in~$\KK$.
 \end{proposition}
 
@@ -1180,11 +1180,7 @@ The following lemma relates this quantity to the multiplicities of the
 solutions in any fiber $\bB_\tau$. This proves the first statement in
 Proposition~\ref{prop:degree_fiber}.
 
-% Let us write $c=\dim_{\KKbar(T)}(\KKbar(T)[\bX]/{\frak J}')$.  The
-% following lemma relates this quantity to the multiplicities of the
-% solutions in any fiber $\bB_\tau$. This proves the first statement
-% in Proposition~\ref{prop:degree_fiber}.
-
+ 
 \begin{lemma}\label{lemma:19}
   Let $\tau$ be in $\KKbar$. The sum of the multiplicities of the
   isolated solutions of $\bB_\tau$ is at most equal to $c$.
@@ -1655,26 +1651,23 @@ rank. Doing that is easier than discarding those points which are not
 isolated. It suffices to construct a straight-line program evaluating
 that Jacobian matrix; this yields a straight-line program of length
 $\sigma'\in O(n \, \sigma)$. Next, one evaluates this matrix modulo
-$w_1$, as done
-previously when we were decomposing $\scrR_0$, using $\softO(\sigma' c)$ 
-operations in $\KK$, \todo{from here} and use Gaussian
-elimination to identify divisors of $w_1$ that need to be
-removed. This Gaussian elimnation takes $\softO((mn^2+n\sigma')c)$
-operations in $\KK$ which simplifies to $\softO(nm(n+ \sigma)c)$. The
-final cleaning step is done using Algorithm $\mathsf{Clean}$ of
+$w_1$, as done previously when we were decomposing $\scrR_0$, and use
+Gaussian elimination modulo $w_1$ to identify divisors of $w_1$ that
+need to be removed. The overall cost is similar to that of decomposing
+$\scrR_0$, that is, $\softO((mn^2+n\sigma)c^2)$ operations in $\KK$.
+The final cleaning step is done using Algorithm $\mathsf{Clean}$ of
 \cite{GiLeSa01} whose cost is dominated by the previous computations.
 
 All in all, the total cost is
 $$
-\softO((mn^2+n\sigma)c^2 + c\, e (\sigma+n^2) n + nm(n+ \sigma)c) \subset 
-\softO(nm(n+\sigma)c^2 + c\, e (\sigma+n^2) n )
+\softO((mn^2+n\sigma)c^2 + c\, e\,n (\sigma+n^2)  )
 $$
 operations in $\KK$. Taking into account the inequality
-$e\geq c$ (Lemma~\ref{lemma:e-geq-c}) this simplifies to 
+$e\geq c$ (Lemma~\ref{lemma:e-geq-c}) this simplifies as 
 $$
-\softO( mn^2c^2  + c\, e (m\sigma+n^2) n )
+\softO( mn^2c^2  + c\, e\,n (\sigma+n^2) ),
 $$
-which ends to prove Proposition~\ref{prop:compute_regular}. In the
+which ends the proof of Proposition~\ref{prop:compute_regular}. In the
 sequel, the resulting algorithm is called
 $\mathsf{Homotopy\_simple}$. It differs from algorithm
 $\mathsf{Homotopy}$ at Step \ref{step:homot:final} where the cleaning step we
@@ -1687,7 +1680,7 @@ just described replaces the one of $\mathsf{Homotopy}$.
 
 \section{Properties of determinantal ideals}\label{sec:check}
 
-The following sections will show how to apply the algorithm of the
+The following sections will show how to apply the algorithms of the
 previous section to Problems~\eqref{problem2} and~\eqref{problem3}, by
 applying Proposition~\ref{prop:compute_isolated}
 (resp. Proposition~\ref{prop:compute_regular}) to suitable
@@ -1721,8 +1714,8 @@ $p \le q$. Then:
   primes have height $q-p+1$).
 \end{itemize}
 
-Let then $G=(g_1,\dots,g_s)$ be polynomials in $\KK[T,\bX]$, with $s
-\le n$, and let $\mF$ be a polynomial matrix in $\KK[T,\bX]^{p \times
+Let then $G=(g_1,\dots,g_s)$ be polynomials in $\KKbar[T,\bX]$, with $s
+\le n$, and let $\mF$ be a polynomial matrix in $\KKbar[T,\bX]^{p \times
   q}$, with $p \le q$. We define $J = I_p(\mF) + \langle
 g_1,\dots,g_s\rangle,$ that is $J$ is the ideal in $\KKbar[T,\bX]$
 generated by all $p$-minors of $\mF$, together with the polynomials
@@ -1737,7 +1730,7 @@ set of all $p$-minors of~$\mF$, and let $V_1,\dots,V_s$ be the
 $\KKbar$-irreducible components of $V(J)\subset \KKbar{}^n$.  We prove
 in the next paragraph that $\dim(V_i) \ge (n+1) -(q-p+1)$ holds for
 all $i$. Of course, we can assume that $V(J)\ne \emptyset$, so that $J
-\ne \KK[T,\bX]$, otherwise the proposition itself would be vacuously true.
+\ne \KKbar[T,\bX]$, otherwise the proposition itself would be vacuously true.
 
 First, remark that for a point $\bx$ in $V(J)\subset \KKbar{}^{n+1}$,
 and writing $\m \subset \KKbar[T,\bX]$ for the maximal ideal at $\bx$,
@@ -1818,12 +1811,12 @@ primary decomposition of $J_\m$, and $J_\m$ is unmixed.
 
 \section{The column-degree homotopy}\label{sec:columndegree}
 
-
-We are given a matrix
+We can now prove the first half of our results, dealing with the column
+degree structure of our matrices. As input, we are given a matrix
 $\mF =[f_{i,j}]\in \KK[X_1,\dots,X_n]^{p \times q}$ and polynomials
 $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$, with $p \leq q$ and
 $n = q-p+s+1$.  We want to compute the isolated points (or the simple
-isolated points) of $\VpFG{p}{\mF}{G}$, with
+ points) of $\VpFG{p}{\mF}{G}$, with
 $$\VpFG{p}{\mF}{G} = \{\bx \in \KKbar{}^n \mid  \mathrm{rank}(\mF({\bx})) < p
 \text{~and~} g_1(\bx)=\cdots=g_s(\bx)=0\}.$$
 
@@ -1877,25 +1870,21 @@ $(\delta_1, \ldots, \delta_q)$.
   There exists a randomized algorithm that computes these isolated
   points
   $$
-  \softO\left ({q \choose p} n^3 c(e+c^5 )(\sigma +n^2\gamma + q
+  \softO\left ({q \choose p} c(e+c^5 )(\sigma +\gamma + q
     \delta)\right)
-  % c(e+c^5 )(\sigma + c)
   $$
   operations in $\KK$.
 \end{proposition}
 
 The next proposition states a better complexity estimate when one only
-computes isolated simple points of $\VpFG{p}{\mF}{G}$.
+computes simple points of $\VpFG{p}{\mF}{G}$.
 \begin{proposition}\label{prop:coldeg_simple}
-  Reusing the notations introduced above, and letting
-  $\gamma=\max(\gamma_1, \ldots, \gamma_s)$ and 
-  $\delta=\max(\delta_1, \ldots, \delta_q)$, 
-  there exists a randomized algorithm that computes the simple
-  isolated points of $\VpFG{p}{\mF}{G}$ using
+  Reusing the notations introduced above, 
+  there exists a randomized algorithm that computes the simple points of $\VpFG{p}{\mF}{G}$ using
   $$ 
-  \softO\left (   {q \choose p}^2\,n^3\,c (c + e (\sigma+\gamma+q\delta)) \right )
+  \softO\left (   {q \choose p}c \,e (\sigma+\gamma+q\delta)) \right )
   $$ 
-  operations in $\KK$, 
+  operations in $\KK$.
 \end{proposition}
 
 These propositions establish the first half of
@@ -1952,8 +1941,8 @@ We can then define $J$ as the ideal generated by $\bB$ in
 $\KKbar[T,\bX]$. Using the notation of Section~\ref{sec:homotopy}, we
 see that $\bB_0=\bA$ and $\bB_1=\bC$. Having in mind to apply
 Proposition~\ref{prop:compute_isolated}
-(resp. Proposition~\ref{prop:compute_regular}) to compute the isolated
-points (resp. simple isolated points) of $V(\bC)=\VpFG{p}{\mF}{G}$, we
+(resp.\ Proposition~\ref{prop:compute_regular}) to compute the isolated
+points (resp. simple points) of $V(\bC)=\VpFG{p}{\mF}{G}$, we
 now verify that all required assumptions are satisfied.
 
 \paragraph{Properties $\assA_1$ and $\assA_2$.}
@@ -2140,12 +2129,12 @@ $\bA$.
   \gamma_s$ choices of $\bu$. For each choice of $\bu$, there are
   $E_{n-s}(\delta_1, \ldots, \delta_q)$ ways to
   choose $\bj$ and $\bv$, where $E_{n-s}$ denotes the elementary
-  symmetric polynomials of degree $n-s$.   
+  symmetric polynomial of degree $n-s$.   
 \end{proof}
 This proves the first part of Proposition~\ref{prop:coldeg}.
 We can now inspect assumptions $\assD_1,\dots,\assD_4$, which are
-needed to apply the algorithm of
-Proposition~\ref{prop:compute_isolated}. For the cost analysis 
+needed to apply the algorithms of
+Propositions~\ref{prop:compute_isolated} and~\ref{prop:compute_regular}. For the cost analysis 
 below, as in Theorem~\ref{theo:2}, we assume that 
 all $\gamma_i$'s and $\delta_j$'s are at least equal to $1$.
 
@@ -2164,7 +2153,7 @@ Knowing all the points in $V(\bA)$, we can construct a zero-dimensional
 parametrization $\scrR_0$ such that $Z(\scrR_0)=V(\bA)$ in time
 $O\tilde{~}(cn)$ by means of fast interpolation~\cite[Chapter~10]{GaGe03}.
 (Note that for practical purposes, we may modify the algorithm
-of Proposition~\ref{prop:compute_isolated} to take into account the
+of Propositions~\ref{prop:compute_isolated} and~\ref{prop:compute_regular} to take into account the
 fact that all points in $V(\bA)$ are in $\KK^n$.)
 
 Hence the total cost here is in $O(c\, n^3)$ operations in $\KK$..
@@ -2257,22 +2246,21 @@ $$\softO\left (c(e+c^5 n)\left(\sigma + {q \choose p} n^3
 % \end{itemize}
 Since $s \leq n$, $\gamma = \max(\gamma_1, \ldots, \gamma_s)$ and
 $\delta = \max(\delta_1, \ldots, \delta_q)$, our bound becomes
-$\softO\left (c(e+c^5 n)(\sigma + {q \choose p}n^3+n^2\gamma + q
-  \delta)\right).$ This can also be rewritten as
-$\softO\left (c(e+c^5 )(\sigma + {q \choose p}n^3+n^2\gamma + q
-  \delta)\right)$, by means of a case discussion between $e$ and
+$$\softO\left (c(e+c^5 n)(\sigma + {q \choose p}n^3+n^2\gamma + nq
+  \delta)\right).$$ This can also be rewritten as
+$$\softO\left (c(e+c^5 )(\sigma + {q \choose p}n^3+n^2\gamma + nq
+  \delta)\right),$$ by means of a case discussion between $e$ and
 $c^5 n$. If $c^5 n \le e$, then $e+c^5 n$ is in $O(e)$. Else, we have
-$e \le c^5 n$; since $e \ge 2^n$, this implies that $c \ge 2^n/n$, so
-that $n$ is in $O(\log(c))$, and $e+c^5 n$ is in $\softO(c^5)$. At
-last, further simplification shows that the obtained bound can be
+$e \le c^5 n$; since one easily checks that $e \ge 2^n$, this implies that $c \ge 2^n/n$, so
+that $n$ is in $O(\log(c))$, and $e+c^5 n$ is in $\softO(c^5)$. A
+last factorization shows that the bound can be
 simplified to
 \[
-  \softO\left ({q \choose p} n^3 c(e+c^5 )(\sigma +n^2\gamma + q
-    \delta)\right)
+  \softO\left ({q \choose p} n^3 c(e+c^5 )(\sigma +\gamma + q
+    \delta)\right).
 \]
-which ends the proof of Proposition~\ref{prop:coldeg}.
-
-The resulting algorithm, called $\mathsf{ColumnDegree}$ is described
+Noticing that $n\le\log(e)$ then ends the proof of Proposition~\ref{prop:coldeg}.
+The resulting algorithm, called $\mathsf{ColumnDegree}$, is described
 herafter.
 
 
@@ -2319,25 +2307,26 @@ with $e=(\gamma_1+1)\cdots(\gamma_s+1) E_{n-s}(\delta_1+1,\dots,\delta_q+1)$
 
 
 Finally, to prove Proposition~\ref{prop:coldeg_simple}, we rely on the
-algorithm, called $\mathsf{ColumnDegree\_simple}$ which differs from
-$\mathsf{ColumnDegree\_simple}$ only at the last step where Algorithm
-$\mathsf{Homotopy\_simple}$ is called instead.  Hence, one applies
-Proposition~\ref{prop:compute_regular} yields a runtime
-$\softO(m \,n^2 c^2 + n\, (m\sigma'+n^2)\,c\,e )$ operations in
-$\KK$. Using again $m \leq n+ \binom{q}{p}\leq n\binom{q}{p}$,
-$\sigma'=O(\sigma + {q \choose p} n^3
-+n(n\gamma+q\delta))$ and
-simplifications which are similar to the ones obtained above, we
+algorithm called $\mathsf{ColumnDegree\_simple}$, which differs from
+$\mathsf{ColumnDegree}$, only at the last step where Algorithm
+$\mathsf{Homotopy\_simple}$ is called instead of $\mathsf{Homotopy}$.
+Hence, one applies Proposition~\ref{prop:compute_regular}, which yields a
+runtime $\softO(m \,n^2 c^2 + c\,e\,n (\sigma'+n^2) )$ operations
+in $\KK$. Using again $m \leq n+ \binom{q}{p}\leq n\binom{q}{p}$,
+$\sigma'=O(\sigma + {q \choose p} n^3 +n(n\gamma+q\delta))$, we
 obtain as a bound
 \[
   \softO\left (
-    {q \choose p}\,n^3\, c^2 + n^2\, {q \choose p}^2n^2 \, c\, e (\sigma+ n +\gamma +q \delta)
-  \right )
+    {q \choose p}\,n^3\, c^2 +  c\, e\,n (\sigma+ {q \choose p}n^3 \, +n^2\gamma +nq \delta)
+  \right ),
 \]
 which we simplify as
 \[
- \softO\left (   {q \choose p}^2\,n^3\,c (c + e (\sigma+\gamma+q\delta)) \right )
+ \softO\left (   {q \choose p}c\, e\,n^4 (\sigma+\gamma+q\delta) \right ),
 \]
+taking into account that $c \le e$.
+Since $e \ge 2^n$, the term $n^4$ can be absorbed in 
+the $\softO(\, )$.
 This concludes the proof of Proposition~\ref{prop:coldeg_simple}. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -3242,12 +3231,12 @@ Again, we are given a matrix
 $\mF =[f_{i,j}]\in \KK[X_1,\dots,X_n]^{p \times q}$ and polynomials
 $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$, with $p \leq q$ and
 $n = q-p+s+1$, and we want to compute the isolated points (or the
-simple isolated points) of $\VpFG{p}{\mF}{G}$, with
+simple points) of $\VpFG{p}{\mF}{G}$, with
 $$\VpFG{p}{\mF}{G} = \{\bx \in \KKbar{}^n \mid \mathrm{rank}(\mF({\bx})) < p
 \text{~and~} g_1(\bx)=\cdots=g_s(\bx)=0\}.$$
 
 We are now interested in designing algorithms for computing the
-isolated points or the simple isolated points of $\VpFG{p}{\mF}{G}$
+isolated points or the simple points of $\VpFG{p}{\mF}{G}$
 whose cost depends on the row degrees
 $\alpha_1=\rdeg(\mF,1),\dots,\alpha_p=\rdeg(\mF,p)$; with this
 notation, $\deg(f_{i,j}) \leq \alpha_i$ holds for all $i,j$. As in
@@ -3261,7 +3250,7 @@ $\gamma = \max(\gamma_1, \ldots, \gamma_s)$.
 % \tilde\delta_{\rm row}(\mF)=S_{n-s}(\alpha_1 +1,\cdots,\alpha_p+1).
 % \]
 
-We start by stating our first result on computing the simple isolated
+We start by stating our first result on computing the simple
 points of $\VpFG{p}{\mF}{G}$.
 
 \begin{proposition}\label{prop:rowdegree_simple}
@@ -3269,7 +3258,7 @@ points of $\VpFG{p}{\mF}{G}$.
   and the polynomials $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$ are
   given by a straight-line program of length $\sigma$.  If all
   $\gamma_i$'s and $\alpha_j$'s are at least equal to $1$, there
-  exists a randomized algorithm that computes the simple isolated
+  exists a randomized algorithm that computes the simple
   points of $\VpFG{p}{\mF}{G}$ using
   $$\softO\left( \rc^2 n^6{q \choose p}^2 (\rc + \re ( \sigma + nq p
     \alpha +\gamma +n^3 ) ) \right)$$ 
@@ -3285,7 +3274,7 @@ points of $\VpFG{p}{\mF}{G}$.
   function of degree $n-s$.
 \end{proposition}
 
-We state now the complexity result for computing the simple isolated
+We state now the complexity result for computing the simple
 points of $\VpFG{p}{\mF}{G}$.
 
 \begin{proposition}\label{prop:rowdegree}
@@ -3596,12 +3585,13 @@ $V_p(\mN)$ and $V_p(\mM)$ have
   follows.
 \end{proof}
 
-\subsection{Towards homotopy algorithms}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\subsection{Towards homotopy algorithms}
 
 Since $\assA_1$, $\assA_2$, $\assG_1(0)$, $\assG_2(0)$ and
 $\assG_3(0)$ hold, we are going to apply
-Proposition~\ref{prop:compute_regular} to compute the simple isolated
+Proposition~\ref{prop:compute_regular} to compute the simple
 points in $\VpFG{p}{\mF}{G}$. Recall that the resulting algorithm
 $\mathsf{RowDegree\_simple}$ is used by the
 $\mathsf{RowDegreeDiagonal}$ of previous Section. Next, we will apply
