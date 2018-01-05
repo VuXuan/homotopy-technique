@@ -353,14 +353,13 @@ $\mF$ and $G$).
   Then, there exists a randomized algorithm that solves
   Problem~\eqref{problem2} in either
    $$\softO\left (
-     {q \choose p} n^3 c(e+c^5 )(\sigma +\chi)
-%     c(e+c^5 )(\sigma + c)
+     {q \choose p} c(e+c^5 )\big(\sigma +  \max(\deg(g_i), 1\leq i \leq s) + q\max(\cdeg(\mF,i), 1\leq i \leq q) \big )
    \right)$$
   operations in $\KK$, with
   \begin{align*}
-    c&=\deg(g_1)\cdots\deg(g_s)E_{n-s}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q))\\
-    e&=(\deg(g_1)+1)\cdots(\deg(g_s)+1) E_{n-s}(\cdeg(\mF,1)+1, \ldots, \cdeg(\mF,q)+1)   \\
-    \chi&= q\max(\cdeg(\mF,i), 1\leq i \leq q)+ \max(\deg(g_i), 1\leq i \leq s)
+    c&=\deg(g_1)\cdots\deg(g_s)\ E_{n-s}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q))\\
+    e&=(\deg(g_1)+1)\cdots(\deg(g_s)+1)\ E_{n-s}(\cdeg(\mF,1)+1, \ldots, \cdeg(\mF,q)+1),
+    %% \chi&=  \max(\deg(g_i), 1\leq i \leq s) + q\max(\cdeg(\mF,i), 1\leq i \leq q)
   \end{align*}
   or 
   $$\softO\left(
@@ -405,12 +404,12 @@ complexity estimates.
 
   Then, there exists a randomized algorithm that solves
   Problem~\eqref{problem3} in either
-  $$\softO\left ( {q \choose p}^2\,n^3\,c (c + e (\sigma+\chi))\right)$$
+  $$\softO\left ( {q \choose p}c e \big(\sigma +  \max(\deg(g_i), 1\leq i \leq s) + q\max(\cdeg(\mF,i), 1\leq i \leq q) \big )\right)$$
   operations in $\KK$, with
   \begin{align*}
-  c&=\deg(g_1)\cdots\deg(g_s)E_{n-s}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q))\\
-    e&=(\deg(g_1)+1)\cdots(\deg(g_s)+1) E_{n-s}(\cdeg(\mF,1)+1, \ldots, \cdeg(\mF,q)+1) \\
-    \chi&= q\max(\cdeg(\mF,i), 1\leq i \leq q)+ \max(\deg(g_i), 1\leq i \leq s)
+  c&=\deg(g_1)\cdots\deg(g_s)\ E_{n-s}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q))\\
+    e&=(\deg(g_1)+1)\cdots(\deg(g_s)+1)\ E_{n-s}(\cdeg(\mF,1)+1, \ldots, \cdeg(\mF,q)+1),
+    %% \chi&= q\max(\cdeg(\mF,i), 1\leq i \leq q)+ \max(\deg(g_i), 1\leq i \leq s)
   \end{align*}
 or 
 $$\softO\left( {q \choose p}^2 \rc^2 n^6 (\rc + \re ( \sigma + \chi' ) ) \right)$$
@@ -1866,8 +1865,7 @@ $(\delta_1, \ldots, \delta_q)$.
   $e=(\gamma_1+1)\cdots(\gamma_s+1) E_{n-s}(\delta_1+1, \ldots,
   \delta_q+1)$, $\gamma = \max(\gamma_1, \ldots, \gamma_s)$ and
   $\delta = \max(\delta_1, \ldots, \delta_q)$.
-
-  There exists a randomized algorithm that computes these isolated
+Then, there exists a randomized algorithm that computes these isolated
   points
   $$
   \softO\left ({q \choose p} c(e+c^5 )(\sigma +\gamma + q
@@ -2151,12 +2149,12 @@ n^3)$ operations in $\KK$.
 
 Knowing all the points in $V(\bA)$, we can construct a zero-dimensional
 parametrization $\scrR_0$ such that $Z(\scrR_0)=V(\bA)$ in time
-$O\tilde{~}(cn)$ by means of fast interpolation~\cite[Chapter~10]{GaGe03}.
+$O\tilde{~}(c n)$ by means of fast interpolation~\cite[Chapter~10]{GaGe03}.
 (Note that for practical purposes, we may modify the algorithm
 of Propositions~\ref{prop:compute_isolated} and~\ref{prop:compute_regular} to take into account the
 fact that all points in $V(\bA)$ are in $\KK^n$.)
 
-Hence the total cost here is in $O(c\, n^3)$ operations in $\KK$..
+Hence the total cost here is in $O(c n^3)$ operations in $\KK$..
 
 \paragraph{Property $\assD_2$.} Next, we need to determine an upper bound 
 $e$ on the degree of the curve $V(J')$, where $J'$ is the union of the
@@ -2222,28 +2220,10 @@ program $\Gamma'$ of size $\sigma'=O(\sigma + {q \choose p} n^3 +n(\gamma_1+\cdo
 
 \paragraph{Completing the cost analysis.}
 We can then apply Proposition~\ref{prop:compute_isolated},
-whose runtime is $\softO(c^5 m n^2 + c(e+c^5 n)(\sigma' + n^3))$ operations
+whose runtime is $\softO(c^5 m n^2  + c(e+c^5 n)(\sigma' + n^3))$ operations
 in~$\KK$; since $m \le n + {q \choose p}$, this can be simplified as
-$$\softO\left (c(e+c^5 n)\left(\sigma + {q \choose p} n^3
+$$\softO\left (c(e+c^5 n )\left(\sigma + {q \choose p} n^3
 +n(\gamma_1+\cdots+\gamma_s+\delta_1+\cdots+\delta_q)\right)\right).$$
-% We now prove that $ {q \choose p}$ and
-% $\gamma_1+\cdots+\gamma_s+\delta_1+\cdots+\delta_q$ are both
-% $O(cn)$; below, recall that $c=\gamma_1 \cdots \gamma_s E_{n-s}(\delta_1,\dots,\delta_q)$.
-% \begin{itemize}
-% \item Because all $\gamma_i$'s and $\delta_j$'s are at least equal to
-%   $1$, $c$ is at least equal to $ {q \choose {q-p+1}}= \frac
-%   p{q-p+1}{q \choose p}$, so that ${q \choose p} \le c(q-p+1) \le cn$.
-% \item All $\gamma_j$'s are at most equal to $c$, so that their sum is at most
-%   $cn$, since $s \le n$.
-% \item The sum $\delta_1+\cdots+\delta_q$ is at most equal to $cn$ as
-%   well.  If $p=1$ (so that $q-p+1=q$, and thus $q \le n$), since
-%   $\delta_i \le c$ holds for all $i\le q$, their sum is at most $cq\le
-%   cn$. Otherwise, when $q-p+1 < q$, we claim that we actually have
-%   $\delta_1+\cdots+\delta_q \le c$. Indeed this is true when
-%   $\delta_1=\cdots=\delta_q=1$, and if this inequality holds for
-%   $(\delta_1,\dots,\delta_q)$, it also holds for
-%   $(\delta_1+1,\delta_2,\dots,\delta_q)$.
-% \end{itemize}
 Since $s \leq n$, $\gamma = \max(\gamma_1, \ldots, \gamma_s)$ and
 $\delta = \max(\delta_1, \ldots, \delta_q)$, our bound becomes
 $$\softO\left (c(e+c^5 n)(\sigma + {q \choose p}n^3+n^2\gamma + nq
@@ -2256,7 +2236,7 @@ that $n$ is in $O(\log(c))$, and $e+c^5 n$ is in $\softO(c^5)$. A
 last factorization shows that the bound can be
 simplified to
 \[
-  \softO\left ({q \choose p} n^3 c(e+c^5 )(\sigma +\gamma + q
+  \softO\left ({q \choose p}  c(e+c^5 )n^3(\sigma +\gamma + q
     \delta)\right).
 \]
 Noticing that $n\le\log(e)$ then ends the proof of Proposition~\ref{prop:coldeg}.
@@ -2299,8 +2279,9 @@ $$\mu_{1,u_1}=\cdots=\mu_{s,u_s}=\lambda_{j_1,v_1}=\cdots=\lambda_{j_{n-s},v_{n-
 
 \item return $\mathsf{Homotopy}(\Gamma',\scrR)$ 
 
-\hfill $\text{\sf{cost:~}} \softO\left (c(e+c^5 )(\sigma + cn^4)\right)$, 
-with $e=(\gamma_1+1)\cdots(\gamma_s+1) E_{n-s}(\delta_1+1,\dots,\delta_q+1)$
+\hfill $\text{\sf{cost:~}} \softO\left (c^5 m n^2 + c(e+c^5n )(\sigma' + n^3)\right)$, 
+
+\hfill with $e=(\gamma_1+1)\cdots(\gamma_s+1) E_{n-s}(\delta_1+1,\dots,\delta_q+1)$
 \end{enumerate}
 \label{ColHom}
 \end{algorithm}
@@ -2311,13 +2292,13 @@ algorithm called $\mathsf{ColumnDegree\_simple}$, which differs from
 $\mathsf{ColumnDegree}$, only at the last step where Algorithm
 $\mathsf{Homotopy\_simple}$ is called instead of $\mathsf{Homotopy}$.
 Hence, one applies Proposition~\ref{prop:compute_regular}, which yields a
-runtime $\softO(m \,n^2 c^2 + c\,e\,n (\sigma'+n^2) )$ operations
+runtime $\softO(c^2\,m \,n^2  + c\,e\,n (\sigma'+n^2) )$ operations
 in $\KK$. Using again $m \leq n+ \binom{q}{p}\leq n\binom{q}{p}$,
 $\sigma'=O(\sigma + {q \choose p} n^3 +n(n\gamma+q\delta))$, we
 obtain as a bound
 \[
   \softO\left (
-    {q \choose p}\,n^3\, c^2 +  c\, e\,n (\sigma+ {q \choose p}n^3 \, +n^2\gamma +nq \delta)
+    {q \choose p}\, c^2\,n^3 +  c\, e\,n (\sigma+ {q \choose p}n^3 \, +n^2\gamma +nq \delta)
   \right ),
 \]
 which we simplify as
