@@ -350,26 +350,28 @@ $\mF$ and $G$).
   $\cdeg(\mF,1), \ldots, \cdeg(\mF,q)$ and
   $\rdeg(\mF,1), \ldots, \rdeg(\mF,p)$ are all at least equal to $1$.
 
-  Then, there exists a randomized algorithm that solves
+  Then, there exist randomized algorithms that solve
   Problem~\eqref{problem2} in either
    $$\softO\left (
-     {q \choose p} c(e+c^5 )\big(\sigma +  \max(\deg(g_i), 1\leq i \leq s) + q\max(\cdeg(\mF,i), 1\leq i \leq q) \big )
+     {q \choose p} c(e+c^5 )\big(\sigma + q \delta + \gamma  \big )
    \right)$$
   operations in $\KK$, with
   \begin{align*}
     c&=\deg(g_1)\cdots\deg(g_s)\ E_{n-s}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q))\\
-    e&=(\deg(g_1)+1)\cdots(\deg(g_s)+1)\ E_{n-s}(\cdeg(\mF,1)+1, \ldots, \cdeg(\mF,q)+1),
-    %% \chi&=  \max(\deg(g_i), 1\leq i \leq s) + q\max(\cdeg(\mF,i), 1\leq i \leq q)
+    e&=(\deg(g_1)+1)\cdots(\deg(g_s)+1)\ E_{n-s}(\cdeg(\mF,1)+1, \ldots, \cdeg(\mF,q)+1),\\
+    \gamma&= \max(\deg(g_i), 1\leq i \leq s)\\
+    \delta &= \max(\cdeg(\mF,i), 1\leq i \leq q)
   \end{align*}
   or 
-  $$\softO\left(
-   {q \choose p}^2  \rc^2 n^5 (\re+\rc^5 n)(\sigma + \chi')  
-  \right)$$
+   $$\softO\left (
+     {q \choose p} c'(e'+{c'}^5 )\big(\sigma + p \alpha  +\gamma \big )
+   \right)$$
   operations in $\KK$, with 
 \begin{align*}
-  c'&=\deg(g_1)\cdots\deg(g_s) S_{n-s}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))\\
-  e'&=(\deg(g_1)+1)\cdots(\deg(g_s)+1)S_{n-s}(\rdeg(\mF,1)+1, \ldots, \rdeg(\mF,p)+1)\\
-  \chi'&={q \choose p} n +\max(\rdeg(\mF, i), \leq i \leq p)+ \max(\deg(g_i),1\leq i \leq s)+ n^3.
+  c'&=\deg(g_1)\cdots\deg(g_s)\ S_{n-s}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))\\
+  e'&=(\deg(g_1)+1)\cdots(\deg(g_s)+1)\ S_{n-s}(\rdeg(\mF,1)+1, \ldots, \rdeg(\mF,p)+1),\\
+    \gamma&= \max(\deg(g_i), 1\leq i \leq s)\\
+    \alpha &= \max(\rdeg(\mF,j), 1\leq j \leq p).
 \end{align*}
 \end{theorem}
 The assumption that all degrees are at least $1$ is not a restriction.
@@ -402,23 +404,17 @@ complexity estimates.
   $\cdeg(\mF,1), \ldots, \cdeg(\mF,q)$ and
   $\rdeg(\mF,1), \ldots, \rdeg(\mF,p)$ are all at least equal to $1$.
 
-  Then, there exists a randomized algorithm that solves
+  Then, there exist randomized algorithms that solve
   Problem~\eqref{problem3} in either
-  $$\softO\left ( {q \choose p}c e \big(\sigma +  \max(\deg(g_i), 1\leq i \leq s) + q\max(\cdeg(\mF,i), 1\leq i \leq q) \big )\right)$$
-  operations in $\KK$, with
-  \begin{align*}
-  c&=\deg(g_1)\cdots\deg(g_s)\ E_{n-s}(\cdeg(\mF,1), \ldots, \cdeg(\mF,q))\\
-    e&=(\deg(g_1)+1)\cdots(\deg(g_s)+1)\ E_{n-s}(\cdeg(\mF,1)+1, \ldots, \cdeg(\mF,q)+1),
-    %% \chi&= q\max(\cdeg(\mF,i), 1\leq i \leq q)+ \max(\deg(g_i), 1\leq i \leq s)
-  \end{align*}
+   $$\softO\left (
+     {q \choose p} ce\big(\sigma + q \delta + \gamma  \big )
+   \right)$$
 or 
-$$\softO\left( {q \choose p}^2 \rc^2 n^6 (\rc + \re ( \sigma + \chi' ) ) \right)$$
-operations in $\KK$, with 
-\begin{align*}
-  c'&=\deg(g_1)\cdots\deg(g_s) S_{n-s}(\rdeg(\mF,1), \ldots, \rdeg(\mF,p))\\
-  e'&=(\deg(g_1)+1)\cdots(\deg(g_s)+1)S_{n-s}(\rdeg(\mF,1)+1, \ldots, \rdeg(\mF,p)+1) \\
-  \chi' &= n\ q\ p \max(\rdeg(\mF, i), 1\leq i \leq p)+ \max(\deg(g_i),1\leq i \leq s) + n^3.
-\end{align*}  
+   $$\softO\left (
+     {q \choose p} c'e'\big(\sigma + p \alpha  +\gamma \big )
+   \right)$$
+  operations in $\KK$, 
+  all notation being as in Theorem~\ref{theo:3}.
 \end{theorem}
 As above, in the common situation where all degrees involved are at
 least $2$, the runtimes become {\it polynomial} in $c, \sigma$ and
@@ -1008,16 +1004,16 @@ Then, the second main result in this section is the following.
 \begin{proposition}\label{prop:compute_isolated}
   Assume that ${\assD}_1, {\assD}_2$ and ${\assD}_3$ hold. Let $c$
   be as in Proposition~\ref{prop:degree_fiber}. There exists a
-  randomized algorithm which computes a zero-dimensional
+  randomized algorithm ${\sf Homotopy}$ which computes a zero-dimensional
   parametrization of the isolated points of $V(\bC)$ using
-  $$\softO(c^5 m n^2  + c(e+c^5 n)(\sigma + n^3)) \subset (e\,\sigma\,m)^{O(1)}$$
+  $$\softO(c^5 m n^2  + c(e+c^5) n(\sigma + n^3)) \subset (e\,\sigma\,m)^{O(1)}$$
   operations in~$\KK$. 
 \end{proposition}
 The variant below focuses on the computation of simple 
 points. We reuse the notations introduced above.
 \begin{proposition}\label{prop:compute_regular}
   Under the assumptions of Proposition~\ref{prop:compute_isolated},
-  there exists a randomized algorithm which computes a
+  there exists a randomized algorithm ${\sf Homotopy\_simple}$  which computes a
   zero-dimensional parametrization of the simple  points 
   of~$V(\bC)$ using
   $$\softO( c^2\, m \,n^2 + \,c\,e\,n (\sigma+n^2) )\subset (e\,\sigma\,m)^{O(1)}$$
@@ -1432,7 +1428,7 @@ Proposition~\ref{prop:degree_fiber} is complete. (Although we do not
 need it now, the linearization used above also implies that all
 $\Phi_i$ are actually power series.)
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 We end this section with the proof that $e\geq c$. 
 
 \begin{lemma}\label{lemma:e-geq-c}
@@ -1485,7 +1481,7 @@ $O(n \sigma)$ operations in $\LL$ to compute this Jacobian matrix, and
 $O(mn^2)$ operations in $\LL$ to find an invertible minor, e.g. using
 Gaussian elimination. The total time, under the assumption that $w_0$
 is irreducible, is thus $O(mn^2 + n\sigma)$ operations in $\LL$, that is,
-$\softO( (mn^2 + n\sigma) c)$ operations in $\KK$.
+$\softO(c (mn^2 + n\sigma) )$ operations in $\KK$.
 
 When $w_0$ is not irreducible, $\LL=\KK[Y]/\langle w_0 \rangle$ is a
 product of fields. We can still apply the same process as in the
@@ -1510,7 +1506,7 @@ is non-zero.
 We can then start over again, from $\scrR'_0$ and $\scrR''_0$
 independently. Overall, in the worst case, this splitting process
 induces a extra factor $O(c)$ in the runtime compared to the case
-where $w_0$ is irreducible, for a total of $\softO( (mn^2 + n\sigma) c^2)$
+where $w_0$ is irreducible, for a total of $\softO( c^2 (mn^2 + n\sigma) )$
 operations in $\KK$.
 
 \paragraph{Lifting power series and rational reconstruction.}
@@ -1520,10 +1516,6 @@ $\scrR_{0,j}=((w_{0,j},v_{0,j,1},\dots,v_{0,j,n}),\lambda)$ into a
 zero-dimensional parametrization
 $\scrR_{j}=((w_{j},v_{j,1},\dots,v_{j,n}),\lambda)$ with coefficients
 in $\KK[[T]]/\langle T^{2e}\rangle$, for $e$ as in ${\assD}_2$. 
-%%  Note
-%% that $c \le e$: we saw in the last paragraphs of the previous
-%% subsection that $c$ is the cardinality of $V(J' + \langle T \rangle)$,
-%% so that $c \le \deg(V(J'))$, and the latter quantity is at most $e$.
 
 As explained in~\cite[Section~2.2]{SaSc16}, using the algorithm
 of~\cite{GiLeSa01}, this can be done using $\softO(c\,e (\sigma+n^2)n)$
@@ -1545,7 +1537,7 @@ most $e$~\cite[Theorem~1]{Schost03}.  This is done by applying
 rational function reconstruction to all coefficients of $\scrR$, as
 in~\cite{Schost03}, and takes time $\softO(c\,e\,n)$.
 
-All in all, the total cost of this step is $\softO(c\,e (\sigma+n^2)n)$.
+All in all, the total cost of this step is $\softO(c\,e\,n (\sigma+n^2))$.
 
 \paragraph{A finite set containing the isolated points of $V(\bC)$.}
 As we did in the previous subsection for $T=0$, we let
@@ -1585,7 +1577,7 @@ on probabilistic aspects.
 \paragraph{Cleaning.}
 Finally, summing all the previous costs, one performs
 $$
-\softO((mn^2+n\sigma)c^2 + c\, e (\sigma+n^2) n)
+\softO(c^2 (mn^2+n\sigma) + c\, e\,n (\sigma+n^2) )
 $$
 operations in $\KK$ for the first three steps (decomposition of
 $\scrR_0$, lifting and rational reconstruction and getting a finite
@@ -1608,14 +1600,14 @@ to account for the cost of operations in $\KK[Y]/\langle w_1 \rangle$.
 Since the number of splittings is bounded by $c$ also, the total
 overhead is $\softO(c^2)$.  The runtime deduced from
 Proposition~\ref{prop:testisolated} is then
-$$\softO(n^4 c^6 + n^2 m c^5 + n \sigma c^6)$$ operations in~$\KK$. Adding all
+$$\softO(c^6 n^4  +  c^5 m n^2  +c^6 n \sigma )$$ operations in~$\KK$. Adding all
 costs seen so far, we prove
 Proposition~\ref{prop:compute_isolated}. The resulting algorithm,
 which we simply name $\mathsf{Homotopy}$, is described hereafter.
 
 
 
-%Algorithm~\ref{DetSys}
+
 \begin{algorithm}
 \caption{$\mathsf{Homotopy}(\Gamma,\scrR)$}
 {\bf Input}: a straight-line program $\Gamma$ of length $\sigma$ that computes $\bB \in \KK[T,\bX]^m$\\
@@ -1624,7 +1616,7 @@ which we simply name $\mathsf{Homotopy}$, is described hereafter.
 \begin{enumerate}
   \setlength\itemsep{0em}
 \item decompose $\scrR_0$ into $(\scrR_{0,j})_{1 \leq j \leq t}$\\
-$\text{\sf{cost:~}} \softO((mn^2 + n\sigma) c^2)$
+$\text{\sf{cost:~}} \softO(c^2 (mn^2 + n\sigma) )$
 \item lift $(\scrR_{0,j})_{1 \leq j \leq t}$ to $(\scrR_j)_{1\leq j \leq t}$ with 
   coefficients in $\KK[[T]]/\langle T^{2e}\rangle$\\
 $\text{\sf{cost:~}} \softO(c\,e (\sigma+n^2)n)$
@@ -1635,7 +1627,7 @@ $\text{\sf{cost:~}} \softO(c\,e\,n)$
 \item deduce a zero-dimensional parametrization $\scrR_1$ with coefficients in $\KK$ from $\scrS$\\
 $\text{\sf{cost:~}} \softO(c\,e\,n)$
 \item\label{step:homot:final} remove from $Z(\scrR_1)$ points that are not isolated in $V(\bC)$ \\
-  $\text{\sf{cost:~}} \softO(n^4 c^6 + n^2 m c^5 + n \sigma c^6)$
+  $\text{\sf{cost:~}} \softO(c^6 n^4  + c^5 m n^2   + c^6 n \sigma )$
 \end{enumerate}
 \label{DetSys}
 \end{algorithm}
@@ -1653,22 +1645,22 @@ $\sigma'\in O(n \, \sigma)$. Next, one evaluates this matrix modulo
 $w_1$, as done previously when we were decomposing $\scrR_0$, and use
 Gaussian elimination modulo $w_1$ to identify divisors of $w_1$ that
 need to be removed. The overall cost is similar to that of decomposing
-$\scrR_0$, that is, $\softO((mn^2+n\sigma)c^2)$ operations in $\KK$.
+$\scrR_0$, that is, $\softO(c^2(mn^2+n\sigma))$ operations in $\KK$.
 The final cleaning step is done using Algorithm $\mathsf{Clean}$ of
 \cite{GiLeSa01} whose cost is dominated by the previous computations.
 
 All in all, the total cost is
 $$
-\softO((mn^2+n\sigma)c^2 + c\, e\,n (\sigma+n^2)  )
+\softO(c^2(mn^2+n\sigma) + c\, e\,n (\sigma+n^2)  )
 $$
 operations in $\KK$. Taking into account the inequality
 $e\geq c$ (Lemma~\ref{lemma:e-geq-c}) this simplifies as 
 $$
-\softO( mn^2c^2  + c\, e\,n (\sigma+n^2) ),
+\softO(c^2 mn^2  + c\, e\,n (\sigma+n^2) ),
 $$
 which ends the proof of Proposition~\ref{prop:compute_regular}. In the
 sequel, the resulting algorithm is called
-$\mathsf{Homotopy\_simple}$. It differs from algorithm
+$\mathsf{Homotopy\_simple}$. It differs from Algorithm
 $\mathsf{Homotopy}$ at Step \ref{step:homot:final} where the cleaning step we
 just described replaces the one of $\mathsf{Homotopy}$.
 
@@ -1832,22 +1824,6 @@ the construction used in this section was already in the appendix
 of~\cite{NieRan09}, where it was used to bound the number of solutions
 of determinantal systems (as we mentioned in the introduction).
 
-% \begin{proposition}\label{prop:coldeg}
-%   Suppose that matrix
-%   $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$ and polynomials
-%   $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$ are given by a
-%   straight-line program of length $\sigma$. Then, the multiplicities of
-%   the isolated points of $\VpFG{p}{\mF}{G}$ are at most $c=\gamma_1\cdots\gamma_sE_{n-s}(\delta_1, \ldots, \delta_q)$.
-
-%   If all $\gamma_i$'s and $\delta_j$'s are at least equal to $1$, there exists  
-%   a randomized algorithm that computes these isolated points  using $$\softO\left (c(e+c^5 )(\sigma + c)\right)$$
-%   operations in $\KK$, with
-%   $c=\gamma_1\cdots\gamma_sE_{n-s}(\delta_1, \ldots, \delta_q)$ and
-%   $e=(\gamma_1+1)\cdots(\gamma_s+1) E_{n-s}(\delta_1+1, \ldots,
-%   \delta_q+1)$,
-%   where $E_{n-s}(\cdots)$ is the elementary symmetric 
-%   function of degree $n-s$, and $n=q-p+s+1$.
-% \end{proposition}
 Recall that for $k\geq 0$, $E_k(\delta_1,\dots,\delta_q)$ denotes the
 elementary symmetric polynomial of degree $k$ in
 $(\delta_1, \ldots, \delta_q)$. 
@@ -1865,7 +1841,7 @@ $(\delta_1, \ldots, \delta_q)$.
   $e=(\gamma_1+1)\cdots(\gamma_s+1) E_{n-s}(\delta_1+1, \ldots,
   \delta_q+1)$, $\gamma = \max(\gamma_1, \ldots, \gamma_s)$ and
   $\delta = \max(\delta_1, \ldots, \delta_q)$.
-Then, there exists a randomized algorithm that computes these isolated
+  Then, there exists a randomized algorithm that computes these isolated
   points
   $$
   \softO\left ({q \choose p} c(e+c^5 )(\sigma +\gamma + q
@@ -2220,26 +2196,25 @@ program $\Gamma'$ of size $\sigma'=O(\sigma + {q \choose p} n^3 +n(\gamma_1+\cdo
 
 \paragraph{Completing the cost analysis.}
 We can then apply Proposition~\ref{prop:compute_isolated},
-whose runtime is $\softO(c^5 m n^2  + c(e+c^5 n)(\sigma' + n^3))$ operations
+whose runtime is $\softO(c^5 m n^2  + c(e+c^5) n(\sigma' + n^3))$ operations
 in~$\KK$; since $m \le n + {q \choose p}$, this can be simplified as
-$$\softO\left (c(e+c^5 n )\left(\sigma + {q \choose p} n^3
+$$\softO\left (c(e+c^5) n \left(\sigma + {q \choose p} n^3
 +n(\gamma_1+\cdots+\gamma_s+\delta_1+\cdots+\delta_q)\right)\right).$$
 Since $s \leq n$, $\gamma = \max(\gamma_1, \ldots, \gamma_s)$ and
 $\delta = \max(\delta_1, \ldots, \delta_q)$, our bound becomes
-$$\softO\left (c(e+c^5 n)(\sigma + {q \choose p}n^3+n^2\gamma + nq
+$$\softO\left (c(e+c^5) n(\sigma + {q \choose p}n^3+n^2\gamma + nq
   \delta)\right).$$ This can also be rewritten as
 $$\softO\left (c(e+c^5 )(\sigma + {q \choose p}n^3+n^2\gamma + nq
-  \delta)\right),$$ by means of a case discussion between $e$ and
-$c^5 n$. If $c^5 n \le e$, then $e+c^5 n$ is in $O(e)$. Else, we have
-$e \le c^5 n$; since one easily checks that $e \ge 2^n$, this implies that $c \ge 2^n/n$, so
-that $n$ is in $O(\log(c))$, and $e+c^5 n$ is in $\softO(c^5)$. A
+  \delta)\right),$$ since one easily checks that $e \ge 2^n$,
+so that $n \in \softO(e)$. A
 last factorization shows that the bound can be
 simplified to
 \[
   \softO\left ({q \choose p}  c(e+c^5 )n^3(\sigma +\gamma + q
     \delta)\right).
 \]
-Noticing that $n\le\log(e)$ then ends the proof of Proposition~\ref{prop:coldeg}.
+Using again  that $n\le\log(e)$, we can omit the factor
+$n^3$ from the $\softO(\ )$, and we conclude the proof of Proposition~\ref{prop:coldeg}.
 The resulting algorithm, called $\mathsf{ColumnDegree}$, is described
 herafter.
 
@@ -2279,7 +2254,7 @@ $$\mu_{1,u_1}=\cdots=\mu_{s,u_s}=\lambda_{j_1,v_1}=\cdots=\lambda_{j_{n-s},v_{n-
 
 \item return $\mathsf{Homotopy}(\Gamma',\scrR)$ 
 
-\hfill $\text{\sf{cost:~}} \softO\left (c^5 m n^2 + c(e+c^5n )(\sigma' + n^3)\right)$, 
+\hfill $\text{\sf{cost:~}} \softO\left (c^5 m n^2 + c(e+c^5)n (\sigma' + n^3)\right)$, 
 
 \hfill with $e=(\gamma_1+1)\cdots(\gamma_s+1) E_{n-s}(\delta_1+1,\dots,\delta_q+1)$
 \end{enumerate}
@@ -2720,8 +2695,9 @@ Lemma~\ref{lemma:union} has any point with $X_0=0$. As a consequence,
 $V_p(\mathfrak{N}^H_{\balpha,q})$ has no point at infinity either, as
 claimed.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\paragraph{Refining $\assI_1$.} The following  is a strengthening of 
+\subsection{Refining $\assI_1$} The following  is a strengthening of 
 property $\assI_1$ above. That property asserts that for any
 $\tilde\bx$ in $\P^n(\KKGbar)$, the $p \times q$ matrix
 $\mathfrak{M}^H_{\balpha,q}(\tilde\bx)$ has rank at least $p-1$, so
@@ -3016,15 +2992,18 @@ that equations of the form $b\, \mathfrak{l}^H_{1,1,r_1},\dots,b\,
 \mathfrak{l}^H_{n,n,r_n}$ belong to $I_p(\mathfrak{N}^H_{\balpha,q})$,
 with $b(\tilde\bx) \ne 0$. The conclusion follows directly.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{An algorithm}
-We conclude this section with an algorithm that applies the process
-in Lemma~\ref{lemma:union}, in the case $t=p$, to non-homogeneous 
-matrices. Indeed, while homogeneity is used at several steps in 
-the proof (and will be needed again when we apply this result), our 
-main algorithm deals with matrices without a homogeneous structure.
-Thus we will consider a matrix $\mN$ as in~\eqref{eqdef:type1},
-but with $X_0=1$. Explicitly, we have
+
+We conclude this section with an algorithm
+$\mathsf{RowDegreeDiagonal}$, that applies the decomposition in
+Lemma~\ref{lemma:union}, in the case $t=p$, to non-homogeneous
+matrices. Indeed, while homogeneity is used at several steps in the
+proof (and will be needed again when we apply this result), our main
+algorithm deals with matrices without a homogeneous structure.  Thus
+we will consider a matrix $\mN$ as in~\eqref{eqdef:type1}, but with
+$X_0=1$. Explicitly, we have
 \begin{align}\label{eqdef:type1aff}
 \mN= \left( \begin{matrix}
 \lambda_{1,1} & 0 & \cdots & 0 & \lambda_{1,p+1} & \cdots & \lambda_{1, q}\\
@@ -3106,7 +3085,7 @@ $\mN \in \KK[X_1, \ldots, X_n]^{p \times q}$ as in~\eqref{eqdef:type1aff}, with 
 \hfill $\text{\sf{cost:~}} \sum_{\bi,\br} T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-1)$
     \item\label{step:substdiag} deduce $\scrR_{\bi,\br}$ from $\scrR_{\bi,\br}'$ by adding the expressions for $(X_{n-\kappa+1}, \ldots, X_n)$
 
-\hfill      $\text{\sf{cost:~}} O(\sum_{\bi,\br} n^2 \rc_{\bi,\br})$
+\hfill      $\text{\sf{cost:~}} O(\sum_{\bi,\br}  \rc_{\bi,\br} n^2)$
   \end{enumerate}
   \end{enumerate}
 
@@ -3124,7 +3103,7 @@ $\mN \in \KK[X_1, \ldots, X_n]^{p \times q}$ as in~\eqref{eqdef:type1aff}, with 
 \end{enumerate}
 \item combine all $(\scrR_{\bi,\br})_{\bi,\br}$ into the output $\scrR$
 
-\hfill  $\text{\sf{cost:~}} \softO(\sum_{\bi,\br} n \rc_{\bi,\br})$
+\hfill  $\text{\sf{cost:~}} \softO(\sum_{\bi,\br}  \rc_{\bi,\br} n)$
 \end{enumerate}
 \label{Row}
 \end{algorithm}
@@ -3139,7 +3118,7 @@ $\mN \in \KK[X_1, \ldots, X_n]^{p \times q}$ as in~\eqref{eqdef:type1aff}, with 
   where $\rc$ is the cardinality of $V_p(\mN)$.
 \end{lemma}
 \begin{proof}
-  The cost reported at each step in the algorithm is the total amount
+  The cost reported at each step in the pseudo-code is the total amount
   of time spent there, over all iterations (the sums in the first loop
   are for $\kappa \le \min(n-1,p)$, the ones in the second loop for
   $\kappa=n$ if $n \le p$). Several steps are straightforward to
@@ -3163,17 +3142,17 @@ $\mN \in \KK[X_1, \ldots, X_n]^{p \times q}$ as in~\eqref{eqdef:type1aff}, with 
   X_{n-\kappa})$: this is done by means of a matrix product in size
   $(\kappa \times n-\kappa)$ by $(n-\kappa \times \rc_{\bi,\br})$, where
   $\rc_{\bi,\br}$ is the cardinality of $V_\kappa(\mM_{\bi,\br})$, for
-  $\bi=(i_1,\dots,i_\kappa)$.  The cost is thus $O(n^2 \rc_{\bi,\br})$;
-  the sum of these costs is thus $O(n^2 \rc)$, since the sum of all
+  $\bi=(i_1,\dots,i_\kappa)$.  The cost is thus $O(\rc_{\bi,\br}n^2 )$;
+  the sum of these costs is thus $O(\rc n^2 )$, since the sum of all
   $\rc_{\bi,\br}$ is equal to $\rc$ by Remark~\ref{remark:disjoint}.
 
   The combination in the last step is done by fast Chinese Remaindering,
-  in quasi-linear time $\softO(\sum_{\bi,\br} n \rc_{\bi,\br})$,
-  which is $\softO(n \rc)$. Thus, the total runtime is 
+  in quasi-linear time $\softO(\sum_{\bi,\br} \rc_{\bi,\br}  n)$,
+  which is $\softO(\rc n)$. Thus, the total runtime is 
   \begin{multline*}
  \sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \br=(r_1,\dots,r_\kappa)\\\kappa\le\min(n-1,p)}}
 T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-1)\\
-+\softO\left (n^2 \rc + \sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \br=(r_1,\dots,r_\kappa)\\\kappa\le\min(n-1,p)}}
++\softO\left (\rc n^2  + \sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \br=(r_1,\dots,r_\kappa)\\\kappa\le\min(n-1,p)}}
   (\alpha_{i_1} + \cdots +\alpha_{i_\kappa}) n^3 
   +  \sum_{\substack{\bi=(i_1,\dots,i_n)\\ \br=(r_1,\dots,r_n)}} n^3\right).    
   \end{multline*}
@@ -3182,7 +3161,7 @@ T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-1)\\
   \begin{multline*}
  \sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(n-1,p)}}
   \alpha_{i_1}  \cdots \alpha_{i_\kappa}T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-1)\\
-+\softO\left (n^2 \rc + \sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(n-1,p)}}
++\softO\left ( \rc n^2 + \sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(n-1,p)}}
     \alpha_{i_1}  \cdots \alpha_{i_\kappa} (\alpha_{i_1} + \cdots +\alpha_{i_\kappa}) n^3 
   +  \sum_{\substack{\bi=(i_1,\dots,i_n)}   }\alpha_{i_1}  \cdots \alpha_{i_n} n^3\right).    
   \end{multline*}
@@ -3225,64 +3204,46 @@ Section~\ref{sec:columndegree}, we write
 $\gamma_1=\deg(g_1),\dots,\gamma_s=\deg(g_s)$ and we let
 $\alpha = \max(\alpha_1, \ldots, \alpha_p)$ and
 $\gamma = \max(\gamma_1, \ldots, \gamma_s)$.
+We start by stating our first result on computing the isolated
+points of $\VpFG{p}{\mF}{G}$. Recall in what follows that 
+where $S_{n-s}$ is the complete homogeneous symmetric 
+function of degree $n-s$.
 
-% Similarly to what we did in Section~\ref{sec:columndegree}, we define
-% \[
-% \tilde\delta_{\rm row}(\mF)=S_{n-s}(\alpha_1 +1,\cdots,\alpha_p+1).
-% \]
-
-We start by stating our first result on computing the simple
-points of $\VpFG{p}{\mF}{G}$.
-
-\begin{proposition}\label{prop:rowdegree_simple}
+\begin{proposition}\label{prop:rowdegree}
   Suppose that the matrix $\mF \in \KK[X_1,\dots,X_n]^{p \times q}$
   and the polynomials $G=(g_1,\dots,g_s)$ in $\KK[X_1,\dots,X_n]$ are
-  given by a straight-line program of length $\sigma$.  If all
-  $\gamma_i$'s and $\alpha_j$'s are at least equal to $1$, there
-  exists a randomized algorithm that computes the simple
-  points of $\VpFG{p}{\mF}{G}$ using
-  $$\softO\left( \rc^2 n^6{q \choose p}^2 (\rc + \re ( \sigma + nq p
-    \alpha +\gamma +n^3 ) ) \right)$$ 
-%   $$\softO\left(
-%     \rc^2 n^5 {q \choose p}^2 (\re+\rc^5 n)(\sigma + {q \choose p} n + n q p \alpha+ \gamma + n^3)
-% %    \rc(\re+\rc^5 )(\sigma + \rc^2)
-%   \right)$$
-  operations in $\KK$, with
-  $\rc=\gamma_1\cdots\gamma_s S_{n-s}(\delta_1, \ldots, \delta_q)$ and
-  $\re=(\gamma_1+1)\cdots(\gamma_s+1) S_{n-s}(\delta_1+1, \ldots,
-  \delta_q+1)$,
-  where $S_{n-s}(\cdots)$ is the complete homogeneous symmetric 
-  function of degree $n-s$.
+  given by a straight-line program of length $\sigma$.  Then, the multiplicities of
+  the isolated points of $\VpFG{p}{\mF}{G}$ are at most
+  $\rc=\gamma_1\cdots\gamma_s S_{n-s}(\alpha_1, \ldots, \alpha_p)$.
+  
+  Assume that  all $\gamma_i$'s and $\alpha_j$'s are at least equal to $1$, 
+  and let   $\re=(\gamma_1+1)\cdots(\gamma_s+1) S_{n-s}(\alpha_1+1, \ldots,
+  \alpha_p+1)$, $\alpha = \max(\alpha_1, \ldots, \alpha_p)$ and
+  $\gamma = \max(\gamma_1, \ldots, \gamma_s)$. Then, there
+  exists a randomized algorithm that computes the isolated points of
+  $\VpFG{p}{\mF}{G}$ using
+  $$\softO\left( {q \choose p} \rc (\re+\rc^5 )  (\sigma + \gamma+ p \alpha)  \right)$$
+  operations in $\KK$.
 \end{proposition}
 
 We state now the complexity result for computing the simple
 points of $\VpFG{p}{\mF}{G}$.
 
-\begin{proposition}\label{prop:rowdegree}
-  We reuse the notations and assumptions introduced for
-  Proposition~\ref{prop:rowdegree_simple}. Then, the multiplicities of
-  the isolated points of $\VpFG{p}{\mF}{G}$ are at most
-  $\rc=\gamma_1\cdots\gamma_s S_{n-s}(\delta_1, \ldots, \delta_q)$.
-
-  Also, there exists a randomized algorithm that computes the 
-  isolated points of $\VpFG{p}{\mF}{G}$ using
-  $$\softO\left(
-    \rc^2 n^5 {q \choose p}^2 (\re+\rc^5 n)
-    (\sigma + {q \choose p} n + n q p \alpha+ \gamma + n^3)
-%    \rc(\re+\rc^5 )(\sigma + \rc^2)
-  \right)$$
-%  $$\softO\left( \rc^2 n^6{q \choose p}^2 (\rc + \re ( \sigma + nq p
-%    \alpha +\gamma +n^3 ) ) \right)$$
+\begin{proposition}\label{prop:rowdegree_simple}
+  Reusing the notations introduced above, there
+  exists a randomized algorithm that computes the simple
+  points of $\VpFG{p}{\mF}{G}$ using
+  $$\softO\left({q \choose p}  \rc \re       (\sigma + \gamma+ p \alpha)  \right)$$
   operations in $\KK$.
 \end{proposition}
 
-These propositions complete the proof of Theorems~\ref{theo:1},
-\ref{theo:2} and~\ref{theo:3}. % We start by solving
-% Problem~\eqref{problem3} and hence give the algorithm
-% $\mathsf{Rowdegree\_simple}$ on which
-% Proposition~\ref{prop:rowdegree_simple} relies.
+These propositions complete the proofs of Theorems~\ref{theo:1},
+\ref{theo:2} and~\ref{theo:3}. 
 
-\subsection{Setting up the homotopy and sum of the multiplicities}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Setting up the homotopy}
+
 We are again going to rely on the algorithm of
 Section~\ref{sec:homotopy}. As in Section~\ref{sec:columndegree}, we
 let $\bC=(c_1,\dots,c_s,c_{s+1}\dots,c_m)$ be such that
@@ -3324,14 +3285,13 @@ $p$-minors of $\mU=(1-T)\cdot\mN + T\cdot \mF$, and $\bB=(b_1,\dots,b_m)$.
 The polynomials $(a_{s+1},\dots,a_m)$ are defined as the $p$-minors of
 $\mN$, so that $\bA=\bB_0$; on the other hand, we also have
 $\bC=\bB_1$.  Our next step is to prove that all assumptions of
-Propositions~\ref{prop:degree_fiber} and~\ref{prop:compute_isolated}
+Propositions~\ref{prop:degree_fiber}~\ref{prop:compute_isolated}
+and~\ref{prop:compute_regular}
 are satisfied for $\bB$ and $\bA=\bB_0$, as long as the coefficients 
 of $a_1,\dots,a_s$ and $\mN$ are chosen generically.
 
 \paragraph{Properties $\assA_1$ and $\assA_2$}
 These follow from Proposition~\ref{prop:KH1H2}.
-
-\paragraph{Properties $\assG_1$, $\assG_2$ and $\assG_3$}
 
 \paragraph{Property $\assG_1(0)$.} We have to prove that for $i=1,\dots,m$,
 $\deg_\bX(b_i)=\deg_\bX(a_i)$. We already established it in
@@ -3484,6 +3444,8 @@ multiplicities of the isolated solutions of $\bC=\bB_1$ is at most
 $\rc$, where $\rc$ is the number of solutions of $\bA$. Our next step
 is to establish the value of $\rc$. This is done in Corollary~\ref{coro:complete}
 below, which proves the first claim in Proposition~\ref{prop:rowdegree}.
+Recall below that $S_t$ is the degree $t$ complete symmetric
+function, for $t \ge 0$.
 
 \begin{lemma}
   Let $\balpha=(\alpha_1,\dots,\alpha_p)$ be positive integers.  and
@@ -3568,43 +3530,44 @@ $V_p(\mN)$ and $V_p(\mM)$ have
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Towards homotopy algorithms}
+\subsection{Towards the homotopy algorithms}
 
 Since $\assA_1$, $\assA_2$, $\assG_1(0)$, $\assG_2(0)$ and
 $\assG_3(0)$ hold, we are going to apply
-Proposition~\ref{prop:compute_regular} to compute the simple
-points in $\VpFG{p}{\mF}{G}$. Recall that the resulting algorithm
+Proposition~\ref{prop:compute_regular} to first compute the simple
+points in $\VpFG{p}{\mF}{G}$. Indeed, the resulting algorithm
 $\mathsf{RowDegree\_simple}$ is used by the
-$\mathsf{RowDegreeDiagonal}$ of previous Section. Next, we will apply
-Proposition~\ref{prop:compute_isolated} to compute the isolated points
-of $\VpFG{p}{\mF}{G}$.
+$\mathsf{RowDegreeDiagonal}$ of the previous section, which itself
+will be used to compute the isolated points of $\VpFG{p}{\mF}{G}$, by
+means of Proposition~\ref{prop:compute_isolated}.
 
 In the following paragraphs, we discuss the required properties
 $\assD_1,\assD_2,\assD_3$ in this context. In what follows, we assume
 that we are given a straight-line program $\Gamma$ of length $\sigma$
 that computes the input matrix $\mF$ and the input equations $G$.
 Besides, we also assume that all $\gamma_i$'s and $\alpha_j$'s are at
-least equal to $1$,
+least equal to $1$.
 
 
 \paragraph{Property $\assD_1$.}
 To perform the homotopy, we need a zero-dimensional parametrization of
 $V(\bA)$. We now describe how to obtain it; the process is based on
 Algorithm {\sf RowDegreeDiagonal} given in the previous section, and
-makes up the first two steps in Algorithm {\sf RowDegree}.
+makes up the first two steps in Algorithm ${\sf RowDegree\_simple}$.
 
 As a preliminary, we construct a straight-line program $\Delta$ that
 computes the entries of~$\mN$: for all $i,j$, $\Delta$ computes and multiplies
 the values of the $\alpha_i$ linear forms involved in $\lambda_{i,j}$
-using $O(n \alpha_i)$ step, so that its total length is $\sigma_\mN=O(n^2
-(\alpha_1+\cdots+\alpha_p))$.
+using $O(n \alpha_i)$ step. Its total length is $\sigma_\mN=O(n^2
+(\alpha_1+\cdots+\alpha_p))$, which is $O(n^2 p \alpha)$,
+with $\alpha = \max(\alpha_1, \ldots, \alpha_p)$.
 
 Then, for any sequence $\bu=(u_1,\dots,u_s)$, with $u_j$ in
 $\{1,\dots,\gamma_j\}$ for all $j$, we start by solving the equations
 $\mu_{1,u_1} = \cdots = \mu_{s,u_s}=0$, to express
 $(X_{n-s+1},\dots,X_n)$ as linear forms
 $(\phi_{n-s+1,\bu},\dots,\phi_{n,\bu})$ in $(X_1,\dots,X_{n-s})$; this
-takes a total of $O(\gamma_1 \cdots \gamma_s n^3)$ operations in $\KK$.
+takes a total of $O(\gamma_1 \cdots \gamma_s n^3 )$ operations in $\KK$.
 
 From this, we deduce a straight-line program $\Delta_\bu$ that
 computes the entries of matrix $\mN_\bu$ from~\eqref{eqdef:Lu}: it
@@ -3619,7 +3582,7 @@ so by Lemma~\ref{lemma:rowdegreediagonal}, Algorithm {\sf RowDegreeDiagonal} tak
 T=\sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(n-s-1,p)}}
 \alpha_{i_1} \cdots \alpha_{i_\kappa} T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-s-1)
 +
-\softO(n^3 S_{n-s}(\alpha_1,\dots,\alpha_p)).  \label{eqdef:T}
+\softO( S_{n-s}(\alpha_1,\dots,\alpha_p) n^3).  \label{eqdef:T}
 \end{eqnarray}
 Since there are $\gamma_1 \cdots \gamma_s$ choices of $\bu$, 
 the total cost is $\gamma_1 \cdots \gamma_s T$.
@@ -3630,26 +3593,27 @@ only variables $(X_1,\dots,X_{n-s})$, the expressions of
 $(X_{n-s+1},\dots,X_n)$ obtained from
 $(\phi_{n-s+1,\bu},\dots,\phi_{n,\bu})$. As in the analysis of
 Algorithm {\sf RowDegreeDiagonal}, the total runtime is $O(\gamma_1
-\cdots \gamma_s n^2 S_{n-s}(\alpha_1,\dots,\alpha_p))=O(n^2\rc)$. Finally, we
+\cdots \gamma_s S_{n-s}(\alpha_1,\dots,\alpha_p)  n^2)=O(\rc n^2)$. Finally, we
 combine the resulting parametrizations $(\scrR_\bu)_\bu$ into a single
 parametrization $\scrR$ using Chinese Remaindering, in time
-$\softO(\gamma_1 \cdots \gamma_s n S_{n-s}(\alpha_1,\dots,\alpha_p))=\softO(n\rc)$.
+$\softO(\gamma_1 \cdots \gamma_s  S_{n-s}(\alpha_1,\dots,\alpha_p) n)=\softO(\rc n)$.
 
 Altogether, the overall time spent in computing the zero-dimensional
 parametrization $\scrR$ of $V(\bA)$ is 
-$\gamma_1 \cdots \gamma_s\sum_{\substack{\bi=(i_1,\dots,i_\kappa), \kappa\le\min(n-s-1,p)}}
-\alpha_{i_1} \cdots \alpha_{i_\kappa} T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-s-1)$
-$+\softO(n^3 \rc).$
-
-
-
+\begin{multline}\label{eq:VbA}
+\gamma_1 \cdots \gamma_s T +\softO( \rc n^3)  \\  = \gamma_1 \cdots \gamma_s\sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(n-s-1,p)}}
+\alpha_{i_1} \cdots \alpha_{i_\kappa} T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), n-s-1)
++\softO( \rc n^3).
+\end{multline}
 
 \paragraph{Property $\assD_2$.} Next, we need to determine an upper bound 
-$\re$ on the degree of the curve $V(J')$, where $J'$ is the union of the
-one-dimensional irreducible components of $V(\bB) \subset
+$\re$ on the degree of the curve $V(J')$, where $J'$ is the union of
+the one-dimensional irreducible components of $V(\bB) \subset
 \KKbar{}^{n+1}$ whose projection on the $T$-axis is dense. Proceeding
-exactly as in Section~\ref{sec:columndegree}, we can take for $\re$ the
-integer $(\gamma_1+1)\cdots(\gamma_s+1) S_{n-s}(\alpha_1 +1,\cdots,\alpha_p+1)$.
+as in Lemma~\ref{lemma:columndegree:e_estimate} of
+Section~\ref{sec:columndegree}, we can take for $\re$ the integer
+$(\gamma_1+1)\cdots(\gamma_s+1) S_{n-s}(\alpha_1
++1,\dots,\alpha_p+1)$.
 
 \paragraph{Property $\assD_3$.} Finally, we need to give an estimate
 on the size of a straight-line program that computes the polynomials
@@ -3660,22 +3624,24 @@ straight-line program $\Delta$ of size $\sigma_\mN$ that computes all
 entries of $\mN$; for an extra $O({q \choose p} n^3)$ operations, we
 can compute all entries of $\mU=(1-T)\cdot\mN+T\cdot\mF$ and all
 $p$-minors $(b_{s+1},\dots,b_m)$ of this matrix.  Adding an extra
-$O(n(\gamma_1 + \cdots + \gamma_s))$ operations, we can also compute
+$O(n(\gamma_1 + \cdots + \gamma_s))\in O(n^2 \gamma)$ operations
+(with $\gamma = \max(\gamma_1, \ldots, \gamma_s)$), we can also compute
 all polynomials $(a_1,\dots,a_s)$, and thus $(b_1,\dots,b_s)$.
 
 Altogether, we have obtained a straight-line program $\Gamma'$ that
 computes $\bB=(b_1,\dots,b_m)$ using
-$\sigma'=\sigma + \sigma_\mN + O({q \choose p} n^3 + n(\gamma_1 +
-\cdots + \gamma_s))=\sigma +O( {q \choose p} n^3 + n^2
-(\alpha_1+\cdots+\alpha_p) + n(\gamma_1 + \cdots + \gamma_s))$
-operations.
+$\sigma'=\sigma + \sigma_\mN + O({q \choose p} n^3 + n^2 \gamma)=\sigma +O( {q \choose p} n^3 + n^2 p \alpha+ n^2\gamma)$
+operations. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Algorithm $\mathsf{RowDegree\_simple}$}
+
+Algorithm $\mathsf{RowDegree\_simple}$ that we deduce from the above
+discussion is given hereafter. We indicate in the pseudo-code the
+arithmetic costs for intermediate steps.
 
 
-\subsection{Cost analysis for $\mathsf{RowDegree\_simple}$}
-
-The algorithm $\mathsf{RowDegree\_simple}$ that we deduce from the
-above discussion is given hereafter. We indicate the arithmetic costs
-for intermediate steps.
 \begin{algorithm}[!t]
 \caption{$\mathsf{RowDegree\_simple}(\Gamma)$}
 {\bf Input}:  a straight-line program $\Gamma$ of length $\sigma$ that computes
@@ -3687,295 +3653,229 @@ and $G = (g_1, \ldots, g_s)$ in $\KK[X_1, \ldots, X_n]$ with $p \leq q$, $n = q-
   $\mN \in \KK[X_1,\dots,X_n]^{p \times q}$ as
   in~\eqref{eqdef:type1aff}
   
-\hfill Length of $\Delta$ is $O(n^2(\alpha_1+\cdots+\alpha_p))$
+\hfill length of $\Delta$ is $O(n^2 p \alpha)$
 \item for any sequence $\bu=(u_1,\dots,u_s)$, with $u_j \in \{1,\dots,\gamma_j\}$ for all $j$
 \begin{enumerate}
 \item apply Gaussian elimination to the system of linear forms
   $\mu_{1,u_1}=\cdots=\mu_{s,u_s}=0$ given at \eqref{eqdef:ai} to
   rewrite $(X_{n-s+1}, \ldots, X_n)$ as linear forms
-  $(\phi_{\bu,k})_{n-s+1 \le k \le n}$ in $(X_1,\dots,X_{n-s})$
+  $(\phi_{k,\bu})_{n-s+1 \le k \le n}$ in $(X_1,\dots,X_{n-s})$
   
-\hfill  $\text{\sf{Cost:~}} O(\gamma_1 \cdots \gamma_s n^3)$
+\hfill  $\text{\sf{cost:~}} O(\gamma_1 \cdots \gamma_s n^3)$
 
 \item construct a straight-line program $\Delta_{\bu}$ that computes the matrix 
   $\mN_\bu  \in \KK[X_1, \dots, X_{n-s}]^{p \times q}$ obtained
-  by substituting $(\phi_{\bu,k})_{n-s+1 \le k \le n}$ into $\mN$
+  by substituting $(\phi_{k,\bu})_{n-s+1 \le k \le n}$ into $\mN$
   
-  \hfill Length of $\Delta_{\bu}$ is $O(n^2(\alpha_1+\cdots+\alpha_p))$
+  \hfill length of $\Delta_{\bu}$ is $O(n^2 p\alpha)$
 
 \item $\scrR'_\bu \gets \mathsf{RowDegreeDiagonal}(\Gamma_\bu)$ (points have coordinates $(X_1,\dots,X_{n-s})$
   
-\hfill  $\text{\sf{Cost:~}} \softO(\gamma_1 \cdots \gamma_s T)$, for $T$ as in~\eqref{eqdef:T}
+\hfill  $\text{\sf{cost:~}} \gamma_1 \cdots \gamma_s T$, for $T$ as in~\eqref{eqdef:T}
 
 \item deduce $\scrR_\bu$ from $\scrR'_\bu$ by adding the expressions for $(X_{n-s+1},\dots,X_n)$
   
-\hfill  $\text{\sf{Cost:~}} O( n^2 \rc)$, with $\rc= \gamma_1 \cdots \gamma_s S_{n-s}(\alpha_1,\dots,\alpha_p)$
+\hfill  $\text{\sf{cost:~}} O( \rc n^2)$, with $\rc= \gamma_1 \cdots \gamma_s S_{n-s}(\alpha_1,\dots,\alpha_p)$
 \end{enumerate}
 \item combine all $\scrR_\bu$ into $\scrR$
 
-  \hfill $\text{\sf{Cost:~}} \softO(n \rc)$
+  \hfill $\text{\sf{cost:~}} \softO( \rc n)$
 
 \item construct a straight-line program $\Gamma'$ that computes all polynomials $\bB$
 
-  \hfill Length of $\Gamma'$ is $\sigma'=O(\sigma + {q \choose p} n^3 + n^2
-(\alpha_1+\cdots+\alpha_p) + n(\gamma_1 + \cdots + \gamma_s))$
+  \hfill length of $\Gamma'$ is $\sigma'=O(\sigma + {q \choose p} n^3 + n^2 p \alpha + n^2\gamma)$
 
 \item\label{step:final:rowdegreesimple} return $\mathsf{Homotopy\_simple}(\Gamma',\scrR)$
 
-  \hfill $\text{\sf{Cost:~}} \softO( \rc(\re+\rc^5 )(\sigma + \rc n^4) )$, 
+  \hfill $\text{\sf{cost:~}} \softO( \rc^2 m n^2 + \rc \re n (\sigma'  + n^2))$, 
 with $\re=(\gamma_1+1) \cdots (\gamma_s+1) S_{n-s}(\alpha_1+1,\dots,\alpha_p+1)$
 \end{enumerate}
 \label{RowHom_simple}
 \end{algorithm}
 
-To estimate its complexity, we finally apply
+All cost  estimates were given in the previous subsection
+and are summarized in~\eqref{eq:VbA}, save for that of 
+the last step. To estimate its complexity, we apply
 Proposition~\ref{prop:compute_regular}, which gives a runtime of
-$\softO(\rc^2 m n^2 + \rc \re (\sigma' m + n^2))$ operations in~$\KK$
+$\softO(\rc^2 m n^2 + \rc \re n (\sigma'  + n^2))$ operations in~$\KK$
 for the cost of calling the homotopy subroutine at the last step of
-Algorithm {\sf RowDegree\_simple}. This runtime is dominated by
-  \begin{equation}
-    \label{eq:regular}
-  \softO\left (\rc m n^2 (\rc + \re \sigma') \right ).     
-  \end{equation}
-
-
-Recall that
-$\sigma' = \sigma +O( {q \choose p} n^3 + n^2
-(\alpha_1+\cdots+\alpha_p) + n(\gamma_1 + \cdots + \gamma_s))$ and
-$s \leq n$. Letting $\alpha = \max ( \alpha_1, \ldots, \alpha_p)$ and
-$\gamma = \max(\gamma_1, \ldots, \gamma_s)$, we obtain after some
-extra simplifications
+Algorithm {\sf RowDegree\_simple}.
+Now, we 
+write $\sigma'+ n^2 = \sigma +O( {q \choose p} n^3 + n^2 p \alpha + n^2 \gamma)$,
+for which we use the upper bound ${q \choose p} n^3(\sigma + p\alpha + \gamma)$.
+This gives the upper bound 
 \[
-  \sigma ' \leq \sigma + n^3 O\left ( {q \choose p} + p\alpha
-    +\gamma\right ).
+\softO\left (\rc^2 m n^2 + \rc\re n {q \choose p} n^3(\sigma + p\alpha + \gamma )\right ).
 \]
-
-Plugging the above right hand side  in \eqref{eq:regular}, this bound can be
-simplified as
+Using the inequalities $\rc \le \re$ and $m\leq n + {q \choose p} \le n {q \choose p}$,
+we see that the second term in the sum is dominant.
+Thus, the bound for the cost of Algorithm {\sf Homotopy\_simple} becomes
 \[
-\softO\left (\rc m n^2 (\rc + \re ( \sigma + n^3 {q \choose p} +p\alpha +\gamma  ) ) \right ).    
+\softO\left ( \rc\re {q \choose p} n^4(\sigma + p\alpha + \gamma) \right ).
 \]
-Using  $m\leq n + {q \choose p}$, the above can be bounded by
-\[
-\softO\left (\rc n^3{q \choose p}^2 (\rc + \re ( \sigma + n^3 + p \alpha +\gamma ) ) \right ).    
-\]
-
-% We next show that the three quantities $ {q \choose p}$,
-% $\gamma_1 + \cdots + \gamma_s$ and $\alpha_1+\cdots+\alpha_p$ are all
-% $O(\rc n)$.
-% \begin{itemize}
-% \item Because all $\gamma_i$'s and $\alpha_j$'s are at least equal to $1$,
-% $\rc$ is at least equal to $ {q \choose {p-1}}= \frac p{q-p+1}{q
-%   \choose p}$, so that ${q \choose p} \le c(q-p+1) \le \rc n$.
-% \item All $\gamma_j$'s are at most equal to $\rc$, so that their sum is at most
-%   $\rc n$, since $s \le n$.
-% \item The sum $\alpha_1+\cdots+\alpha_p$ is at most equal to
-%   $S_{n-s}(\alpha_1,\dots,\alpha_p)$, and thus to $\rc n$.
-% \end{itemize}
-% As a result, the cost bound becomes
-% $\softO\left (\rc(\re+\rc^5 n)(\sigma + \rc n^4)\right)$;  using the 
-% same argument as in  Section~\ref{sec:columndegree}, 
-% we see that this is also
-% $\softO\left (\rc(\re+\rc^5 )(\sigma + \rc n^4)\right).$
-
-To conclude, the total cost of the algorithm is
+Hence, the total cost of the algorithm is
+\begin{align*}
+  T_{\rm row}(\sigma,\bgamma,\balpha,q)= \gamma_1 \cdots\gamma_s T +
+  \softO\left (  {q \choose p} n^4 \rc  \re ( \sigma + p \alpha +\gamma )  \right ),  
+\end{align*}
+with $T$ as in~\eqref{eqdef:T}. Since $\re \ge 2^n$, this becomes
 \begin{align}\label{eq:recT}
   T_{\rm row}(\sigma,\bgamma,\balpha,q)= \gamma_1 \cdots\gamma_s T +
-  \softO\left ( \rc n^6{q \choose p}^2 (\rc + \re ( \sigma + p \alpha +\gamma ) ) \right ),  
+  \softO\left (  {q \choose p}  \rc  \re ( \sigma + p \alpha +\gamma )  \right ).
 \end{align}
-with $T$ as in~\eqref{eqdef:T}. This will now allow us to
-give an estimate on $T_{M,{\rm row}}$ by solving a simple recurrence
-relation.
+
+This will now allow us to give an estimate on $T_{M,{\rm row}}$ by
+solving a few recurrence relations. Recall that $T_{M,{\rm row}}$ describes
+the case where $s=0$, so that $\gamma_1 \cdots \gamma_s=1$, and $\mM$
+is a $p \times q$ input matrix as in~\eqref{eqdef:type2aff}. In this
+case, we can take $\sigma=O((q-p) q(\alpha_1 + \cdots + \alpha_p)) \in
+O((q-p)pq\alpha)$; following our convention in the previous section,
+the runtime $T_{\rm row}(\sigma,(),(\alpha_1,\dots,\alpha_p),q)$ is
+then written $T_{M,{\rm row}}((\alpha_1,\dots,\alpha_p),q)$.
 
 \begin{lemma}\label{lemma:TMrow}
   One can take
-  $T_{M,{\rm row}}((\alpha_1,\dots,\alpha_p),q)= \softO( u^2 \mu^4{q
-    \choose p}^2 (u + v ( \mu q p \alpha + \mu^3 +\gamma ) ) )$, with
-  $\mu=q-p+1$, $u=S_{\mu}(\alpha_1,\dots,\alpha_p)$ and
-  $v=S_{\mu}(\alpha_1+1,\dots,\alpha_p+1)$.
+  $$T_{M,{\rm row}}((\alpha_1,\dots,\alpha_p),q)= \softO\left ({q
+    \choose p} S_{q-p+1}(\alpha_1,\dots,\alpha_p) S_{q-p+1}(\alpha_1+1,\dots,\alpha_p+1) pq \alpha \right), $$ with
+ $\alpha =\max(\alpha_1,\dots,\alpha_p)$.
 \end{lemma}
 \begin{proof}
-  We apply the previous formula in the case where $s=0$, so that
-  $\gamma_1 \cdots \gamma_s=1$, and for a $p \times q$ input matrix
-  $\mM$ as in~\eqref{eqdef:type2aff}. In this case, we can take
-  $\sigma=O(\mu q(\alpha_1 + \cdots + \alpha_p))$; following our
-  convention in the previous section, the runtime $T_{\rm
-    row}(\sigma,(),(\alpha_1,\dots,\alpha_p),q)$ is then written
-  $T_{M,{\rm row}}((\alpha_1,\dots,\alpha_p),q)$.
-  Equation~\eqref{eq:recT}, combined with the definition of $T$
-  in~\eqref{eqdef:T}, gives the recursion
+  Taking into account that $\gamma=1$, Equation~\eqref{eq:recT},
+  combined with the definition of $T$ in~\eqref{eqdef:T}, gives the
+  recursion
   \begin{multline}
   T_{M,{\rm row}}((\alpha_1,\dots,\alpha_p),q)=
-\sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(\mu-1,p)}}
-\alpha_{i_1} \cdots \alpha_{i_\kappa} T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), \mu-1)
+\sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(q-p,p)}}
+\alpha_{i_1} \cdots \alpha_{i_\kappa} T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), q-p)
 \\ + \softO\Big(
-u \mu^3{q \choose p}^2 (u + v ( \mu q p \alpha + \mu^3 +\gamma ) )
-\Big), \quad \mu=q-p+1,\label{rec:Trow}
+ {q \choose p} S_{q-p+1}(\alpha_1,\dots,\alpha_p) S_{q-p+1}(\alpha_1+1,\dots,\alpha_p+1) p q  \alpha )
+\Big);
   \end{multline}
-  with $u=S_{\mu}(\alpha_1,\dots,\alpha_p)$ and
-  $v=S_{\mu}(\alpha_1+1,\dots,\alpha_p+1)$.  The right-hand term $\softO(
-  u \mu^3{q \choose p}^2 (u + v ( \mu q p \alpha + \mu^3 +\gamma ) )
-  )$ is at its maximum at
+notice that 
+a factor $(q-p)$ disappeared from the last term, since
+it can be absorbed in the logarithmic factors in the $\softO(\ )$.
+Let us rewrite the second summand as 
+$S_{q-p+1}(\alpha_1,\dots,\alpha_p) C((\alpha_1,\dots,\alpha_p),q)$,
+with
+\[
+C((\alpha_1,\dots,\alpha_p),q)= \softO\Big(
+ {q \choose p} S_{q-p+1}(\alpha_1+1,\dots,\alpha_p+1) p q  \alpha 
+\Big).
+\]
+This term is at its maximum at
   the root of the recursion tree.  Thus, we can find an upper bound on
   $T_{M,{\rm row}}$ by finding a solution to the recurrence
   \begin{align}\label{rec:TrowC}
-  T_{M,{\rm row}}((\alpha_1,\dots,\alpha_p),q)=
-\sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(\mu-1,p)}}
-\alpha_{i_1} \cdots \alpha_{i_\kappa} T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), \mu-1)
-+ C,
+  T_{M,{\rm row}}((\alpha_1,\dots,\alpha_p),q)&=
+\sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(q-p,p)}}
+\alpha_{i_1} \cdots \alpha_{i_\kappa} T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), q-p)\\
+&+ S_{q-p+1}(\alpha_1,\dots,\alpha_p) K,
   \end{align}
-  for some constant $C$, and substituting $C=\softO(
-  u \mu^3{q \choose p}^2 (u + v ( \mu q p \alpha + \mu^3 +\gamma ) )
-  )$.  Now, a quick induction shows
-  that $T_{M,{\rm row}}= C \mu S_\mu(\alpha_1,\dots,\alpha_p)$ is a
-  solution of~\eqref{rec:TrowC}. As a result,
-  $T_{M,{\rm row}}= \softO(
-  u^2 \mu^4{q \choose p}^2 (u + v ( \mu q p \alpha + \mu^3 +\gamma ) )
-  )$
-  is a solution of~\eqref{rec:Trow}. 
+  for some constant $K$, and replacing $K$ by $
+ \softO\Big(
+ {q \choose p} S_{q-p+1}(\alpha_1+1,\dots,\alpha_p+1) p q  \alpha 
+\Big). $  Now, a quick induction shows
+that the   solution of~\eqref{rec:TrowC} satisfies 
+$$T_{M,{\rm row}} \le   (q-p+1) S_{q-p+1} 
+(\alpha_1,\dots,\alpha_p)K,$$  and the conclusion follows.
 \end{proof}
 
 We can then take the expression given in this lemma, and combine it
-with the definition of $T$ in~\eqref{eqdef:T} and the runtime
-analysis~\eqref{eq:recT}; this shows that 
-$$T_{\rm row}(\sigma,\bgamma,\balpha,q)=
-\softO\Big (
-\rc^2 n^5{q \choose p}^2 (\rc + \re ( n q p \alpha + n^3 +\gamma ) ) +
-\rc n^6{q \choose p}^2 (\rc + \re ( \sigma + p \alpha +\gamma ) )
-\Big ).$$
-This can be simplified to
+with the definition of $T$ given in~\eqref{eqdef:T}. Using  the fact that
+$n-s-1 = q-p$, we have
+\begin{align*}
+T&=\sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(q-p,p)}}
+\alpha_{i_1} \cdots \alpha_{i_\kappa} T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), q-p)
++
+\softO( S_{q-p+1}(\alpha_1,\dots,\alpha_p) n^3).
+\end{align*}
+Using the previous lemma,
+we obtain that a term such as $T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}),q-p)$
+is
+$$
+ \softO\left ({q-p \choose \kappa} 
+S_{q-p+1-\kappa}(\alpha_{i_1},\dots,\alpha_{i_\kappa}) 
+S_{q-p+1-\kappa}(\alpha_{i_1}+1,\dots,\alpha_{i_\kappa}+1) \kappa (q-p) \alpha \right ).$$
+As in the proof of the previous lemma,  we rewrite this expression by
+factoring out the first complete function, as
+$S_{q-p+1-\kappa}(\alpha_{i_1},\dots,\alpha_{i_\kappa}) D(\alpha_{i_1},\dots,\alpha_{i_\kappa},p,q),$ with
+$$
+D(\alpha_{i_1},\dots,\alpha_{i_\kappa},p,q)= \softO\left ({q-p \choose \kappa} 
+ S_{q-p+1-\kappa}(\alpha_{i_1}+1,\dots,\alpha_{i_\kappa}+1) \kappa (q-p) \alpha \right ).$$
+Now, we use the fact that (for the values of $\kappa$ that show up
+in the sum), we have
+\begin{align*}
+{q-p \choose \kappa} & \le {q \choose p}\\
+S_{q-p+1-\kappa}(\alpha_{i_1}+1,\dots,\alpha_{i_\kappa}+1) & \le S_{q-p+1}(\alpha_{1}+1,\dots,\alpha_{p}+1).
+\end{align*}
+Thus, 
+$$
+D(\alpha_{i_1},\dots,\alpha_{i_\kappa},p,q)= \softO\left ( 
+{q \choose p}  S_{q-p+1}(\alpha_{1}+1,\dots,\alpha_{p}+1) p(q-p)\alpha\right ),$$
+independently of the choice of $\alpha_{i_1},\dots,\alpha_{i_\kappa}$.
+The sum in the definition of $T$ becomes
 \[
-\softO\Big (
-%\rc^2 n^5{q \choose p}^2 (\rc + \re ( n q p \alpha + n^3 +\gamma ) ) +
-\rc^2 n^6{q \choose p}^2 (\rc + \re ( \sigma + nq p \alpha +\gamma +n^3 ) )
-\Big )
+\left(\sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(q-p,p)}}
+\alpha_{i_1} \cdots \alpha_{i_\kappa} 
+S_{q-p+1-\kappa}(\alpha_{i_1},\dots,\alpha_{i_\kappa})\right)
+\softO\left ( 
+{q \choose p}  S_{q-p+1}(\alpha_{1}+1,\dots,\alpha_{p}+1) p(q-p)\alpha\right ),
 \]
-which establishes Proposition~\ref{prop:rowdegree_simple}
+or equivalently
+\[
+\softO\left ( 
+{q \choose p}  S_{q-p+1}(\alpha_{1},\dots,\alpha_{p}) S_{q-p+1}(\alpha_{1}+1,\dots,\alpha_{p}+1)p(q-p)\alpha \right ).
+\]
+The value of $T$ we infer from this is
+\[
+\softO\left ( 
+{q \choose p}  S_{q-p+1}(\alpha_{1},\dots,\alpha_{p}) S_{q-p+1}(\alpha_{1}+1,\dots,\alpha_{p}+1)p(q-p)\alpha 
++  S_{q-p+1}(\alpha_{1},\dots,\alpha_{p}) n^3\right ).
+\]
+We inject this value in the runtime
+analysis~\eqref{eq:recT}. Terms 
+such as $(q-p)$ or $n^3$ are polylogarithmic in $\re$; removing them,
+ the first-hand term $\gamma_1 \cdots \gamma_s T$ in~\eqref{eq:recT} is then
+bounded above by the second one, so that the runtime is simply
+\begin{align}\label{eq:recT}
+  T_{\rm row}(\sigma,\bgamma,\balpha,q)=  \softO\left (  {q \choose p}  \rc  \re ( \sigma + p \alpha +\gamma )  \right ).
+\end{align}
+This establishes Proposition~\ref{prop:rowdegree_simple}.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-\subsection{Cost analysis for $\mathsf{RowDegree}$}
+\subsection{Algorithm $\mathsf{RowDegree}$}
 
 Algorithm $\mathsf{RowDegree}$ is similar to
 $\mathsf{RowDegree\_simple}$: the only difference consists in calling
-algorithm $\mathsf{Homotopy}$ on which
+Algorithm $\mathsf{Homotopy}$ from
 Proposition~\ref{prop:compute_isolated} at the last step
-\eqref{step:final:rowdegreesimple} (instead of
-$\mathsf{Homotopy\_simple}$).
+\eqref{step:final:rowdegreesimple}, instead of
+$\mathsf{Homotopy\_simple}$.
 
-Hence, reusing the notation of the previous Subsection, as well as the
-runtime estimate given in Proposition~\ref{prop:compute_isolated}, the
-total cost of algorithm $\mathsf{RowDegree}$ is
-  \begin{equation}
-    \label{eq:Trowpassimple}
-\gamma_1 \cdots\gamma_s T +
-  \softO\left ( \rc^5 m n^2  + \rc(\re+\rc^5 n)(\sigma' + n^3) \right ),      
-  \end{equation}
-where
-\begin{itemize}
-\item $T$ is as in ~\eqref{eqdef:T};
-\item $m \leq n+ {q \choose p}$ and $s \leq n$;
-\item $\sigma' = \sigma +O( {q \choose p} n^3 + n^2
-(\alpha_1+\cdots+\alpha_p) + n(\gamma_1 + \cdots + \gamma_s))$. 
-\end{itemize}
-Reusing Lemma~\ref{lemma:TMrow} for bounding $T$ in
-\eqref{eq:Trowpassimple}, we obtain that the total cost of algorithm
-$\mathsf{RowDegree}$ can be bounded by
+The cost of Algorithm $\mathsf{Homotopy}$ is
+$\softO(\rc^5 m n^2  + \rc(\re+\rc^5) n(\sigma' + n^3))$.
+Using the facts that $\sigma'= 
+\sigma +O( {q \choose p} n^3 + n^2 p \alpha+ n^2\gamma)$,
+and that $n$ is in $\softO(\re)$,
+we rewrite this as 
+$\softO(\rc^5 m n^2  + \rc(\re+\rc^5 ) {q \choose p}(\sigma  +  p \alpha+ \gamma))$.
+Then, we use the inequality $m \le  {q \choose p} n$,
+which gives $\rc^5 m n^2 \le (\re+\rc^5)  {q \choose p} n^3$;
+hence the first term can be neglected, and the runtime of 
+$\mathsf{Homotopy}$ is thus
 \[
-  \softO\Big(
-  \rc^2 n^5 {q \choose p}^2 (\rc + \re ( n q p \alpha + n^3 +\gamma ) ) +
-  \rc^5 n^3 {q \choose p} + \rc n^2(\re+\rc^5 n)(\sigma + {q \choose p} n + p \alpha+ \gamma + n)
-  \Big)
+\softO\left( \rc(\re+\rc^5 ) {q \choose p}(\sigma  +  p \alpha+ \gamma)\right).
 \]
-which can be simplified to 
-\[
-  \softO\Big(
-  \rc^2 n^5 {q \choose p}^2 (\re+\rc^5 n)(\sigma + {q \choose p} n + n q p \alpha+ \gamma + n^3)
-  \Big).
-\]
-This finishes to establish Proposition~\ref{prop:rowdegree}.
+The costs of all other steps are the same as those in
+$\mathsf{RowDegree\_simple}$, and the analysis in the previous section
+shows that can be neglected. As a result, the bound given above 
+holds for the whole algorithm, and Proposition~\ref{prop:rowdegree}
+is proved.
 
-% Since $m \le n + {q \choose p}$, this can be simplified as
-% $$\softO\left (\rc(\re+\rc^5 n)\left(\sigma + {q \choose p} n^3 + n^2
-% (\alpha_1+\cdots+\alpha_p) + n(\gamma_1 + \cdots +
-% \gamma_s\right)\right).$$ We next show that the three quantities $ {q \choose p}$,
-% $\gamma_1 + \cdots + \gamma_s$ and $\alpha_1+\cdots+\alpha_p$ are all
-% $O(\rc n)$.
-% \begin{itemize}
-% \item Because all $\gamma_i$'s and $\alpha_j$'s are at least equal to $1$,
-% $\rc$ is at least equal to $ {q \choose {p-1}}= \frac p{q-p+1}{q
-%   \choose p}$, so that ${q \choose p} \le c(q-p+1) \le \rc n$.
-% \item All $\gamma_j$'s are at most equal to $\rc$, so that their sum is at most
-%   $\rc n$, since $s \le n$.
-% \item The sum $\alpha_1+\cdots+\alpha_p$ is at most equal to
-%   $S_{n-s}(\alpha_1,\dots,\alpha_p)$, and thus to $\rc n$.
-% \end{itemize}
-% As a result, the cost bound becomes
-% $\softO\left (\rc(\re+\rc^5 n)(\sigma + \rc n^4)\right)$;  using the 
-% same argument as in  Section~\ref{sec:columndegree}, 
-% we see that this is also
-% $\softO\left (\rc(\re+\rc^5 )(\sigma + \rc n^4)\right).$ To conclude, the 
-% total cost of the algorithm is
-% \begin{align}\label{eq:recT}
-% T_{\rm row}(\sigma,\bgamma,\balpha,q)= \gamma_1 \cdots\gamma_s T + \softO( \rc(\re+\rc^5 )(\sigma + \rc n^4)),  
-% \end{align}
-% with $T$ as in~\eqref{eqdef:T}. This will now allow us to
-% give an estimate on $T_{M,{\rm row}}$ by solving a simple recurrence
-% relation.
 
-% \begin{lemma}
-%   One can take $T_{M,{\rm row}}((\alpha_1,\dots,\alpha_p),q)= \softO(
-%   \mu^5 q u^3(v+u^5 )))$, with $\mu=q-p+1$,
-%   $u=S_{\mu}(\alpha_1,\dots,\alpha_p)$ and
-%   $v=S_{\mu}(\alpha_1+1,\dots,\alpha_p+1)$.
-% \end{lemma}
-% \begin{proof}
-%   We apply the previous result in the case where $s=0$, so that
-%   $\gamma_1 \cdots \gamma_s=1$, and for a $p \times q$ input matrix
-%   $\mM$ as in~\eqref{eqdef:type2aff}. In this case, we can take
-%   $\sigma=O(\mu q(\alpha_1 + \cdots + \alpha_p))$; following our
-%   convention in the previous section, the runtime $T_{\rm
-%     row}(\sigma,(),(\alpha_1,\dots,\alpha_p),q)$ is then written
-%   $T_{M,{\rm row}}((\alpha_1,\dots,\alpha_p),q)$.
-%   Equation~\eqref{eq:recT}, combined with the definition of $T$
-%   in~\eqref{eqdef:T}, gives the recursion
-%   \begin{multline}
-%   T_{M,{\rm row}}((\alpha_1,\dots,\alpha_p),q)=
-% \sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(\mu-1,p)}}
-% \alpha_{i_1} \cdots \alpha_{i_\kappa} T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), \mu-1)
-% \\ + \softO\Big(  
-%   \mu^4 q u(v+u^5 )(\alpha_1 + \cdots + \alpha_p)\Big), \quad \mu=q-p+1,\label{rec:Trow}
-%   \end{multline}
-%   with $u=S_{\mu}(\alpha_1,\dots,\alpha_p)$ and
-%   $v=S_{\mu}(\alpha_1+1,\dots,\alpha_p+1)$.  The right-hand term $\softO(
-%   \mu^4 q u(v+u^5 )(\alpha_1 + \cdots + \alpha_p))$ is at its maximum at
-%   the root of the recursion tree.  Thus, we can find an upper bound on
-%   $T_{M,{\rm row}}$ by finding a solution to the recurrence
-%   \begin{align}\label{rec:TrowC}
-%   T_{M,{\rm row}}((\alpha_1,\dots,\alpha_p),q)=
-% \sum_{\substack{\bi=(i_1,\dots,i_\kappa)\\ \kappa\le\min(\mu-1,p)}}
-% \alpha_{i_1} \cdots \alpha_{i_\kappa} T_{M,{\rm row}}((\alpha_{i_1},\dots,\alpha_{i_\kappa}), \mu-1)
-% + C,
-%   \end{align}
-%   for some constant $C$, and substituting $C=\softO( \mu^4 q u(v+u^5
-%   )(\alpha_1 + \cdots + \alpha_p))$.  Now, a quick induction shows
-%   that $T_{M,{\rm row}}= C \mu S_\mu(\alpha_1,\dots,\alpha_p)$ is a
-%   solution of~\eqref{rec:TrowC}. As a result,
-%    $T_{M,{\rm row}}= \softO( \mu^5 q u^2(v+u^5 )(\alpha_1 + \cdots + \alpha_p)))$
-%   is a solution of~\eqref{rec:Trow},
-%   and this quantity is $ \softO( \mu^5 q u^3(v+u^5 )))$.
-% \end{proof}
 
-% We can then take the expression given in this lemma, and combine it
-% with the definition of $T$ in~\eqref{eqdef:T} and the runtime
-% analysis~\eqref{eq:recT}; this shows that 
-% $$T_{\rm row}(\sigma,\bgamma,\balpha,q)= \softO( n^6 \rc^3(\re+\rc^5) +
-% \rc(\re+\rc^5 )(\sigma + \rc n^4)).$$ The same reasoning as in
-% Section~\ref{sec:columndegree} shows that the 
-% factors polynomial in $n$ can be absorbed in the 
-% $\softO(\ )$, so that we can also write 
-% $$T_{\rm row}(\sigma,\bgamma,\balpha,q)= \softO(\rc(\re+\rc^5 )(\sigma + \rc^2)),$$
-% thereby establishing Proposition~\ref{prop:rowdegree}.
+
 
 
 
