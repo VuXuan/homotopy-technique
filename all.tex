@@ -61,7 +61,7 @@ homotopy techniques}
 \maketitle
 \footnotetext[1]{Department of Applied and Computational Mathematics and Statistics,
 University of Notre Dame, USA}
-\footnotetext[2]{Sorbonne Universit\'es, UPMC Univ. Paris 06, CNRS, INRIA Paris Center, LIP6, PolSys Team, France}
+\footnotetext[2]{Sorbonne Universit\'e, CNRS, INRIA, Laboratoire d'Informatique de Paris 6, PolSys, Paris, France}
 \footnotetext[3]{David Cheriton School of Computer Science, University of Waterloo, ON, Canada}
 
 \begin{abstract}
@@ -418,7 +418,7 @@ or
 \end{theorem}
 As above, in the common situation where all degrees involved are at
 least $2$, the runtimes become {\it polynomial} in $c, \sigma$ and
-$c',\sigma'$.
+$c',\sigma'$. 
 
 
 The probabilistic aspects are as follows: at several steps, the
@@ -428,6 +428,7 @@ exists an algebraic hypersurface $\cal H$ of the parameter space such
 that success is guaranteed for all choices of parameters not
 in~$\cal H$.
 
+
 %% The number ${q \choose p}$ is the number of elements in the
 %% determinantal system of $\mF$. In several cases, we can improve the
 %% algorithm and replace this by the number $q$ of columns of $\mF$, for
@@ -435,13 +436,18 @@ in~$\cal H$.
 %% multiplicity one.
 
 
-Our algorithms are based on a {\em symbolic homotopy continuation}.
-Homotopy continuation algorithms have become a foundational tools for
-numerical algorithms, either in continuation of Shub and Smale's early
-work~\cite{ShSm93}, or along the lines of work by Morgan, Sommese,
-Wampler (as summarized, for instance, in~\cite{BertiniBook,SoWa05}),
-with an emphasis on the algebraic geometry underlying these
-techniques. By contrast, their usage in symbolic contexts is more
+As already said, our algorithms are based on a {\em symbolic homotopy
+  continuation}.  Homotopy continuation algorithms have become a
+foundational tools for numerical algorithms, either in continuation of
+Shub and Smale's early work~\cite{ShSm93}, or along the lines of work
+by Morgan, Sommese, Wampler (as summarized, for instance,
+in~\cite{BertiniBook,SoWa05}), with an emphasis on the algebraic
+geometry underlying these techniques. In this context, dedicated
+numerical homotopy algorithms has also been developed to take into
+account sparsity in polynomial systems (see
+e.g. \cite{Ver94,Ver09,AdVe13}).
+
+By contrast, their usage in symbolic contexts is more
 recent. Early references are~\cite{HeKrPuSaWa99,BoMaWaWa04}, which
 deal with systems with no particular structure; further work extended
 this idea to sparse systems (in the polyhedral
@@ -454,9 +460,20 @@ B\'ezout bounds involving the maxima of $\rdeg(\mF, 1), \ldots,
 
 Most algorithms in the previous references have in common that they
 solve {\em square} systems, that is, systems with as many equations as
-unknowns; extensions of these methods can 
-deal with systems of positive dimension by
-essentially using variants of the algorithm for square systems.
+unknowns; extensions of these methods can deal with systems of
+positive dimension by essentially using variants of the algorithm for
+square systems.  One notable exception is given in \cite{SVV10} where
+dedicated homotopy algorithms are given to solve Schubert problems
+which consist in determining linear spaces of prescribed dimension
+which meet a set of fixed linear subspaces in specified
+dimensions. Observe that such problems are formulated with rank
+conditions on some special matrices (see e.g. \cite{LDSVV18}). These
+algorithms strongly exploit and are dedicated to the structure of the
+Schubert problem through the Littlewood Richardson rule and an
+associated combinatorial construction. Hence, as far as we know, they
+cannot be used to solve determinantal systems of equations expressing
+that a given matrix with polynomial entries is rank deficient. 
+
 One of the contributions in this paper is to deal with determinantal
 systems of equations, which are in essence over-determined; this is
 made possible by the algebraic properties of determinantal ideals.
@@ -2205,15 +2222,16 @@ $\delta = \max(\delta_1, \ldots, \delta_q)$, our bound becomes
 $$\softO\left (c(e+c^5) n(\sigma + {q \choose p}n^3+n^2\gamma + nq
   \delta)\right).$$ This can also be rewritten as
 $$\softO\left (c(e+c^5 )(\sigma + {q \choose p}n^3+n^2\gamma + nq
-  \delta)\right),$$ since one easily checks that $e \ge 2^n$,
-so that $n \in \softO(e)$. A
-last factorization shows that the bound can be
+  \delta)\right),$$
+since one easily checks that $e \ge 2^n$ (because by assumption we
+have $\gamma_i\geq 1 $ and $\delta_i\geq 1$), so that
+$n \in \softO(e)$. A last factorization shows that the bound can be
 simplified to
 \[
   \softO\left ({q \choose p}  c(e+c^5 )n^3(\sigma +\gamma + q
     \delta)\right).
 \]
-Using again  that $n\le\log(e)$, we can omit the factor
+Using again  that $n\le\log_2(e)$, we can omit the factor
 $n^3$ from the $\softO(\ )$, and we conclude the proof of Proposition~\ref{prop:coldeg}.
 The resulting algorithm, called $\mathsf{ColumnDegree}$, is described
 herafter.
@@ -3618,7 +3636,7 @@ $(\gamma_1+1)\cdots(\gamma_s+1) S_{n-s}(\alpha_1
 \paragraph{Property $\assD_3$.} Finally, we need to give an estimate
 on the size of a straight-line program that computes the polynomials
 $\bB=(b_1,\dots,b_m)$, assuming that we are given a straight-line
-$\Gamma$ program of size $\sigma$ that computes polynomials
+program $\Gamma$ of size $\sigma$ that computes polynomials
 $G=(g_1,\dots,g_s)$ and the entries of $\mF$. We already defined a
 straight-line program $\Delta$ of size $\sigma_\mN$ that computes all
 entries of $\mN$; for an extra $O({q \choose p} n^3)$ operations, we
@@ -3693,17 +3711,20 @@ with $\re=(\gamma_1+1) \cdots (\gamma_s+1) S_{n-s}(\alpha_1+1,\dots,\alpha_p+1)$
 \label{RowHom_simple}
 \end{algorithm}
 
-All cost  estimates were given in the previous subsection
-and are summarized in~\eqref{eq:VbA}, save for that of 
-the last step. To estimate its complexity, we apply
+All cost estimates were given in the previous subsection and are
+summarized in~\eqref{eq:VbA}, save for that of the last step. To
+estimate its complexity, we apply
 Proposition~\ref{prop:compute_regular}, which gives a runtime of
-$\softO(\rc^2 m n^2 + \rc \re n (\sigma'  + n^2))$ operations in~$\KK$
+$\softO(\rc^2 m n^2 + \rc \re n (\sigma' + n^2))$ operations in~$\KK$
 for the cost of calling the homotopy subroutine at the last step of
-Algorithm {\sf RowDegree\_simple}.
-Now, we 
-write $\sigma'+ n^2 = \sigma +O( {q \choose p} n^3 + n^2 p \alpha + n^2 \gamma)$,
-for which we use the upper bound ${q \choose p} n^3(\sigma + p\alpha + \gamma)$.
-This gives the upper bound 
+Algorithm {\sf RowDegree\_simple}.  Now, we write
+$\sigma'+ n^2 = \sigma +O( {q \choose p} n^3 + n^2 p \alpha + n^2
+\gamma)$,
+for which we use the upper bound
+${q \choose p} n^3(\sigma + p\alpha + \gamma)$ (recall
+$\alpha=\max(\alpha_1, \ldots, \alpha_p)$ and
+$\gamma=\max(\gamma_1, \ldots, \gamma_s)$).  This gives the upper
+bound
 \[
 \softO\left (\rc^2 m n^2 + \rc\re n {q \choose p} n^3(\sigma + p\alpha + \gamma )\right ).
 \]
@@ -3718,7 +3739,8 @@ Hence, the total cost of the algorithm is
   T_{\rm row}(\sigma,\bgamma,\balpha,q)= \gamma_1 \cdots\gamma_s T +
   \softO\left (  {q \choose p} n^4 \rc  \re ( \sigma + p \alpha +\gamma )  \right ),  
 \end{align*}
-with $T$ as in~\eqref{eqdef:T}. Since $\re \ge 2^n$, this becomes
+with $T$ as in~\eqref{eqdef:T}. Since $\re \ge 2^n$ (because
+$\alpha_i\geq 1$ and $\gamma_i\geq 1$ by assumption), this becomes
 \begin{align}\label{eq:recT}
   T_{\rm row}(\sigma,\bgamma,\balpha,q)= \gamma_1 \cdots\gamma_s T +
   \softO\left (  {q \choose p}  \rc  \re ( \sigma + p \alpha +\gamma )  \right ).
@@ -3837,7 +3859,7 @@ analysis~\eqref{eq:recT}. Terms
 such as $(q-p)$ or $n^3$ are polylogarithmic in $\re$; removing them,
  the first-hand term $\gamma_1 \cdots \gamma_s T$ in~\eqref{eq:recT} is then
 bounded above by the second one, so that the runtime is simply
-\begin{align}\label{eq:recT}
+\begin{align}\label{eq:recTT}
   T_{\rm row}(\sigma,\bgamma,\balpha,q)=  \softO\left (  {q \choose p}  \rc  \re ( \sigma + p \alpha +\gamma )  \right ).
 \end{align}
 This establishes Proposition~\ref{prop:rowdegree_simple}.
