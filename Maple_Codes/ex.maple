@@ -1,0 +1,35 @@
+read "load.maple":
+
+bF := 9007: 
+
+p := 2;
+
+q := 4;
+
+n := q-p+1;
+
+Ld := [1, 1]; 
+
+
+Lv :=[seq(cat('x',i),i=1..n)]: ### list of variables
+
+
+
+InputMat := inputmat(Lv, Ld, p, q, bF):
+
+#StartMat := startmat(Lv, Ld, p, q, bF):
+
+#HomoMat := (1-T)*StartMat + T*InputMat:
+
+
+
+#dh := expand(Determinantal_Homotopy_Diagonal(StartMat, bF)) mod bF;
+
+
+DET := Determinantal_Homotopy_Final(InputMat, bF);
+
+DP := deriv_para(DET, bF):
+
+TE := test_with_deno(InputMat, DP, 0 , bF);
+
+
