@@ -1,0 +1,123 @@
+
+#################################################################################
+
+with(LinearAlgebra):
+
+with(combinat):
+
+with(linalg): 
+
+with(ListTools):
+
+with(VectorCalculus):
+
+
+
+####################### Random polynomials ########################################
+
+### Input: a list Lv of variables, an integer d, a prime number bF
+
+### Output: a random polynomial in variables Lv, degree d, coefficients mod bF
+
+
+rand_poly := proc(Lv, d, bF)
+	  local r;
+
+	  r := randpoly(Lv, dense, degree = d);
+
+	  return r mod bF; 
+end proc;
+
+
+
+
+### Input: a list Lv of variables, a prime number bF
+
+### Output: linear form in Lv with coefficients in mod bF
+
+rand_liner := proc(Lv, bF)
+	   local a;
+	   
+	   a := add(rand()*Lv[i] + rand(), i = 1..nops(Lv));
+	   
+	   return a mod bF; 
+end proc; 
+
+
+
+
+### Input: a list Lv of variables , a non-negative integer d, a prime number bF
+
+### Output: product of d linear form with generic coefficients in mod bF
+
+multi := proc(Lv, d, bF)
+      local a;
+
+      local i;
+      
+      a := rand_liner(Lv, bF);
+
+      if d = 1 then
+      	 return a;
+      else
+	for i from 1 to d-1 do:
+	    a := a*rand_liner(Lv, bF);
+	end do;
+	return a;
+      end if; 
+      
+       
+end proc; 
+
+
+
+##############   INPUT MATRIX ###################3
+
+### Input: a list Lv of variables, a list D of integers, positive integers p and q
+
+### Output: an generic "input matrix" of dim p*q for homotopy pb
+
+
+inputmat := proc(Lv, Ld, p, q,  bF)
+	 local A, i, j;
+	 
+	 A := Matrix(p, q);
+	 
+	 for i from 1 to p do:
+	     for j from 1 to q do:
+	     	 A[i, j] :=  rand_poly(Lv, Ld[i], bF)
+	     end do; 
+	 end do; 
+
+	 return A; 
+end proc;
+
+
+##############   START MATRIX ###################
+
+### Input: a list of variables Lv, a list Ld of positive integers, p, q
+
+### Output: an generic "start matrix" of dim p*q for homotopy pb with coefficients mod bF
+
+ ## start matrix - p∗q polynomial matrix with the entry (i,j) is product of Di linear form with generic coefficients, first block is a diag matrix
+
+startmat := proc(Lv, Ld, p, q, bF)
+	 local S;
+
+	 local i, j; 
+
+	 S := Matrix(p, q);
+	 for i from 1 to p do:
+	     for j from 1 to q do:
+	     	 if j = i then
+		    S[i, j] := multi(Lv, Ld[i], bF);
+		 elif j > p then
+		      S[i, j] := multi(Lv, Ld[i], bF);
+		 else
+			S[i, j] := 0;
+		 end if; 
+	     end do; 
+	 end do;
+
+	 return S;
+end proc; 
