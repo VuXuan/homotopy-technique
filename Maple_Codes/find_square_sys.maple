@@ -1,0 +1,312 @@
+### Input: A matrix polynomial HomoMat, a matrix polynomial StartMat,  a zero-dim para componets for the StartMat; a prime number bF
+
+### Output: the system from MaxMinors(HomoMat) for Hensel Lifting step
+
+Find_System := proc(HomoMat, StartMat, P0, bF)
+	    local PA, MG, MH, JB, PP, LV, TT, MT;
+
+	    local MN, MQ, TN, RE;
+
+	    local LH, PL, JBS, L;
+	    
+	    local i, j, pp, qq;
+	    
+	    PA :=  deriv_para(P0, bF);
+	    
+	    MG := mino(StartMat) mod bF;
+
+	    MH := mino(HomoMat) mod bF:
+
+	    LV := [op(indets(MG))];
+
+	    PP := [seq(PA[1][i], i=2..nops(PA[1]))];	   
+
+	    PL := [seq(LV[i] = PP[i], i = 1..nops(LV))];
+	  
+	    JB := Jacobian(MG, [op(indets(MG))]) mod bF;
+
+	    JBS := subs(PL, JB);
+
+	    TT := LinearAlgebra:-Transpose(JBS);
+	    
+	    TN := Matrix(RowDimension(TT), ColumnDimension(TT));
+	    for i from 1 to RowDimension(TT) do:
+	    	for j from 1 to ColumnDimension(TT) do:
+		    TN[i, j] := rem(numer(TT[i, j]), P0[1][1], op(indets(P0[1][1]))) mod bF;
+		end do;
+	    end do;
+	    
+	    RE := ReducedRowEchelonForm(TN);
+	    
+	    pp := RowDimension(RE);
+
+	    qq := ColumnDimension(RE);
+
+
+	    L := [];
+	    for i from 1 to pp do:
+	    	for j from 1 to qq do:
+		    if RE[i, j] = 1 then
+		       L := [op(L), j];
+		    else
+		    end if;
+		end do;
+	    end do;
+
+
+	    LH := [];
+	    for i from 1 to nops(L) do:
+	    	LH := [op(LH), MH[L[i]]];
+	    end do;
+	    
+	    return LH;
+	    
+end proc;
+
+
+
+
+############# For only one element on the diagonal equals to zero, others do not equal to zero
+
+### Input: a Homotopy matrix HomoMat, a matrix StartMat for start system, a number 1 <= k <= RowDim(StartMat)
+
+### Output: a square system for lifting
+
+Find_system_one := proc(HomoMat, StartMat, k, bF)
+		local L, HL, m;
+
+		local nr, nc, Lc;
+
+		local i, j; 
+
+		nr := RowDimension(HomoMat);
+
+		nc := ColumnDimension(HomoMat);
+		
+		L := convert(convert([seq(i, i=1..nr)], set) minus {k}, list);
+
+		Lc := convert(convert([seq(i, i = 1..nc)], set) minus convert(L, set), list);
+
+		m := [];
+		for i from 1 to nc-nr+1 do:
+		    m := [op(m), Determinant(SubMatrix(HomoMat, [seq(j, j=1..nr)], sort([op(L), Lc[i]])))] mod bF;
+		end do;
+
+		return m;
+		
+end proc;
+
+
+Find_system_more_one := proc(HomoMat, StartMat, P0, bF)
+		     local i, lc;
+
+		     local PA, Lv, Lvs, S, SR;
+
+		     local LR, A, As, j;
+
+		     PA :=  deriv_para(P0, bF);
+
+		     Lv := [op(indets(StartMat))];
+
+		     Lvs := [seq(Lv[j] = PA[1][j+1], j=1..nops(Lv))];
+
+		     S := [];
+		     for i from 1 to RowDimension(StartMat) do:
+		     	 S := [op(S), expand(numer(subs(Lvs, StartMat[i, i])))] mod bF;
+		     end do;
+		     
+		     SR := [seq(rem(S[i], PA[1][1], u), i = 1..nops(S))] mod bF;
+		     
+		     lc := [];
+		     for i from 1 to nops(SR) do:
+		     	 if SR[i] = 0 then
+			 else
+				lc := [op(lc), i];
+			 end if;
+		     end do;
+		     
+		     LR := convert(convert([seq(i, i=1.. RowDimension(StartMat))], set) minus convert(lc, set), list);
+		    
+		     A := SubMatrix(StartMat, sort(LR), [seq(i, i= RowDimension(StartMat)+1..ColumnDimension(StartMat))]);
+
+		     As := subs(Lvs, A) mod bF;
+		     for i from 1 to RowDimension(As) do:
+		     	 for j from 1 to ColumnDimension(As) do:
+			     As[i, j] := rem(expand(numer(As[i, j])) mod bF, expand(PA[1][1]) mod bF, u) mod bF;
+			 end do;
+		     end do;
+		     
+		     return As;
+		     
+		     
+end proc;
+
+
+### Input: a matrix A;  a prime number bF
+
+### Output: a matrix B that B[i, j] := A[i, j] mod bF
+
+
+modulo_matrix := proc(A, bF)
+	      local i, j;
+
+	      for i from 1 to RowDimension(A) do:
+	      	  for j from 1 to ColumnDimension(A) do:
+		      A[i, j] = expand(A[i, j]) mod bF;
+		  end do;
+	      end do;
+
+	      return A;
+end proc;
+
+
+########################################
+
+
+### Draft 
+
+Find_System_Fin := proc(HomoMat, StartMat, P0, bF)
+		local PA, MG, LV, PP, PL;
+
+		local JB, JBS, MIM, LAB;
+		
+		local i, j, JBN;
+
+		local MH, RE, pp, qq, L, LH;
+		
+		PA :=  deriv_para(P0, bF);
+
+		MG := mino(StartMat) mod bF;
+
+		MH := mino(HomoMat) mod bF;
+
+		LV := [op(indets(MG))];
+
+		PP := [seq(PA[1][i], i=2..nops(PA[1]))];
+
+		PL := [seq(LV[i] = PP[i], i = 1..nops(LV))];
+
+		JB := Jacobian(MG, [op(indets(MG))]) mod bF;
+
+		JBS := subs(PL, JB);
+
+		JBN := Matrix(RowDimension(JBS), ColumnDimension(JBS));
+		for i from 1 to RowDimension(JBS) do:
+		    for j from 1 to ColumnDimension(JBS) do:
+		    	JBN[i, j] := rem(numer(JBS[i, j]), PA[1][1], u);
+		    end do;
+		end do;
+
+		JBN := JBN mod bF;
+
+		LAB := LinearAlgebra:-Transpose(JBN);
+		
+		RE := ReducedRowEchelonForm(LAB);
+
+		pp := RowDimension(RE);
+
+		qq := ColumnDimension(RE);
+
+		L := [];
+	    	for i from 1 to pp do:
+	    	    for j from 1 to qq do:
+		    	if RE[i, j] = 1 then
+		    	   L := [op(L), j];
+		    	else
+		    	end if;
+		    end do;
+		end do;
+		
+		LH := [];
+	    	for i from 1 to nops(L) do:
+	    	    LH := [op(LH), MH[L[i]]];
+	    	end do;
+		
+		return LH;
+		
+end proc;
+
+complement_list := proc(L1, L2)
+		local L, i;
+
+		L := [];
+		for i from 1 to nops(L1) do:
+		    if member(L1[i], L2)=true then
+		    else
+			L := [op(L), L1[i]];
+		    end if;
+		end do;
+end proc;
+
+
+System_Submat := proc(StartMat, HomoMat, P0, bF)
+	      local nr, nc, n;
+
+	      local i, j;
+
+	      local SM, PA, LV, PP, PL;
+
+	      local MG, MH, JBS;
+
+	      local M1, L, ER, L1, CL, F;
+
+	      PA :=  deriv_para(P0, bF) mod bF;
+	      
+	      LV := [op(indets(StartMat))];
+
+	      #PP := [seq(PA[1][i], i=2..nops(PA[1]))];
+
+	      PP := [seq(P0[1][i], i=2..nops(PA[1]))];
+	      
+	      PL := [seq(LV[i] = PP[i], i = 1..nops(LV))];
+	      
+	      nr := RowDimension(StartMat);
+
+	      nc := ColumnDimension(StartMat);
+
+	      n := nc-nr+1;
+
+	      
+	      SM := SubMatrix(StartMat, [seq(i, i=1..nr)], [seq(j, j=(nr+1)..nc)]);
+
+	      SM :=  simplify(subs(PL, SM)) mod bF;
+
+
+
+	      M1 := Matrix(nr, nc-nr);
+	      for i from 1 to nr do:
+	      	  for j from 1 to nc-nr do:
+		      M1[i, j] := rem(SM[i, j], P0[1][1], u);
+		  end do;
+	      end do;
+
+	      ER := ReducedRowEchelonForm(M1);
+
+	      L := [];
+
+	      L1 := [];
+	      
+	      for i from 1 to nr do:
+	      	  for j from 1 to nc-nr do:
+		      if ER[i, j] = 1 then:
+		      	 L := [op(L), j];
+		      else
+		      end if;
+		  end do;
+	      end do;
+
+	      
+	      L := [seq(nr+L[i], i=1..(nops(L) - 1))];
+
+	      CL := complement_list([seq(i, i=1..nc)], L);
+
+	      
+	      F := [];
+	      for i from 1 to nops(CL) do:
+	      	  F := [op(F), Determinant(SubMatrix(HomoMat, [seq(i, i=1..nr)], sort([CL[i], op(L)])))];
+	      end do;
+	      
+	      return F mod bF;	      
+	      
+
+end proc;
