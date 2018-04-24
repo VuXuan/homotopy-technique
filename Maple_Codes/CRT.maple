@@ -1,0 +1,109 @@
+### Input: a list R of zero-dim para components; a prime number bF
+
+### Ouput: the CRT for R
+
+
+
+CRT_Union := proc(R, bF)
+	  if nops(R)= 2 then
+	     return CRT(R[1], R[2], bF);
+	  else
+		return CRT(CRT_Union([seq(R[i], i = 1..nops(R)-1)], bF), R[-1], bF); 
+	  end if;
+end proc;
+
+
+
+### Input: two zero-dim para components R0, R1; a prime number bF.
+
+### Output: the union of R0, R1
+
+
+CRT := proc(R1, R2, bF)
+    local q1, q2, q12;
+
+    local m1, m2;
+    
+    local g, n1, n2, v, i, vq1, vq;
+
+    q1 := expand(R1[1][1]) mod bF;
+
+    q2 := expand(R2[1][1]) mod bF;
+    
+    g := gcdex(q1, q2, u, n1, n2);
+
+    m1 :=  n1 mod bF;
+
+    m2 := n2 mod bF;  
+    
+
+    q12 := collect(expand(q1*q2) mod bF, u);
+
+    v := [];
+    for i from 1 to nops(R1[1])-1 do:
+    	v := [op(v), collect(normal(expand((q1^2*m1*R2[1][i+1] + q2^2*m2*R1[1][i+1] mod bF)) mod bF), u)];
+    end do;
+    
+    vq1 := [];
+    for i from 1 to nops(v) do:
+    	vq1 := [op(vq1), collect(normal(expand(rem(v[i], q12, u)) mod bF), u)];
+    end do;
+
+    vq := [];
+    for i from 1 to nops(vq1) do:
+    	vq := [op(vq), collect(Normal(vq1[i]) mod bF, u)]
+    end do;
+    
+    return [[q12, op(vq)], R1[2]];
+    
+end proc;
+
+
+
+
+### Input: a zero-dim ((q, v1, ..., vn), lamb); a prime number bF
+
+### Output: (q, (v1/(q.derivative, ..., vn/q.derivative))
+
+
+deriv_para := proc(P0, bF)
+	   local dq, L;
+
+	   local i;
+	   
+	   dq := diff(P0[1][1], u);
+	   
+	   L := [];
+	   for i from 1 to nops(P0[1])-1 do:
+	       L := [op(L), P0[1][i+1]/dq];
+	   end do;
+
+	   return [[P0[1][1], op(L)], P0[-1]];
+	   
+end proc;
+
+
+
+
+### Input: a  a zero-dim ((q, v1, ..., vn), lamb); a prime number bF
+
+### Output: ((q, v1*q.derivative() mod q, ..., vn*q.derivative() mod q), lamb)
+
+time_dev_para := proc(P0, bF)
+	      local q1, dq, v, L;
+
+	      local i;
+	      
+	      q1 := P0[1][1];
+
+	      dq := diff(q1, indets(q1)[-1]);
+	      
+	      v := [];
+	      for i from 1 to nops(P0[1])-1 do:
+	      	  v := [op(v), rem((P0[1][i+1]*dq), q1, u)];
+	      end do;
+
+	      L := v mod bF;
+	      
+	      return [[q1, op(L)], P0[-1]];
+end proc;
