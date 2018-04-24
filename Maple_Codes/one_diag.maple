@@ -1,0 +1,161 @@
+### Input: a diagonal matrix|dense 
+
+### Output: a zero-dim para for the case only one entry on the dialgonal = 0
+
+diagonal_ones := proc(A, bF)
+	     local i, nr, k;
+
+	     local L;
+
+	     nr := RowDimension(A);
+	      
+	     L := [];
+
+	     for k from 1 to nr do:
+	     	 L := [op(L), dig_one(A, k, bF)];
+	     end do;
+
+	     return L;
+end proc;
+
+
+
+### Input: a matrix A, an integer kq, a prime number bF;
+
+### Output: a zero_dim_para for A[kq, j] = 0 for all 1 \leq j \leq q(=ColumnDim(A))
+
+
+dig_one := proc(A, kq, bF)
+	local i;
+
+	local qk, ze, lamb, leq;
+
+	qk := ColumnDimension(A);
+	
+	leq := linear_equas(A, kq, bF);
+
+	lamb := lhs(leq[1][-1]);
+	
+	ze := [zero_dimen(leq, bF), lamb];
+	
+end proc; 
+
+
+
+### Input: A matrix A- form StartMat; a prime number bF
+
+### Output: all zero-dim para components for only one elements 
+
+
+
+### Input: a list V of points, a prime number bF
+
+### Ouput: a zero-dim para for V
+
+
+zero_dimen := proc(V, bF)
+	   local lamb, qv, LL, L1, ML, LFL, P0;
+
+	   local i;
+	   
+	   lamb := lhs(V[1][-1]);
+
+	   qv := mul(u-rhs(V[i][-1]), i = 1..nops(V));
+
+	   LFL := list_for_lagrange(V);
+
+ 	   P0 := [];
+	   for i from 1 to nops(LFL)-1 do:
+	       P0 := [op(P0), Lagrange(LFL[-1], LFL[i], u) mod bF];
+	   end do;
+
+	   return [qv, op(P0), u];
+	   
+end proc;
+
+
+
+### Input: a matrix A, an integer kd, a integer qk of ColumnDim(A), a prime number bF
+
+### Oupput: a list contains all nonzero A[kd, j], 1 <= j <= qk.
+
+
+linear_equas := proc(A, kd, bF)
+   	     local L, i, R, Lv, eqs, LL, sol, qk;
+
+	     Lv := [op(indets(A[kd, kd]))];
+
+	     qk := ColumnDimension(A);
+	     
+   	     L := [];
+   	     for i from 1 to qk do:
+       	     	 L := [op(L), A[kd, i]];
+   	     end do; 
+	      
+   	     R := remove(t -> t = 0, L);
+
+	      
+	     eqs := [seq(R[i] = 0, i = 1..nops(R))];
+
+	     LL := [solve(eqs, {op(Lv)})];
+
+	     sol := [];
+	     for i from 1 to nops(LL) do:
+	     	 sol := [op(sol), LL[i] mod bF];
+	     end do;
+	     
+	     return sol;
+   
+end proc;
+
+
+
+
+
+### Input: lists x, y; u - variables for Lagrange polynomial
+
+### Output: the Lagrange polynomial for x, y
+
+Lagrange := proc(x, y, u)
+	 local k,L,n,P,Q;
+
+	 P:=0;
+
+	 n:=nops(x);
+
+	 for k to n do:
+	     Q:=simplify(product(u-x[i],i=1..n)/(u-x[k]));
+	     L[k]:=Q/subs(u=x[k],Q);
+	     P:=P+y[k]*L[k];
+	 end do;
+
+	 expand(P);
+	 
+end proc; 
+
+### Input: a list L of points for [x1, ..., xn]
+
+### Output: a list contains all values for [[x1], ..., [xn]]
+
+
+list_for_lagrange := proc(L)
+		   local LL;
+
+		   local i, j, L1;
+
+		   LL := [];
+		   for i from 1 to nops(L[1]) do:
+		       L1 := [];
+		       for j from 1 to nops(L) do:
+		       	   L1 := [op(L1), rhs(L[j][i])];
+		       end do;
+		       LL := [op(LL), L1];
+		   end do;
+
+		   return LL; 
+end proc;
+
+
+
+
+
