@@ -1,0 +1,140 @@
+
+#with(linalg):
+#with(LinearAlgebra):
+
+
+
+
+### Input: a list F of polys for Lifting; a zero-dim para P0; a positive integer 'prec'; a prime number bF
+
+### Output: the HenselLifting for P0
+
+
+Hensel := proc(F, P0, prec, bF)
+       local L, param, polelim, HE, lambd, V;
+
+       L := [seq(P0[1][i], i=2..nops(P0[1]))];
+       
+       param := convert(L,Vector);
+
+       polelim := expand(P0[1][1]) mod bF;
+       #print(polelim);
+       lambd := P0[-1];
+
+       HE := HenselLift(F, param, polelim, lambd, prec, bF);
+      
+       V := [seq(HE[1][i], i=1..RowDimension(HE[1]))];
+
+       return [[HE[2], op(V)], lambd] mod bF;
+end proc;
+
+
+
+
+HenselLift:=proc(F, param, polelim, lambd, myprec, bF)
+		    local prec, V, Lv;
+
+		    local q, J, ls, dd, s, sJ, sF, NEW, NEWV, den, ldel, delta, VERYNEWV, NEWq;
+		    
+		    prec:=1: V:=param: q:=polelim:
+
+		    #print(V);
+		    #print(q);
+		    Lv := [op(indets(subs(T = 0, F)))];
+		    
+		    
+		    while prec<=myprec do
+		    	  pritn(PREC = prec);
+		    	  #print(V);
+  		    	  J:=convert(jacobian(convert(F,list), Lv), Matrix) mod bF;
+
+			  #print(JJ = J);
+			  
+			  ls:=[seq(Lv[i]=V[i], i=1..nops(Lv))];
+			  
+			  #print(LS = ls);
+			  
+			  dd:=det(subs(ls,evalm(J))) mod bF;
+			  
+			  #print (d = dd);
+			  
+  			  gcdex(dd,q,u,'s','w');
+			  
+  			  s:=convert(series(s, T, 2*prec),polynom) mod bF;
+
+			  #print(ss = s);
+			  
+  			  sJ:=convert(MatrixInverse(subs(ls,J)),Matrix) mod bF; sF:=subs(ls, F) mod bF;
+			  
+        		  #print(Sj= sJ);
+			  #print(Sf= sF);
+
+
+			  NEW:=MatrixVectorMultiply(sJ, convert(sF,Vector)) mod bF;
+
+			  #print(new = NEW);
+
+			  dd:=denom(NEW[1]):
+
+			  #print(d2 = dd);
+			  
+			  gcdex(dd,q,u,'s','w');
+			  #print(s1 = s mod bF);
+			  s:=convert(series(s, T, 2*prec),polynom) mod bF;
+
+			  #print(ss  = s);
+
+			  #print(v = V);
+
+			  
+			  NEWV:= [seq(V[i] - s*numer(NEW[i]), i = 1..RowDimension(V))];
+
+			  #print(New = [seq(rem(NEWV[i], q, u), i=1..nops(NEWV))] mod bF);
+
+			  #return [seq(rem(NEWV[i], q, u), i=1..nops(NEWV))] mod bF;
+			  #NEWV:=[ seq(rem(rem(NEWV[i],q, u), T^(2*prec), T), i = 1..nops(NEWV))] mod bF;
+			  #NEWV:= [seq(rem(NEWV[i], q, u), i=1..nops(NEWV))] mod bF;
+
+			  NEWV:= [seq(collect(rem(NEWV[i], q, u), T), i=1..nops(NEWV))] mod bF;
+			  
+			  #print(newv = NEWV mod bF);
+    
+			  den:=denom(NEWV[1]);
+
+			  ldel := [seq(Lv[i] = NEWV[i], i=1..nops(Lv))];
+
+    			  delta:=subs(ldel, lambd)-u mod bF;
+
+			  #print(del = delta);
+			 
+
+#			  VERYNEWV:=[seq(rem(NEWV[i]-rem(expand((delta*(diff(V[i], u)))), q, u),T^(2*prec),T), i=1..ColumnDimension(NEWV))] mod bF;
+
+			  #VERYNEWV:=[seq(rem(NEWV[i]-rem(expand((delta*(diff(NEWV[i], u)))), q, u),T^(2*prec),T), i=1..ColumnDimension(NEWV))] mod bF;
+			  
+			  #VERYNEWV := [seq(NEWV[i] - rem(expand((delta*(diff(NEWV[i], u)))), q, u), i=1..nops(NEWV))];
+
+			  VERYNEWV := [seq(expand(rem(collect(NEWV[i] - rem(expand((delta*(diff(NEWV[i], u)))), q, u), T), T^(2*prec), T)), i=1..nops(NEWV))] mod bF;
+
+			  #print(verynewv = VERYNEWV);
+			  
+			  #NEWq:=rem(q-(rem(delta*diff(q, u),q,u)), T^(2*prec), T) mod bF;
+			  NEWq:= rem(collect(q-(rem(delta*diff(q, u),q,u)) mod bF, T), T^(2*prec), T);
+			  
+			  #print(newQ = NEWq);
+
+			  V:=expand(convert(VERYNEWV, Vector)); q:=expand(NEWq): prec:=2*prec:
+
+			  #print (v = V);
+
+			  #print (Q = q); 
+		    od;
+
+		    return V, q;
+end proc;
+
+
+
+
+
+
