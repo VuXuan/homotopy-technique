@@ -1,0 +1,19 @@
+read "data.maple";
+
+read "minors.maple";
+
+read "reduce_startmat.maple";
+
+read "one_diag.maple"; 
+
+read "find_square_sys.maple";
+
+read "Hensel.maple";
+
+read "CRT.maple";
+
+read "ration_recons.maple";
+
+read "homotopy.maple";
+
+read "test.maple";
