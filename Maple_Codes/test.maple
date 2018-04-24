@@ -1,0 +1,87 @@
+### Input: a zero-dim para PA; a matrix G, a number "d", value for T; a prime number bF
+
+### Output: all minors of G after substitution PA into G.
+
+subs_test := proc(G, PA, d, bF)
+	  local GT, Vars, L, i, GS;
+
+	  local MN, MM;
+	  
+	  GT := subs(T = d, G);
+	  
+	  Vars := [op(indets(GT))];
+
+	  L := [];
+	  for i from 1 to nops(Vars) do:
+	      L := [op(L), Vars[i] = PA[1][i+1]]; 
+	  end do; 
+	  
+	  GS := subs(L, GT) mod bF;
+	  
+	  MN := mino(GS) mod bF;
+
+	  MM := [];
+	  for i from 1 to nops(MN) do:
+	      MM := [op(MM), rem(MN[i], PA[1][1], op(indets(PA[1][1]))) mod bF];
+	  end do;
+	  
+	  return  subs(T = d, MM) mod bF; 
+end proc;
+
+
+### Input:  a zero-dim para PA which has denominator; a matrix G, a number "d", value for T; a prime number bF
+
+### Output: all minors of G after substitution PA into G.
+
+
+test_with_deno := proc(G, PA, d, bF)
+	       local GT, Vars, L, MN, MD, MM;
+
+	       local GS;
+
+	       local i;
+	       
+	       GT := subs(T = d, G);
+
+	       Vars := [op(indets(GT))];
+
+	       L := [];
+	       for i from 1 to nops(Vars) do:
+	       	   L := [op(L), Vars[i] = PA[1][i+1]]; 
+	       end do; 
+	       
+	       GS := subs(L, GT) mod bF;
+	       
+	       MN := mino(GS) mod bF;
+	       
+	       MD := [];
+	       for i from 1 to nops(MN) do:
+	       	   MD := [op(MD), numer(MN[i]) mod bF];
+	       end do;
+
+	       MM := [];
+	       for i from 1 to nops(MD) do:
+	       	   MM := [op(MM), rem(MD[i], PA[1][1], op(indets(PA[1][1]))) mod bF];
+	       end do;
+	  
+	       return  MM;
+end proc;
+
+
+### Input: a list L of polynomials, P0 a list for variables, an integer d (for T), a prime number bF
+
+### Output: subsitution P0 in L and T = d
+
+test_sub_list := proc(L, P0, d, bF)
+	      local LV, LL, LS;
+
+	      local i, LD;
+
+	      LV := [op(indets(subs(T = 0, L)))];
+
+	      LL := [seq(LV[i] = P0[1][i+1], i=1..nops(Lv))];
+
+	      LS := subs(LL, L) mod bF;
+
+	      LD := subs(T = d, LS) mod bF;
+end proc;
