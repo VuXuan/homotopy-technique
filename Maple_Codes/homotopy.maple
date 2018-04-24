@@ -1,0 +1,706 @@
+
+
+############
+
+
+List_Merge := proc(L1, L2)
+	   local L, i;
+	   
+	   L := [L1[1][1], op(L2)];
+	   for i from 1 to nops(L1[1])-1 do:
+	       L := [op(L), L1[1][i+1]];
+	   end do;
+
+	   return [L, L1[2]];
+end proc;
+
+
+
+Time_Deriv := proc(C, bF)
+	   local i, L;
+
+	   local dv;
+
+	   dv := diff(C[1][1], u) mod bF;
+
+	   L := [];
+	   for i from 1 to nops(C[1])-1 do:
+	       L := [op(L), simplify(expand(C[1][i+1]*dv))];
+	   end do;
+
+	   return [[C[1][1], op(L)], C[2]];
+end proc;
+
+
+
+### Input: a list Inters contains integers s.t the diagonal entries  = 0; a list matsubs contains submatrices from Inters
+
+### Output:
+
+component := proc(Inters, matsubs, SubVars, bF)
+	  local ST, SL, SL1;
+	  
+	  local Vars, DEG, ML;
+
+	  local i, nr, nc, DBD, j;
+
+	  local BS, V, DS;
+
+	  local SOL;
+	  
+	  BS := [];
+	  for i from 1 to nops(matsubs) do:
+	      BS := [op(BS), Input_Base_Cases(matsubs[i], bF)];
+	  end do;
+
+	  DBD := [];
+	  for i from 1 to nops(BS) do:
+	      DBD := [op(DBD), deriv_para(BS[i], bF)];
+	  end do;
+
+	  
+	  V := [op(indets(rhs(SubVars[1][1])))];
+
+	  DS := [];
+	  for i from 1 to nops(DBD) do:
+	      DS := [op(DS), subs([seq(V[k] = DBD[i][1][k+1], k = 1..nops(V))],SubVars[i])] mod bF;
+	  end do;
+
+	  SL := [];
+	  for i from 1 to nops(DS) do:
+	      SL1 := [];
+	      for j from 1 to nops(DS[i]) do:
+	      	  SL1 := [op(SL1), rhs(DS[i][j])];
+	      end do;
+
+	      SL := [op(SL), SL1];
+	      
+	  end do;
+
+	  ML := [];
+	  for i from 1 to nops(SL) do:
+	      ML := [op(ML), simplify(List_Merge(DBD[i],SL[i]))] mod bF
+	  end do;
+
+	  SOL := [];
+	  for i from 1 to nops(ML) do:
+	      SOL := [op(SOL),  Time_Deriv(ML[i], bF)];
+	  end do;
+	  
+	  return SOL;
+	  
+	  ### For InputMat
+
+	 
+end proc;
+
+
+#Com := component(m, MD, SubVars, bF);
+
+
+
+
+
+
+
+
+
+####################################################################################
+
+
+
+### For the case the number of variables and RowDim are equal
+
+
+Determinantal_Homotopy_Diagonal_RowsDim := proc(StartMat, bF)
+			       		local i, j;
+
+			       		local FE, LE;
+
+					local nr;
+					
+					nr := RowDimension(StartMat);
+					
+			       		FE := [];
+			       		for i from 1 to nr do:
+			       	   	    FE := [op(FE), StartMat[i, i]];
+			       		end do;
+
+
+			       		LE := linear_equats(FE, bF) mod bF;
+end proc;
+
+
+
+
+
+
+
+
+#DIG := Determinantal_Homotopy_Diagonal(DET, bF):
+
+
+
+
+
+Zero_Para_One := proc(P, bF)
+	      local dq, g, M, MH, mv, i, mq;
+
+	      local s1, s2;
+
+	      mq := P[1][1];
+
+	      mv := [seq(P[1][i], i = 2..nops(P[1]))];
+	      
+	      dq := diff(mq, u);
+
+	      g := gcdex(mq, dq, u, s1, s2);
+
+	      M := [];
+	      for i from 1 to nops(mv) do:
+	      	  M := [op(M), expand(g*mv[i] - s1*mq*mv[i]) mod bF];	  
+	      end do;
+
+	      MH := [];
+	      for i from 1 to nops(M) do:
+	      	  MH := [op(MH), rem(quo(M[i], dq, u) mod bF, mq, u) mod bF];
+	      end do;
+	      
+	      return [[mq, op(MH)], P[2]];
+
+end proc;
+
+
+### Input: A startMat; a subset of [1, ..., p]
+
+Sub_Solver := proc(StartMat, FD, Lk1, bF)
+	   local SubVars, ME, MS, ST, DBD, V, DS, SL, SL1, ML, SOL, SOL1, SOL2;
+
+	   local i, j;
+
+	   ME := match_equas(StartMat, FD, Lk1, bF);
+
+	   SubVars := ME[1];
+
+	   MS := ME[2];
+
+	   ST := [];
+	   for i from 1 to nops(MS) do:
+	       ST := [op(ST), Determinantal_Homotopy_Final(MS[i], bF)];
+	   end do;	   
+
+	 
+	   DBD := [];
+	   for i from 1 to nops(BS) do:
+	       DBD := [op(DBD), deriv_para(ST[i], bF)];
+	   end do;
+
+	   V := [op(indets(rhs(SubVars[1][1])))];
+
+	   DS := [];
+	   for i from 1 to nops(DBD) do:
+	       DS := [op(DS), subs([seq(V[k] = DBD[i][1][k+1], k = 1..nops(V))],SubVars[i])] mod bF;
+	   end do;
+
+	   SL := [];
+	   for i from 1 to nops(DS) do:
+	       SL1 := [];
+	       	   for j from 1 to nops(DS[i]) do:
+	       	       SL1 := [op(SL1), rhs(DS[i][j])];
+	       	   end do;
+	       SL := [op(SL), SL1];
+	   end do;
+
+	   ML := [];
+	   for i from 1 to nops(SL) do:
+	       ML := [op(ML), simplify(List_Merge(DBD[i],SL[i]))] mod bF
+	       #ML := [op(ML), Normal(simplify(List_Merge(DBD[i],SL[i]))) mod bF] mod bF
+	   end do;
+
+
+	   SOL := [];
+	   for i from 1 to nops(ML) do:
+	       SOL := [op(SOL),  Time_Deriv(ML[i], bF)];
+	   end do;
+
+	   SOL1 := [];
+	   for i from 1 to nops(SOL) do:
+	       SOL1 := Normal([op(SOL1), simplify(expand(SOL[i]) mod bF)]) mod bF;
+	   end do;
+
+	   return SOL1;
+	   
+end proc;
+
+
+
+
+
+
+
+
+### Input: a Start Matrix StartMat; a positive integer k (# entries on the diagonal = 0); a prime number bF
+
+Homotopy_Diagonal_k := proc(StartMat, k, bF)
+		    local nr, Lp, Lk, i, j, nc, n;
+
+		    local FE, FE1, FD, RF, LC, MEQ;
+		    
+		    nr := RowDimension(StartMat);
+
+		    nc := ColumnDimension(StartMat);
+
+		    n := nc-nr+1;
+		    
+		    Lp := [seq(i, i=1..nr)];
+
+		    Lk := choose(Lp, k);
+		    
+		    FD := factor_diag(StartMat);
+		    
+		    LC := [];
+		    for i from 1 to nops(Lk) do:
+		    	LC := [op(LC), op(Sub_Solver(StartMat, FD, Lk[i], bF))];
+		    end do;
+		    
+		    return  LC;
+		    
+		    
+		   
+end proc;
+
+
+
+
+
+### Input: a Start Matrix StartMat; a prime number bF
+
+### Ouput: zero-dim components for the case only one entry on the diagonal  = 0
+
+
+Homotopy_Diagonal_One := proc(StartMat, bF)
+		      local DIG1;
+
+		      DIG1 := diagonal_ones(StartMat, bF);
+end proc;
+
+
+
+
+
+
+
+
+
+
+Determinantal_Homotopy_Diagonal := proc(StartMat, bF)
+				local nr, nc, n, m, k;
+
+				local DIG2;
+
+				nr := RowDimension(StartMat);
+
+				nc := ColumnDimension(StartMat);
+
+				n := nc-nr+1;
+
+				if n = nr then										     DIG2 := [];	
+				   for k from 2 to n-1 do:
+				       DIG2 := [op(DIG2), op(Homotopy_Diagonal_k(StartMat, k, bF))];
+				   end do;
+				       DIG2 := [op(DIG2), Determinantal_Homotopy_Diagonal_RowsDim(StartMat, bF)];
+				       DIG2 := [op(Homotopy_Diagonal_One(StartMat, bF)), op(DIG2)];
+				else
+					m := min(nr, n);									
+					DIG2 := [];
+					for k from 2 to m do:
+					    DIG2 := [op(DIG2), op(Homotopy_Diagonal_k(StartMat, k, bF))];
+					end do;
+
+					#DIG2 := [op(Homotopy_Diagonal_One(StartMat, bF)), op(DIG2)];
+				end if;
+
+				return DIG2;
+end proc;
+
+
+
+
+
+
+
+
+Determinantal_Homotopy := proc(InputMat, bF)
+		       local LV, LD, i, j;
+
+		       local nr, nc, a, e, LE, DE, SYS, HL, QV2, QV, DM, RAT, rat_sub;
+
+		       local LS, QL, DQL, MD, LE1;
+		       
+		       local StartMat, HomoMat;
+
+		       local FS, FSH, QV1;
+
+		       LV := [op(indets(InputMat))];
+
+		       LD := [seq(degree(InputMat[i, i]), i=1..RowDimension(InputMat))];
+
+		       a := complete_polynom([seq(LD[i] + 1, i=1..nops(LD))], ColumnDimension(InputMat) - RowDimension(InputMat)+1);
+
+		       e := 2*power_two(2*a+1);
+
+		       nr := RowDimension(InputMat);
+
+		       nc := ColumnDimension(InputMat);
+		       
+		       StartMat := startmat(LV, LD, nr, nc, bF);		      
+
+
+		       HomoMat := (1-T)*StartMat + T*InputMat;
+
+		       LS := Determinantal_Homotopy_Diagonal(StartMat, bF);
+
+
+		       ### One entry on the diagonal = 0 
+
+		       
+		       QL := [];  #### For HenselLifting
+	     	       for i from 1 to RowDimension(StartMat) do:
+	     	       	   QL := [op(QL),  expand(dig_one(StartMat, i, bF)) mod bF];
+	     	       end do;
+
+		       FS := [seq(Find_system_one(HomoMat, StartMat, i, bF), i=1..RowDimension(StartMat))];
+		       
+		       FSH := [];
+	  	       for i from 1 to nops(FS) do:
+	      	       	   FSH := [op(FSH), expand(Hensel(FS[i], QL[i], e, bF)) mod bF];
+	  	       end do;
+
+		       QV1 := [];
+	  	       for i from 1 to nops(FSH) do:
+	      	       	   QV1 := [op(QV1), time_dev_para(FSH[i], bF) mod bF];
+	  	       end do;
+
+		       
+
+		       ### >= two entries on the diagonal  = 0
+		       
+		       LE := LS;		      
+		      
+		       
+		       DE := [];	###  Use this to find the SquareSystem 
+	  	       for i from 1 to nops(LE) do:
+	      	       	   DE := [op(DE), time_dev_para(LE[i], bF)];
+	  	       end do;
+
+		       
+		       SYS := [];
+	  	       for i from 1 to nops(LS) do:
+	      	       	   #SYS := [op(SYS), Find_System(HomoMat, StartMat, DE[i], bF)];
+			   SYS := [op(SYS), System_Submat(StartMat, HomoMat, LS[i], bF)];
+	  	       end do;
+
+		       LE1 := [];
+		       for i from 1 to nops(LE) do:
+		       	   LE1 := [op(LE1), Zero_Para_One(LE[i], bF)];
+		       end do;
+
+		       
+		       HL := [];
+	  	       for i from 1 to nops(LE) do:
+	      	       	   #HL := [op(HL), expand(Hensel(SYS[i], LE[i], e, bF)) mod bF];
+			   HL := [op(HL), expand(Hensel(SYS[i], LE1[i], e, bF)) mod bF];
+	  	       end do;
+
+		       QV2 := [];
+	  	       for i from 1 to nops(HL) do:
+	      	       	   QV2 := [op(QV2), time_dev_para(HL[i], bF) mod bF];
+	  	       end do;
+
+
+		       #### When n = p  ######
+		       
+		       QV := [op(QV1), op(QV2)];
+
+
+		       MD := CRT_Union(QV, bF);
+
+		       RAT := rat_reconst(MD, e - 1, bF);
+
+		       rat_sub := subs(T = 1, RAT) mod bF;
+
+		       
+end proc;
+
+
+
+
+
+Determinantal_Homotopy_Final:= proc(InputMat, bF)
+			       local nr, nc, n;
+			       
+			       nr := RowDimension(InputMat);
+
+		       	       nc := ColumnDimension(InputMat);
+
+			       n := nc-nr+1;
+
+			       if n > 2 then
+			       	  return Determinantal_Homotopy(InputMat, bF)
+			       else
+				#return Input_Base_Cases(InputMat, bF);
+				return Normal(Base_Cases_Input(InputMat, bF)) mod bF;
+			       end if;
+			       
+end proc;
+
+
+
+
+
+
+
+### Input: a list L of integers, a positive integer k
+
+### Output: the k-th symmetric symmetric pol of L
+
+
+
+complete_polynom := proc(L, k)
+		 local S, i, m;
+		 
+		 m := mul(1/(1-L[i]*t), i=1..nops(L));
+		 
+		 return coeff(convert(series(m, t, k+2), polynom), t, k);
+		
+end proc;
+
+
+
+### Input: an integer e
+
+### Output: the smallest integer 2^k s.t 2^k > e-1
+
+power_two := proc(e)
+	  local a;
+
+	  a := 1;
+	  
+	  while a < e do:
+	  	a := 2*a;
+	  end do;
+
+	  return a/2;
+end proc;
+
+
+
+### Input: a list eqs of equations
+
+### Output: a zero-dim para for V(eqs)
+
+
+linear_equats := proc(eqs, bF)
+   	      local L, i, R, Lv, LL, sol, qk;
+
+	      local lamb, ze;
+	      
+	      Lv := [op(indets(eqs))];
+
+	      LL := [solve(eqs, {op(Lv)})];
+	      
+	      sol := [];
+	      for i from 1 to nops(LL) do:
+	      	  sol := [op(sol), LL[i] mod bF];
+	      end do;
+
+	      lamb := lhs(sol[1][-1]);
+	
+	      ze := [zero_dimen(sol, bF), lamb];
+	
+
+	      return ze;
+   
+end proc;
+
+
+###
+
+
+
+#### Base_Casess for the StartMat,when  n= 1, or n = 2
+
+Base_Cases_Start := proc(StartMat, bF)
+		 local nr, nc, n;
+
+		 local i, j;
+
+		 local FD, QL, TDP, Lp, Lk, FE, FE1;
+
+		 local LE, DE;
+
+		 nr := RowDimension(StartMat);
+		 nc := ColumnDimension(StartMat);
+
+		 n := nc-nr+1;
+
+		 FD := factor_diag(StartMat);
+
+		 QL := [];
+	  	 for i from 1 to nr do:
+	      	     QL := [op(QL),  expand(dig_one(StartMat, i, bF)) mod bF];
+	  	 end do;
+
+
+		 ### Two entry on the diagonal  = 0
+
+		  Lp := [seq(i, i = 1..nr)];
+
+	  	  Lk := choose(Lp, 2);
+		  FE := [];
+		  for i from 1 to nops(Lk) do:
+		      FE1 := [];
+		      for j from 1 to nops(Lk[i]) do:
+		      	  FE1 := [op(FE1), StartMat[Lk[i][j], Lk[i][j]]];
+		      end do;
+		      FE := [op(FE), FE1];
+		  end do;
+
+		  LE := [];     ### Using this for HenSelLifting 
+	  	  for i from 1 to nops(FE) do:
+	      	      LE := [op(LE), expand(linear_equats(FE[i], bF)) mod bF];
+	  	  end do;
+
+		  return [QL, LE];
+end proc;
+
+
+
+#### Base_Case for the InputMat, when  n= 1, or n = 2
+
+Base_Case_Input1 := proc(InputMat, bF)
+		 local g, g1, g2;
+		 
+		 g := Determinant(InputMat);
+		 g1 := subs(op(indets(g)) = u, g) mod bF;
+
+		 g2 := [[g1, u], op(indets(g))];
+
+		 return time_dev_para(g2, bF);
+end proc;
+
+
+Base_Case_Input2 := proc(InputMat, bF)
+		 local i, j, nr, nc;
+
+		 local StartMat, HomoMat;
+
+		 local LV, DEG;
+
+		 local STL, STL1, STL2, SYS1, SYS2;
+
+		 local FSH1, FSH2, QV, DE, QV1, QV2;
+
+		 local MD, RAT, SOL;
+		 
+		 local a, e;
+
+		 nr := RowDimension(InputMat);
+
+		 nc := ColumnDimension(InputMat);
+		 
+		 LV := [op(indets(InputMat))];
+		 
+		 DEG := [seq(degree(InputMat[i, i]), i=1..nr)];
+
+		 StartMat := startmat(LV, DEG, nr, nc, bF):
+
+		 HomoMat := (1-T)*StartMat + T*InputMat;
+
+	  	 a := complete_polynom([seq(DEG[i] + 1, i=1..nops(DEG))], nc-nr+1);
+
+	  	 e := 2*power_two(2*a);
+
+		 
+		 STL := Base_Cases_Start(StartMat, bF);
+
+
+		 STL1 := STL[1];
+		 
+		 SYS1 := [seq(Find_system_one(HomoMat, StartMat, i, bF), i=1..nr)];
+
+		 FSH1 := [];
+	  	 for i from 1 to nops(SYS1) do:
+	      	     FSH1 := [op(FSH1), expand(Hensel(SYS1[i], STL1[i], e, bF)) mod bF];
+	  	 end do;
+
+
+		 STL2 := STL[2];
+
+		 DE := [];	###  Use this to find the SquareSystem 
+		 for i from 1 to nops(STL2) do:
+		     DE := [op(DE), time_dev_para(STL2[i], bF)];
+		 end do;
+
+		 
+		 SYS2 := [];
+	  	 for i from 1 to nops(DE) do:
+	      	     SYS2 := [op(SYS2), Find_System(HomoMat, StartMat, DE[i], bF)];
+	  	 end do;
+
+		 
+		 FSH2 := [];
+	  	 for i from 1 to nops(STL2) do:
+	      	     FSH2 := [op(FSH2), expand(Hensel(SYS2[i], STL2[i], e, bF)) mod bF];
+	  	 end do;
+
+
+		 QV1 := [];
+	  	 for i from 1 to nops(FSH1) do:
+	      	     QV1 := [op(QV1), time_dev_para(FSH1[i], bF) mod bF];
+	  	 end do;
+
+
+		 QV2 := [];
+	  	 for i from 1 to nops(FSH2) do:
+	      	     QV2 := [op(QV2), time_dev_para(FSH2[i], bF) mod bF];
+	  	 end do;
+
+
+		 QV := [op(QV1), op(QV2)];
+		
+		 
+		 #QV := [op(FSH1), op(FSH2)];
+
+		 MD := CRT_Union(QV, bF);
+
+		 RAT := rat_reconst(MD, e - 1, bF);
+
+		 SOL := subs(T = 1, RAT) mod bF;
+
+		 return SOL;
+end proc;
+
+
+
+
+Base_Cases_Input := proc(InputMat, bF)
+		 local nr, nc, n;
+
+		 local StartMat, vars, DEG;
+		 
+		 nr := RowDimension(InputMat);
+
+		 nc := ColumnDimension(InputMat);
+
+		 n := nc-nr+1;
+
+		 if n = 1 then
+		    return Base_Case_Input1(InputMat, bF);
+		 else
+			if n = 2 then
+			   return Base_Case_Input2(InputMat, bF);
+			else
+			end if;
+		 end if;
+end proc;
