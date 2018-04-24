@@ -1,0 +1,136 @@
+
+
+#q := expand(u^2 + (T^2+1)/(T^3-2)*u + (T-2)/(T^2 - T - 3));
+
+
+#v1 := expand(u + (T-7)/(T-9*T^2+3));
+
+
+#dq := diff(q, op(indets(subs(T = 0, q))));
+
+#lambd := x2;
+
+#P0 := [[q, v1], lambd];
+
+#bF := 9007;
+
+#cof := coeffs(q, u);
+
+
+#s := cof[1];
+
+
+### Input: a list "inlist" contains parameters ((q, v1, ..., vn), lamb); a positive integer d
+
+### Output: the rational reconstructions for ((q, v1, ..., vn), lambd) with the degree in denominators and numerators (in variable T) is at most d
+
+
+
+rat_reconst := proc(P0, d, bF)
+	    local LR;
+
+	    local i;
+
+	    LR := [];
+	    for i from 1 to nops(P0[1]) do:
+	    	LR := [op(LR), rat_recons_one(P0[1][i], d, bF)];
+	    end do;
+
+
+	    return [LR, P0[-1]];
+end proc;
+
+
+
+#RAT := rat_reconst(P0, 2, bF);
+
+
+### Input: a polynomial "one"; an integer d
+
+### Output: the rational reconstruction for "one" with the degree in denominators and numerators (in variable T) is at most d
+
+
+rat_recons_one := proc(one, d, bF)
+	       local oxpand;
+
+	       local LC, Lseries, Lpol;
+
+	       local i, deg, rat, sol;
+	       
+	       oxpand := expand(one);
+
+	       deg := degree(oxpand, u);
+
+	       LC := [];
+	       for i from 0 to deg do:
+	       	   LC := [op(LC), coeff(oxpand, u, i)];
+	       end do;
+	       
+	       Lseries := [];
+	       for i from 1 to nops(LC) do:
+	       	   Lseries := [op(Lseries), series(LC[i], T, 2*d+2)] mod bF;
+	       end do;
+	       
+	       Lpol := [];
+	       for i from 1 to nops(Lseries) do:
+	       	   Lpol := [op(Lpol), convert(Lseries[i], polynom)] mod bF;
+	       end do;
+	       
+	       #print(LSOL = Lpol);
+	       
+	       rat := rat_recons_d(Lpol, d, bF);
+	       
+	       #print(RAT = rat);
+	       
+	       sol := add(rat[i]*u^(i-1), i=1..nops(rat));
+
+	       return sol;
+	       
+end proc;
+
+
+
+
+#rat := rat_recons_one(q, 2, bF);
+
+
+### Input: a list "lsol" of formal power series at order 2d+1
+
+### Oputput: the rational reconstructions for all elemements in lsol with  the degree in denominators and numerators (in variable T) is at most d
+
+
+
+rat_recons_d := proc(lsol, d, bF)
+	     local lrat;
+
+	     local i;
+	     
+	     lrat := [];
+	     for i from 1 to nops(lsol) do:
+	     	 lrat := [op(lrat), Ratrecon(lsol[i], T^(2*d+1), T, d, d)] mod bF;
+	     end do; 
+
+	     return lrat;
+end proc;
+
+
+
+
+### Input: a pol
+
+### Ouput: the coefficients list /// order 0, ..., deg(f)
+
+list_coeffs := proc(f)
+	    local LC;
+
+	    local d, i;
+
+	    d := degree(f, u);
+	    
+	    LC := [];
+	    for i from 0 to d do:
+	    	LC := [op(LC), coeff(f, u, i)];
+	    end do;
+end proc;
+
+#lq := list_coeffs(q); 
