@@ -1,0 +1,86 @@
+
+
+### Input: A matrix F
+### Output: the list contains all maximal minors of F
+
+
+mino := proc(F)
+     local rowdim, coldim,L,fl,lisMat,j,d; 
+     rowdim := RowDimension(F);
+     coldim := ColumnDimension(F);
+     if is(rowdim > coldim) then
+     	print("Do not need to work");
+     else
+	L := [seq(i, i = 1..coldim)];
+	fl := addt(L,rowdim);
+	d := numelems(fl);
+	Determinant(SubMatrix(F,[1..rowdim],fl[1]));
+	lisMat := [];
+	for j from 1 to d do
+	    lisMat := [op(lisMat),Determinant(SubMatrix(F,[1..rowdim],fl[j]))];
+	end do;
+	return lisMat;
+     end if;
+end proc;
+
+
+
+
+#####################################################################
+	###addt: Compute list of all subsets of LIST ListL with i elemets### use funcs sublist and addElement
+
+		      ## sublist##
+
+## compute all elments from L[i] to the end of List
+
+sublist := proc(L, i)
+	local sq, j, n;
+	n := numelems(L);
+	sq := [seq(L[j],j=i..n)];
+	return sq;
+end proc;
+
+
+				  # addElement #
+
+## add an element a in to a list of list "ListL", a will be add at the beginning of each element of ListL ##
+## E.g: addElemnt(a,[[b,c],[d,e]]) = [[a,b,c][a,d,e]]##
+
+
+addElement := proc(a,ListL)
+	   local tem, i, n;
+	   
+	   n := numelems(ListL);
+	   tem := [];
+
+	   for i from 1 to n do
+	       tem := [op(tem),[a,op(ListL[i])]]:
+	   end do;
+	   return tem;
+end proc;
+
+                              #######
+
+addt := proc(ListL,i)
+	   local n,j,fin,tem;
+	   
+	   n := numelems(ListL);
+
+	   if i = 1 then
+	      fin := [];
+	      for j from 1 to n do
+	      	  fin := [op(fin), [ListL[j]]];
+	      end do;
+
+	   else
+		fin := [];
+		for j from 1 to n-i+1 do
+		    tem := addt(sublist(ListL,j+1),i-1);
+		    tem := addElement(ListL[j],tem);
+		    fin := [op(fin),op(tem)];
+		end do;
+		    
+	   end if;
+		
+	   return fin;
+end proc;
