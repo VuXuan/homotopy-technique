@@ -1,0 +1,16 @@
+
+K<X1,X2,T>:=PolynomialRing(Rationals(),2+1);
+
+
+L11:=-X1+10*X2+1;
+L12:=0;
+L13:=X1+X2 + 2;
+L21:=0;
+L22:= (X1-3*X2+5)*(X1 + 2* X2 - 4);
+L23:= (3*X1 +2*X2-1)*(2*X1 -3*X2 +5);
+L:=Matrix([[L11,L12,L13],[L21,L22,L23]]);
+
+mins:=Minors(L,2);
+#Variety(Ideal(mins cat [T-X2]));
+
+Variety(Ideal([L11,L13,T-X2]));
