@@ -1,39 +1,49 @@
-\documentclass[12pt]{article}
-\usepackage{bbm,fullpage}
+\documentclass[amsthm]{elsart}
+\usepackage{yjsco}
+\usepackage{natbib}
+%\usepackage{bbm,fullpage}
 \usepackage{bm}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{amssymb}
-\usepackage{algorithm, pseudocode}
+\usepackage{algpseudocode}
+\usepackage{algorithm}%, pseudocode}
 \usepackage{mathrsfs}
 \usepackage{enumitem}
 \usepackage[titles]{tocloft}
 \usepackage{yfonts}
 \usepackage{xcolor}
 \usepackage[pdftex,                %
-%    pagebackref,                %
     bookmarks         = true,%     % Signets
     bookmarksnumbered = true,%     % Signets numérotés
     pdfpagemode       = None,%     % Signets/vignettes fermé à l'ouverture
     pdfstartview      = FitH,%     % La page prend toute la largeur
     pdfpagelayout     = SinglePage,% Vue par page
     colorlinks        = true,%     % Liens en couleur
-%    linkcolor= monvert, %    % couleur des liens internes
-%    anchorcolor= blue, %    % couleur des liens internes
-   citecolor         =blue,
+    linkcolor= blue, %    % couleur des liens internes
+    anchorcolor= blue, %    % couleur des liens internes
+    citecolor         =blue,
     urlcolor          = magenta,%  % Couleur des liens externes
     pdfborder         = {0 0 0}%   % Style de bordure : ici, pas de bordure
     ]{hyperref}%                   % Utilisation de HyperTeX
 
-\usepackage{amsmath}
-\usepackage{easybmat}
-\usepackage{multirow,bigdelim}
+\hypersetup{
+linkcolor=blue,
+citecolor=red, %OrangeRed, %Emerald, %OliveGreen,
+urlcolor=blue, %BlueViolet %NavyBlue
+}
+\hypersetup{colorlinks=true}
+\makeatletter
+
+%\usepackage{amsmath}
+%\usepackage{easybmat}
+%\usepackage{multirow,bigdelim}
 
 \newcommand*\hexbrace[2]{%
   \underset{#2}{\underbrace{\rule{#1}{0pt}}}}
 
-\usepackage[indexonlyfirst,ucmark,toc]{glossaries}
-\renewcommand*{\glstextformat}[1]{\textcolor{black}{#1}}
-%\glsdisablehyper %pour enlever les liens hypertexte
+%\usepackage[indexonlyfirst,ucmark,toc]{glossaries}
+%\renewcommand*{\glstextformat}[1]{\textcolor{black}{#1}}
+%%\glsdisablehyper %pour enlever les liens hypertexte
 
 
 \input{macros.tex}
@@ -43,10 +53,6 @@
 \def\NOTE#1#2{{\begin{quote}\marginpar[\hfill{#1}]{{#1}}{{\textsf{[\![{#2}]\!]}}}\end{quote}}}
 \def\respond#1{\NOTE{\textcircled{\textsc{a}}}{Note:~{#1}}}
 
-\title{Solving determinantal systems using 
-homotopy techniques}
-
-\author{J.D. Hauenstein$^{1}$, M. {Safey El Din}$^{2}$, \'E. Schost$^{3}$, T. X. Vu$^{2,3}$}
 
 %% \institute{J.D. Hauenstein \at
 %% Department of Applied and Computational Mathematics and Statistics, 
@@ -78,11 +84,22 @@ homotopy techniques}
 \newtheorem{example}[definition]{Example}
 
 \begin{document}
-
-\maketitle
-\footnotetext[1]{Department of Applied and Computational Mathematics and Statistics, University of Notre Dame, USA}
-\footnotetext[2]{Sorbonne Universit\'e, CNRS, INRIA, Laboratoire d'Informatique de Paris 6, PolSys, Paris, France}
-\footnotetext[3]{David Cheriton School of Computer Science, University of Waterloo, ON, Canada}
+\begin{frontmatter}
+\title{Solving determinantal systems using 
+homotopy techniques}
+\author{Jon D. Hauenstein}
+\address{Department of Applied and Computational Mathematics and Statistics, University of Notre Dame, USA}
+\ead{hauenstein@nd.edu}
+\author{Mohab {Safey El Din}}
+\address{Sorbonne Universit\'e, CNRS, INRIA, Laboratoire d'Informatique de Paris 6, PolSys, Paris, France}
+\ead{mohab.safey@lip6.fr}
+\author{\'Eric Schost}
+\address{David Cheriton School of Computer Science, University of Waterloo, ON, Canada}
+\ead{eschost@uwaterloo.ca}
+\author{Thi Xuan Vu}
+\address{Sorbonne Universit\'e, CNRS, INRIA, Laboratoire d'Informatique de Paris
+  6, PolSys, Paris, France and David Cheriton School of Computer Science, University of Waterloo, ON, Canada}
+\ead{txvu@uwaterloo.ca}
 
 \begin{abstract}
   Let $\KK$ be a field of characteristic zero and let $\KKbar$ be an
@@ -102,10 +119,14 @@ homotopy techniques}
   $\VpFG{p}{\mF}{\mG}$. In particular, the algorithms 
   run in time that is 
   polynomial in the bound on the number of isolated points.
-
-\smallskip\noindent{\bf keywords}: Polynomial system solving, Homotopy, Symbolic Computation, Determinantal algebraic sets, Complexity
-
 \end{abstract}
+\begin{keyword}
+  Polynomial system solving, Homotopy, Symbolic Computation, Determinantal
+  algebraic sets, Complexity
+\end{keyword}
+\end{frontmatter}
+\endNoHyper
+
 
 \section{Introduction}\label{sec:intro}
 
