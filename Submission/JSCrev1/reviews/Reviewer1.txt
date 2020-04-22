@@ -1,0 +1,90 @@
+Referee’s report on JSC 11331
+Title: Solving determinantal systems using homotopy techniques
+Authors: Jon D. Hauenstein, Mohab Safey El Din, Éric Schost, Thi Xuan Vu
+
+
+In their paper, the authors design probabilistic homotopy algorithms to 
+compute all the isolated (or only the simple isolated) solutions of polynomial 
+systems involving determinants, which appear both in polynomial optimization 
+and computational geometry. They also estimate the complexity of their 
+algorithms (i.e. the number of operations in the base field needed to fulfill 
+the task) depending on the row and column degrees of the matrix involved, 
+on symmetric polynomials in these degrees, in a bound for the number of 
+isolated points to be calculated and in parameters associated to the system, 
+the size of the matrix involved and the length of  the straight-line program 
+evaluating the input polynomials. 
+
+The used data structure consists mainly of straight-line programs and 
+zero-dimensional parametrizations to describe zero-dimensional varieties 
+by means of univariate polynomials and a linear form, tools already common 
+in this kind of algorithms and that often lead to better complexity bounds 
+than the general ones.
+
+First they give a result that decides whether a point is isolated or not 
+in a variety provided a bound for its multiplicity if it is isolated is given. 
+This result adapts a previous one by B. Mourrain. 
+They also adapt the construction by Mourrain in order to obtain a better complexity. 
+
+Then some dimension and unmixedness properties on particular determinantal 
+ideas are stated and proved. Afterwards, they construct standard homotopies
+and prove that well-posed starting systems satisfy conditions on number of 
+solutions and multiplicity. 
+
+They give determinantal homotopies algorithms based on Newton iteration starting 
+from a well posed system. Finally they bound the complexity of their algorithms 
+in terms of the column degrees of the matrix involved and afterwards, for the 
+row degrees of the matrix involved. 
+
+Finally, in an appendix, they prove some generic properties of the homotopy 
+starting systems involved which are needed for their algorithms to work. 
+	
+The general idea underlying the paper is standard: to find some nice starting 
+systems for the homotopies, use Newton-Hensel approximation, and recover the 
+information of the system they want to “solve”. In the particular context of the 
+paper, there are many properties to prove, and some difficulties to tackle that 
+are dealt with very well. In this sense, the paper contains some new and 
+interesting results that deserve to be published. 
+However I would like to read a revision before accepting it for publication. 
+
+Some details:
+ 
+In the abstract, it would be nice to make clear that these computations work 
+under certain conditions for p, q, n and s. 
+
+Perhaps a comparison with already known algorithms solving this task 
+(for example, how the author’s algorithms compare with Lecerf’s equidimensional 
+decomposition algorithm) should be made. The symmetric polynomials involved 
+in the complexity imply the complexities may be exponential in the degrees involved.  
+
+The introduction is rather long. I suggest to revise it and to make it shorter 
+if possible. 
+
+In p. 2, l. 29 the authors state “this notion makes sense for any field K; 
+when K = R, these points are indeed isolated for the metric topology”. 
+This statement is misleading. In fact, the algorithms they design find the 
+isolated solutions in an algebraically closed field if I am right, and they may 
+skip isolated solutions in R because they are not isolated in C. 
+
+In p. 6, l. -15, “g_i can be discarded”: clarify, please, if one discards one 
+or more polynomials, the condition n = q-p+s+1 is lost. 
+
+In page 9, Proposition 7 is rather theoretical, because it works with operations 
+in L and not in K. In fact, I do not understand the role K plays in this 
+construction. Moreover, how is the point x given? How can you codify a particular 
+point with coordinates in an algebraic closure of an effective field? 
+As a theoretical result, I think it works, but then, when it is used in page 23, 
+I do not know how it is applied when working with zero-dimensional 
+parametrizations. Please, clarify. 
+
+In page 22, clarify the dynamic evaluation technique, please: I suppose you 
+are computing polynomial gcd when you find a zero-divisor. Is this taken into 
+account in the complexity stated there? Or you are tackling it some other way?
+
+The rest of the paper is OK, I think. It is nice to have an example, although 
+the lack of polynomials G in it is somewhat disappointing.
+
+I have found some typos but I will mark them more thoroughly in my next revision.  
+
+
+=====================================================
+
