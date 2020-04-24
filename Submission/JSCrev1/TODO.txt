@@ -1,0 +1,102 @@
+* Review 1
+
+** In the abstract, it would be nice to make clear that these computations work
+under certain conditions for p, q, n and s. 
+
+=> DONE
+
+** Perhaps a comparison with already known algorithms solving this task 
+(for example, how the author’s algorithms compare with Lecerf’s equidimensional 
+decomposition algorithm) should be made.
+
+=> DONE
+
+** The symmetric polynomials involved 
+in the complexity imply the complexities may be exponential in the degrees involved.  
+
+=> DONE
+
+** The introduction is rather long. I suggest to revise it and to make it shorter 
+if possible. 
+
+=> DONE
+
+** In p. 2, l. 29 the authors state “this notion makes sense for any field K; 
+when K = R, these points are indeed isolated for the metric topology”. 
+This statement is misleading. In fact, the algorithms they design find the 
+isolated solutions in an algebraically closed field if I am right, and they may 
+skip isolated solutions in R because they are not isolated in C. 
+
+=> DONE
+
+** In p. 6, l. -15, “g_i can be discarded”: clarify, please, if one discards one 
+or more polynomials, the condition n = q-p+s+1 is lost. 
+
+=> DONE
+
+** In page 9, Proposition 7 is rather theoretical, because it works with operations 
+in L and not in K. In fact, I do not understand the role K plays in this 
+construction. Moreover, how is the point x given? How can you codify a particular 
+point with coordinates in an algebraic closure of an effective field? 
+As a theoretical result, I think it works, but then, when it is used in page 23, 
+I do not know how it is applied when working with zero-dimensional 
+parametrizations. Please, clarify. 
+
+** In page 22, clarify the dynamic evaluation technique, please: I suppose you 
+are computing polynomial gcd when you find a zero-divisor. Is this taken into 
+account in the complexity stated there? Or you are tackling it some other way?
+
+** The rest of the paper is OK, I think. It is nice to have an example, although 
+the lack of polynomials G in it is somewhat disappointing.
+
+** I have found some typos but I will mark them more thoroughly in my next revision.  
+
+
+* Review 2
+
+** (1) The total length of this paper is 60 pages.
+Already the introduction takes up almost 9 pages.
+
+=> Now it is 6 pages.
+
+The appendix starts at page 48.
+Section 5 with the determinantal homotopy algorithm starts 
+only at page 21.  Given that this algorithm could also be suitable
+for a numerical, practical implementation, the paper would have been
+more appealing to read if the steps in the homotopy algorithm would have
+been illustrated on the running example and if the cost analysis,
+which is specific to the formalism of straight-line programs would follow.
+
+** (2) The reference list is incomplete.  The authors cite [65], marking it 
+as "One notable exception", but a precursor to those homotopies are the 
+Pieri homotopies, which solve the output pole placement problem in linear
+systems control, SIAM J. Control Optim. 38(4): 1265-1287, 2000. 
+Example 3.3 on page 257 of ACM TOMS Algorithm 795: PHCpack, 1999,
+briefly outlines the simplest instance.
+
+=> A Citer.
+
+As to this "so-called BKK bound" phrase in the submitted paper,
+every polynomial has a Newton polytope, and polyhedral homotopies 
+are generically optimal for sparse systems.
+With the introduction of slack variables (as in the embeddings of
+Journal of Complexity 16(3):572-602, 2000), polyhedral homotopies
+apply just as well to overdetermined polynomial systems.
+
+=> ???
+
+To illustrate the point that polyhedral homotopies are relevant both
+to numerical and symbolic computing, consider the paper "Deformation 
+techniques for sparse systems," Found. Comput. Math., 9:1-50, 2009.
+
+=> We already cite it.
+
+** (3) One major weakness in this paper, compared to [65], is that no 
+computational results with an efficient implementation of the algorithms
+proposed in this paper are known.  There is no point in citing [14], as
+[14] is irrelevant to Schubert problems and symbolic homotopy continuation.
+
+** Small comment: The word probabilistic should better already appear in the abstract.
+
+DONE
+
