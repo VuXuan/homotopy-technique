@@ -42,11 +42,15 @@ As a theoretical result, I think it works, but then, when it is used in page 23,
 I do not know how it is applied when working with zero-dimensional 
 parametrizations. Please, clarify. 
 
+=> DONE (to be checked)
+
 ** In page 22, clarify the dynamic evaluation technique, please: I suppose you 
 are computing polynomial gcd when you find a zero-divisor. Is this taken into 
 account in the complexity stated there? Or you are tackling it some other way?
 
-** The rest of the paper is OK, I think. It is nice to have an example, although 
+DONE
+
+** The rest of the paper is OK, I think. It is nice to have an example, although
 the lack of polynomials G in it is somewhat disappointing.
 
 ** I have found some typos but I will mark them more thoroughly in my next revision.  
@@ -74,7 +78,7 @@ systems control, SIAM J. Control Optim. 38(4): 1265-1287, 2000.
 Example 3.3 on page 257 of ACM TOMS Algorithm 795: PHCpack, 1999,
 briefly outlines the simplest instance.
 
-=> A Citer.
+=> A Citer. DONE.
 
 As to this "so-called BKK bound" phrase in the submitted paper,
 every polynomial has a Newton polytope, and polyhedral homotopies 
@@ -83,7 +87,7 @@ With the introduction of slack variables (as in the embeddings of
 Journal of Complexity 16(3):572-602, 2000), polyhedral homotopies
 apply just as well to overdetermined polynomial systems.
 
-=> ???
+=> DONE
 
 To illustrate the point that polyhedral homotopies are relevant both
 to numerical and symbolic computing, consider the paper "Deformation 

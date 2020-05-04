@@ -311,11 +311,17 @@ B\'ezout bounds involving the maxima of $\rdeg(\mF, 1), \ldots,
 
 Most aforementioned algorithms solve {\em square} systems, that is, systems with
 as many equations as unknowns; though extensions can deal with systems of
-positive dimension by using variants of algorithms for square systems. One
-notable exception is \cite{SVV10}, providing dedicated homotopy algorithms to
-solve Schubert problems which are formulated with rank conditions on some
-special matrices~\cite{LDSVV18}. These work through the Littlewood Richardson
-rule and some combinatorial construction. As far as we know, they cannot be used
+positive dimension by using variants of algorithms for square systems. Note that
+using slack variables as in \cite{SoVe00}, polyhedral homotopies apply to
+overdetermined systems but the control of their complexities is not known. Some
+dedicated homotopies have been designed for special overdetermined systems as in
+\cite{BV00, SVV10}.
+% One
+% notable exception is \cite{SVV10}, providing dedicated homotopy algorithms to
+% solve Schubert problems which are formulated with rank conditions on some
+% special matrices~\cite{LDSVV18}. These work through the Littlewood Richardson
+% rule and some combinatorial construction. 
+As far as we know, they cannot be used
 to solve determinantal systems as the ones we tackle in this paper.
 
 In this paper, we deal with determinantal
@@ -338,7 +344,7 @@ the scope of the so-called geometric resolution algorithm in
 solve only Problem~\eqref{problem3} (isolated solutions which are not simple are
 not considered in that line of work). \added{Computing isolated points of
   $\VpFG{p}{\mF}{\mG}$ could be done using Lecerf's equidimensional
-  decomposition algorithm, still based on the geometric resolution \cite{xxx}. }
+  decomposition algorithm, still based on the geometric resolution \cite{Lecerf2000}. }
 The cost of these algorithms is quadratic in certain geometric quantities (the
 degree of algebraic sets defined by subsystems of the determinantal equations we
 are dealing with); this is to be compared with the runtimes in
