@@ -1,0 +1,729 @@
+//-------------------------------------------------------------//
+//-------------------------------------------------------------//
+// Helper functions (map and make_map)                         //
+//-------------------------------------------------------------//
+//-------------------------------------------------------------//
+
+//-------------------------------------------------------------//
+// applies f to the entries of sequence/matrix/polynomial M    //
+//-------------------------------------------------------------//
+function map(f, M)
+    if Type(M) eq SeqEnum then
+        return [f(m) : m in M];
+    end if;
+    if Type(M) eq ModMatRngElt or Type(M) eq AlgMatElt then
+        r:=NumberOfRows(M);
+        c:=NumberOfColumns(M);
+        return Matrix([[f(M[i,j]) : j in [1..c]] : i in [1..r]]);
+    end if;
+    if Type(M) eq RngUPolElt then
+        if M eq 0 then
+            return 0;
+        end if;
+        cf:=[f(m) : m in Coefficients(M)];
+        return PolynomialRing(Universe(cf))!cf;
+    end if;
+    error "map: bad argument";
+end function;
+
+//-------------------------------------------------------------//
+// returns the function that maps f to a sequence / matrix x   //
+//-------------------------------------------------------------//
+function make_map(f)
+    return func<x | map(f, x)>;
+end function;
+
+
+
+//-------------------------------------------------------------//
+//-------------------------------------------------------------//
+// Power series / modular polynomial operations for lifting    //
+//-------------------------------------------------------------//
+//-------------------------------------------------------------//
+
+//-------------------------------------------------------------//
+// if P is in k[X]/f(X), returns its lift in k[X]              //
+//-------------------------------------------------------------//
+function lift(P)
+    if Type(P) eq RngUPolResElt then
+        return Parent(Modulus(Parent(P)))!P;
+    end if;
+    error "lift: bad argument.";
+end function;
+
+//-------------------------------------------------------------//
+// caster to the power series ring Q over k                    //
+// applies to power series over k or elements of k             //
+//-------------------------------------------------------------//
+function do_cast(Q)
+    if Type(Q) ne RngSerPow then
+        error "do_cast: bad argument";
+    end if;
+    s:=Precision(Q);
+    function cast(c)
+        if Type(c) eq RngSerPowElt then
+            t:=Precision(Parent(c));
+            return Q![Coefficient(c, i) : i in [0..Min(s, t)-1]];
+        end if;
+        if Parent(c) eq BaseRing(Q) then
+            return Q!c;
+        end if;
+        error "cast: bad argument";
+    end function;
+    return cast;
+end function;
+
+//-------------------------------------------------------------//
+// divider by t^s (for power series)                           //
+//-------------------------------------------------------------//
+function do_div_by(s)
+    function div_by(c)
+        if Type(c) eq RngSerPowElt then
+            t:=Precision(Parent(c));
+            return Parent(c)![Coefficient(c, i) : i in [s..t-1]];
+        end if;
+        error "div_by: bad argument";
+    end function;
+    return div_by;
+end function;
+
+//-------------------------------------------------------------//
+// multiplier by t^s (for power series)                        //
+//-------------------------------------------------------------//
+function do_mul_by(s)
+    function mul_by(c)
+        if Type(c) eq RngSerPowElt then
+            t:=Precision(Parent(c));
+            return Parent(c)!([0 : i in [0..s-1]] cat [Coefficient(c, i) : i in [0..t-s-1]]);
+        end if;
+        error "mul_by: bad argument";
+    end function;
+    return mul_by;
+end function;
+
+//-------------------------------------------------------------//
+// rational reconstruction of a power series s                 //
+// output is a rational function                               //
+//-------------------------------------------------------------//
+function ratrecon(s)
+    if s eq 0 then
+        return 0;
+    end if;
+    S:=Parent(s);
+    d:=Precision(S);
+    dh:=d div 2;
+    coefs:=[Coefficient(s, i) : i in [0..Precision(S)-1]];
+    den:=BerlekampMassey(coefs);
+    P:=Parent(den);
+    x:=P.1;
+    num:=P!coefs*den mod x^dh;
+    return num/den;
+end function;
+
+
+//-------------------------------------------------------------//
+//-------------------------------------------------------------//
+// Random generation                                           //
+//-------------------------------------------------------------//
+//-------------------------------------------------------------//
+
+//-------------------------------------------------------------//
+// returns an element from k. uses built-in if k is finite     //
+//-------------------------------------------------------------//
+function rand(k)
+    if IsFinite(k) then
+        return Random(k);
+    else
+        return k!Random([-100..100]);
+    end if;
+end function;
+
+//-------------------------------------------------------------//
+// returns a random polynomial in M with degree at most deg    //     
+//-------------------------------------------------------------//
+function random_polynomial(M, deg)
+    k:=BaseRing(M);
+    return &+[ &+[rand(k)*x : x in MonomialsOfDegree(M, d)] : d in [0..deg] ];
+end function;
+
+
+
+//-------------------------------------------------------------//
+//-------------------------------------------------------------//
+// Polynomial matrices                                         //
+//-------------------------------------------------------------//
+//-------------------------------------------------------------//
+
+//-------------------------------------------------------------//
+// random pxq polynomial matrix with presribed row-degrees     //
+// coefficients are in k, entries have n=q-p+1 variables       //
+//-------------------------------------------------------------//
+function random_matrix(p, q, row_degrees, k)
+    n:=q-p+1;
+    M:=PolynomialRing(k, n);
+    return Matrix(p, q, [[random_polynomial(M, d) : i in [1..q]] : d in row_degrees]);
+end function;
+
+//-------------------------------------------------------------//
+// input: an object of type_matrix                             //
+// output: a function that evaluates the matrix                //
+//-------------------------------------------------------------//
+function make_func_matrix(mat)
+    function ev_mat(pt)
+        return map(func<F|Evaluate(F, pt)>, mat);
+    end function;
+    return ev_mat;
+end function;
+
+//-------------------------------------------------------------//
+// input: a polynomial matrix with n=q-p+1                     //
+// output: its maximal minors                                  //
+//-------------------------------------------------------------//
+function maximal_minors(mat)
+    p:=NumberOfRows(mat);
+    q:=NumberOfColumns(mat);
+    n:=Rank(BaseRing(Parent(mat)));
+    assert n eq (q-p+1);
+    assert p le q;
+    return Minors(mat, p);
+end function;
+
+//-------------------------------------------------------------//
+// random pxq polynomial matrix with presribed row-degrees     //
+// coefficients are in k, entries have n=q-p+1 variables       //
+// entries are products of linear forms                        //
+// -> output is a p-list of q-list of lists of linear terms    //
+//-------------------------------------------------------------//
+function random_product_matrix(p, q, row_degrees, k)
+    n:=q-p+1;
+    M:=PolynomialRing(k, n);
+    return Matrix(p, q, [[random_polynomial(M, d) : i in [1..q]] : d in row_degrees]);
+end function;
+
+//-------------------------------------------------------------//
+// input: an object of type product_matrix                     //
+// output: a function that evaluates the matrix                //
+//-------------------------------------------------------------//
+function make_func_product_matrix(product_mat)
+    function ev_mat(pt)
+        return Matrix( [ [ &*[Evaluate(y, pt) : y in z] : z in r ] : r in product_mat ] );
+    end function;
+    return ev_mat;
+end function;
+
+//-------------------------------------------------------------//
+// input: an object of type product_matrix                     //
+// output: the expanded matrix                                 //
+//-------------------------------------------------------------//
+function expand_product_mat(product_mat)
+    return Matrix([[&* x: x in y] : y in product_mat]);
+end function;
+
+
+//-------------------------------------------------------------//
+// special pxq polynomial matrix with presribed row-degrees    //
+// coefficients are in k, entries have n=q-p+1 variables       //
+// the pxp diagonal: a p-list of list of linear factors        //
+// rest: a p-list of (q-p)-lists of lists of linear factors    //
+//-------------------------------------------------------------//
+function random_special_matrix(p, q, row_degrees, k)
+    n:=q-p+1;
+    M:=PolynomialRing(k, n);
+
+    diag:=[];
+    for i in [1..p] do
+        Append(~diag, [ &+[rand(k) + rand(k)*M.s : s in [1..n]] : t in [1..row_degrees[i]] ]); 
+    end for;
+
+    rest:=[];
+    for i in [1..p] do
+        r:=[];
+        for j in [p+1..q] do
+            Append(~r, [ &+[rand(k) + rand(k)*M.s : s in [1..n]] : t in [1..row_degrees[i]] ]); 
+        end for;
+        Append(~rest, r);
+    end for;
+
+    return [* diag, rest *];
+end function;
+
+//-------------------------------------------------------------//
+// input: an object of type special_matrix                     //
+// output: the expanded matrix                                 //
+//-------------------------------------------------------------//
+function make_func_special_matrix(special_mat)
+    function ev_mat(pt)
+        dg:=DiagonalMatrix([ &*[Evaluate(y, pt) : y in z] : z in special_mat[1] ]);
+        rst:=Matrix( [ [ &*[Evaluate(y, pt) : y in z] : z in r ] : r in special_mat[2] ] );
+        return HorizontalJoin(dg, rst);
+    end function;
+    return ev_mat;
+end function;
+
+//-------------------------------------------------------------//
+// input: an object of type special_matrix                     //
+// output: a function that evaluates the matrix                //
+//-------------------------------------------------------------//
+function expand_special_mat(special_mat)
+    m1:=DiagonalMatrix([&*x : x in special_mat[1]]);
+    m2:=Matrix([[&* x: x in y] : y in special_mat[2]]);
+    return HorizontalJoin(m1, m2);
+end function;
+
+
+//-------------------------------------------------------------//
+// input: a function that computes a pxq matrix in k[X]        //
+// output: a function that computes the lagrange system        //
+//         (result is a sequence, not a vector)                //
+// if u = [], uses a random u for the equation sum l_i u_i = 1 //                                
+//-------------------------------------------------------------//
+function matrix_to_lagrange_system(mat, p, q, k, u_in)
+    if #u_in eq 0 then
+        u:=[rand(k) : i in [1..p]];
+    else
+        u:=u_in;
+    end if;
+    eval_u:=func<l | &+[l[i]*u[i] : i in [1..p]]-1>;
+    function lag(vars)
+        n:=q-p+1;
+        x:=vars[1..n];
+        l:=vars[n+1..n+p];
+        vals:=Matrix(1, p, l) * mat(x);
+        return Eltseq(vals) cat [eval_u(l)];
+    end function;
+    return lag;
+end function;
+
+
+//-------------------------------------------------------------//
+//-------------------------------------------------------------//
+// Parametrizations                                            //
+// A parametrization = [* [q, v1,....vn], [u1,...,un] *]       //
+// q and all vi's are univariate polynomials                   //
+// u1..un are in k such that sum ui vi = T                     //
+// First, some functions for manipulating parametrizations     //
+//-------------------------------------------------------------//
+//-------------------------------------------------------------//
+
+//-------------------------------------------------------------//
+// returns a function for the transposed product in Q=k[x]/P   //
+//-------------------------------------------------------------//
+function do_tmulmod(Q)
+    P:=Modulus(Q);
+    m:=Degree(P);
+    U:=Parent(P);
+    k:=BaseRing(U);
+    S:=PowerSeriesRing(k, m);
+    y:=S!Reverse(Coefficients(P));
+    iy:=1/y;
+    function t_mulmod(f, ell)
+        A:=y * S!ell;
+        B:=Q!f * Q![Coefficient(A, m-1-i) : i in [0..m-1]];
+        C:=iy * S![Coefficient(B, m-1-i) : i in [0..m-1]];
+        return [Coefficient(C, i) : i in [0..m-1]];
+    end function;
+    return t_mulmod;
+end function;
+
+//-------------------------------------------------------------//
+// returns f.ell, where f is in Q=k[x]/P and ell is Q->k       //
+// ell and the output are given as sequences of length dim(Q)  //
+//-------------------------------------------------------------//
+function power_projection(ell, f)
+    Q:=Parent(f);
+    m:=Degree(Modulus(Q));
+    sm:=Ceiling(Sqrt(m));
+    tm:=Ceiling(m div sm);
+    baby:=[Q!1];
+    for i in [1..sm] do
+        Append(~baby, f*baby[#baby]);
+    end for;
+    giant:=[ell];
+    tmulmod:=do_tmulmod(Q);
+    for i in [1..tm] do
+        Append(~giant, tmulmod(baby[#baby], giant[#giant]));
+    end for;
+    values:=Matrix(sm, m, [[Coefficient(baby[i], j) : j in [0..m-1]] : i in [1..sm]]) * Transpose(Matrix(giant));
+    return Eltseq(Transpose(values))[1..m];
+end function;
+
+//-------------------------------------------------------------//
+// change coordinates in the given parametrization             //
+// new generator is sum u_i x_i                                //
+//-------------------------------------------------------------//
+function change_generator(parametrization, new_u)
+    polys:=parametrization[1];
+    u:=parametrization[2];
+    q:=polys[1];
+    n:=#polys-1;
+    v:=polys[2..n+1];
+    P:=Parent(q);
+    z:=P.1;
+    k:=BaseRing(P);
+    Q:=quo<P | q>;
+    gen:=Q!&+[new_u[i] * v[i] : i in [1..n]];
+
+    tmulmod:=do_tmulmod(Q);
+    d:=Degree(q);
+    ell:=[rand(k) : i in [0..d-1]];
+    gen_d:=gen^d;
+    S:=power_projection(ell, gen) cat power_projection(tmulmod(gen_d, ell), gen);
+    rPM, val:=BerlekampMassey(S);
+    PM:=P!Reverse(Coefficients(rPM)) * z^(val-Degree(rPM));
+
+    rNum:=P!S*rPM  mod z^(Degree(PM));
+    Num:=P!Reverse(Coefficients(rNum));
+
+    w:=[PM];
+    for i in [1..n] do
+        Si:=power_projection(tmulmod(Q!v[i], ell), gen);
+        rNumi:=(P!Si)*rPM  mod z^(Degree(PM));
+        Numi:=P!Reverse(Coefficients(rNumi));
+        g:=GCD(Numi, Num);
+        Append(~w, (Numi div g)*InverseMod(Num div g, PM) mod PM);
+    end for;
+
+    return [* w, new_u *];
+end function;
+
+//-------------------------------------------------------------//
+// returns a parametrization that describes the union of all   //
+// entries in list_parametrizations                            //
+//-------------------------------------------------------------//
+function union(list_parametrizations)
+    U:=Universe(list_parametrizations[1][1]);
+    k:=BaseRing(U);
+    n:=#list_parametrizations[1][1]-1;
+    new_u:=[rand(k) : i in [1..n]];
+    new_parametrizations:=[change_generator(x, new_u) : x in list_parametrizations];
+
+    qs:=[x[1][1] : x in new_parametrizations];
+    return [* [&*qs] cat [CRT([x[1][i+1] : x in new_parametrizations], qs) : i in [1..n]], new_u *];
+end function;
+
+//-------------------------------------------------------------//
+// computes a groebner basis for Z(parametrization)            //
+//-------------------------------------------------------------//
+function parametrization_to_groebner_basis(parametrization)
+    U:=Universe(parametrization[1]);
+    u:=parametrization[2];
+    k:=BaseRing(U);
+    n:=#parametrization[1]-1;
+    M:=PolynomialRing(k, n+1);
+    M2:=PolynomialRing(k, n);
+    I:=[Evaluate(parametrization[1][1], M.(n+1))] cat [M.i-Evaluate(parametrization[1][i+1], M.(n+1)) : i in [1..n]];
+    assert (&+[u[i]*parametrization[1][i+1] : i in [1..n]] - U.1) mod parametrization[1][1] eq 0;
+    GB:=GroebnerBasis(EliminationIdeal(Ideal(I), {1..n}));
+    return [Evaluate(f, [M2.i : i in [1..n]] cat [0]) : f in GB];
+end function;
+
+
+//-------------------------------------------------------------//
+// computes a parametrization for V(eqs)                       //
+//-------------------------------------------------------------//
+function solve_system(eqs)
+    M:=Universe(eqs);
+    n:=Rank(M);
+    k:=BaseRing(M);
+    u:=[rand(k) : i in [1..n]];
+    new_M:=PolynomialRing(k, n+1);
+    new_eqs:=[Evaluate(f, [new_M.i : i in [1..n]]) : f in eqs] cat [new_M.(n+1) - &+[u[i]*new_M.i : i in [1..n]]];
+    GB:=GroebnerBasis(Radical(Ideal(new_eqs)));
+    return [* [UnivariatePolynomial(GB[n+1])] cat [-UnivariatePolynomial(GB[i]-new_M.i) : i in [1..n]], u *];
+end function;
+
+
+
+//-------------------------------------------------------------//
+//-------------------------------------------------------------//
+// Points (= helper data structure   )                         //
+// A point is a sequence [w1...wn] with all wi in k[x]/q       //
+//-------------------------------------------------------------//
+//-------------------------------------------------------------//
+
+//-------------------------------------------------------------//
+// multiplies a point by q'                                    //
+//-------------------------------------------------------------//
+function shape_lemma_to_RUR(point)
+    U:=Universe(point);
+    dq:=U!Derivative(Modulus(U));
+    return [x * dq : x in point];
+end function;
+
+//-------------------------------------------------------------//
+// divides a point by q'                                       //
+//-------------------------------------------------------------//
+function RUR_to_shape_lemma(point)
+    U:=Universe(point);
+    q:=Modulus(U);
+    i_dq:=1/U!Derivative(q);
+    return [i_dq * U!x : x in point];
+end function;
+
+//-------------------------------------------------------------//
+// turns a point (w/ entries in a residue class ring)          //
+// to a sequence of n+1 polynomials                            //
+// warning, we do not find the linear form                     //
+//-------------------------------------------------------------//
+function point_to_partial_parametrization(point)
+    U:=Universe(point);
+    q:=Modulus(U);
+    return [q] cat map(lift, point);
+end function;
+
+//-------------------------------------------------------------//
+// extract a point (w/ entries in a residue class ring)        //
+// from a parametrization                                      //
+//-------------------------------------------------------------//
+function parametrization_to_point(parametrization)
+    n:=#parametrization[1]-1;
+    q:=parametrization[1][1];
+    P:=Parent(q);
+    Q:=quo<P | q>;
+    return [Q!P!parametrization[1][i] : i in [2.. n+1]];
+end function;
+
+
+
+//-------------------------------------------------------------//
+//-------------------------------------------------------------//
+// Homotopy for matrices                                       //
+//-------------------------------------------------------------//
+//-------------------------------------------------------------//
+
+//-------------------------------------------------------------//
+// returns M^(-1), assuming the base ring allows inversion     //
+// this is shitty                                              //
+//-------------------------------------------------------------//
+function inv(M)
+    if Type(M) eq RngSerPowElt then
+        return M^(-1);
+    end if;
+    if Type(M) eq AlgMatElt then
+        return $$(Determinant(M))*Adjoint(M);
+    end if;
+    if Type(M) eq RngUPolResElt then
+        return 1/M;
+        /* iM:=$$(Transpose(RepresentationMatrix(M))); */
+        /* return Parent(M)![iM[i,1] : i in [1..NumberOfRows(iM)]]; */
+    end if;
+    error "inv: bad argument";
+end function;
+
+//-------------------------------------------------------------//
+// functions that evaluates at 1                               //
+//-------------------------------------------------------------//
+function eval1(s)
+    return Evaluate(s, 1);
+end function;
+
+//-------------------------------------------------------------//
+// input = point with power series coefficients                //
+// output = point with base field coefficients                 //
+//  converts to RUR                                            //
+//  rational reconstruction                                    //
+//  evaluates at t=1                                           //
+//  converts back to shape_lemma                               //
+//-------------------------------------------------------------//
+function reconstruct(point)
+    U:=Universe(point);
+    m_ratrecon:=make_map(ratrecon);
+    m_eval1:=make_map(eval1);
+    q_r:=m_ratrecon(Modulus(U));
+    point_rat:=map(m_ratrecon, map(lift, shape_lemma_to_RUR(point)));
+
+    /* Degree(Denominator(Coefficient(q_r,0))), [ Degree(Denominator(Coefficient(x,0))) : x in point_rat]; */
+    
+    q_1:=m_eval1(q_r);
+    Q_1:=quo<Parent(q_1) | q_1>;
+    point_1:=[Q_1!x : x in map(m_eval1, point_rat)];
+    return RUR_to_shape_lemma(point_1);
+end function;
+
+//-------------------------------------------------------------//
+// f computes a sequence of polynomials                        //
+// returns jac(f) at val                                       //
+//-------------------------------------------------------------//
+function jacobian(f, val)
+    U:=Universe(val);
+    n:=#val;
+    M:=PolynomialRing(U, n);
+    S:=PowerSeriesRing(M, 2);
+    result:=[M!Coefficient(x, 1) : x in f([val[i]+M.i*S.1 : i in [1..n]])];
+    return Matrix([[MonomialCoefficient(result[j], M.i) : i in [1..n]] : j in [1..n]]);
+end function;
+
+//-------------------------------------------------------------//
+// intput:                                                     //
+// mat0 and mat1 are functions that evaluate the start and end //
+// matrices. sol0_x is a parametrization of the rank-deficient //
+// locus of mat0. p and q are the sizes of the matrices        //
+//                                                             //
+// output: parametrization of the rank-deficient locus of mat1 //   
+//-------------------------------------------------------------//
+function matrix_homotopy(mat1, mat0, p, q, sol0_x)
+    n:=#sol0_x[1]-1;
+    pmin:=sol0_x[1][1];
+    u:=sol0_x[2];
+    F:=BaseRing(Parent(pmin));
+    k:=PowerSeriesRing(F, 1);
+
+    pt0_x:=parametrization_to_point(sol0_x);
+    lag_u:=[rand(F) : i in [1..p]];
+    m0:=HorizontalJoin(mat0(pt0_x), Matrix(Universe(pt0_x), p, 1, lag_u));
+    rhs:=Matrix(Universe(pt0_x), 1, q+1, [0 : i in [1..q]] cat [1]);
+    pt0_ell:=Eltseq(Solution(m0, rhs));
+    sol0:=[* sol0_x[1] cat [lift(x) : x in pt0_ell], u *];
+
+    eqs0:=matrix_to_lagrange_system(mat0, p, q, F, lag_u);
+    eqs1:=matrix_to_lagrange_system(mat1, p, q, F, lag_u);
+
+    pt0:=parametrization_to_point(sol0);
+    jac:=jacobian(eqs0, pt0);
+    inv_jac:=inv(jac);
+
+    n:=#sol0_x[1]-1+p;
+    u:=sol0_x[2] cat [0 : i in [1..p]];
+    P:=PolynomialRing(k);
+    pmin:=P!pmin;
+    Q:=quo<P | pmin>;
+    point:=[Q!P!sol0[1][i] : i in [2.. n+1]];
+
+    jac:=map(lift, jac);
+    jac:=ChangeRing(jac, P);
+    jac:=ChangeRing(jac, Q);
+    
+    inv_jac:=map(lift, inv_jac);
+    inv_jac:=ChangeRing(inv_jac, P);
+    inv_jac:=ChangeRing(inv_jac, Q);
+    
+    finished:=false;
+    prec:=2;
+    while not finished do
+        // casts pmin and point to new precision
+        k:=PowerSeriesRing(F, prec);
+        half_prec:=prec div 2;
+
+        m_cast:=make_map(do_cast(k));
+        m_div_by:=make_map(do_div_by(half_prec));
+        m_mul_by:=make_map(do_mul_by(prec - half_prec));
+        
+        pmin:=m_cast(pmin);
+        Q:=quo<Parent(pmin) | pmin>; // at new precision, but with old modulus
+        point:=map(func<x|Q!x>, map(m_cast, map(lift, point)));
+    
+        // F = (1-t)*eqs0 + t*eqs1;
+        v0:=eqs0(point);
+        v1:=eqs1(point);
+        val:=[(1-k.1)*v0[i] + k.1*v1[i] : i in [1..n]];
+
+        div_val:=map(func<x|Q!x>, map(m_div_by, map(lift, val)));
+        
+        inv_jac:=map(func<x|Q!x>, map(m_cast, map(lift, inv_jac)));
+        delta:=Eltseq(inv_jac*Matrix(n, 1, div_val));
+        
+        mul_delta:=map(func<x|Q!x>, map(m_mul_by, map(lift, delta)));
+        point_tmp:=[(point[i] - mul_delta[i]) : i in [1..n]];
+        adjust:=&+[u[i]*point_tmp[i] : i in [1..n]] - Q.1;
+        new_point:=[lift(point_tmp[i] - adjust*Q!Derivative(lift(point_tmp[i]))) : i in [1..n]];
+        pmin:=pmin - lift(adjust*Q!Derivative(pmin));
+
+        Q:=quo<Parent(pmin) | pmin>;
+        point:=[Q!x : x in new_point];
+        point_1:=reconstruct(point);
+        finished:=Rank(mat1(point_1[1..n-p])) lt p;
+        
+        if not finished then // update Jacobian matrix to the old precision
+            jac0:=jacobian(eqs0, point);
+            jac1:=jacobian(eqs1, point);
+            jac:=(1-k.1)*jac0 + k.1*jac1;
+            inv_jac:=map(func<x|Q!x>, map(m_cast, map(lift, inv_jac)));
+            inv_jac:=2*inv_jac - inv_jac * jac * inv_jac;
+        end if;
+        
+        prec:=prec*2;
+    end while;
+    
+    return [* point_to_partial_parametrization(point_1[1..n-p]), u[1..n-p] *];
+end function;
+
+//-------------------------------------------------------------//
+//-------------------------------------------------------------//
+// Main algorithms                                             //
+//-------------------------------------------------------------//
+//-------------------------------------------------------------//
+
+forward solve_matrix;
+
+//-------------------------------------------------------------//
+// input: a special matrix (format as used above)              //
+// output: a parametrization of its rank-deficient locus       //
+//-------------------------------------------------------------//
+function solve_special_matrix(special_mat)
+    diag:=special_mat[1];
+    rest:=special_mat[2];
+    M:=Universe(diag[1]);
+    k:=BaseRing(M);
+    n:=Rank(M);
+    p:=#diag;
+    q:=p + #rest[1];
+    subs_diag:={ x : x in Subsets({1..p}) | #x ne 0 and #x le n-1};
+    solutions:=[];
+    for set in subs_diag do
+        nb:=#set;
+        np:=n-nb;
+        mat:=[rest[x] : x in set];
+        lin_eqs:=[x : x in CartesianProduct([diag[x] : x in set])];
+        new_M:=PolynomialRing(k, np);
+        for the_lin_eq in lin_eqs do
+            lin_eq:=[x : x in the_lin_eq];
+            iM:=Matrix([[MonomialCoefficient(the_eq, M.i) : i in [1..nb]] : the_eq in lin_eq])^(-1);
+            new_x:=[new_M.i : i in [1..np]];
+            old_last_x:=[M.i : i in [nb+1..nb+np]];
+            first_x:=Eltseq(-ChangeRing(iM, new_M)*Matrix(nb, 1, [Evaluate(the_eq, [0 : i in [1..nb]] cat new_x) : the_eq in lin_eq]));
+            subst:=func< P | Evaluate(P, first_x cat new_x)>;
+            subst_mat:=[[[subst(x) : x in y] : y in z] : z in mat];
+            sol:=solve_matrix(make_func_product_matrix(subst_mat), nb, q-p, [#diag[x] : x in set], k); 
+            old_sol:=[* [sol[1][1]] cat [ Evaluate(u, sol[1][2..np+1]) : u in first_x ] cat sol[1][2..np+1], [ 0 : i in [1..nb] ] cat sol[2] *];
+            Append(~solutions, old_sol);
+        end for;
+    end for;
+    solution:=union(solutions);
+    return solution;
+end function;
+
+//-------------------------------------------------------------//
+// input: a function that computes a pxq matrix                //
+//        its row degrees and the base field                   //
+// output: a parametrization of its rank-deficient locus       //
+//-------------------------------------------------------------//
+function solve_matrix(mat1, p, q, row_degrees, k)
+    n:=q-p+1;
+    if n eq 1 then
+        M:=PolynomialRing(k, 1);
+        eqs:=[Determinant(mat1([M.1]))];
+        return solve_system(eqs);
+    end if;
+
+    special_mat:=random_special_matrix(p, q, row_degrees, k);
+    mat0:=make_func_special_matrix(special_mat);
+    sol0_x:=solve_special_matrix(special_mat);
+    return matrix_homotopy(mat1, mat0, p, q, sol0_x);
+end function;
+
+if false then
+    p:=2;
+    q:=4;
+    ell:=NextPrime(10^20);
+    k:=GF(ell);
+    row_degrees:=[2^(i-1) : i in [1..p]];
+    mat:=random_matrix(p, q, row_degrees, k);
+    mat1:=make_func_matrix(mat);
+    sol1:=solve_matrix(mat1, p, q, row_degrees, k);
+    sol1b:=solve_system(maximal_minors(mat));
+
+    GB1:=parametrization_to_groebner_basis(sol1);
+    GB1b:=parametrization_to_groebner_basis(sol1b);
+    GB1b:=ChangeUniverse(GB1b, Universe(GB1));
+    GB1 eq GB1b;
+end if;
