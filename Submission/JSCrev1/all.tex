@@ -2955,9 +2955,90 @@ $\mathsf{RowDegree\_simple}$, and the analysis above shows that can be
 neglected. As a result, the bound given above holds for the whole
 algorithm, and Proposition~\ref{prop:rowdegree} is proved.
 
+\section{Practical experiments}\label{sec:experiments}
+
+We report in this section on practical experiments we made using preliminary
+implementations of some algorithms in this paper.
+
+We implemented the row-degree algorithm described in Section~\ref{sec:rowdegree}
+using the {\sf Magma} computer algebra system~\cite{Magma} in the case $s = 0$
+and when $\KK$ is a prime field. Note that using Hensel liftings on top of such
+an implementation as in \cite{GiLeSa01}, one can recover regular solutions to
+such determinantal systems with coefficients in $\Q$. The most technical part of
+the implementation lies of course in the Hensel lifting implemented to obtain
+power series expansions of the solutions to the homotopy at $t = 0$. To do that,
+we rely on the data-structures and domains provided by {\sf Magma}, namely the
+domains {\sf PolynomialRing} (for multivariate and univariate polynmials) and
+{\sf PowerSeries} as well as constructors for quotient algebras such as {\sf
+  quo}. This is a high-level implementation and consequently, it is not intended
+to provide better performances than the state-of-the-art algorithms for
+polynomial system solving (doing so would require to implement the whole
+algorithms using libraries such as {\sf NTL} and/or {\sf Flint}). For instance,
+a simple call to {\sf Magma}'s Gr\"obner basis engine with input our
+determinantal systems performs faster by several orders of magnitude. However,
+it provides a proof-of-concept for the algorithms in this paper and illustrates
+well how behave the important quantities which determine the practical behaviour
+of the algorithm. In Table~\ref{tab:implem:rdeg}, we report on experiments with
+$\KK$ being a $16$-bit prime field, we indicate the matrix sizes $p$ and $q$ and
+the resulting number of variables $n = q - p + 1$. The entries of the matrices
+are chosen using {\sf Magma}'s random generator. We take $i$ as the row degree
+of the $i$-th row. The next column {\sf prec} gives the precision needed by the
+Hensel lifting step to reconstruct a rational parametrization of the homotopy
+curve. The column {\sf den} gives the degree of the denominator in this
+rational parametrization ; the columns {\sf degree} gives the degree of the
+output parametrization (hence, the number of solutions in $\KKbar$). Finally,
+the column {\sf time} reports on the runtime (in seconds) for solving the considered
+determinantal system using our implementation. Computations have been performed
+on an Intel(R) Xeon(R) CPU E3-1505M v6 @ 3.00GHz with $32$ GB of RAM.
+
+\begin{center}
+\begin{table}[h]
+  \centering
+  \begin{tabular}[]{cc|ccc|c}
+    $(p,q)$ & $n$ & {\sf prec} & {\sf den} & {\sf degree} & {\sf time} \\
+    \hline
+    (4,5)   & $2$ &  128 &  50 &   65   &  7.4\\
+    (4,6)   & $3$ & 1024 & 390 &  350   &1826 \\
+    \hline
+    (3,4)   & $2$ &   64 &  24 &   25   & 0.5 \\
+    (3,5)   & $3$ &  256 & 125 &   90   & 24.3\\
+    (3,6)   & $4$ & 2048 & 540 &  301   & 1690\\
+    \hline
+    (2,3)   & $2$ &  32  &   9 &    7   &  0.1\\
+    (2,4)   & $3$ &  64  &  28 &   15   &  0.3\\
+    (2,5)   & $4$ & 256  &  75 &   31   &    5\\
+    (2,6)   & $5$ & 512  & 186 &   63   &   35\\
+    (2,7)   & $6$ & 1024 & 441 &  127   &  245\\
+    \hline
+  \end{tabular}
+  \smallskip
+  \caption{Row-degree implementation in {\sf Magma}}    
+  \label{tab:implem:rdeg}
+\end{table}  
+\end{center}
+
+%p = 4, q = 5, deg = 65, prec = 128, den = 50, 7.4 sec.
+%p = 4, q = 6, deg = 350, prec = 1024, den = 390, 1826 sec.
+
+%p = 3, q = 6, deg = 301, prec = 2048, den = 540,  1690 sec.
+%p = 3, q = 5, deg = 90, prec = 256, den = 125,  24.25 sec.
+%p = 3, q = 4, deg = 25, prec = 64, den = 24,  0.5 sec.
+
+%p = 2, q = 6, deg = 63, prec = 512, den = 186, 35.0  sec.
+%p = 2, q = 5, deg = 31, prec = 256, den = 75, 5.0  sec.
+%p = 2, q = 4, deg = 15, prec = 64, den = 28, 0.3  sec.
+%p = 2, q = 3, deg = 7, prec = 32, den = 9, 0.1  sec.
+
+%p = 2, q = 7, deg = 127, prec = 1024, den = 441, 245  sec.
+
+On the numerical side, one can also implement the homotopies designed in this
+paper. We implemented the column degree homotopy using the {\sf
+  HomotopyContinuation} package which is implemented in {\sf Julia}.
+
+
 \paragraph*{Acknowledgements.} J.D. Hauenstein is supported by Sloan Research
 Fellowship BR2014-110 TR14 and NSF grant ACI-1460032. \'E. Schost is supported
-by an NSERC Discovery Grant. Mohab Safey El Din and Huu Phuoc Le are supported
+by an NSERC Discovery Grant. M. Safey El Din and T.X. Vu are supported
 by the ANR grants ANR-18-CE33-0011 \textsc{Sesame}, and ANR-19-CE40-0018
 \textsc{De Rerum Natura}, the joint ANR-FWF ANR-19-CE48-0015 \textsc{ECARP}
 project, the PGMO grant \textsc{CAMiSAdo} and the European Union’s Horizon 2020
@@ -2973,8 +3054,8 @@ Recherche, reference ANR-11-IDEX-0004-02.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section*{Appendix}\label{appendix}
+\appendix
+\section{Appendix}\label{appendix}
 
 We finally prove properties that were stated without proof in
 Section~\ref{sec:prel-row}.  Recall that we work with two families of

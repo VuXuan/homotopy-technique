@@ -232,6 +232,7 @@ function random_special_matrix(p, q, row_degrees, k)
 
     diag:=[];
     for i in [1..p] do
+/*        print "toto", [ &+[rand(k) + rand(k)*M.s : s in [1..n]] : t in [1..row_degrees[i]] ]; */
         Append(~diag, [ &+[rand(k) + rand(k)*M.s : s in [1..n]] : t in [1..row_degrees[i]] ]); 
     end for;
 
@@ -532,7 +533,8 @@ function reconstruct(point)
     q_r:=m_ratrecon(Modulus(U));
     point_rat:=map(m_ratrecon, map(lift, shape_lemma_to_RUR(point)));
 
-    /* Degree(Denominator(Coefficient(q_r,0))), [ Degree(Denominator(Coefficient(x,0))) : x in point_rat]; */
+    print "Deg Num = ", Degree(Numerator(Coefficient(q_r,0))), [ Degree(Numerator(Coefficient(x,0))) : x in point_rat]; 
+    print "Deg Denom = ", Degree(Denominator(Coefficient(q_r,0))), [ Degree(Denominator(Coefficient(x,0))) : x in point_rat]; 
     
     q_1:=m_eval1(q_r);
     Q_1:=quo<Parent(q_1) | q_1>;
@@ -643,7 +645,7 @@ function matrix_homotopy(mat1, mat0, p, q, sol0_x)
         
         prec:=prec*2;
     end while;
-    
+    print "max prec = ", prec / 2;
     return [* point_to_partial_parametrization(point_1[1..n-p]), u[1..n-p] *];
 end function;
 
@@ -661,12 +663,14 @@ forward solve_matrix;
 //-------------------------------------------------------------//
 function solve_special_matrix(special_mat)
     diag:=special_mat[1];
+//    print "diag", diag;
     rest:=special_mat[2];
     M:=Universe(diag[1]);
     k:=BaseRing(M);
     n:=Rank(M);
     p:=#diag;
     q:=p + #rest[1];
+//    print p, q;
     subs_diag:={ x : x in Subsets({1..p}) | #x ne 0 and #x le n-1};
     solutions:=[];
     for set in subs_diag do
@@ -683,13 +687,42 @@ function solve_special_matrix(special_mat)
             first_x:=Eltseq(-ChangeRing(iM, new_M)*Matrix(nb, 1, [Evaluate(the_eq, [0 : i in [1..nb]] cat new_x) : the_eq in lin_eq]));
             subst:=func< P | Evaluate(P, first_x cat new_x)>;
             subst_mat:=[[[subst(x) : x in y] : y in z] : z in mat];
-            sol:=solve_matrix(make_func_product_matrix(subst_mat), nb, q-p, [#diag[x] : x in set], k); 
+//            print "Call to solve_matrix";
+            sol:=solve_matrix(make_func_product_matrix(subst_mat), nb, q-p, [#diag[x] : x in set], k);
+//            print "Done.";
             old_sol:=[* [sol[1][1]] cat [ Evaluate(u, sol[1][2..np+1]) : u in first_x ] cat sol[1][2..np+1], [ 0 : i in [1..nb] ] cat sol[2] *];
             Append(~solutions, old_sol);
         end for;
     end for;
     solution:=union(solutions);
+//    print "solution done on random special matrix";
     return solution;
+end function;
+
+function make_mat_from_special_matrix(special_mat)
+    diag:=special_mat[1];
+//    print "diag", diag;
+    rest:=special_mat[2];
+    M:=Universe(diag[1]);
+    k:=BaseRing(M);
+    n:=Rank(M);
+    p:=#diag;
+    q:=p + #rest[1];
+
+    U:=Matrix(p, q, [[M!0: i in [1..q]]:j in [1..p]]);
+    for i in [1..p] do
+      U[i,i]:= 1;
+      for d in diag[i] do U[i,i] := U[i,i] * d; end for;
+    end for;
+
+    for i in [1..p] do
+      r:=rest[i];
+      for j in [p+1..q] do
+        U[i,j]:=1;
+        for k in r[j-p] do U[i,j]:=U[i,j]*k; end for; 
+      end for;
+    end for;
+    return U;
 end function;
 
 //-------------------------------------------------------------//
@@ -706,24 +739,35 @@ function solve_matrix(mat1, p, q, row_degrees, k)
     end if;
 
     special_mat:=random_special_matrix(p, q, row_degrees, k);
+//    print "special_mat", special_mat;
     mat0:=make_func_special_matrix(special_mat);
     sol0_x:=solve_special_matrix(special_mat);
-    return matrix_homotopy(mat1, mat0, p, q, sol0_x);
+
+    time sol_alt:=solve_system(maximal_minors(make_mat_from_special_matrix(special_mat)));
+
+//avant
+//    return matrix_homotopy(mat1, mat0, p, q, sol0_x);
+    return matrix_homotopy(mat1, mat0, p, q, sol_alt);
 end function;
 
-if false then
+if true then
     p:=2;
-    q:=4;
-    ell:=NextPrime(10^20);
+    q:=3;
+    ell:=NextPrime(2^16-300);
     k:=GF(ell);
-    row_degrees:=[2^(i-1) : i in [1..p]];
+    row_degrees:=[i : i in [1..p]];
     mat:=random_matrix(p, q, row_degrees, k);
     mat1:=make_func_matrix(mat);
-    sol1:=solve_matrix(mat1, p, q, row_degrees, k);
-    sol1b:=solve_system(maximal_minors(mat));
+    time sol1b:=solve_system(maximal_minors(mat));
+    GB1b:=parametrization_to_groebner_basis(sol1b);
+    print "Degree", [Degree(g): g in GB1b];
+
+    time sol1:=solve_matrix(mat1, p, q, row_degrees, k);
 
     GB1:=parametrization_to_groebner_basis(sol1);
-    GB1b:=parametrization_to_groebner_basis(sol1b);
     GB1b:=ChangeUniverse(GB1b, Universe(GB1));
     GB1 eq GB1b;
+
+    print "Degree", [Degree(g): g in GB1b];
+    print "Degree", [Degree(g): g in GB1];
 end if;
