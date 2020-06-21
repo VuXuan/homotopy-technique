@@ -3033,8 +3033,33 @@ on an Intel(R) Xeon(R) CPU E3-1505M v6 @ 3.00GHz with $32$ GB of RAM.
 
 On the numerical side, one can also implement the homotopies designed in this
 paper. We implemented the column degree homotopy using the {\sf
-  HomotopyContinuation} package which is implemented in {\sf Julia}.
+  HomotopyContinuation} package \cite{HomContJulia} which is implemented in {\sf
+  Julia}. This package allows us to custom homotopies easily using the {\sf
+  Julia} environment. Again, that implementation is not intended to compete with
+well established and celebrated homotopy continuation solvers such as {\sf
+  PHCPack} \cite{PHCPack} and {\sf Bertini} \cite{Bertini}. Note also that {\sf
+  HomotopyContinuation} relies exclusively on the floating point number
+arithmetics available in {\sf Julia} and does not increase precision when
+needed.
 
+In this setting, it appears that, as expected, our implementation performs
+faster than the naive strategy which would consist in calling the general
+homotopy solver on the input system of maximal minors. This is because the
+number of paths to follow is smaller by several orders of magnitude for large
+systems. We also observe that the numerical behaviour is better: {\sf
+  HomotopyContinuation} frequently fails to follow some paths when calling the
+general solver on our determinantal systems and misses some solutions. This
+happened less frequently when using our customized homotopy.
+
+An alternative to the column degree homotopy designed in this paper is the use
+of so-called Lagrange systems, which basically consists in encodign rank
+deficiency with the existence of a non-zero vector in the kernel. In that colomn
+degree situation, our bounds match the natural bi-homogneous B\'ezout bounds
+(see e.g. \cite{SaSc16}) and the number of paths to follow is the same. In
+general, this strategy is faster for computing regular solutions are those
+Lagrange systems are easier to evaluate than the minors. However, when it comes
+that there exist singular solutions to our determinantal systems, we have
+observed a better numerical behaviour.
 
 \paragraph*{Acknowledgements.} J.D. Hauenstein is supported by Sloan Research
 Fellowship BR2014-110 TR14 and NSF grant ACI-1460032. \'E. Schost is supported
